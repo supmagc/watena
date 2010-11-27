@@ -19,7 +19,50 @@ class ComponentLoader extends Plugin {
 	}
 	
 	public function load($sComponent) {
-		return parent::getWatena()->getCache()->retrieve('CL_'.$sComponent, array($this, '_loadComponentFromFile'), 5, array($sComponent));
+		$sContent = file_get_contents(realpath($this->m_sPathTemplates . '/' . $sComponent . '.' . $this->m_sExtension));
+		$oTest = DOMDocument::loadHTML($sContent);
+		
+		$this->_processNode($oTest);
+
+		$aMatches = array();
+		$aPositions = array();
+		$sContent = Encoding::regFindAll('\$\{[-a-zA-Z]0-9_/]+\}', $sContent, $aMatches, $aPositions);
+		$nCount = count($aMatches);
+		$nOffset = 0;
+		for($i=0 ; $i<$nCount ; ++$i) {
+			
+		}
+		//return parent::getWatena()->getCache()->retrieve('CL_'.$sComponent, array($this, '_loadComponentFromFile'), 5, array($sComponent));
+	}
+	
+	public function _processNode(DOMNode $oNode) {
+		//echo $oNode->nodeName . "\n";
+		if($oNode->hasAttributes()) {
+			foreach($oNode->attributes as $sAttrName => $oAttrNode) {
+				if(Encoding::substring($sAttrName, 0, 4) == "tpl:") {
+					$sAttrName = Encoding::substring($sAttrName, 4);
+					switch($sAttrName) {
+						case 'content' : break;
+						case 'replace' : break;
+						case 'repeat' : break;
+						case 'component' : break;
+						case 'condition' : break;
+						case 'enabled' : break;
+					}
+				}
+				
+				if((($oNode->nodeName == 'a' || $oNode->nodeName == 'link') && $sAttrName == 'href') || ($oNode->nodeName == "img" && $sAttrName == "src")) {
+					if(Encoding::beginsWith($oAttrNode->nodeValue, '/')) {
+						$oAttrNode->nodeValue = parent::getWatena()->getMapping()->getMain() . $oAttrNode->nodeValue;
+					}
+				}
+			}
+		}
+		if($oNode->childNodes) {
+			foreach($oNode->childNodes as $oChild) {
+				$this->_processNode($oChild);
+			}
+		}
 	}
 	
 	public function _loadComponentFromFile($sComponent) {

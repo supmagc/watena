@@ -3,6 +3,7 @@
 class Mapping extends Object {
 
 	private $m_aVariables = array();
+	private $m_sMain;
 	
 	public function __construct() {
 		$this->m_aVariables['host'] = $_SERVER['HTTP_HOST'];
@@ -17,6 +18,14 @@ class Mapping extends Object {
 			$nLength = Encoding::contains($_SERVER['REQUEST_URI'], '?') ? Encoding::indexOf($_SERVER['REQUEST_URI'], '?') - Encoding::length($this->m_aVariables['offset']) : null;
 			$this->m_aVariables['mapping'] = urldecode(Encoding::substring($_SERVER['REQUEST_URI'], Encoding::length($this->m_aVariables['offset']), $nLength));
 		}
+		
+		// Save main as it's used a lot
+		$this->m_sMain = 'http://' . $this->m_aVariables['host'] . ($this->m_aVariables['port'] != 80 ? ':'.$this->m_aVariables['port'] : '') . $this->m_aVariables['offset'];
+		
+	}
+	
+	public function getMain() {
+		return $this->m_sMain;
 	}
 	
 	public function getVariable($sName) {
