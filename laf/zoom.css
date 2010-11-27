@@ -1,0 +1,109 @@
+@charset "utf-8";
+/* CSS Document */
+
+
+table.zoomed {
+	width:842px;
+}
+
+table.zoomed td.center {
+	background-color:#000;
+	width:800px;
+	color:#CCC;
+}
+
+table.zoomed td.t {
+	background-image:url(zoom_t.png);
+	width:758px;
+	height:21px;
+}
+
+table.zoomed td.trt {
+	background-image:url(zoom_trt.png);
+	width:21px;
+	height:21px;
+}
+
+table.zoomed td.rt {
+	background-image:url(zoom_rt.png);
+	width:21px;
+	height:21px;
+}
+
+table.zoomed td.rrt {
+	background-image:url(zoom_rrt.png);
+	vertical-align:top;
+	width:21px;
+	height:21px;
+}
+
+table.zoomed td.r {
+	background-image:url(zoom_r.png);
+	vertical-align:top;
+	width:21px;
+}
+
+table.zoomed td.rrb {
+	background-image:url(zoom_rrb.png);
+	width:21px;
+	height:21px;
+}
+
+table.zoomed td.rb {
+	background-image:url(zoom_rb.png);
+	width:21px;
+	height:21px;
+}
+
+table.zoomed td.brb {
+	background-image:url(zoom_brb.png);
+	width:21px;
+	height:21px;
+}
+
+table.zoomed td.b {
+	background-image:url(zoom_b.png);
+	width:758px;
+	height:21px;
+}
+
+table.zoomed td.blb {
+	background-image:url(zoom_blb.png);
+	width:21px;
+	height:21px;
+}
+
+table.zoomed td.lb {
+	background-image:url(zoom_lb.png);
+	width:21px;
+	height:21px;
+}
+
+table.zoomed td.llb {
+	background-image:url(zoom_llb.png);
+	width:21px;
+	height:21px;
+}
+
+table.zoomed td.l{
+	background-image:url(zoom_l.png);
+	width:21px;
+}
+
+table.zoomed td.llt {
+	background-image:url(zoom_llt.png);
+	width:21px;
+	height:21px;
+}
+
+table.zoomed td.lt {
+	background-image:url(zoom_lt.png);
+	width:21px;
+	height:21px;
+}
+
+table.zoomed td.tlt {
+	background-image:url(zoom_tlt.png);
+	width:21px;
+	height:21px;
+}
