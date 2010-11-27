@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<filter name="HelloWorld filter" controller="HelloWorldController" order="0">
+	<rules>
+		<rule variable="mapping">^/</rule>
+	</rules>
+</filter>
