@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<filter name="Main home" controller="ComponentTemplate" order="10">
+	<rules>
+		<rule variable="mapping">^/</rule>
+	</rules>
+	<params>
+		<param name="component">layout00/main</param>
+	</params>
+	<plugins>
+		<plugin>ComponentLoader</plugin>
+	</plugins>
+</filter>

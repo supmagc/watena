@@ -1,0 +1,31 @@
+<?php
+
+require_once 'componentloader/class.component.php';
+
+class ComponentLoader extends Plugin {
+
+	private $m_sPathTemplates;
+	private $m_sPathCode;
+	private $m_sExtension;
+	
+	public function init() {
+		$this->m_sPathTemplates = parent::getWatena()->getPath(parent::getConfig('DIR_TEMPLATE', 'components'));
+		$this->m_sPathCode = parent::getWatena()->getPath(parent::getConfig('DIR_CODE', 'components'));
+		$this->m_sExtension = parent::getConfig('EXTENSION', '');
+	}
+
+	public function getVersion() {
+		return array('major' => 0, 'minor' => 1, 'build' => 1, 'state' => 'dev');
+	}
+	
+	public function load($sComponent) {
+		return parent::getWatena()->getCache()->retrieve('CL_'.$sComponent, array($this, '_loadComponentFromFile'), 5, array($sComponent));
+	}
+	
+	public function _loadComponentFromFile($sComponent) {
+		$sContent = file_get_contents(realpath($this->m_sPathTemplates . '/' . $sComponent . '.' . $this->m_sExtension));
+		return new Component($sContent);
+	}
+}
+
+?>

@@ -1,0 +1,7 @@
+#Security options:
+Options +FollowSymLinks
+Options -Indexes
+
+<FilesMatch "\.(php|txt|ini|inc|xml)$">
+	Deny from all
+</FilesMatch>
