@@ -4,7 +4,8 @@
 		<rule variable="mapping">^/</rule>
 	</rules>
 	<params>
-		<param name="component">layout00/main</param>
+		<param name="template">layout00/main</param>
+		<param name="component">main</param>
 	</params>
 	<plugins>
 		<plugin>ComponentLoader</plugin>

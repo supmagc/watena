@@ -1,61 +1,64 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>portfolio - template testing</title>
-<link href="/laf/zoom.css" rel="stylesheet" type="text/css" />
-<link href="/laf/style.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript">
-<!--
-function Init() {
-	bg_Size();
-	img = new Image();
-	img.src = "<[LAF]>/btn_archive_over.png";
-	img.src = "<[LAF]>/btn_contact_over.png";
-	img.src = "<[LAF]>/btn_profile_over.png";
-	img.src = "<[LAF]>/btn_search_over.png";
-}
-
-function bg_Size() {
-	// BG lines
-	document.getElementById("bg_left").style.height = document.body.parentNode.scrollHeight + "px";
-	document.getElementById("bg_left").style.width = (document.body.parentNode.scrollWidth / 2 + document.body.parentNode.scrollWidth % 2) + "px";
-	document.getElementById("bg_right").style.height = document.body.parentNode.scrollHeight + "px";
-	document.getElementById("bg_right").style.width = (document.body.parentNode.scrollWidth / 2 - document.body.parentNode.scrollWidth % 2) + "px";
-	document.getElementById("bg_right").style.left = (document.body.parentNode.scrollWidth / 2 + document.body.parentNode.scrollWidth % 2) + "px";
-
-	// BG gradient
-	var offset = 200;
-	var height = 800;
-	if(window.innerHeight < offset + height) {
-		var dif = (offset + height) - window.innerHeight;
-		document.getElementById("bg_gradient").style.top = offset - dif/2 + "px";
-		document.getElementById("bg_gradient").style.height = (height - dif/2) + dif%2 + "px";
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta charset="UTF-8" />
+	<title tpl:content="getTitle()">Portfolio main template</title>
+	<link href="/laf/zoom.css" rel="stylesheet" type="text/css" />
+	<link href="/laf/style.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
+	<!--
+	function Init() {
+		bg_Size();
+		img = new Image();
+		img.src = "<[LAF]>/btn_archive_over.png";
+		img.src = "<[LAF]>/btn_contact_over.png";
+		img.src = "<[LAF]>/btn_profile_over.png";
+		img.src = "<[LAF]>/btn_search_over.png";
 	}
-	else {
-		document.getElementById("bg_gradient").style.top = window.innerHeight - height + "px";
-		document.getElementById("bg_gradient").style.height = height + "px";
-	}
-
-	// table side heights
-	var tds = document.getElementsByTagName("td");
-	for(i=0 ; i<tds.length ; ++i) {
-		var sizeto = tds.item(i).getAttribute("size-to");
-		if(sizeto) {
-			for(j=0 ; j<tds.length ; ++j) {
-				var size = tds.item(j).getAttribute("size-ref");
-				if(size && size == sizeto) {
-					var sizemin = tds.item(j).getAttribute("size-min");
-					sizemin = sizemin ? sizemin : 0;
-					tds.item(i).style.height = tds.item(j).scrollHeight - sizemin + "px";
+	
+	function bg_Size() {
+		// BG lines
+		document.getElementById("bg_left").style.height = document.body.parentNode.scrollHeight + "px";
+		document.getElementById("bg_left").style.width = (document.body.parentNode.scrollWidth / 2 + document.body.parentNode.scrollWidth % 2) + "px";
+		document.getElementById("bg_right").style.height = document.body.parentNode.scrollHeight + "px";
+		document.getElementById("bg_right").style.width = (document.body.parentNode.scrollWidth / 2 - document.body.parentNode.scrollWidth % 2) + "px";
+		document.getElementById("bg_right").style.left = (document.body.parentNode.scrollWidth / 2 + document.body.parentNode.scrollWidth % 2) + "px";
+	
+		// BG gradient
+		var offset = 200;
+		var height = 800;
+		if(window.innerHeight < offset + height) {
+			var dif = (offset + height) - window.innerHeight;
+			document.getElementById("bg_gradient").style.top = offset - dif/2 + "px";
+			document.getElementById("bg_gradient").style.height = (height - dif/2) + dif%2 + "px";
+		}
+		else {
+			document.getElementById("bg_gradient").style.top = window.innerHeight - height + "px";
+			document.getElementById("bg_gradient").style.height = height + "px";
+		}
+	
+		// table side heights
+		var tds = document.getElementsByTagName("td");
+		for(i=0 ; i<tds.length ; ++i) {
+			var sizeto = tds.item(i).getAttribute("size-to");
+			if(sizeto) {
+				for(j=0 ; j<tds.length ; ++j) {
+					var size = tds.item(j).getAttribute("size-ref");
+					if(size && size == sizeto) {
+						var sizemin = tds.item(j).getAttribute("size-min");
+						sizemin = sizemin ? sizemin : 0;
+						tds.item(i).style.height = tds.item(j).scrollHeight - sizemin + "px";
+					}
 				}
 			}
 		}
 	}
-}
-//--></script>
-</head><body onLoad="Init();" onResize="bg_Size();"><component><var name="test" /></component>
+	//--></script>
+</head>
+<body onLoad="Init();" onResize="bg_Size();">
 <div style="position:relative; height:100%; text-align:center;">
-	<div id="bg_left"></div>
+	<div id="bg_left" tpl:content="bla"></div>
 	<div id="bg_right"></div>
 	<div id="bg_gradient"></div>
 	<div id="bg_blur">
@@ -134,11 +137,11 @@ function bg_Size() {
 										</div>
 										<div class="menuItem">
 											<div class="menuItemHeader"><img src="/laf/menu_neighbours.png" /></div>
-											<div class="menuItemContent"><ul><[LINKS=FrontEnd::Links()[<li><a href="<[LINK]>" title="<[DESCRIPTION]>" target="_blank"><[NAME]></a>]]></ul></div>
+											<div class="menuItemContent"><ul><li>link<Li></ul></div>
 										</div>
 										<div class="menuItem">
 											<div class="menuItemHeader"><img src="/laf/menu_quote.png" /></div>
-											<div class="menuItemContent"><[QUOTE=FrontEnd::Quote()[&ldquo;<[TEXT]>&rdquo;<br />~<em><[AUTHOR]></em>]]></div>
+											<div class="menuItemContent">&ldquo;Hello world !&rdquo;<br />~<em>Jelle</em></div>
 										</div>
 										<div class="menuSpacer"></div></td>
 								</tr>

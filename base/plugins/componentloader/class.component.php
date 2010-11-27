@@ -7,35 +7,56 @@ class Component {
 	private $m_aRegions;
 	private $m_aVars;
 	
-	public function __construct($sContent) {
-		$this->m_sContent = $sContent;
+	public function __construct($sContent) {	
 		
-		// parse tags and stuff ... wi!i!i!i!i!i!i!
-		$aMatchesBegin = array();
-		$aPositionsBegin = array();
-		Encoding::regFindAll('<(component|region|variable|comp|reg|var)([^<>]*?)(/)?>', $sContent, $aMatchesBegin, $aPositionsBegin);
-		$nCountBegin = count($aMatchesBegin);
-		$aMatchesEnd = array();
-		$aPositionsEnd = array();
-		Encoding::regFindAll('</(component|region|variable|comp|reg|var)>', $sContent, $aMatchesEnd, $aPositionsEnd);
-		$nCountEnd = count($aMatchesEnd);
-		for($i=0 ; $i<$nCountBegin ; ++$i) {
-			$sTag = $aMatchesBegin[$i][1];
-			$bHasEnded = $aMatchesBegin[$i][3] == '/';
+		$oTest = new DOMDocument('1.0', 'UTF-8');
+		$oTest->loadHTML($sContent);
+		
+		
+		$aMatches = array();
+		$aPositions = array();
+		while(Encoding::regFind('<(component|variable|comp|var)([^<>]*?)(/)?>', $sContent, $aMatches, $aPositions)) {
+			$sTag = $aMatches[1];
+			$nOuterStart = $aPositions[0];
+			$nOuterStop = $aPositions[1];
 			$sInnerContent = null;
-			$nCountOffset = 1;
-			if(!$bHasEnded) {
-				$nStartOuter = $aPositionsBegin[$i][0];
-				$nStartInner = $aPositionsBegin[$i][1];
-				for($j=0 ; $j<$nCountEnd ; ++$j, ++$nCountOffset) {
-					$nStopInner = $aPositionsEnd[$j][0];
-					$nStopOuter = $aPositionsEnd[$j][1];
-					
+			$nInnerStart = 0;
+			$nInnerStop = 0;
+			
+			// If we have inner content, search for it
+			if($aMatches[3] != '/') {
+				$sShortContent = Encoding::substring($sContent, $aPositions[1]);
+				$nShortOffset = $aPositions[1];
+				$aShortMatches = array();
+				$aShortPositions = array();
+				Encoding::regFindAll('<(/)?(component|variable|comp|var)([^<>]*?)(/)?>', $sShortContent, $aShortMatches, $aShortPositions);
+				$nSkipCount = 0;
+
+				for($i=0 ; $i<count($aShortMatches) ; ++$i) {
+					$sShortTag = $aShortMatches[$i][2];
+					if($sShortTag == $sTag) {
+						if($aShortMatches[$i][1] === '/') {
+							if($nSkipCount === 0) {
+								$nOuterStart = $aPositions[0];
+								$nOuterStop = $nShortOffset + $aShortPositions[$i][1];
+								$nInnerStart = $aPositions[1];
+								$nInnerStop = $nShortOffset + $aShortPositions[$i][0];
+								$sInnerContent = Encoding::substring($sContent, $nInnerStart, $nInnerStop - $nInnerStart);
+								break;
+							}
+							--$nSkipCount;
+						}
+						else if($aShortMatches[$i][4] !== '/') {
+							++$nSkipCount;
+						}
+					}
 				}
 			}
+			$sContent = Encoding::substring($sContent, 0, $nOuterStart) . Encoding::substring($sContent, $nOuterStop);
+
+			
 		}
-		print_r($aMatchesBegin);
-		print_r($aMatchesEnd);
+		$this->m_sContent = $sContent;
 	}
 	
 	public function __toString() {
