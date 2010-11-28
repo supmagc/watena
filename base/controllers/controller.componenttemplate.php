@@ -2,16 +2,18 @@
 
 class ComponentTemplate extends Controller {
 
-	private $m_sMainComponent;
+	private $m_sTemplate;
+	private $m_sComponent;
 	
-	public function __construct(array $aParams) {
-		$this->m_sMainComponent = isset($aParams['component']) ? $aParams['component'] : null;
+	public function init() {
+		$this->m_sTemplate = parent::getConfig('template', null);
+		$this->m_sComponent = parent::getConfig('component', null);
 	}
 	
 	public function render() {
-		if($this->m_sMainComponent) {
+		if($this->m_sTemplate && $this->m_sComponent) {
 			$oComponentLoader = parent::getWatena()->getContext()->getPlugin('ComponentLoader');
-			echo $oComponentLoader->load($this->m_sMainComponent);
+			echo $oComponentLoader->load($this->m_sTemplate);
 		}
 	}
 }

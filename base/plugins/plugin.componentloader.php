@@ -13,7 +13,11 @@ class ComponentLoader extends Plugin {
 		$this->m_sPathCode = parent::getWatena()->getPath(parent::getConfig('DIR_CODE', 'components'));
 		$this->m_sExtension = parent::getConfig('EXTENSION', '');
 	}
-
+	
+	public function wakeup() {
+		
+	}
+	
 	public function getVersion() {
 		return array('major' => 0, 'minor' => 1, 'build' => 1, 'state' => 'dev');
 	}
@@ -26,12 +30,15 @@ class ComponentLoader extends Plugin {
 
 		$aMatches = array();
 		$aPositions = array();
-		$sContent = Encoding::regFindAll('\$\{[-a-zA-Z]0-9_/]+\}', $sContent, $aMatches, $aPositions);
+		$sContent = $oTest->saveHTML();
+		Encoding::regFindAll('\$\{[-a-zA-Z]0-9_/]+\}', $sContent, $aMatches, $aPositions);
 		$nCount = count($aMatches);
 		$nOffset = 0;
 		for($i=0 ; $i<$nCount ; ++$i) {
 			
 		}
+		
+		return $sContent;
 		//return parent::getWatena()->getCache()->retrieve('CL_'.$sComponent, array($this, '_loadComponentFromFile'), 5, array($sComponent));
 	}
 	

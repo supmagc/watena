@@ -23,6 +23,10 @@ class CacheAPC extends Plugin implements ICache {
 	public function init() {
 	}
 	
+	public function wakeup() {
+		
+	}
+	
 	public function getVersion() {
 		return array('major' => 0, 'minor' => 1, 'build' => 1, 'state' => 'dev');
 	}
