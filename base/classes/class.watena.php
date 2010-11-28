@@ -2,21 +2,16 @@
 
 class Watena extends Object {
 	
-	private $m_aConfig = false;
 	private $m_oContext = null;
 	private $m_oCache = null;
 	private $m_oMapping = null;
 	private $m_oController = null;
 	
-	public function __construct() {
-		parent::__construct();
-		
+	public function __construct() {		
 		// Load the config-data and overwrite defaults with specific host settings
-		$sHostKey = strtoupper($_SERVER['HTTP_HOST']);
-		$this->m_aConfig = parse_ini_file(PATH_BASE . '/watena.ini', true);
-		if(!$this->m_aConfig) parent::terminate('No readable Watena config file could be found.');
-		if(isset($this->m_aConfig[$sHostKey])) $this->m_aConfig = array_merge($this->m_aConfig, $this->m_aConfig[$sHostKey]);
-
+		$aConfig = parse_ini_file(PATH_BASE . '/watena.ini', true);
+		if(!$aConfig) parent::terminate('No readable Watena config file could be found.');
+		parent::__construct($aConfig);
 		$this->assurePHPSettings();
 		
 		// Create a new Context and load all required plugins
@@ -27,7 +22,7 @@ class Watena extends Object {
 			$this->m_oContext->loadPlugin($sCachePlugin);
 			$this->m_oCache = $this->m_oContext->GetPlugin($sCachePlugin, 'ICache');
 		}
-		$this->m_oContext->loadPlugins(array_map('trim', explode(',', $this->m_aConfig['PLUGINS'])));		
+		$this->m_oContext->loadPlugins(array_map('trim', explode(',', parent::getConfig('PLUGINS', ''))));		
 
 		// Load the mapping and retrieve the appropriate controller
 		$this->m_oMapping = new Mapping();
@@ -60,6 +55,11 @@ class Watena extends Object {
 		return $sPath;
 	}
 	
+	/**
+	 * Retrieve the mapping for the current request.
+	 * 
+	 * @return Mapping
+	 */
 	public final function getMapping() {
 		return $this->m_oMapping;
 	}
@@ -67,18 +67,20 @@ class Watena extends Object {
 	public final function getVersion() {
 		return "{$this->m_aConfig['VERSION_NAME']} - {$this->m_aConfig['VERSION_MAJOR']}.{$this->m_aConfig['VERSION_MINOR']}.{$this->m_aConfig['VERSION_BUILD']} ({$this->m_aConfig['VERSION_STATE']})";
 	}
-
-	public final function getConfig($sKey, $mDefault = null) {
-		return isset($this->m_aConfig[$sKey]) ? $this->m_aConfig[$sKey] : $mDefault;
-	}
 	
 	public final function assurePHPSettings() {
 		set_include_path(get_include_path() . PATH_SEPARATOR . str_replace(',', PATH_SEPARATOR, self::getConfig('INCLUDE', '')));
 		Encoding::init(self::getConfig('CHARSET', 'UTF-8'));
 		ini_set('default_charset', self::getConfig('CHARSET', 'UTF-8'));
 		ini_set('date.timezone', 'Europe/London');
+		ini_set('error_reporting', E_ALL);
 	}
 	
+	/**
+	 * Retrieve the caching engine.
+	 * 
+	 * @return ICache
+	 */
 	public final function getCache() {
 		return $this->m_oCache;
 	}

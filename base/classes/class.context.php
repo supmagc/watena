@@ -47,12 +47,21 @@ class Context extends Object {
 	 */
 	public function loadPlugin($sPlugin, $bTerminate = true) {
 		$sKey = Encoding::stringToLower($sPlugin);
+		$sFilePHP = PATH_BASE . "/plugins/plugin.$sKey.php";
+		$sFileINI = PATH_BASE . "/plugins/config.$sKey.ini";
 		if(!isset($this->m_aPlugins[$sKey])) {
-			list($aIncludes, $oPlugin) = parent::getWatena()->getCache()->retrieve("W_PLUGIN_$sPlugin", array($this, '_loadPluginFromFile'), 5, array($sPlugin, $bTerminate));
+			$aConfig = parent::getWatena()->getCache()->retrieve(
+				"W_PLUGININI_$sPlugin", 
+				create_function(
+					'$a', 
+					'return file_exists($a) ? parse_ini_file($a, true) : array();'),
+				5, array($sFileINI));
+			$oPlugin = Cacheable::create($sPlugin, $aConfig, 'W_PLUGIN_'.$sPlugin, 5, $sFilePHP, 'Plugin');
+			/*list($aIncludes, $oPlugin) = parent::getWatena()->getCache()->retrieve("W_PLUGIN_$sPlugin", array($this, '_loadPluginFromFile'), 5, array($sPlugin, $bTerminate));
 			foreach($aIncludes as $sInclude) {
 				require_once $sInclude;
-			}
-			$this->m_aPlugins[$sKey] = unserialize($oPlugin);
+			}*/
+			$this->m_aPlugins[$sKey] = $oPlugin;
 		}
 		return $this->m_aPlugins[$sKey] !== null;
 	}
@@ -89,54 +98,15 @@ class Context extends Object {
 		krsort($aFilters);
 		return $aFilters;
 	}
-
-	/**
-	 * Callback method that loads a plugin and its configuration from the filesystem.
-	 */
-	public function _loadPluginFromFile($sPlugin, $bTerminate = true) {
-		$sKey = strtolower($sPlugin);
-		$sFilePHP = PATH_BASE . "/plugins/plugin.$sKey.php";
-		$sFileINI = PATH_BASE . "/plugins/config.$sKey.ini";
-		if(file_exists($sFilePHP)) {
-			require_once $sFilePHP;
-			if(class_exists($sPlugin, false)) {
-				if(in_array("Plugin", class_parents($sPlugin, false))) {
-					
-					$aSettings = parent::getWatena()->getCache()->retrieve(
-						"W_PLUGININI_$sPlugin", 
-						create_function(
-							'$a', 
-							'return file_exists($a) ? parse_ini_file($a, true) : array();'),
-						5, array($sFileINI));
-					
-					$oPlugin = new $sPlugin($aSettings);
-					$aIncludes = array($sFilePHP);
-					if(self::_checkRequirements($oPlugin->getRequirements(), $bTerminate, $aIncludes)) {
-						return array($aIncludes, serialize($oPlugin));
-					}
-				}
-				else if($bTerminate) {
-					$this->Terminate("Plugin class found, but doesn't inherit Plugin as parent object.");
-				}
-			}
-			else if($bTerminate) {
-				$this->Terminate("Plugin file found, but unable to find class: $sPlugin");
-			}
-		}
-		else if($bTerminate) {
-			$this->Terminate("Unable to find plugin-file: $sFilePHP");
-		}
-		return null;
-	}
 	
 	/**
 	 * Check the provided list with requirements and their compatibility.
 	 * 
-	 * @param array $aRequirements
-	 * @param boolean $bTerminate
-	 * @param array $aIncludes (out)
+	 * @param array $aRequirements An array formatted to the requirement specifications.
+	 * @param boolean $bTerminate Indicator if we should autoterminate whan the requirements are not meat. (default = true)
+	 * @param array $aIncludes (out) Returns by reference a list with all the required includes
 	 */
-	private function _checkRequirements($aRequirements, $bTerminate = true, &$aIncludes = null) {
+	public function checkRequirements($aRequirements, $bTerminate = true, &$aIncludes = null) {
 		$bSucces = true;
 		if($bSucces && $aRequirements && isset($aRequirements['extensions'])) {
 			if(!is_array($aRequirements['extensions'])) $aRequirements['extensions'] = array($aRequirements['extensions']);
@@ -173,7 +143,7 @@ class Context extends Object {
 						$bSucces = false;
 						break;
 					}
-					if($aIncludes) $aIncludes[]= $sPear . '.php';
+					if(is_array($aIncludes)) $aIncludes[]= $sPear . '.php';
 				}
 			}
 			else {

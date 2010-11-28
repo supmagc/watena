@@ -56,9 +56,7 @@ class Filter extends Object {
 	}
 	
 	public function getController() {
-		require_once $this->m_sFile;
-		$sController = $this->m_sController;
-		return new $sController($this->m_aParams);
+		return Cacheable::create($this->m_sController, $this->m_aParams, 'W_CONTROLLER_'.$this->m_sController, 5, $this->m_sFile, 'Controller');
 	}
 	
 	public function getName() {
