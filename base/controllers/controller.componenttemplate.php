@@ -5,6 +5,10 @@ class ComponentTemplate extends Controller {
 	private $m_sTemplate;
 	private $m_sComponent;
 	
+	public function getRequirements() {
+		return array('plugins' => array('ComponentLoader', 'TemplateLoader'));
+	}
+	
 	public function init() {
 		$this->m_sTemplate = parent::getConfig('template', null);
 		$this->m_sComponent = parent::getConfig('component', null);
@@ -12,8 +16,8 @@ class ComponentTemplate extends Controller {
 	
 	public function render() {
 		if($this->m_sTemplate && $this->m_sComponent) {
-			$oComponentLoader = parent::getWatena()->getContext()->getPlugin('ComponentLoader');
-			echo $oComponentLoader->load($this->m_sTemplate);
+			$oTemplateLoader = parent::getWatena()->getContext()->getPlugin('TemplateLoader');
+			echo $oTemplateLoader->load($this->m_sTemplate);
 		}
 	}
 }
