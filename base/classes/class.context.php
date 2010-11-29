@@ -106,17 +106,20 @@ class Context extends Object {
 	 * @param boolean $bTerminate Indicator if we should autoterminate whan the requirements are not meat. (default = true)
 	 * @param array $aIncludes (out) Returns by reference a list with all the required includes
 	 */
-	public function checkRequirements($aRequirements, $bTerminate = true, &$aIncludes = null) {
+	public function checkRequirements($aRequirements, $bTerminate = true, &$aIncludes = null, &$aExtensionLoads = null, &$aPluginLoads = null) {
 		$bSucces = true;
 		if($bSucces && $aRequirements && isset($aRequirements['extensions'])) {
 			if(!is_array($aRequirements['extensions'])) $aRequirements['extensions'] = array($aRequirements['extensions']);
 			foreach($aRequirements['extensions'] as $sExtension) {
 				if(!extension_loaded($sExtension)) {
-					$sPrefix = (PHP_SHLIB_SUFFIX === 'dll') ? 'php_' : '';
-					if(!function_exists('dl') || !@dl($prefix . $sExtension . '.' . PHP_SHLIB_SUFFIX)) {						
-						if($bTerminate) parent::terminate("The required php-extension was not loaded: $sExtension");
+					$sFile = (PHP_SHLIB_SUFFIX === 'dll' ? 'php_' : '') . $sExtension . '.' . PHP_SHLIB_SUFFIX;
+					if(!function_exists('dl') || !@dl($sFile)) {						
+						if($bTerminate) parent::terminate("The required php-extension was not loaded: $sFile");
 						$bSucces = false;
 						break;
+					}
+					else if(is_array($aExtensionLoads)) {
+						$aExtensionLoads []= $sFile;
 					}
 				}
 			}
@@ -124,10 +127,13 @@ class Context extends Object {
 		if($bSucces && $aRequirements && isset($aRequirements['plugins'])) {
 			if(!is_array($aRequirements['plugins'])) $aRequirements['plugins'] = array($aRequirements['extensions']);
 			foreach($aRequirements['plugins'] as $sPlugin) {
-				if(self::loadPlugin($sPlugin, false)) {
+				if(!self::loadPlugin($sPlugin, false)) {
 					if($bTerminate) parent::terminate("The required watena-plugin was not loaded: $sPlugin");
 					$bSucces = false;
 					break;
+				}
+				else if(is_array($aPluginLoads)) {
+					$aPluginLoads []= $sPlugin;
 				}
 			}
 		}

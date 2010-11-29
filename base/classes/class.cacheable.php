@@ -24,12 +24,12 @@ abstract class Cacheable extends Object {
 	
 	private static $m_oCreateFunction = null; 
 	
-	public function __construct(array $aConfig = array()) {
+	public final function __construct(array $aConfig = array()) {
 		parent::__construct($aConfig);
 		$this->init();
 	}
 	
-	public function __wakeup() {
+	public final function __wakeup() {
 		$this->wakeup();
 	}
 	
@@ -46,15 +46,19 @@ abstract class Cacheable extends Object {
 			if($e && !in_array($e, class_implements($a))) $f->terminate("The class $a needs to implement $e.");
 			$oTmp = new $a($b);
 			$aIncludes = $c ? array($c) : array();
-			if(!$f->checkRequirements($oTmp->getRequirements(), true, $aIncludes))  $f->terminate("The class $a doesn\'t has the right includes.");
-			return array($aIncludes, serialize($oTmp));
+			$aExtensionLoads = array();
+			$aPluginLoads = array();
+			if(!$f->checkRequirements($oTmp->getRequirements(), true, $aIncludes, $aExtensionLoads, $aPluginLoads))  $f->terminate("The class $a doesn\'t has the right includes.");
+			return array($aIncludes, $aExtensionLoads, $aPluginLoads, serialize($oTmp));
 		');}
-		list($aIncludes, $sObject) = parent::getWatena()->getCache()->retrieve(
+		list($aIncludes, $aExtensionLoads, $aPluginLoads, $sObject) = parent::getWatena()->getCache()->retrieve(
 			$sIdentifier, 
 			self::$m_oCreateFunction, 
 			$nExpirationSec, 
 			array($sObject, $aConfig, $sIncludeFile, $sExtends, $sImplements, parent::getWatena()->getContext()));
 		foreach($aIncludes as $sInclude) require_once($sInclude);
+		foreach($aExtensionLoads as $sExtension) dl($sExtension);
+		parent::getWatena()->getContext()->loadPlugins($aPluginLoads);
 		return unserialize($sObject);
 	}
 }

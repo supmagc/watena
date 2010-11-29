@@ -7,7 +7,7 @@ class Component extends Cacheable {
 	private $m_aRegions;
 	private $m_aVars;
 	
-	public function __construct($sContent) {	
+	/*public function __construct($sContent) {	
 		
 		$oTest = new DOMDocument('1.0', 'UTF-8');
 		$oTest->loadHTML($sContent);
@@ -57,9 +57,9 @@ class Component extends Cacheable {
 			
 		}
 		$this->m_sContent = $sContent;
-	}
+	}*/
 	
-	public function __toString() {
+	public function toString() {
 		return $this->m_sContent;
 	}
 }
