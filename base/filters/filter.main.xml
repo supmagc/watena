@@ -7,7 +7,4 @@
 		<param name="template">layout00/main</param>
 		<param name="component">main</param>
 	</params>
-	<plugins>
-		<plugin>ComponentLoader</plugin>
-	</plugins>
 </filter>
