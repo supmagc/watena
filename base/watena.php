@@ -3,7 +3,7 @@
 // ############################################################
 // Base inclusions needed for all Watena classes
 // ############################################################
-require_once PATH_BASE . '/classes/interface.ICache.php';
+require_once PATH_BASE . '/classes/interface.icache.php';
 require_once PATH_BASE . '/classes/static.encoding.php';
 require_once PATH_BASE . '/classes/class.object.php';
 require_once PATH_BASE . '/classes/class.cacheable.php';

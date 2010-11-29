@@ -56,7 +56,7 @@ class Template extends Cacheable {
 		}
 	}
 	
-	public function __toString() {
+	public function toString() {
 		return $this->m_sContent;
 	}
 }
