@@ -26,6 +26,14 @@ class Object {
 	public final function getWatena() {
 		return self::$s_oSingleton;
 	}
+
+	public function toString() {
+		return get_class($this);
+	}
+	
+	public final function __toString() {
+		return $this->toString();
+	}
 }
 
 ?>

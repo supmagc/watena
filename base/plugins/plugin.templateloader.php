@@ -7,7 +7,7 @@ class Template extends Cacheable {
 	public function init() {
 		$sTemplate = parent::getConfig('file', null);
 		if($sTemplate) {
-			$sContent = file_get_contents(realpath($this->m_sPathTemplates . '/' . $sComponent . '.' . $this->m_sExtension));
+			$sContent = file_get_contents($sTemplate);
 			$oTest = DOMDocument::loadHTML($sContent);
 			
 			$this->_processNode($oTest);
@@ -73,9 +73,21 @@ class TemplateLoader extends Plugin {
 	
 	public function load($sTemplate) {
 		if($this->m_sDirectory && $this->m_sExtension) {
-			$sFile = $this->m_sDirectory . '/' . $sTemplate . '. ' . $this->m_sExtension;
+			$sFile = $this->m_sDirectory . '/' . $sTemplate . '.' . $this->m_sExtension;
 			return Cacheable::create('Template', array('file' => $sFile), "TL_$sTemplate", 5);
 		}
+	}
+		
+	/**
+	 * Retrieve version information of this plugin.
+	 * The format is an associative array as follows:
+	 * 'major' => Major version (int)
+	 * 'minor' => Minor version (int)
+	 * 'build' => Build version (int)
+	 * 'state' => Naming of the production state
+	 */
+	public function getVersion() {
+		return array('major' => 0, 'minor' => 1, 'build' => 1, 'state' > 'dev');
 	}
 }
 
