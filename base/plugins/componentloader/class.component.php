@@ -1,6 +1,6 @@
 <?php
 
-class Component {
+class Component extends Cacheable {
 	
 	private $m_sContent;
 	private $m_aComponents;
