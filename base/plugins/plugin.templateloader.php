@@ -1,21 +1,25 @@
 <?php
 
+class TemplateNode {
+	
+	public $Node;
+	public $Children = array();
+	public $Properties = array();
+}
+
 class Template extends Cacheable {
 
-	private $m_sContent;
+	private $m_oDOMDocument;
 	private $m_aFields = array();
+	private $m_oNodeTree;
 	
 	public function init() {
 		$sTemplate = parent::getConfig('file', null);
 		if($sTemplate) {
 			$sContent = file_get_contents($sTemplate);
-			$oTest = DOMDocument::loadHTML($sContent);
-			
-			$this->_processNode($oTest);
 	
 			$aMatches = array();
 			$aPositions = array();
-			$sContent = $oTest->saveHTML();
 			Encoding::regFindAll('\$\{[-a-zA-Z]0-9_/]+\}', $sContent, $aMatches, $aPositions);
 			$nCount = count($aMatches);
 			$nOffset = 0;
@@ -25,27 +29,23 @@ class Template extends Cacheable {
 				$sContent = Encoding::substring($sContent, 0, $aPositions[$i][0]) . $sHash . Encoding::substring($sContent, $aPositions[$i][1]);
 			}
 			
-			$this->m_sContent = $sContent;			
+			$this->m_oDOMDocument = DOMDocument::loadHTML($sContent);
+			$this->m_oNodeTree = new TemplateNode();
+			$this->_processNode($this->m_oDOMDocument, $this->m_oNodeTree);
 		}
 	}
 	
 	public function toString() {
-		return $this->m_sContent;
+		return $this->m_oDOMDocument->saveHTML();
 	}
 	
-	private function _processNode(DOMNode $oNode) {
+	private function _processNode(DOMNode $oNode, TemplateNode $oTemplateNode) {
+		$oTempNode = null;
 		if($oNode->hasAttributes()) {
 			foreach($oNode->attributes as $sAttrName => $oAttrNode) {
 				if(Encoding::substring($sAttrName, 0, 4) == "tpl:") {
-					$sAttrName = Encoding::substring($sAttrName, 4);
-					switch($sAttrName) {
-						case 'content' : break;
-						case 'replace' : break;
-						case 'repeat' : break;
-						case 'component' : break;
-						case 'condition' : break;
-						case 'enabled' : break;
-					}
+					if($oTempNode === null) $oTempNode = new TemplateNode();
+					$oTempNode->Properties[Encoding::substring($sAttrName, 4)] = $oAttrNode->nodeValue;
 				}
 				
 				if((($oNode->nodeName == 'a' || $oNode->nodeName == 'link') && $sAttrName == 'href') || ($oNode->nodeName == "img" && $sAttrName == "src")) {
@@ -55,9 +55,14 @@ class Template extends Cacheable {
 				}
 			}
 		}
+		if($oTempNode !== null) {
+			$oTempNode->Node = $oNode;
+			$oTemplateNode->Children []= $oTempNode;
+			$oTemplateNode = $oTempNode;
+		}
 		if($oNode->childNodes) {
 			foreach($oNode->childNodes as $oChild) {
-				$this->_processNode($oChild);
+				$this->_processNode($oChild, $oTemplateNode);
 			}
 		}
 	}
