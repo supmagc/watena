@@ -17,14 +17,7 @@ class CacheAPC extends Plugin implements ICache {
 	}
 
 	public function flush() {
-		apc_flush();
-	}
-	
-	public function init() {
-	}
-	
-	public function wakeup() {
-		
+		apc_clear_cache();
 	}
 	
 	public function getVersion() {
