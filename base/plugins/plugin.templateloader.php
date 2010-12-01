@@ -3,6 +3,7 @@
 class Template extends Cacheable {
 
 	private $m_sContent;
+	private $m_aFields = array();
 	
 	public function init() {
 		$sTemplate = parent::getConfig('file', null);
@@ -19,15 +20,20 @@ class Template extends Cacheable {
 			$nCount = count($aMatches);
 			$nOffset = 0;
 			for($i=0 ; $i<$nCount ; ++$i) {
-				
+				$sHash = md5($aMatches[$i][0]);
+				if(!isset($this->m_aFieldsToHashes[$sHash])) $this->m_aFieldsToHashes[$sHash] = $aMatches[$i][0];
+				$sContent = Encoding::substring($sContent, 0, $aPositions[$i][0]) . $sHash . Encoding::substring($sContent, $aPositions[$i][1]);
 			}
 			
 			$this->m_sContent = $sContent;			
 		}
 	}
 	
+	public function toString() {
+		return $this->m_sContent;
+	}
+	
 	private function _processNode(DOMNode $oNode) {
-		//echo $oNode->nodeName . "\n";
 		if($oNode->hasAttributes()) {
 			foreach($oNode->attributes as $sAttrName => $oAttrNode) {
 				if(Encoding::substring($sAttrName, 0, 4) == "tpl:") {
@@ -55,10 +61,6 @@ class Template extends Cacheable {
 			}
 		}
 	}
-	
-	public function toString() {
-		return $this->m_sContent;
-	}
 }
 
 class TemplateLoader extends Plugin {
@@ -74,7 +76,8 @@ class TemplateLoader extends Plugin {
 	public function load($sTemplate) {
 		if($this->m_sDirectory && $this->m_sExtension) {
 			$sFile = $this->m_sDirectory . '/' . $sTemplate . '.' . $this->m_sExtension;
-			return Cacheable::create('Template', array('file' => $sFile), "TL_$sTemplate", 5);
+			$oTemplate = Cacheable::create('Template', array('file' => $sFile), "TL_$sTemplate", 5);
+			return $oTemplate;
 		}
 	}
 		

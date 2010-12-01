@@ -91,7 +91,7 @@ class Context extends Object {
 		foreach($aFiles as $sFile) {
 			if(Encoding::RegMatch('filter\\.[_a-z0-9_]*\\.xml', $sFile)) {
 				$oFilter = new Filter(file_get_contents(PATH_BASE . '/filters/' . $sFile));
-				if(isset($aFilters[$oFilter->getOrder()])) parent::terminate('A filter with this order-number allready exists: ' . $oFilter->getOrder() . '{' . $aFiles[$oFilter->getOrder()->getName()] . ', ' . $oFilter->getName() . '}');
+				if(isset($aFilters[$oFilter->getOrder()])) parent::terminate('A filter with this order-number allready exists: ' . $oFilter->getOrder() . ' {' . $aFilters[$oFilter->getOrder()]->getName() . ', ' . $oFilter->getName() . '}');
 				$aFilters[$oFilter->getOrder()] = $oFilter; 
 			}
 		}

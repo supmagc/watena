@@ -17,6 +17,7 @@ class ComponentTemplate extends Controller {
 	public function render() {
 		if($this->m_sTemplate && $this->m_sComponent) {
 			$oTemplateLoader = parent::getWatena()->getContext()->getPlugin('TemplateLoader');
+			$oComponentLoader = parent::getWatena()->getContext()->getPlugin('ComponentLoader');
 			echo $oTemplateLoader->load($this->m_sTemplate);
 		}
 	}
