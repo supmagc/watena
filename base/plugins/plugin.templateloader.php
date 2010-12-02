@@ -31,17 +31,36 @@ class Template extends Cacheable {
 	}
 	
 	private function _processNode(DOMNode $oNode) {
-		$oTempNode = null;
-		if($oNode->hasAttributes()) {
-			foreach($oNode->attributes as $sAttrName => $oAttrNode) {
-				if(Encoding::substring($sAttrName, 0, 4) == "tpl:") {
-					//if($oTempNode === null) $oTempNode = new TemplateNode();
-					//$oTempNode->Properties[Encoding::substring($sAttrName, 4)] = $oAttrNode->nodeValue;
+		if($oNode->nodeType == XML_ELEMENT_NODE) {
+			$oElement = $oNode;
+			if($oElement->hasAttributes()) {
+				$aAttributes = array();
+				foreach($oElement->attributes as $sAttrName => $oAttrNode) {
+					if(Encoding::substring($sAttrName, 0, 4) == "tpl:") {
+						$aAttributes[Encoding::substring($sAttrName, 4)] = $oAttrNode->nodeValue;
+					}				
+					if((($oElement->nodeName == 'a' || $oElement->nodeName == 'link') && $sAttrName == 'href') || 
+						($oElement->nodeName == "img" && $sAttrName == "src")) {
+						if(Encoding::beginsWith($oAttrNode->nodeValue, '/')) {
+							$oAttrNode->nodeValue = parent::getWatena()->getMapping()->getMain() . $oAttrNode->nodeValue;
+						}
+					}
 				}
 				
-				if((($oNode->nodeName == 'a' || $oNode->nodeName == 'link') && $sAttrName == 'href') || ($oNode->nodeName == "img" && $sAttrName == "src")) {
-					if(Encoding::beginsWith($oAttrNode->nodeValue, '/')) {
-						$oAttrNode->nodeValue = parent::getWatena()->getMapping()->getMain() . $oAttrNode->nodeValue;
+				if(!isset($aAttributes['enabled']) || $aAttributes['enabled']) {
+					$sContent = null;
+					if(isset($aAttributes['file'])) {
+						$oTemplateLoader = parent::getWatena()->getContext()->getPlugin('TemplateLoader');
+						$sContent = $oTemplateLoader->load($aAttributes['file'])->toString();
+					}
+					else if(isset($aAttributes['content'])) {
+						$sContent = $aAttributes['content'];
+						$sContent = '<strong tpl:test="bleuh">bla</strong>';
+					}
+					if($sContent !== null) {
+						$oFragment = $oElement->ownerDocument->createDocumentFragment();
+						$oFragment->appendXML($sContent);
+						$oElement->appendChild($oFragment);
 					}
 				}
 			}

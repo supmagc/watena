@@ -57,7 +57,7 @@
 	//--></script>
 </head>
 <body onLoad="Init();" onResize="bg_Size();">
-<div style="position:relative; height:100%; text-align:center;">
+<div style="position:relative; height:100%; text-align:center;"><div tpl:content=""></div>
 	<div id="bg_left" tpl:content="bla"></div>
 	<div id="bg_right"></div>
 	<div id="bg_gradient"></div>
