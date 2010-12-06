@@ -141,7 +141,7 @@
 										</div>
 										<div class="menuItem">
 											<div class="menuItemHeader"><img src="/laf/menu_quote.png" /></div>
-											<div class="menuItemContent">&ldquo;Hello world !&rdquo;<br />~<em>Jelle</em></div>
+											<div class="menuItemContent" tpl:component="Quotes">&ldquo;${quote}&rdquo;<br />~<em>${author}</em></div>
 										</div>
 										<div class="menuSpacer"></div></td>
 								</tr>

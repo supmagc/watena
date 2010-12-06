@@ -30,7 +30,7 @@ class Template extends Cacheable {
 		return $this->m_sContent;
 	}
 	
-	private function _processNode(DOMNode $oNode) {
+	private function _processNode(DOMNode $oNode, Component $oComponent) {
 		if($oNode->nodeType == XML_ELEMENT_NODE) {
 			$oElement = $oNode;
 			if($oElement->hasAttributes()) {
@@ -47,6 +47,9 @@ class Template extends Cacheable {
 					}
 				}
 				
+				if(isset($aAttributes['component'])) $oComponent = parent::getWatena()->getContext()->getPlugin('ComponentLoader')->load($aAttributes['component']);				
+				
+				
 				if(!isset($aAttributes['enabled']) || $aAttributes['enabled']) {
 					$sContent = null;
 					if(isset($aAttributes['file'])) {
@@ -55,18 +58,29 @@ class Template extends Cacheable {
 					}
 					else if(isset($aAttributes['content'])) {
 						$sContent = $aAttributes['content'];
-						$sContent = '<strong tpl:test="bleuh">bla</strong>';
 					}
 					if($sContent !== null) {
-						//$oFragment = $oElement->ownerDocument->createDocumentFragment();
-						//$oFragment->appendXML($sContent);
 						$oFragment = new DOMDocument('1.0', 'UTF-8');
-						$oFragment->loadHTML("<html>$sContent</html>");
-						$oFragment = $oNode->ownerDocument->importNode($oFragment->getElementsByTagName('html')->item(0));
-						
+						$oFragment->loadHTML("<html><body><div>$sContent</div></body></html>");
+						$oFragment = $oNode->ownerDocument->importNode($oFragment->getElementsByTagName('div')->item(0), true);						
 						$sMode = 'insert';
 						if(isset($aAttributes['mode'])) $sMode = $aAttributes['mode'];
-						$oElement->appendChild($oFragment);
+						if($sMode == 'insert') {
+							foreach($oElement->childNodes as $oChild) {
+								$oElement->removeChild($oChild);
+							}
+							foreach($oFragment->childNodes as $oChild) $oElement->appendChild($oChild);
+						}
+						else if($sMode == 'append') {
+							foreach($oFragment->childNodes as $oChild) $oElement->appendChild($oChild);
+						}
+						else if($sMode == 'prepend') {
+							if($oElement->hasChildNodes()) {
+								$oRef = $oElement->firstChild;
+								foreach($oFragment->childNodes as $oChild) $oElement->insertBefore($oFragment, $oRef);
+							}
+							else foreach($oFragment->childNodes as $oChild) $oElement->appendChild($oChild);
+						}
 					}
 				}
 			}
