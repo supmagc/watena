@@ -58,8 +58,14 @@ class Template extends Cacheable {
 						$sContent = '<strong tpl:test="bleuh">bla</strong>';
 					}
 					if($sContent !== null) {
-						$oFragment = $oElement->ownerDocument->createDocumentFragment();
-						$oFragment->appendXML($sContent);
+						//$oFragment = $oElement->ownerDocument->createDocumentFragment();
+						//$oFragment->appendXML($sContent);
+						$oFragment = new DOMDocument('1.0', 'UTF-8');
+						$oFragment->loadHTML("<html>$sContent</html>");
+						$oFragment = $oNode->ownerDocument->importNode($oFragment->getElementsByTagName('html')->item(0));
+						
+						$sMode = 'insert';
+						if(isset($aAttributes['mode'])) $sMode = $aAttributes['mode'];
 						$oElement->appendChild($oFragment);
 					}
 				}
