@@ -1,6 +1,5 @@
 <?php
 
-
 class Component extends Cacheable {
 	
 	private $m_sContent;
