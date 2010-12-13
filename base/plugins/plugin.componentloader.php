@@ -1,5 +1,6 @@
 <?php
 
+
 class Component extends Cacheable {
 	
 	private $m_sContent;
@@ -15,6 +16,7 @@ class Component extends Cacheable {
 		return $this->m_sContent;
 	}
 }
+
 
 class ComponentLoader extends Plugin {
 
