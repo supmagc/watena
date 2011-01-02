@@ -67,6 +67,38 @@ class Context extends Object {
 	}
 
 	/**
+	 * Retrieve a model based on the given mapping-object.
+	 * 
+	 * @param Mapping $oMapping
+	 * @return Model
+	 */
+	public function matchFilterToModel(Mapping $oMapping) {
+		$aFilters = $this->getWatena()->getCache()->retrieve('W_filters', array($this, '_loadFiltersFromFile'), 5);
+		foreach($aFilters as $nOrder => $oFilter) {
+			if($oFilter->match($oMapping)) {
+				return $oFilter->getController();
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Retrieve a view based on the given mapping-object.
+	 * 
+	 * @param Mapping $oMapping
+	 * @return View
+	 */
+	public function matchFilterToView(Mapping $oMapping) {
+		$aFilters = $this->getWatena()->getCache()->retrieve('W_filters', array($this, '_loadFiltersFromFile'), 5);
+		foreach($aFilters as $nOrder => $oFilter) {
+			if($oFilter->match($oMapping)) {
+				return $oFilter->getController();
+			}
+		}
+		return null;
+	}
+	
+	/**
 	 * Retrieve a controller based on the given mapping-object.
 	 * 
 	 * @param Mapping $oMapping

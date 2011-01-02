@@ -34,16 +34,26 @@ abstract class Cacheable extends Object {
 	}
 	
 	public static final function create($sObject, array $aConfig = array(), $sIdentifier = null, $nExpirationSec = 5, $sIncludeFile = null, $sExtends = null, $sImplements = null) {
-		if(!$sIdentifier) $sIdentifier = $sObject . count($aConfig) . implode('', array_keys($aConfig)) . implode('', array_values($aConfig));
+		// Generate an identifier if none is given
+		if(!$sIdentifier) $sIdentifier = $sObject . count($aPermanentConfig) . implode('', array_keys($aPermanentConfig)) . implode('', array_values($aPermanentConfig));
+		
+		// If the loader function is not yet created, do so
+		// Params are ass follows:
+		// $a classname
+		// $b permanentconfig
+		// $c inclusionfile
+		// $d inherits
+		// $e implements
+		// $f contextobject
 		if(!self::$m_oCreateFunction) {self::$m_oCreateFunction = create_function('$a, $b, $c, $d, $e, $f', '
 			if($c) {
 				if(file_exists($c)) include_once($c);
 				else $f->terminate("Unable to include unexisting file $c.");
 			}
 			if(!class_exists($a, false)) $f->terminate("The class $a could not be found.");
-			if(!in_array("Cacheable", class_parents($a)))  $f->terminate("The class $a does not extends Cacheable.");
-			if($d && !in_array($d, class_parents($a))) $f->terminate("The class $a needs to extend $d.");
-			if($e && !in_array($e, class_implements($a))) $f->terminate("The class $a needs to implement $e.");
+			if(!in_array("Cacheable", class_parents($a)))	$f->terminate("The class $a does not extends Cacheable.");
+			if($d && !in_array($d, class_parents($a)))		$f->terminate("The class $a needs to extend $d.");
+			if($e && !in_array($e, class_implements($a)))	$f->terminate("The class $a needs to implement $e.");
 			$oTmp = new $a($b);
 			$aIncludes = $c ? array($c) : array();
 			$aExtensionLoads = array();
@@ -51,14 +61,20 @@ abstract class Cacheable extends Object {
 			if(!$f->checkRequirements($oTmp->getRequirements(), true, $aIncludes, $aExtensionLoads, $aPluginLoads))  $f->terminate("The class $a doesn\'t has the right includes.");
 			return array($aIncludes, $aExtensionLoads, $aPluginLoads, serialize($oTmp));
 		');}
+		
+		// Retrieve the object from the cache
 		list($aIncludes, $aExtensionLoads, $aPluginLoads, $sObject) = parent::getWatena()->getCache()->retrieve(
 			$sIdentifier, 
 			self::$m_oCreateFunction, 
 			$nExpirationSec, 
 			array($sObject, $aConfig, $sIncludeFile, $sExtends, $sImplements, parent::getWatena()->getContext()));
+			
+		// Check all the returnvalues, and load all dependencies
 		foreach($aIncludes as $sInclude) require_once($sInclude);
 		foreach($aExtensionLoads as $sExtension) dl($sExtension);
-		parent::getWatena()->getContext()->loadPlugins($aPluginLoads);
+		foreach($aPluginLoads as $sPlugin) parent::getWatena()->getContext()->loadPlugin($sPlugin);
+		
+		// If all succeeded, unserialize the object and return it
 		return unserialize($sObject);
 	}
 }

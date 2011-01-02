@@ -5,6 +5,8 @@ class Watena extends Object {
 	private $m_oContext = null;
 	private $m_oCache = null;
 	private $m_oMapping = null;
+	private $m_oModel = null;
+	private $m_oView = null;
 	private $m_oController = null;
 	
 	public function __construct() {		
@@ -26,6 +28,8 @@ class Watena extends Object {
 
 		// Load the mapping and retrieve the appropriate controller
 		$this->m_oMapping = new Mapping();
+		$this->m_oModel = $this->m_oContext->matchFilterToModel($this->m_oMapping);
+		$this->m_oView = $this->m_oContext->matchFilterToView($this->m_oMapping);
 		$this->m_oController = $this->m_oContext->matchFilterToController($this->m_oMapping);
 		if($this->m_oController) $this->m_oController->render();
 		else parent::terminate('No valid controller could be loaded for the given mapping.');
@@ -85,6 +89,29 @@ class Watena extends Object {
 		return $this->m_oCache;
 	}
 
+	/**
+	 * Retrieve the model part of the MVC
+	 * 
+	 * @return Model
+	 */
+	public final function getModel() {
+		return $this->m_oModel;
+	}
+
+	/**
+	 * Retrieve the view part of the MVC
+	 * 
+	 * @return View
+	 */
+	public final function getView() {
+		return $this->m_oView;
+	}
+
+	/**
+	 * Return the controller part of the MVC
+	 * 
+	 * @return Controller
+	 */
 	public final function getController() {
 		return $this->m_oController;
 	}

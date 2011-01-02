@@ -11,6 +11,8 @@ require_once PATH_BASE . '/classes/class.context.php';
 require_once PATH_BASE . '/classes/class.filter.php';
 require_once PATH_BASE . '/classes/class.plugin.php';
 require_once PATH_BASE . '/classes/class.mapping.php';
+require_once PATH_BASE . '/classes/class.model.php';
+require_once PATH_BASE . '/classes/class.view.php';
 require_once PATH_BASE . '/classes/class.controller.php';
 require_once PATH_BASE . '/classes/class.cacheempty.php';
 require_once PATH_BASE . '/classes/class.watena.php';
