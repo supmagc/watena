@@ -4,7 +4,9 @@ class Filter extends Object {
 
 	private $m_sFile = '';
 	private $m_sName = '';
-	private $m_sController = '';
+	private $m_sModel = null;
+	private $m_sView = null;
+	private $m_sController = null;
 	private $m_nOrder = 0;
 	private $m_aRules = array();
 	private $m_aParams = array();
