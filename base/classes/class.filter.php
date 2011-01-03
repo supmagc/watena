@@ -1,18 +1,27 @@
 <?php
 
+class FilterGroup {
+	
+	var $m_sFile;
+	var $m_sName;
+	var $m_aParams;
+}
+
 class Filter extends Object {
 
-	private $m_sFile = '';
 	private $m_sName = '';
-	private $m_sModel = null;
-	private $m_sView = null;
-	private $m_sController = null;
+	private $m_oModel = null;
+	private $m_oView = null;
+	private $m_oController = null;
 	private $m_nOrder = 0;
 	private $m_aRules = array();
 	private $m_aParams = array();
-	private $m_aRequires = array();
 	
 	public function __construct($sData) {
+		$this->m_oModel = new FilterGroup();
+		$this->m_oView = new FilterGroup();
+		$this->m_oController = new FilterGroup();
+		
 		$oXml = new XMLReader();
 		if($oXml->XML($sData)) {
 			while($oXml->read()) {
@@ -34,10 +43,6 @@ class Filter extends Object {
 					$sValue = $oXml->value;
 					$oXml->read();
 					$this->m_aParams[$sValue] = $oXml->readString();
-				}
-				else if($oXml->nodeType == XMLReader::ELEMENT && $oXml->name == 'plugin') {
-					$oXml->read();
-					$this->m_aRequires []= $oXml->readString();
 				}
 			}
 			$this->m_sFile = PATH_BASE . '/controllers/controller.' . Encoding::stringToLower($this->m_sController) . '.php';
