@@ -2,6 +2,10 @@
 
 abstract class Cacheable extends Object {
 	
+	const EXP_DEFAULT = 0;
+	const EXP_NEVER = -1;
+	const EXP_REFRESH = -2;
+	
 	/**
 	 * This method is called when initting the object and should leave the object in a cacheable/serializeable state.
 	 */
@@ -33,9 +37,14 @@ abstract class Cacheable extends Object {
 		$this->wakeup();
 	}
 	
-	public static final function create($sObject, array $aConfig = array(), $sIdentifier = null, $nExpirationSec = 5, $sIncludeFile = null, $sExtends = null, $sImplements = null) {
+	public static final function create($sObject, array $aConfig = array(), $sIdentifier = null, $nExpirationSec = Cacheable::EXP_DEFAULT, $sIncludeFile = null, $sExtends = null, $sImplements = null) {
 		// Generate an identifier if none is given
 		if(!$sIdentifier) $sIdentifier = $sObject . count($aPermanentConfig) . implode('', array_keys($aPermanentConfig)) . implode('', array_values($aPermanentConfig));
+
+		// Set expiration if defaulr is given
+		if($nExpirationSec == Cacheable::EXP_DEFAULT) $nExpirationSec = parent::getWatena()->getConfig('CACHE_EXPIRATION', 5);
+		if($nExpirationSec == Cacheable::EXP_NEVER) $nExpirationSec = parent::getWatena()->getConfig('CACHE_EXPIRATION', 5);
+		if($nExpirationSec == Cacheable::EXP_DEFAULT) $nExpirationSec = parent::getWatena()->getConfig('CACHE_EXPIRATION', 5);
 		
 		// If the loader function is not yet created, do so
 		// Params are ass follows:
