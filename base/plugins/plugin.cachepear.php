@@ -14,26 +14,36 @@ class CachePEAR extends Plugin implements ICache {
 	}
 	
 	public function wakeup() {
-		
+		$this->m_oCache = new Cache($this->m_sContainer, $this->m_aOptions);
 	}
 	
-	public function retrieve($sKey, $cbRetriever, $nExpirationSec, array $aParams = array()) {
-		$nID = self::_getCache()->generateID($sKey);
-		$mData = self::_getCache()->load($nID);
-		if(!$mData) {
+	public function retrieve($sKey, $cbRetriever, $nExpirationSec = 0, array $aParams = array(), $bForceRefresh = false) {
+		$nID = $this->m_oCache->generateID($sKey);
+		$mData = $bForceRefresh ? null : $this->m_oCache->load($nID);
+		if(!$mData || $bForceRefresh) {
 			$mData = call_user_func_array($cbRetriever, $aParams);
-			self::_getCache()->save($nID, $mData, $nExpirationSec);
+			$this->m_oCache->save($nID, $mData, $nExpirationSec);
 			return $mData;
 		}
 		return $mData;
 	}
 
 	public function delete($sKey) {
-		self::_getCache()->remove(self::_getCache()->generateID($sKey));
+		$this->m_oCache->remove(self::_getCache()->generateID($sKey));
 	}
 
 	public function flush() {
-		self::_getCache()->flush();
+		$this->m_oCache->flush();
+	}
+
+	public function get($sKey, $mDefault) {
+		$mData = $this->m_oCache->load($nID);
+		if(!$mData) $mData = $mDefault;
+		return $mData;
+	}
+
+	public function set($sKey, $mData) {
+		return $this->m_oCache->save($nID, $mData, 0);
 	}
 	
 	public function getVersion() {
@@ -42,13 +52,6 @@ class CachePEAR extends Plugin implements ICache {
 
 	public function getRequirements() {
 		return array('pear' => 'Cache');
-	}
-	
-	private function _getCache() {
-		if(!$this->m_oCache) {
-			$this->m_oCache = new Cache($this->m_sContainer, $this->m_aOptions);
-		}
-		return $this->m_oCache;
 	}
 }
 
