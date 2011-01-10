@@ -57,86 +57,79 @@ class Context extends Object {
 					'return file_exists($a) ? parse_ini_file($a, true) : array();'),
 				5, array($sFileINI));
 			$oPlugin = Cacheable::create($sPlugin, $aConfig, 'W_PLUGIN_'.$sPlugin, 5, $sFilePHP, 'Plugin');
-			/*list($aIncludes, $oPlugin) = parent::getWatena()->getCache()->retrieve("W_PLUGIN_$sPlugin", array($this, '_loadPluginFromFile'), 5, array($sPlugin, $bTerminate));
-			foreach($aIncludes as $sInclude) {
-				require_once $sInclude;
-			}*/
 			$this->m_aPlugins[$sKey] = $oPlugin;
 		}
 		return $this->m_aPlugins[$sKey] !== null;
 	}
 
 	/**
-	 * Retrieve a model based on the given mapping-object.
+	 * Try to load a specified class and retrieve an instance of it
 	 * 
-	 * @param Mapping $oMapping
-	 * @return Model
+	 * @param string $sClassName
+	 * @param array $aConfig
+	 * @param string $sIncludeFile
+	 * @param string $sExtends
+	 * @param string $sImplements
 	 */
-	public function matchFilterToModel(Mapping $oMapping) {
-		$aFilters = $this->getWatena()->getCache()->retrieve('W_filters', array($this, '_loadFiltersFromFile'), 5);
-		foreach($aFilters as $nOrder => $oFilter) {
-			if($oFilter->match($oMapping)) {
-				return $oFilter->getController();
-			}
+	public function loadClass($sClassName, array $aConfig = array(), $sIncludeFile = null, $sExtends = null, $sImplements = null) {
+		// Include main file
+		if($sIncludeFile) {
+			if(file_exists($sIncludeFile)) include_once($sIncludeFile);
+			else parent::terminate("Unable to include unexisting file $sIncludeFile.");
 		}
-		return null;
-	}
-	
-	/**
-	 * Retrieve a view based on the given mapping-object.
-	 * 
-	 * @param Mapping $oMapping
-	 * @return View
-	 */
-	public function matchFilterToView(Mapping $oMapping) {
-		$aFilters = $this->getWatena()->getCache()->retrieve('W_filters', array($this, '_loadFiltersFromFile'), 5);
-		foreach($aFilters as $nOrder => $oFilter) {
-			if($oFilter->match($oMapping)) {
-				return $oFilter->getController();
-			}
-		}
-		return null;
-	}
-	
-	/**
-	 * Retrieve a controller based on the given mapping-object.
-	 * 
-	 * @param Mapping $oMapping
-	 * @return Controller
-	 */
-	public function matchFilterToController(Mapping $oMapping) {
-		$aFilters = $this->getWatena()->getCache()->retrieve('W_filters', array($this, '_loadFiltersFromFile'), 5);
-		foreach($aFilters as $nOrder => $oFilter) {
-			if($oFilter->match($oMapping)) {
-				return $oFilter->getController();
-			}
-		}
-		return null;
-	}
+		
+		// Check inheritance stuff and existing
+		if(!class_exists($sClassName, false)) parent::terminate("The class $sClassName could not be found.");
+		if(!in_array("Cacheable", class_parents($sClassName))) parent::terminate("The class $sClassName does not extends Cacheable.");
+		if($sExtends && !in_array($sExtends, class_parents($sClassName))) parent::terminate("The class $sClassName needs to extend $sExtends.");
+		if($sImplements && !in_array($sImplements, class_implements($sClassName))) parent::terminate("The class $sClassName needs to implement $sImplements.");
 
+		// Instantiate dependency holders
+		$aIncludes = $sIncludeFile ? array($sIncludeFile) : array();
+		$aExtensionLoads = array();
+		$aPluginLoads = array();
+		
+		// CHeck requirements if possible/required
+		if(method_exists($sClassName, 'getRequirements') && self::checkRequirements(call_user_func(array($sClassName, 'getRequirements')), true, $aIncludes, $aExtensionLoads, $aPluginLoads))
+		
+		// Create instance
+		$oTmp = new $sClassName($aConfig);
+		return array($aIncludes, $aExtensionLoads, $aPluginLoads, serialize($oTmp));
+	}
+	
 	/**
-	 * Callback method that loads all filters from the filesystem.
+	 * Get an array with respectibly the MVC components for the given mapping
+	 * 
+	 * @param Mapping $oMapping
+	 * @return array(Model, View, Controller)
 	 */
-	public function _loadFiltersFromFile() {
-		$aFiles = scandir(PATH_BASE . '/filters/');
-		$aFilters = array();
-		foreach($aFiles as $sFile) {
-			if(Encoding::RegMatch('filter\\.[_a-z0-9_]*\\.xml', $sFile)) {
-				$oFilter = Cacheable::create('Filter', array('file', $sFile), ) new Filter(file_get_contents(PATH_BASE . '/filters/' . $sFile));
-				if(isset($aFilters[$oFilter->getOrder()])) parent::terminate('A filter with this order-number allready exists: ' . $oFilter->getOrder() . ' {' . $aFilters[$oFilter->getOrder()]->getName() . ', ' . $oFilter->getName() . '}');
-				$aFilters[$oFilter->getOrder()] = $oFilter; 
+	public function getMVC(Mapping $oMapping) {
+		$aFilters = $this->getWatena()->getCache()->retrieve('W_FILTERS', array($this, '_loadFiltersFromFile'), 5);
+		$oModel = null;
+		$oView = null;
+		$oController = null;
+		foreach($aFilters as $nOrder => $oFilter) {
+			if($oFilter->match($oMapping)) {
+				if(!$oModel) $oModel = $oFilter->getModel();
+				if(!$oView) $oView = $oFilter->getView();
+				if(!$oController) $oController = $oFilter->getController();
 			}
 		}
-		krsort($aFilters);
-		return $aFilters;
+		return array($oModel, $oView, $oController);
 	}
 	
 	/**
 	 * Check the provided list with requirements and their compatibility.
+	 * 'extension' => Required PHP-Extensions (This call uses 'dl' when available)
+	 * 'plugins' => Required Watena-plugins
+	 * 'pear' => Required pear installs 
+	 * 'files' => A list of required files to include
 	 * 
 	 * @param array $aRequirements An array formatted to the requirement specifications.
 	 * @param boolean $bTerminate Indicator if we should autoterminate whan the requirements are not meat. (default = true)
 	 * @param array $aIncludes (out) Returns by reference a list with all the required includes
+	 * @param array $aExtensionLoads (out) Returns by reference a list with all the required extensions
+	 * @param array $aPluginLoads (out) Returns by reference a list with all the required plugins
 	 */
 	public function checkRequirements($aRequirements, $bTerminate = true, &$aIncludes = null, &$aExtensionLoads = null, &$aPluginLoads = null) {
 		$bSucces = true;
@@ -157,7 +150,7 @@ class Context extends Object {
 			}
 		}
 		if($bSucces && $aRequirements && isset($aRequirements['plugins'])) {
-			if(!is_array($aRequirements['plugins'])) $aRequirements['plugins'] = array($aRequirements['extensions']);
+			if(!is_array($aRequirements['plugins'])) $aRequirements['plugins'] = array($aRequirements['plugins']);
 			foreach($aRequirements['plugins'] as $sPlugin) {
 				if(!self::loadPlugin($sPlugin, false)) {
 					if($bTerminate) parent::terminate("The required watena-plugin was not loaded: $sPlugin");
@@ -190,7 +183,35 @@ class Context extends Object {
 			}
 			error_reporting($nOld);
 		}
+		if($bSucces && $aRequirements && isset($aRequirements['files'])) {
+			foreach($aRequirements['files'] as $sFile) {
+				if(!file_exists($filename)) {
+					if($bTerminate) parent::terminate("The required could not be found: $sFile");
+				}
+				else if(is_array($aIncludes)) {
+					$aIncludes[]= $sFile;
+				}
+			}
+		}
 		return $bSucces;						
+	}
+
+	/**
+	 * Callback method that loads all filters from the filesystem.
+	 */
+	public function _loadFiltersFromFile() {
+		$aFiles = scandir(PATH_BASE . '/filters/');
+		$aFilters = array();
+		foreach($aFiles as $sFile) {
+			if(Encoding::RegMatch('filter\\.[_a-z0-9_]*\\.xml', $sFile)) {
+				$sFile = parent::getWatena()->getPath('b:/filters/'.$sFile);
+				$oFilter = Cacheable::create('Filter', array('file' => $sFile), "W_FILTER_$sFile", Cacheable::EXP_NEVER, null, null, null, filemtime($sFile));
+				if(isset($aFilters[$oFilter->getOrder()])) parent::terminate('A filter with this order-number allready exists: ' . $oFilter->getOrder() . ' {' . $aFilters[$oFilter->getOrder()]->getName() . ', ' . $oFilter->getName() . '}');
+				$aFilters[$oFilter->getOrder()] = $oFilter; 
+			}
+		}
+		krsort($aFilters);
+		return $aFilters;
 	}
 }
 

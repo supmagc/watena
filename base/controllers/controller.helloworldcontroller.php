@@ -2,8 +2,7 @@
 
 class HelloWorldController extends Controller {
 	
-	public function render() {
-		echo "hello world";
+	public function process(Model $oModel, View $oView) {
 	}
 }
 

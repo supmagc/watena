@@ -2,7 +2,24 @@
 
 class Template extends Cacheable {
 
+	private $m_sFile;
 	private $m_sContent;
+	
+	public function init() {
+		$this->m_sFile = parent::getConfig('file', null);
+		if(file_exists($this->m_sFile)) {
+			$this->m_sContent = file_get_contents($this->m_sFile);
+		}
+		else {
+			parent::terminate("Template file could not be found: $this->m_sFile");
+		}
+		
+		parent::getWatena()->getMapping()->getMain();
+		
+		$this->m_sContent = Encoding::regReplace('<(a).*?href=', '', $this->m_sContent);
+		
+		// Parse and prepare template
+	}
 	
 	public function wakeup() {
 		$sTemplate = parent::getConfig('file', null);

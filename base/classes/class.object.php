@@ -16,7 +16,7 @@ class Object {
 		return isset($this->m_aConfig[$sKey]) ? $this->m_aConfig[$sKey] : $mDefault;
 	}
 	
-	public final function terminate($sMessage) {
+	protected final function terminate($sMessage) {
 		die($sMessage);
 	}
 
