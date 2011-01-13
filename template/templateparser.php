@@ -18,17 +18,20 @@ class TemplateParser {
 	const INDICATE_CDATA			= "![CDATA[";
 	const INDICATE_DOCTYPE			= "!DOCTYPE";
 	
-	const STATE_DEFAULT				=  0;
-	const STATE_TAG_NAME			=  6;
-	const STATE_TAG_CONTENT			=  7;
-	const STATE_TAG_END				=  8;
-	const STATE_XML					=  1;
-	const STATE_PREPROCESSOR 		=  2;
-	const STATE_COMMENT 			=  3;
-	const STATE_CDATA				=  4;
-	const STATE_DOCTYPE				=  5;
-	const STATE_ATTRIBUTE_NAME		=  9;
-	const STATE_ATTRIBUTE_CONTENT	= 10;
+	const STATE_DEFAULT				=  0; // Default state
+	const STATE_TAG_NAME			=  1; // When parsing the tagname
+	const STATE_TAG_CONTENT			=  2; // When we found a whitespace after the tagname
+	const STATE_TAG_END				=  3; // When we found as first character after start
+	const STATE_TAG_SINGLE			=  4; // When we found a TAG_END within the TAG_CONTENT
+	const STATE_XML					=  5;
+	const STATE_PREPROCESSOR 		=  6;
+	const STATE_COMMENT 			=  7;
+	const STATE_CDATA				=  8;
+	const STATE_DOCTYPE				=  9;
+	const STATE_ATTRIBUTE_NAME		= 10;
+	const STATE_ATTRIBUTE_EQUALS	= 11;
+	const STATE_ATTRIBUTE_SINGLE	= 12;
+	const STATE_ATTRIBUTE_DOUBLE	= 13;
 	
 	private $m_aProblems = array();
 	
@@ -63,7 +66,7 @@ class TemplateParser {
 				++$nColumn;
 				
 				switch($nState) {
-					case self::STATE_ROOT : 
+					case self::STATE_DEFAULT : 
 						if($char === self::CHAR_TAG_OPEN && $oReader->isFollowedBy(self::INDICATE_XML)) {
 							$nState = self::STATE_DOCTYPE;
 							$oReader->setMark(strlen(self::INDICATE_XML));
@@ -84,33 +87,53 @@ class TemplateParser {
 							$nState = self::STATE_DOCTYPE;
 							$oReader->setMark(strlen(self::INDICATE_DOCTYPE));
 						}
-						elseif($char === self::CHAR_TAG_OPEN && $oReader->isFollowedBy(self::CHAR_WHITESPACE)) {
-							$this->noteProblem("It's invalid to use a whitespace after '<'.", $nLine, $nColumn);
+						elseif($char === self::CHAR_TAG_OPEN && $oReader->isFollowedBy(self::CHAR_TAG_END)) {
+							$nState = self::STATE_TAG_END;
+							$oReader->setMark(strlen(self::CHAR_TAG_END));
 						}
-						elseif($char === self::CHAR_TAG_OPEN && $oReader->isFollowedBy(self::CHAR_TAG_CLOSE)) {
-							$nState = self::STATE_TAG_SHORT;
-							$oReader->setMark();
-						}
-						else {
+						elseif($char === self::CHAR_TAG_OPEN) {
 							$nState = self::STATE_TAG_NAME;
 							$oReader->setMark();
 						}
 						break;
 
-						
-						
 					case self::STATE_TAG_NAME : 
 						if($char === self::CHAR_WHITESPACE) {
-							$sName = $oReader->getMark();
-							$oBuilder->addTag($sName);
+							$oBuilder->onTagOpen($oReader->getMark());
 							$nState = self::STATE_TAG_CONTENT;
-							echo $sName;
+						}
+						else if($char === self::CHAR_TAG_END) {
+							$oBuilder->onTagOpen($oReader->getMark());
+							$nState = self::STATE_TAG_SINGLE;
 						}
 						else if($char === self::CHAR_TAG_CLOSE) {
-							$sName = $oReader->getMark();
-							$oBuilder->addTag($sName, true);
-							$nState = self::STATE_TAG_CONTENT;
-							echo $sName;
+							$oBuilder->onTagOpen($oReader->getMark());
+							$oBuilder->onTagClose(false);
+							$nState = self::STATE_DEFAULT;
+						}
+						break;
+						
+					case self::STATE_TAG_CONTENT : 
+						if($char === self::CHAR_TAG_CLOSE) {
+							$oBuilder->onTagClose(false);
+							$nState = self::STATE_DEFAULT;
+						}
+						else {
+							// Todo process tag content
+						}
+						break;
+						
+					case self::STATE_TAG_SINGLE : 
+						if($char === self::CHAR_TAG_CLOSE) {
+							$nState = self::STATE_DEFAULT;
+							$oBuilder->onTagClose(true);
+						}
+						break;
+						
+					case self::STATE_TAG_END : 
+						if($char === self::CHAR_TAG_CLOSE) {
+							$nState = self::STATE_DEFAULT;
+							$oBuilder->onTagEnd($oReader->getMark());
 						}
 						break;
 				}
