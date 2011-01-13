@@ -6,16 +6,16 @@ class TemplateBuilder {
 		
 	}
 	
-	public function addXmlDeclaration() {
-		
+	public function onTagOpen($sName) {
+		echo "<$sName";
 	}
 	
-	public function addTag($sName) {
-		
+	public function onTagClose($bSingle = false) {
+		echo $bSingle ? ' />' : '>';
 	}
 	
-	public function addAttribute($sName) {
-		
+	public function onTagEnd($sName) {
+		echo "</$sName>";
 	}
 }
 

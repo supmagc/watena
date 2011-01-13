@@ -9,7 +9,7 @@ class TemplateReader {
 	
 	public function __construct($sContent) {
 		$this->m_sContent = $sContent;
-		$this->m_nIndex = 0;
+		$this->m_nIndex = -1;
 		$this->m_nLength = strlen($this->m_sContent);
 	}
 	
@@ -23,7 +23,7 @@ class TemplateReader {
 	}
 	
 	public function setMark($nOffset = 0) {
-		$this->m_nMark = $this->m_nIndex + $nOffset;
+		$this->m_nMark = $this->m_nIndex + $nOffset + 1;
 	}
 	
 	public function getMark($nOffset = 0) {
@@ -31,7 +31,7 @@ class TemplateReader {
 	}
 	
 	public function isFollowedBy($sFollowed) {
-		return substr($this->m_sContent, $nIndex + 1, strlen($sFollowed)) == $sFollowed;
+		return substr($this->m_sContent, $this->m_nIndex + 1, strlen($sFollowed)) == $sFollowed;
 	}
 }
 
