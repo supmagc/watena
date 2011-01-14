@@ -2,21 +2,25 @@
 
 class TemplateParser {
 	
-	const CHAR_TAG_OPEN = "<";
-	const CHAR_TAG_END = "/";
-	const CHAR_TAG_CLOSE = ">";
-	const CHAR_ATTRIBUTE = "=";
+	const CHAR_TAG_OPEN 	= "<";
+	const CHAR_TAG_END 		= "/";
+	const CHAR_TAG_CLOSE 	= ">";
+	const CHAR_EQUALS 		= "=";
 	const CHAR_QUOTE_SINGLE = "'";
 	const CHAR_QUOTE_DOUBLE = "\"";
-	const CHAR_WHITESPACE = " ";
-	const CHAR_NEWLINE = "\n";
+	//const CHAR_WHITESPACE 	= " ";
+	const CHAR_NEWLINE 		= "\n";
 	
-	const INDICATE_CLOSE 			= "/";
-	const INDICATE_XML				= "?xml";
-	const INDICATE_PREPROCESSOR		= "?";
-	const INDICATE_COMMENT			= "!--";
-	const INDICATE_CDATA			= "![CDATA[";
-	const INDICATE_DOCTYPE			= "!DOCTYPE";
+	const INDICATE_XML_OPEN			= "<?xml";
+	const INDICATE_XML_CLOSE		= "?>";
+	const INDICATE_PHP_OPEN			= "<?php";
+	const INDICATE_PHP_CLOSE		= "?>";
+	const INDICATE_COMMENT_OPEN		= "<!--";
+	const INDICATE_COMMENT_CLOSE	= "-->";
+	const INDICATE_CDATA_OPEN		= "<![CDATA[";
+	const INDICATE_CDATA_CLOSE		= "]]>";
+	const INDICATE_DOCTYPE_OPEN		= "!DOCTYPE";
+	const INDICATE_DOCTYPE_CLOSE	= ">";
 	
 	const STATE_DEFAULT				=  0; // Default state
 	const STATE_TAG_NAME			=  1; // When parsing the tagname
@@ -24,7 +28,7 @@ class TemplateParser {
 	const STATE_TAG_END				=  3; // When we found as first character after start
 	const STATE_TAG_SINGLE			=  4; // When we found a TAG_END within the TAG_CONTENT
 	const STATE_XML					=  5;
-	const STATE_PREPROCESSOR 		=  6;
+	const STATE_PHP			 		=  6;
 	const STATE_COMMENT 			=  7;
 	const STATE_CDATA				=  8;
 	const STATE_DOCTYPE				=  9;
@@ -67,38 +71,35 @@ class TemplateParser {
 				
 				switch($nState) {
 					case self::STATE_DEFAULT : 
-						if($char === self::CHAR_TAG_OPEN && $oReader->isFollowedBy(self::INDICATE_XML)) {
+						if($oReader->isStartOff(self::INDICATE_XML_OPEN)) {
+							$oReader->setMark(strlen(self::INDICATE_XML_OPEN));
 							$nState = self::STATE_DOCTYPE;
-							$oReader->setMark(strlen(self::INDICATE_XML));
 						}
-						elseif($char === self::CHAR_TAG_OPEN && $oReader->isFollowedBy(self::INDICATE_PREPROCESSOR)) {
-							$nState = self::STATE_PREPROCESSOR;
-							$oReader->setMark(strlen(self::INDICATE_PREPROCESSOR));
+						elseif($oReader->isStartOff(self::INDICATE_PHP_OPEN)) {
+							$oReader->setMark(strlen(self::INDICATE_PHP_OPEN));
+							$nState = self::STATE_PHP;
 						}
-						elseif($char === self::CHAR_TAG_OPEN && $oReader->isFollowedBy(self::INDICATE_COMMENT)) {
+						elseif($oReader->isStartOff(self::INDICATE_COMMENT_OPEN)) {
+							$oReader->setMark(strlen(self::INDICATE_COMMENT_OPEN));
 							$nState = self::STATE_COMMENT;
-							$oReader->setMark(strlen(self::INDICATE_COMMENT));
 						}
-						elseif($char === self::CHAR_TAG_OPEN && $oReader->isFollowedBy(self::INDICATE_CDATA)) {
+						elseif($oReader->isStartOff(self::INDICATE_CDATA_OPEN)) {
+							$oReader->setMark(strlen(self::INDICATE_CDATA_OPEN));
 							$nState = self::STATE_CDATA;
-							$oReader->setMark(strlen(self::INDICATE_CDATA));
 						}
-						elseif($char === self::CHAR_TAG_OPEN && $oReader->isFollowedBy(self::INDICATE_DOCTYPE)) {
+						elseif($oReader->isStartOff(self::INDICATE_DOCTYPE_OPEN)) {
+							$oReader->setMark(strlen(self::INDICATE_DOCTYPE_OPEN));
 							$nState = self::STATE_DOCTYPE;
-							$oReader->setMark(strlen(self::INDICATE_DOCTYPE));
-						}
-						elseif($char === self::CHAR_TAG_OPEN && $oReader->isFollowedBy(self::CHAR_TAG_END)) {
-							$nState = self::STATE_TAG_END;
-							$oReader->setMark(strlen(self::CHAR_TAG_END));
 						}
 						elseif($char === self::CHAR_TAG_OPEN) {
-							$nState = self::STATE_TAG_NAME;
+							$oBuilder->onContent($oReader->getMark());
 							$oReader->setMark();
+							$nState = self::STATE_TAG_NAME;
 						}
 						break;
 
 					case self::STATE_TAG_NAME : 
-						if($char === self::CHAR_WHITESPACE) {
+						if($this->isWhitespace($char)) {
 							$oBuilder->onTagOpen($oReader->getMark());
 							$nState = self::STATE_TAG_CONTENT;
 						}
@@ -116,26 +117,95 @@ class TemplateParser {
 					case self::STATE_TAG_CONTENT : 
 						if($char === self::CHAR_TAG_CLOSE) {
 							$oBuilder->onTagClose(false);
+							$oReader->setMark();
 							$nState = self::STATE_DEFAULT;
 						}
-						else {
-							// Todo process tag content
+						elseif($char === self::CHAR_TAG_END) {
+							$nState = self::STATE_TAG_SINGLE;
+						}
+						elseif(!$this->isWhitespace($char)) {
+							$oReader->setMark(-1);
+							$nState = self::STATE_ATTRIBUTE_NAME;
 						}
 						break;
 						
 					case self::STATE_TAG_SINGLE : 
 						if($char === self::CHAR_TAG_CLOSE) {
-							$nState = self::STATE_DEFAULT;
 							$oBuilder->onTagClose(true);
+							$oReader->setMark();
+							$nState = self::STATE_DEFAULT;
 						}
 						break;
 						
 					case self::STATE_TAG_END : 
 						if($char === self::CHAR_TAG_CLOSE) {
-							$nState = self::STATE_DEFAULT;
 							$oBuilder->onTagEnd($oReader->getMark());
+							$oReader->setMark();
+							$nState = self::STATE_DEFAULT;
 						}
 						break;
+						
+					case self::STATE_ATTRIBUTE_NAME : 
+						if($char === self::CHAR_EQUALS) {
+							$oBuilder->onAttributeName($oReader->getMark());
+							$nState = self::STATE_ATTRIBUTE_EQUALS;
+						}
+						break;
+						
+					case self::STATE_ATTRIBUTE_EQUALS : 
+						if($char === self::CHAR_QUOTE_DOUBLE) {
+							$oReader->setMark();
+							$nState = self::STATE_ATTRIBUTE_DOUBLE;
+						}
+						elseif($char === self::CHAR_QUOTE_SINGLE) {
+							$oReader->setMark();
+							$nState = self::STATE_ATTRIBUTE_SINGLE;
+						}
+						break;
+						
+					case self::STATE_ATTRIBUTE_DOUBLE : 
+						if($char === self::CHAR_QUOTE_DOUBLE) {
+							$oBuilder->onAttributeValueDouble($oReader->getMark());
+							$nState = self::STATE_TAG_CONTENT;
+						}
+						break;
+						
+					case self::STATE_ATTRIBUTE_SINGLE : 
+						if($char === self::CHAR_QUOTE_SINGLE) {
+							$oBuilder->onAttributeValueSingle($oReader->getMark());
+							$nState = self::STATE_TAG_CONTENT;
+						}
+						break;
+					
+					case self::STATE_XML : 
+						if($oReader->isStartOff(self::INDICATE_XML_CLOSE)) {
+							$oBuilder->onXml($oReader->getMark());
+							$nState = self::STATE_DEFAULT;
+						}
+					
+					case self::STATE_PHP : 
+						if($oReader->isStartOff(self::INDICATE_PHP_CLOSE)) {
+							$oBuilder->onXml($oReader->getMark());
+							$nState = self::STATE_DEFAULT;
+						}
+					
+					case self::STATE_COMMENT : 
+						if($oReader->isStartOff(self::INDICATE_COMMENT_CLOSE)) {
+							$oBuilder->onXml($oReader->getMark());
+							$nState = self::STATE_DEFAULT;
+						}
+					
+					case self::STATE_CDATA : 
+						if($oReader->isStartOff(self::INDICATE_CDATA_CLOSE)) {
+							$oBuilder->onXml($oReader->getMark());
+							$nState = self::STATE_DEFAULT;
+						}
+					
+					case self::STATE_DOCTYPE : 
+						if($oReader->isStartOff(self::INDICATE_DOCTYPE_CLOSE)) {
+							$oBuilder->onXml($oReader->getMark());
+							$nState = self::STATE_DEFAULT;
+						}
 				}
 			}
 		}
@@ -145,6 +215,10 @@ class TemplateParser {
 	
 	public function noteProblem($sMessage, $nLine, $nColumn) {
 		$this->m_aProblems []= array($sMessage, $nLine, $nColumn);
+	}
+	
+	public function isWhitespace($char) {
+		return in_array($char, array(" ", "\n", "\r", "\t", "\b"));
 	}
 }
 
