@@ -30,8 +30,8 @@ class TemplateReader {
 		return substr($this->m_sContent, $this->m_nMark, $this->m_nIndex - $this->m_nMark + $nOffset);
 	}
 	
-	public function isFollowedBy($sFollowed) {
-		return substr($this->m_sContent, $this->m_nIndex + 1, strlen($sFollowed)) == $sFollowed;
+	public function isStartOff($sIndicator) {
+		return substr($this->m_sContent, $this->m_nIndex, strlen($sIndicator)) === $sIndicator;
 	}
 }
 

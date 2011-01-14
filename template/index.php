@@ -8,6 +8,6 @@ ob_start();
 $oTemplate = new Template('./source.tpl');
 $sContent = ob_get_contents();
 ob_end_clean();
-echo htmlentities($sContent);
+echo '<pre>' . htmlentities($sContent) . '</pre>';
 
 ?>
