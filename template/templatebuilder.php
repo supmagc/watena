@@ -2,56 +2,72 @@
 
 class TemplateBuilder {
 	
+	private $m_aBuffer = array();
+	private $m_sLastTagName;
+	private $m_sLastAttributeName;
+	
 	public function __construct() {
 		
 	}
 	
+	public function __toString() {
+		return implode('', $this->m_aBuffer);
+	}
+	
 	public function onContent($sData) {
-		echo $sData;
+		$this->m_aBuffer []=   $sData;
 	}
 	
 	public function onTagOpen($sName) {
-		echo "<$sName";
+		$sName = trim($sName);
+		$this->m_sLastTagName = $sName;
+		$this->m_aBuffer []= "<$sName";
 	}
 	
-	public function onTagClose($bSingle = false) {
-		echo $bSingle ? ' />' : '>';
+	public function onTagClose() {
+		$this->m_aBuffer []=  '>';
+	}
+	
+	public function onTagSingleClose() {
+		$this->m_aBuffer []=  ' />';
 	}
 	
 	public function onTagEnd($sName) {
-		echo "</$sName>";
+		$sName = trim($sName);
+		$this->m_aBuffer []=  "</$sName>";
 	}
 
 	public function onAttributeName($sName) {
-		echo " $sName=";
+		$sName = trim($sName);
+		$this->m_aBuffer []=  " $sName=";
 	}
 	
 	public function onAttributeValueDouble($sValue) {
-		echo "\"$sValue\"";
+		$this->m_aBuffer []=  "\"$sValue\"";
 	}
 	
 	public function onAttributeValueSingle($sValue) {
-		echo "'$sValue'";
+		$this->m_aBuffer []=  "'$sValue'";
 	}
 	
 	public function onXml($sData) {
-		echo "<?xml$sData?>";
+		$this->m_aBuffer []=  "<?xml$sData?>";
 	}
 	
 	public function onPhp($sData) {
-		echo "<?php$sData?>";
+		$this->m_aBuffer []=  "<?php$sData?>";
 	}
 	
 	public function onComment($sData) {
-		echo "<!--$sData-->";
+		$this->m_aBuffer []=  "<!--$sData-->";
 	}
 	
 	public function onCData($sData) {
-		echo "<![CDATA[$sData]]>";
+		$this->m_aBuffer []=  "<![CDATA[$sData]]>";
 	}
 	
 	public function onDoctype($sData) {
-		echo "<!DOCTYPE$sData>";
+		$this->m_aBuffer []=  "<!DOCTYPE$sData>";
 	}
 }
 
