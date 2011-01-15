@@ -4,7 +4,8 @@
 class IPCO {
 	
 	public function load($sFileName) {
-		$oFile = new IPCO_File($this);
+		$oParser = new IPCO_Parser($sFileName, $this);
+		$oParser->parse();
 	}
 	
 	public function getSourcePath($sFileName) {
