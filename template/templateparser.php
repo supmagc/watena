@@ -8,7 +8,6 @@ class TemplateParser {
 	const CHAR_EQUALS 		= "=";
 	const CHAR_QUOTE_SINGLE = "'";
 	const CHAR_QUOTE_DOUBLE = "\"";
-	//const CHAR_WHITESPACE 	= " ";
 	const CHAR_NEWLINE 		= "\n";
 	
 	const INDICATE_XML_OPEN			= "<?xml";
@@ -73,7 +72,7 @@ class TemplateParser {
 					case self::STATE_DEFAULT : 
 						if($oReader->isStartOff(self::INDICATE_XML_OPEN)) {
 							$oReader->setMark(strlen(self::INDICATE_XML_OPEN));
-							$nState = self::STATE_DOCTYPE;
+							$nState = self::STATE_XML;
 						}
 						elseif($oReader->isStartOff(self::INDICATE_PHP_OPEN)) {
 							$oReader->setMark(strlen(self::INDICATE_PHP_OPEN));
@@ -93,8 +92,14 @@ class TemplateParser {
 						}
 						elseif($char === self::CHAR_TAG_OPEN) {
 							$oBuilder->onContent($oReader->getMark());
-							$oReader->setMark();
-							$nState = self::STATE_TAG_NAME;
+							if($oReader->isFollowedBy(self::CHAR_TAG_END)) {
+								$oReader->setMark(1);
+								$nState = self::STATE_TAG_END;								
+							}
+							else {
+								$oReader->setMark();
+								$nState = self::STATE_TAG_NAME;
+							}
 						}
 						break;
 
@@ -109,14 +114,15 @@ class TemplateParser {
 						}
 						else if($char === self::CHAR_TAG_CLOSE) {
 							$oBuilder->onTagOpen($oReader->getMark());
-							$oBuilder->onTagClose(false);
+							$oBuilder->onTagClose();
+							$oReader->setMark();
 							$nState = self::STATE_DEFAULT;
 						}
 						break;
 						
 					case self::STATE_TAG_CONTENT : 
 						if($char === self::CHAR_TAG_CLOSE) {
-							$oBuilder->onTagClose(false);
+							$oBuilder->onTagClose();
 							$oReader->setMark();
 							$nState = self::STATE_DEFAULT;
 						}
@@ -131,7 +137,7 @@ class TemplateParser {
 						
 					case self::STATE_TAG_SINGLE : 
 						if($char === self::CHAR_TAG_CLOSE) {
-							$oBuilder->onTagClose(true);
+							$oBuilder->onTagSingleClose();
 							$oReader->setMark();
 							$nState = self::STATE_DEFAULT;
 						}
@@ -180,30 +186,35 @@ class TemplateParser {
 					case self::STATE_XML : 
 						if($oReader->isStartOff(self::INDICATE_XML_CLOSE)) {
 							$oBuilder->onXml($oReader->getMark());
+							$oReader->setMark(strlen(self::INDICATE_XML_CLOSE));
 							$nState = self::STATE_DEFAULT;
 						}
 					
 					case self::STATE_PHP : 
 						if($oReader->isStartOff(self::INDICATE_PHP_CLOSE)) {
-							$oBuilder->onXml($oReader->getMark());
+							$oBuilder->onPhp($oReader->getMark());
+							$oReader->setMark(strlen(self::INDICATE_PHP_CLOSE));
 							$nState = self::STATE_DEFAULT;
 						}
 					
 					case self::STATE_COMMENT : 
 						if($oReader->isStartOff(self::INDICATE_COMMENT_CLOSE)) {
-							$oBuilder->onXml($oReader->getMark());
+							$oBuilder->onComment($oReader->getMark());
+							$oReader->setMark(strlen(self::INDICATE_COMMENT_CLOSE));
 							$nState = self::STATE_DEFAULT;
 						}
 					
 					case self::STATE_CDATA : 
 						if($oReader->isStartOff(self::INDICATE_CDATA_CLOSE)) {
-							$oBuilder->onXml($oReader->getMark());
+							$oBuilder->onCData($oReader->getMark());
+							$oReader->setMark(strlen(self::INDICATE_CDATA_CLOSE));
 							$nState = self::STATE_DEFAULT;
 						}
 					
 					case self::STATE_DOCTYPE : 
 						if($oReader->isStartOff(self::INDICATE_DOCTYPE_CLOSE)) {
-							$oBuilder->onXml($oReader->getMark());
+							$oBuilder->onDoctype($oReader->getMark());
+							$oReader->setMark(strlen(self::INDICATE_DOCTYPE_CLOSE));
 							$nState = self::STATE_DEFAULT;
 						}
 				}
