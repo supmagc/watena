@@ -18,6 +18,3 @@
 
 {% component 'recentArticles' %}
 {% template 'recentArticles' %}
-
-{% block 'recentArticles' %}
-{% end %}

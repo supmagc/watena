@@ -17,12 +17,20 @@ class IPCO_Parser extends IPCO_Base {
 	
 	public function getHeader() {
 		return '
+<?php
 class _Source_CV extends IPCO_Compiled {
 
 	public function __construct() {
 		$_ob = \'\';
-		$_comp = null;
-	}';
+		$_comp = null;';
+	}
+	
+	public function getFooter() {
+		return '
+		echo $_ob;
+	}
+}
+?>';
 	}
 	
 	public function parse() {
@@ -91,12 +99,14 @@ class _Source_CV extends IPCO_Compiled {
 			}
 		}
 		$aBuffer []= Encoding::substring($this->m_sContent, $nMark, $nLength-$nMark);
+		$aBuffer []= $this->getFooter();
 		
-		echo '<pre>' . htmlentities(implode('', $aBuffer)) . '</pre>';
+		return implode('', $aBuffer);
 	}
 	
 	public function compileContent($sContent) {
-		return '$_ob .= \''.$sContent.'\';';
+		return '
+		$_ob .= \''.Encoding::trim($sContent).'\';';
 	}
 	
 	public function compileFilter($sContent) {
@@ -120,19 +130,18 @@ class _Source_CV extends IPCO_Compiled {
 	
 	public function compileIf($aParts) {
 		return <<<EOB
-		if() {
+		if(true) {
 EOB;
 	}
 	
 	public function compileForeach($aParts) {
-		return <<<EOB
-		foreach() {
-EOB;
+		return '
+		foreach(array() as $a) {';
 	}
 	
 	public function compileWhile($aParts) {
 		return <<<EOB
-		while() {
+		while(false) {
 EOB;
 	}
 	
@@ -146,7 +155,7 @@ EOB;
 	public function compileElseif($aParts) {
 		return <<<EOB
 		}
-		elseif() {
+		elseif(true) {
 EOB;
 	}
 	
