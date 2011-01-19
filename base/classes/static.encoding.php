@@ -65,6 +65,15 @@ class Encoding {
 		return self::substring($sData, 0, self::Length($sSearch, $sEncoding), $sEncoding) == $sSearch;
 	}
 	
+	public static function endsWith($sData, $sSearch, $bCaseInsensitive = true, $sEncoding = null) {
+		if($bCaseInsensitive) {
+			$sData = self::stringToLower($sData, $sEncoding);
+			$sSearch = self::stringToLower($sSearch, $sEncoding);
+		}
+		$nLength = self::Length($sSearch, $sEncoding);
+		return self::substring($sData, self::length($sData) - $nLength, $nLength, $sEncoding) == $sSearch;
+	}
+	
 	public static function indexOf($sData, $sSearch, $nOffset = 0, $bCaseInsensitive = false, $sEncoding = null) {
 		if($bCaseInsensitive) {
 			return mb_stripos($sData, $sSearch, $nOffset, $sEncoding === null ? self::$s_sEncoding : $sEncoding);
