@@ -59,9 +59,18 @@ function getPhpOperator($sOperator) {
 
 function parseValue($sExpression) {
 	$sExpression = Encoding::trim($sExpression);
+	$bNot = false;
+	if(Encoding::beginsWith($sExpression, '!')) {
+		$bNot = true;
+		$sExpression = Encoding::trim(Encoding::substring($sExpression, 1));
+	}
 	$nLength = Encoding::length($sExpression);
-	if($nLength === 0) setError('Whitespace value detected, you might have an invalid double operator sequence.');
-	else return $sExpression;
+	if($nLength === 0) {
+		setError('Whitespace value detected, you might have an invalid double operator sequence.');
+	}
+	else {
+		return ($bNot ? '!' : '') . $sExpression;
+	}
 }
 
 function parseExpression($sExpression) {
@@ -82,7 +91,7 @@ function parseExpression($sExpression) {
 	return parseValue($sExpression);
 }
 
-echo parseExpression('-1 + ((2*a)) != 2 & 8 - 3 AND 8 + 2 OR 3');
+echo parseExpression('-1 + ((2*a)) != 2 & 8 - 3 AND !8 + 2 OR 3');
 
 exit;
 
