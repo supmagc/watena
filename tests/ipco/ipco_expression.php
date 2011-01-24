@@ -38,10 +38,15 @@ class IPCO_Expression extends IPCO_Base {
 	
 	private function _trimmedStartWithNot(&$sExpression) {
 		$bNot = false;
-		$sExpression = Encoding::trim($sExpression);
-		if(Encoding::beginsWith($sExpression, '!')) {
-			$bNot = true;
-			$sExpression = Encoding::trim(Encoding::substring($sExpression, 1));
+		$bRetry = true;
+		while($bRetry) {
+			$bRetry = false;
+			$sExpression = Encoding::trim($sExpression);
+			$nLength = Encoding::length($sExpression);
+			if(Encoding::beginsWith($sExpression, '!')) {
+				$bNot = !$bNot;
+				$sExpression = Encoding::trim(Encoding::substring($sExpression, 1));
+			}
 		}
 		return $bNot;		
 	}
@@ -51,28 +56,30 @@ class IPCO_Expression extends IPCO_Base {
 		$nOperatorLength = Encoding::length($sOperator);
 		$nParentheses = 0;
 		$nState = 0;
-		for($i=0 ; $i<$nLength - $nOperatorLength ; ++$i) {
-			$char = Encoding::stringToLower(Encoding::substring($sExpression, $i, $nOperatorLength));
+		$nIndex = $nLength + 1;
+		for($i=0 ; $i<$nLength ; ++$i) {
+			$char = Encoding::stringToLower(Encoding::substring($sExpression, $i, 1));
+			$chars = Encoding::stringToLower(Encoding::substring($sExpression, $i, $nOperatorLength));
 			switch($nState) {
 				case 0 : 
 					if($char === '(') ++$nParentheses;
-					else if($char === ')') --$nParentheses;
-					else if($nParentheses === 0) {
-						if($char === $sOperator && $this->_isOperator($sOperator, $sExpression, $i)) return $i;
-						else if($char === '\'') $nState = 1;
+					elseif($char === ')') --$nParentheses;
+					elseif($nParentheses === 0) {
+						if($chars === $sOperator && $this->_isOperator($sOperator, $sExpression, $i)) $nIndex = $i;
+						elseif($char === '\'') $nState = 1;
 					}
 					break;
 				case 1 : 
 					if($char === '\'') $nState = 0;
-					else if($char === '\\') $nState = 2;
+					elseif($char === '\\') $nState = 2;
 					break;
 				case 2 : 
-					$nState = 0;
+					$nState = 1;
 					break;
 			}
 		}
 		if($nState !== 0 || $nParentheses !== 0) $this->_setError("Invalid expression found.", $sExpression);
-		return -1;
+		return $nIndex > $nLength ? -1 : $nIndex;
 	}
 	
 	private function _getPhpOperator($sOperator) {
@@ -97,10 +104,10 @@ class IPCO_Expression extends IPCO_Base {
 			switch($nState) {
 				case 0 : 
 					if($char === '(') ++$nParentheses;
-					else if($char === ')') --$nParentheses;
-					else if($nParentheses === 0) {
+					elseif($char === ')') --$nParentheses;
+					elseif($nParentheses === 0) {
 						if($char === '\'') $nState = 1;
-						else if($char === ',') {
+						elseif($char === ',') {
 							$aParams []= Encoding::substring($sParams, $nMark, $i - $nMark);
 							$nMark = $i + 1;
 						}
@@ -108,7 +115,7 @@ class IPCO_Expression extends IPCO_Base {
 					break;
 				case 0 : 
 					if($char === '\'') $nState = 0;
-					else if($char === '\\') $nState = 2;
+					elseif($char === '\\') $nState = 2;
 					break;
 				case 0 : 
 					$nState = 1;
@@ -121,7 +128,9 @@ class IPCO_Expression extends IPCO_Base {
 	}
 	
 	private function _parseValue($sExpression) {
-		$bNot = $this->_trimmedStartWithNot($sExpression);
+		$sExpression = Encoding::trim($sExpression);
+		$bNot = false;
+		while(Encoding::beginsWith($sExpression, '!')) $sExpression $this->_trimmedStartWithNot($sExpression);
 		$nLength = Encoding::length($sExpression);
 		if($nLength === 0) {
 			setError('Whitespace value detected, you might have an invalid double operator sequence.');
@@ -133,10 +142,11 @@ class IPCO_Expression extends IPCO_Base {
 			else if($sExpression === 'false') {
 				return ($bNot ? ' true ' : ' false ');
 			}
-			else if(Encoding::regMatch('^[0-9]+(\.[0-9]+)?$', $sExpression)) {
-				return ($bNot ? ' !' : ' ') . "$sExpression ";
+			else if(Encoding::regMatch('^-?[0-9]+(\.[0-9]+)?$', $sExpression)) {
+				return ($bNot ? '!' : '') . "$sExpression";
 			}
 			else {
+				echo "$sExpression <br />";
 				return ($bNot ? '!' : '') . $sExpression;
 			}
 		}
