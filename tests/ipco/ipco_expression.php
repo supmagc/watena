@@ -16,7 +16,7 @@ class IPCO_Expression extends IPCO_Base {
 	}
 		
 	private function _setError($sMessage, $sExpression) {
-		die($sMessage);
+		die("$sMessage <<$sExpression>>");
 	}
 	
 	private function _isOperator($sOperator, $sExpression, $nPos) {
@@ -36,33 +36,42 @@ class IPCO_Expression extends IPCO_Base {
 		return true;
 	}
 	
+	private function _trimmedStartWithNot(&$sExpression) {
+		$bNot = false;
+		$sExpression = Encoding::trim($sExpression);
+		if(Encoding::beginsWith($sExpression, '!')) {
+			$bNot = true;
+			$sExpression = Encoding::trim(Encoding::substring($sExpression, 1));
+		}
+		return $bNot;		
+	}
+	
 	private function _findLastOccurance($sOperator, $sExpression) {
 		$nLength = Encoding::length($sExpression);
 		$nOperatorLength = Encoding::length($sOperator);
 		$nParentheses = 0;
-		$bNoString = true;
-		for($i=$nLength - $nOperatorLength ; $i>= 0 ; --$i) {
+		$nState = 0;
+		for($i=0 ; $i<$nLength - $nOperatorLength ; ++$i) {
 			$char = Encoding::stringToLower(Encoding::substring($sExpression, $i, $nOperatorLength));
-			if($bNoString) {
-				if($char === '(') --$nParentheses;
-				else if($char === ')') ++$nParentheses;
-				else if($nParentheses === 0) {
-					if($char === $sOperator && $this->_isOperator($sOperator, $sExpression, $i)) return $i;
-					else if($char === '\'') $bNoString = false;
-				}
-			}
-			else if($char === '\'') {
-				$nSlashCount = 0;
-				for($j = $i - 1; $j>= 0 ; ++$j) {
-					if(Encoding::substring($sExpression, $j, 1) === '\\') ++$nSlashCount;
-					else break;
-				}
-				if($nSlashCount % 2 === 0) {
-					if($nSlashCount == 0) $bNoString = true;
-					else $this->_setError('Invalid string sequence found');
-				}
+			switch($nState) {
+				case 0 : 
+					if($char === '(') ++$nParentheses;
+					else if($char === ')') --$nParentheses;
+					else if($nParentheses === 0) {
+						if($char === $sOperator && $this->_isOperator($sOperator, $sExpression, $i)) return $i;
+						else if($char === '\'') $nState = 1;
+					}
+					break;
+				case 1 : 
+					if($char === '\'') $nState = 0;
+					else if($char === '\\') $nState = 2;
+					break;
+				case 2 : 
+					$nState = 0;
+					break;
 			}
 		}
+		if($nState !== 0 || $nParentheses !== 0) $this->_setError("Invalid expression found.", $sExpression);
 		return -1;
 	}
 	
@@ -112,23 +121,29 @@ class IPCO_Expression extends IPCO_Base {
 	}
 	
 	private function _parseValue($sExpression) {
-		$sExpression = Encoding::trim($sExpression);
-		$bNot = false;
-		if(Encoding::beginsWith($sExpression, '!')) {
-			$bNot = true;
-			$sExpression = Encoding::trim(Encoding::substring($sExpression, 1));
-		}
+		$bNot = $this->_trimmedStartWithNot($sExpression);
 		$nLength = Encoding::length($sExpression);
 		if($nLength === 0) {
 			setError('Whitespace value detected, you might have an invalid double operator sequence.');
 		}
 		else {
-			return ($bNot ? '!' : '') . $sExpression;
+			if($sExpression === 'true') {
+				return ($bNot ? ' false ' : ' true ');
+			}
+			else if($sExpression === 'false') {
+				return ($bNot ? ' true ' : ' false ');
+			}
+			else if(Encoding::regMatch('^[0-9]+(\.[0-9]+)?$', $sExpression)) {
+				return ($bNot ? ' !' : ' ') . "$sExpression ";
+			}
+			else {
+				return ($bNot ? '!' : '') . $sExpression;
+			}
 		}
 	}
 	
 	private function _parseExpression($sExpression) {
-		$sExpression = Encoding::trim($sExpression);
+		$bNot = $this->_trimmedStartWithNot($sExpression);
 		$nLength = Encoding::length($sExpression);
 		while(Encoding::beginsWith($sExpression, '(') && Encoding::endsWith($sExpression, ')')) {
 			$sExpression = Encoding::trim(Encoding::substring($sExpression, 1, $nLength - 2));
@@ -138,7 +153,7 @@ class IPCO_Expression extends IPCO_Base {
 			$nPos = $this->_findLastOccurance($this->m_aOperators[$i], $sExpression);
 			$nOperatorLength = Encoding::length($this->m_aOperators[$i]);	
 			if($nPos > -1) {
-				return '(' . $this->_parseExpression(Encoding::substring($sExpression, 0, $nPos)) . ' ' . $this->_getPhpOperator($this->m_aOperators[$i]) . ' ' . $this->_parseExpression(Encoding::substring($sExpression, $nPos + $nOperatorLength, $nLength - $nPos - $nOperatorLength)) . ')';
+				return ($bNot ? '!' : '') . '(' . $this->_parseExpression(Encoding::substring($sExpression, 0, $nPos)) . ' ' . $this->_getPhpOperator($this->m_aOperators[$i]) . ' ' . $this->_parseExpression(Encoding::substring($sExpression, $nPos + $nOperatorLength, $nLength - $nPos - $nOperatorLength)) . ')';
 			}
 		}
 		return $this->_parseValue($sExpression);

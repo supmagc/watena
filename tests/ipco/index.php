@@ -94,7 +94,7 @@ function parseExpression($sExpression) {
 }
 */
 
-echo new IPCO_Expression('-1 + ((2*a)) != 2 & 8 - substr(\'bla\', 1, 2) & 3 && \'12\'\' > 3+8\' AND !8 + 2 OR 3', new IPCO());
+echo new IPCO_Expression('-1 + (!(2*a)) != 2 & 8 - substr(\'bla\', 1, 2) & 3 && \'12\' > 3+8 AND !8 + 2 OR 3', new IPCO());
 
 exit;
 
