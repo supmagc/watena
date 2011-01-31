@@ -12,6 +12,10 @@ class IPCO_BuilderBlock extends IPCO_Base {
 		$this->m_sName = $sName;
 	}
 	
+	public function __toString() {
+		return 'public function region_' . $this->m_sName . '() {' . implode('', $this->m_aBuffer) . '}';
+	}
+	
 	public function addToBuffer($sContent) {
 		$this->m_aBuffer []= $sContent;
 	}
@@ -26,41 +30,55 @@ class IPCO_Builder extends IPCO_Base {
 	
 	private $m_oMainBlock;
 	private $m_oCurrentBlock;
-	private $m_aEndExpected;
+	private $m_sExtends = 'IPCO_Compiled';
+	private $m_aEndingStack = array();
+	private $m_nForeachCount = 0;
+	private $m_aForeachStack = array();
+	private $m_aComponentStack = array();
 	private $m_nLine;
 	
 	public function __construct(IPCO $ipco) {
 		$this->m_oMainBlock = new IPCO_BuilderBlock('MAIN', $ipco);
 		$this->m_oCurrentBlock = $this->m_oMainBlock;
 	}
+
+	public function __toString() {
+		
+	}
 	
 	public function onBase($sName) {
-		
+		// TODO: this needs some work
+		$this->m_sExtends = $sName;
 	}
 	
-	public function onIf(array $aParts) {
-		array_push($this->m_aEndExpected, 'if');
-		$this->m_oCurrentBlock->addToBuffer('if(){')
+	public function onIf($sExpression) {
+		array_push($this->m_aEndingStack, 'if');
+		$this->m_oCurrentBlock->addToBuffer('if(' . new IPCO_Expression($sExpression, parent::getIpco()) . ') {');
 	}
 	
-	public function onElseif() {
-		
+	public function onElseif($sExpression) {
+		$this->m_oCurrentBlock->addToBuffer('else if(' . new IPCO_Expression($sExpression, parent::getIpco()) . ') {');
 	}
 	
 	public function onElse() {
-		
+		$this->m_oCurrentBlock->addToBuffer('else {');
 	}
 	
 	public function onWhile() {
-		
+		array_push($this->m_aEndExpected, 'while');
+		$this->m_oCurrentBlock->addToBuffer('while(' . new IPCO_Expression($sExpression, parent::getIpco()) . ') {');
 	}
 	
-	public function onForeach() {
-		
+	public function onFor() {
+		++$this->m_nForeachCount;
+		array_push($this->m_aEndingStack, 'for');
+		array_push($this->m_aForeachStack, $this->m_nForeachCount);
+		$this->m_oCurrentBlock->addToBuffer('for(' . new IPCO_Expression($sExpression, parent::getIpco()) . ' as $_feobj_'.$this->m_nForeachCount.') {');
+		$this->m_oCurrentBlock->addToBuffer('parent::_addComponent($_feobj_'.$this->m_nForeachCount.');');
 	}
 	
-	public function onTemplate($sName) {
-		
+	public function onTemplate($sExpression) {
+		$this->m_oCurrentBlock->addToBuffer('$_ob .= parent::_addTemplate(\'' . new IPCO_Expression($sExpression, parent::getIpco()) . '\');');
 	}
 	
 	public function onComponent($sName) {
@@ -75,70 +93,19 @@ class IPCO_Builder extends IPCO_Base {
 	}
 	
 	public function onEnd($sName) {
-		$sExpected = array_pop($this->m_aEndExpected);
+		$sExpected = array_pop($this->m_aEndingStack);
 		if($sName) {
-			if($sExpected != $sName) {
+			if($sExpected === $sName) {
+				if($sExpected === 'for') {
+					$nCount = array_pop($this->m_aForeachStack);
+					$this->m_oCurrentBlock->addToBuffer('parent::_removeComponent($_feobj_'.$nCount.');');
+				}
+				if($sExpected === 'component') {
+					
+				}
 				die('implement this');
 			}
 		}
-	}
-	
-	private function _parseCondition($sCondition) {
-		//$sCondition = Encoding::stringReplace(array('(', ')'), array(' ( ', ' ) '), $sCondition);
-		// state:
-		// 0: default
-		// 1: string
-		// 2: escaped string
-		// 3: expecting braces or concatenation
-		// 4: expecting numeric value or dot
-		// 5: expecting numeric value
-		$sResult = '';
-		$nState = 0;
-		for($i=0 ; $i<Encoding::length($sCondition) ; ++$i) {
-			$char = Encoding::substring($sCondition, $i, 1);
-
-			switch($nState) {
-				case 0 : // default
-					if($char === '\'') {
-						$nState = 1;
-					}
-					else if(Encoding::indexOf('1234567890.', $char) !== false) {
-						$nState = 4;
-					}
-					break;
-				case 1 : // default
-					if($char === '\'') {
-						$nState = 3;
-					}
-					elseif($char === '\\') {
-						$nState = 2;
-					}
-					break;
-				case 2 : // default
-					$nState = 1;
-					break;
-				case 3 : // default
-					break;
-				case 4 : // default
-					if(Encoding::indexOf('1234567890', $char) !== false) {
-						
-					}
-					else if($char === '.') {
-						$nState = 5;
-					}
-					else if($char )
-					break;
-				case 5 : // default
-					if(Encoding::indexOf('1234567890', $char) !== false) {
-						
-					}
-					break;
-			}
-		}
-	}
-	
-	private function _noteProblem($sMessage) {
-		
 	}
 }
 
