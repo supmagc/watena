@@ -4,7 +4,7 @@ class IPCO_Expression extends IPCO_Base {
 	
 	private $m_sOriginalExpression;
 	private $m_sCleanedExpression;
-	private $m_aOperators = array(' or ', '||', '|', ' and ', '&&', '&', '<', '>', '<=', '>=', '!=', '==', '=', '-', '+', '/', '*', '%');	
+	private $m_aOperators = array(' or ', '||', '|', ' and ', '&&', '&', '<', '>', '<=', '>=', '!=', '==', '=', '-', '+', '/', '*', '%', '^');	
 	
 	public function __construct($sExpression, IPCO $ipco) {
 		$this->m_sOriginalExpression = $sExpression;
@@ -62,8 +62,8 @@ class IPCO_Expression extends IPCO_Base {
 			$chars = Encoding::stringToLower(Encoding::substring($sExpression, $i, $nOperatorLength));
 			switch($nState) {
 				case 0 : 
-					if($char === '(') ++$nParentheses;
-					else if($char === ')') --$nParentheses;
+					if(in_array($char, array('(', '[', '{'))) ++$nParentheses;
+					else if(in_array($char, array(')', ']', '}'))) --$nParentheses;
 					else if($nParentheses === 0) {
 						if($chars === $sOperator && $this->_isOperator($sOperator, $sExpression, $i)) $nIndex = $i;
 						else if($char === '\'') $nState = 1;
@@ -93,6 +93,13 @@ class IPCO_Expression extends IPCO_Base {
 		}
 	}
 	
+	private function _getPhpExpression($sOperator, $sLeft, $sRight) {
+		switch($sOperator) {
+			case '^' : return "pow($sLeft, $sRight)"; 
+			default : return "($sLeft ".$this->_getPhpOperator($sOperator)." $sRight)";
+		}
+	}
+	
 	private function _parseParameters($sParams) {
 		$aParams = array();
 		$nLength = Encoding::length($sParams);
@@ -103,8 +110,8 @@ class IPCO_Expression extends IPCO_Base {
 			$char = Encoding::substring($sParams, $i, 1);
 			switch($nState) {
 				case 0 : 
-					if($char === '(') ++$nParentheses;
-					else if($char === ')') --$nParentheses;
+					if(in_array($char, array('(', '[', '{'))) ++$nParentheses;
+					else if(in_array($char, array(')', ']', '}'))) --$nParentheses;
 					else if($nParentheses === 0) {
 						if($char === '\'') $nState = 1;
 						elseif($char === ',') {
@@ -133,11 +140,6 @@ class IPCO_Expression extends IPCO_Base {
 	
 	private function _parseValue($sExpression) {
 		$sExpression = Encoding::trim($sExpression);
-		$bNot = false;
-		while(Encoding::beginsWith($sExpression, '!')) {
-			$sExpression = Encoding::trim(Encoding::substring($sExpression, 1));
-			$bNot = !$bNot;
-		}
 		$nLength = Encoding::length($sExpression);
 		if($nLength === 0) {
 			$this->_setError('Whitespace value detected, you might have an invalid double operator sequence.', $sExpression);
@@ -148,15 +150,15 @@ class IPCO_Expression extends IPCO_Base {
 		else {
 			// boolean true
 			if($sExpression === 'true') {
-				return ($bNot ? ' false ' : ' true ');
+				return 'true';
 			}
 			// boolean false
 			else if($sExpression === 'false') {
-				return ($bNot ? ' true ' : ' false ');
+				return 'false';
 			}
 			// numerical value
-			else if(Encoding::regMatch('^-?[0-9]+(\.[0-9]+)?$', $sExpression)) {
-				return ($bNot ? '!' : '') . "$sExpression";
+			else if(Encoding::regMatch('^[0-9]+(\.[0-9]+)?$', $sExpression)) {
+				return $sExpression;
 			}
 			// Look for string
 			else if(Encoding::beginsWith($sExpression, '\'') && Encoding::endsWith($sExpression, '\'')) {
@@ -169,7 +171,7 @@ class IPCO_Expression extends IPCO_Base {
 						else if($char === '\\') $bEscaped = true;
 					}
 				}
-				return ($bNot ? '!' : '') . $sExpression;
+				return $sExpression;
 			}
 			// parsing for variablle, and or calling stuff
 			else {
@@ -186,12 +188,16 @@ class IPCO_Expression extends IPCO_Base {
 			$nPos = $this->_findLastOccurance($this->m_aOperators[$i], $sExpression);
 			$nOperatorLength = Encoding::length($this->m_aOperators[$i]);	
 			if($nPos > -1) {
-				return '(' . $this->_parseExpression(Encoding::substring($sExpression, 0, $nPos)) . ' ' . $this->_getPhpOperator($this->m_aOperators[$i]) . ' ' . $this->_parseExpression(Encoding::substring($sExpression, $nPos + $nOperatorLength, $nLength - $nPos - $nOperatorLength)) . ')';
+				return $this->_getPhpExpression($this->m_aOperators[$i], $this->_parseExpression(Encoding::substring($sExpression, 0, $nPos)), $this->_parseExpression(Encoding::substring($sExpression, $nPos + $nOperatorLength, $nLength - $nPos - $nOperatorLength)));
 			}
 		}
 		// Recursivly parse within quotes
 		if(Encoding::beginsWith($sExpression, '(') && Encoding::endsWith($sExpression, ')')) {
 			return $this->_parseExpression(Encoding::substring($sExpression, 1, $nLength - 2));
+		}
+		// Find short array notation
+		if(Encoding::beginsWith($sExpression, '{') && Encoding::endsWith($sExpression, '}')) {
+			return 'array(' . $this->_parseParameters(Encoding::substring($sExpression, 1, $nLength - 2)) . ')';
 		}
 		// Recursivly remove negation sign
 		if(Encoding::beginsWith($sExpression, '!')) {
