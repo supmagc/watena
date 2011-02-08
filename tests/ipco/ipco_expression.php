@@ -135,7 +135,60 @@ class IPCO_Expression extends IPCO_Base {
 	}
 	
 	private function _parseCall($sExpression) {
-		
+		$sExpression = Encoding::trim($sExpression);
+		$nLength = Encoding::length($sExpression);
+		$nState = 0;
+		for($i=0 ; $i<$nLength ; ++$i) {
+			$char = Encoding::substring($sExpression, $i, 1);
+			switch($nState) {
+				case 0: 
+					if(in_array($char, array('(', '[', '{'))) {
+						if($char === '(') $nState = 1;
+						if($char === '[') $nState = 4;
+						if($char === '{') $nState = 7;
+					}
+					break;
+				case 1: 
+					if($char === ')') {
+						$nState = 0;
+					}
+					if($char === '\'') {
+						$nState = 2;
+					}
+					break;
+				case 4: 
+					if($char === ')') {
+						$nState = 0;
+					}
+					if($char === '\'') {
+						$nState = 5;
+					}
+					break;
+				case 7: 
+					if($char === ')') {
+						$nState = 0;
+					}
+					if($char === '\'') {
+						$nState = 8;
+					}
+					break;
+				case 2:
+				case 5:
+				case 8:
+					if($char === '\\') {
+						++$nState;
+					}
+					if($char === '\'') {
+						--$nState;
+					}
+					break;
+				case 3:
+				case 6:
+				case 9:
+					--$nState;
+					break;
+			}
+		}
 	}
 	
 	private function _parseValue($sExpression) {
@@ -148,16 +201,8 @@ class IPCO_Expression extends IPCO_Base {
 			$this->_setError('SIngle quote detected without meaning.', $sExpression);
 		}
 		else {
-			// boolean true
-			if($sExpression === 'true') {
-				return 'true';
-			}
-			// boolean false
-			else if($sExpression === 'false') {
-				return 'false';
-			}
-			// numerical value
-			else if(Encoding::regMatch('^[0-9]+(\.[0-9]+)?$', $sExpression)) {
+			// easy primitive
+			if($sExpression === 'true' || $sExpression === 'false' || Encoding::regMatch('^[0-9]+(\.[0-9]+)?$', $sExpression)) {
 				return $sExpression;
 			}
 			// Look for string
