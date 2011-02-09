@@ -9,7 +9,7 @@ require_once 'ipco_parser.php';
 require_once 'ipco_compiled.php';
 require_once 'ipco_expression.php';
 
-echo new IPCO_Expression('-1 + (!(-2*a)) != 2^7 & {12, 3, 9, 8+2} & 8 - substr(\'bla\', 1, 2) & 3 && \'1\\\'\\\'2\' > 3+8 AND !8 + 2 OR 3', new IPCO());
+echo new IPCO_Expression('-1 + (!(-2*\'a\')) != 2^7 & {12, 3, 9, 8+2} & 8 - substr(\'bla\', 1, 2)[0] & 3 && \'1\\\'\\\'2\' > 3+8 AND !8 + 2 OR 3', new IPCO());
 
 exit;
 

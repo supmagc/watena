@@ -4,7 +4,7 @@ class IPCO_Expression extends IPCO_Base {
 	
 	private $m_sOriginalExpression;
 	private $m_sCleanedExpression;
-	private $m_aOperators = array(' or ', '||', '|', ' and ', '&&', '&', '<', '>', '<=', '>=', '!=', '==', '=', '-', '+', '/', '*', '%', '^');	
+	private $m_aOperators = array(' or ', '||', '|', ' and ', '&&', '&', '<', '>', '<=', '>=', '!=', '==', '=', '-', '+', '/', '*', '%', '^');
 	
 	public function __construct($sExpression, IPCO $ipco) {
 		$this->m_sOriginalExpression = $sExpression;
@@ -34,21 +34,6 @@ class IPCO_Expression extends IPCO_Base {
 			return false;
 		}
 		return true;
-	}
-	
-	private function _trimmedStartWithNot(&$sExpression) {
-		$bNot = false;
-		$bRetry = true;
-		while($bRetry) {
-			$bRetry = false;
-			$sExpression = Encoding::trim($sExpression);
-			$nLength = Encoding::length($sExpression);
-			if(Encoding::beginsWith($sExpression, '!')) {
-				$bNot = !$bNot;
-				$sExpression = Encoding::trim(Encoding::substring($sExpression, 1));
-			}
-		}
-		return $bNot;		
 	}
 	
 	private function _findLastOccurance($sOperator, $sExpression) {
@@ -120,11 +105,11 @@ class IPCO_Expression extends IPCO_Base {
 						}
 					}
 					break;
-				case 0 : 
+				case 1 : 
 					if($char === '\'') $nState = 0;
 					else if($char === '\\') $nState = 2;
 					break;
-				case 0 : 
+				case 2 : 
 					$nState = 1;
 					break;
 			}
@@ -134,43 +119,56 @@ class IPCO_Expression extends IPCO_Base {
 		return implode(', ', array_map(array($this, '_parseExpression'), $aParams));
 	}
 	
-	private function _parseCall($sExpression) {
+	private function _parseCall($sExpression, $sBase = null) {
 		$sExpression = Encoding::trim($sExpression);
 		$nLength = Encoding::length($sExpression);
-		$nState = 0;
+		$nState = -1;
+		$nMark = 0;
+		$sName = null;
+		$sReturn = '';
 		for($i=0 ; $i<$nLength ; ++$i) {
 			$char = Encoding::substring($sExpression, $i, 1);
 			switch($nState) {
+				case -1:
+					if($char === '{') {
+						$nState = 7;
+					}
+					else $nState = 0;
 				case 0: 
 					if(in_array($char, array('(', '[', '{'))) {
 						if($char === '(') $nState = 1;
 						if($char === '[') $nState = 4;
-						if($char === '{') $nState = 7;
+						$nMark = $i + 1;
+						$sName = Encoding::substring($sExpression, 0, $i);
+					}
+					else if(true) {} // TODO: character checking
+					if($char === '.') {
+						$sReturn = $this->_parseCall(Encoding::substring($sExpression, $i + 1), $sReturn);
 					}
 					break;
 				case 1: 
 					if($char === ')') {
+						$sReturn .= 'parent::callMethod(\''.$sName.'\', array('.$this->_parseParameters(Encoding::substring($sExpression, $nMark, $i - $nMark)).'), '.$sBase.')';
+						$nMark = $i + 1;
 						$nState = 0;
 					}
-					if($char === '\'') {
-						$nState = 2;
-					}
+					if($char === '\'') $nState = 2;
 					break;
 				case 4: 
-					if($char === ')') {
+					if($char === ']') {
+						$sReturn .= $sName . '[' . $this->_parseExpression(Encoding::substring($sExpression, $nMark, $i - $nMark)) . ']';
+						$nMark = $i + 1;
 						$nState = 0;
 					}
-					if($char === '\'') {
-						$nState = 5;
-					}
+					if($char === '\'') $nState = 5;
 					break;
 				case 7: 
-					if($char === ')') {
+					if($char === '}') {
+						$sReturn .= 'array('.$this->_parseParameters(Encoding::substring($sExpression, 1, $i - $nMark)).')';
+						$nMark = $i + 1;
 						$nState = 0;
 					}
-					if($char === '\'') {
-						$nState = 8;
-					}
+					if($char === '\'') $nState = 8;
 					break;
 				case 2:
 				case 5:
@@ -189,6 +187,7 @@ class IPCO_Expression extends IPCO_Base {
 					break;
 			}
 		}
+		return $sExpression;
 	}
 	
 	private function _parseValue($sExpression) {
@@ -202,7 +201,7 @@ class IPCO_Expression extends IPCO_Base {
 		}
 		else {
 			// easy primitive
-			if($sExpression === 'true' || $sExpression === 'false' || Encoding::regMatch('^[0-9]+(\.[0-9]+)?$', $sExpression)) {
+			if($sExpression === 'true' || $sExpression === 'false' || Encoding::regMatch('^-?[0-9]+(\.[0-9]+)?$', $sExpression)) {
 				return $sExpression;
 			}
 			// Look for string
@@ -239,10 +238,6 @@ class IPCO_Expression extends IPCO_Base {
 		// Recursivly parse within quotes
 		if(Encoding::beginsWith($sExpression, '(') && Encoding::endsWith($sExpression, ')')) {
 			return $this->_parseExpression(Encoding::substring($sExpression, 1, $nLength - 2));
-		}
-		// Find short array notation
-		if(Encoding::beginsWith($sExpression, '{') && Encoding::endsWith($sExpression, '}')) {
-			return 'array(' . $this->_parseParameters(Encoding::substring($sExpression, 1, $nLength - 2)) . ')';
 		}
 		// Recursivly remove negation sign
 		if(Encoding::beginsWith($sExpression, '!')) {
