@@ -36,6 +36,34 @@ class IPCO_Expression extends IPCO_Base {
 		return true;
 	}
 	
+	private function _continuePastString($sExpression, $nIndex, $bCalculateParentheses = false) {
+		$nState = 0;
+		$nLength = Encoding::length($sExpression);
+		$nParetheses = 0;
+		if($nLength === 0) return $nIndex;
+		for($i=$nIndex ; $i<$nLength ; ++$i) {
+			$char = Encoding::substring($sExpression, $i, 1);
+			switch($nState) {
+				case 0:
+					if($bCalculateParentheses) {
+						if(in_array($char, array('(', '{', '['))) ++$nParetheses;
+						if(in_array($char, array(')', '}', ']'))) --$nParetheses;
+					}
+					if($nParetheses === 0) $nState = $char === '\'' ? 1 : 3;
+					break;
+				case 1:
+					if($char === '\\') $nState = 2;
+					else if($char === '\'') $nState = 3;
+					break;
+				case 2:
+					$nState = 1;
+					break;
+			}
+			if($nState === 3) return $char === '\'' ? $i + 1 : $i;
+		}
+		$this->_setError('Invalid string sequence.', $sExpression);
+	}
+	
 	private function _findLastOccurance($sOperator, $sExpression) {
 		$nLength = Encoding::length($sExpression);
 		$nOperatorLength = Encoding::length($sOperator);
@@ -85,9 +113,10 @@ class IPCO_Expression extends IPCO_Base {
 		}
 	}
 	
-	private function _parseParameters($sParams) {
+	private function _parseParameters($sParams, $bImplode = true) {
 		$aParams = array();
 		$nLength = Encoding::length($sParams);
+		if($nLength === 0) return $bImplode ? '' : array();
 		$nParentheses = 0;
 		$nState = 0;
 		$nMark = 0;
@@ -116,78 +145,53 @@ class IPCO_Expression extends IPCO_Base {
 		}
 		if($nState !== 0 || $nParentheses !== 0) $this->_setError("Invalid string-sequence found in parameter list.", $sParams);
 		$aParams []= Encoding::substring($sParams, $nMark, $nLength - $nMark);
-		return implode(', ', array_map(array($this, '_parseExpression'), $aParams));
+		$aParams = array_map(array($this, '_parseExpression'), $aParams);
+		return $bImplode ? implode(', ', $aParams) : $aParams;
 	}
 	
-	private function _parseCall($sExpression, $sBase = null) {
+	// TODO: stille some problems with advanced parsing stuff
+	private function _parseCall($sExpression, $mBase = null) {
+		echo $sExpression . '<br />';
 		$sExpression = Encoding::trim($sExpression);
 		$nLength = Encoding::length($sExpression);
-		$nState = -1;
+		$nState = 0;
 		$nMark = 0;
 		$sName = null;
-		$sReturn = '';
-		for($i=0 ; $i<$nLength ; ++$i) {
+		$sReturn = null;
+		for($i=$mBase !== null ? 0 : 1 ; $i<$nLength ; ++$i) {
+			$i = $this->_continuePastString($sExpression, $i);
 			$char = Encoding::substring($sExpression, $i, 1);
 			switch($nState) {
-				case -1:
-					if($char === '{') {
-						$nState = 7;
-					}
-					else $nState = 0;
-				case 0: 
-					if(in_array($char, array('(', '[', '{'))) {
-						if($char === '(') $nState = 1;
-						if($char === '[') $nState = 4;
-						$nMark = $i + 1;
+				case 0:
+					if($sReturn === null && $i > 0 && ($char === '.' || $char === '[')) $sReturn = 'parent::parseValue(\''.Encoding::substring($sExpression, 0, $i).'\', '.($mBase === null ? 'null' : $mBase).')';
+					if($sReturn !== null) return $this->_parseCall(Encoding::substring($sExpression, $char === '.' ? $i + 1 : $i), $sReturn);
+					if($i === 0 && $char === '[') $nState = 3;
+					if($i > 0 && $char === '(') {
 						$sName = Encoding::substring($sExpression, 0, $i);
-					}
-					else if(true) {} // TODO: character checking
-					if($char === '.') {
-						$sReturn = $this->_parseCall(Encoding::substring($sExpression, $i + 1), $sReturn);
+						$nMark = $i + 1;
+						$nState = 1;
 					}
 					break;
-				case 1: 
+				case 1:
 					if($char === ')') {
-						$sReturn .= 'parent::callMethod(\''.$sName.'\', array('.$this->_parseParameters(Encoding::substring($sExpression, $nMark, $i - $nMark)).'), '.$sBase.')';
-						$nMark = $i + 1;
+						$sReturn = 'parent::parseMethod(\''.$sName.'\', 
+							array('.$this->_parseParameters(Encoding::substring($sExpression, $nMark, $i - $nMark)).'), 
+							'.($mBase === null ? 'null' : $mBase).')';
 						$nState = 0;
-					}
-					if($char === '\'') $nState = 2;
-					break;
-				case 4: 
-					if($char === ']') {
-						$sReturn .= $sName . '[' . $this->_parseExpression(Encoding::substring($sExpression, $nMark, $i - $nMark)) . ']';
-						$nMark = $i + 1;
-						$nState = 0;
-					}
-					if($char === '\'') $nState = 5;
-					break;
-				case 7: 
-					if($char === '}') {
-						$sReturn .= 'array('.$this->_parseParameters(Encoding::substring($sExpression, 1, $i - $nMark)).')';
-						$nMark = $i + 1;
-						$nState = 0;
-					}
-					if($char === '\'') $nState = 8;
-					break;
-				case 2:
-				case 5:
-				case 8:
-					if($char === '\\') {
-						++$nState;
-					}
-					if($char === '\'') {
-						--$nState;
 					}
 					break;
 				case 3:
-				case 6:
-				case 9:
-					--$nState;
+					if($char === ']') {
+						$aParts = $this->_parseParameters(Encoding::substring($sExpression, 1, $i - 1), false);
+						foreach($aParts as $sIndex) {
+							$sReturn = 'parent::parseArray('.$sIndex.', '.($sReturn === null ? $mBase : $sReturn).')';
+						}
+						$nState = 0;
+					}
 					break;
 			}
 		}
-		return $sExpression;
+		return $sReturn;	
 	}
 	
 	private function _parseValue($sExpression) {
@@ -197,7 +201,7 @@ class IPCO_Expression extends IPCO_Base {
 			$this->_setError('Whitespace value detected, you might have an invalid double operator sequence.', $sExpression);
 		}
 		if($sExpression === '\'') {
-			$this->_setError('SIngle quote detected without meaning.', $sExpression);
+			$this->_setError('Single quote detected without meaning.', $sExpression);
 		}
 		else {
 			// easy primitive
@@ -205,16 +209,7 @@ class IPCO_Expression extends IPCO_Base {
 				return $sExpression;
 			}
 			// Look for string
-			else if(Encoding::beginsWith($sExpression, '\'') && Encoding::endsWith($sExpression, '\'')) {
-				$bEscaped = false;
-				for($i=1 ; $i<$nLength - 1 ; ++$i) {
-					$char = Encoding::substring($sExpression, $i, 1);
-					if($bEscaped) $bEscaped = false;
-					else {
-						if($char === '\'') $this->_setError('Invalid none escaped quote found in string sequence.', $sExpression);
-						else if($char === '\\') $bEscaped = true;
-					}
-				}
+			else if($this->_continuePastString($sExpression, 0, false) === $nLength) {
 				return $sExpression;
 			}
 			// parsing for variablle, and or calling stuff
@@ -235,9 +230,13 @@ class IPCO_Expression extends IPCO_Base {
 				return $this->_getPhpExpression($this->m_aOperators[$i], $this->_parseExpression(Encoding::substring($sExpression, 0, $nPos)), $this->_parseExpression(Encoding::substring($sExpression, $nPos + $nOperatorLength, $nLength - $nPos - $nOperatorLength)));
 			}
 		}
-		// Recursivly parse within quotes
+		// Recursivly parse within ()
 		if(Encoding::beginsWith($sExpression, '(') && Encoding::endsWith($sExpression, ')')) {
 			return $this->_parseExpression(Encoding::substring($sExpression, 1, $nLength - 2));
+		}
+		// Recursivly parse within {}
+		if(Encoding::beginsWith($sExpression, '{') && Encoding::endsWith($sExpression, '}')) {
+			return 'array('.$this->_parseParameters(Encoding::substring($sExpression, 1, $nLength - 2)).')';
 		}
 		// Recursivly remove negation sign
 		if(Encoding::beginsWith($sExpression, '!')) {
