@@ -109,6 +109,8 @@ class IPCO_Expression extends IPCO_Base {
 	private function _getPhpExpression($sOperator, $sLeft, $sRight) {
 		switch($sOperator) {
 			case '^' : return "pow($sLeft, $sRight)"; 
+			case '+' :
+				if(Encoding::endsWith($sLeft, '\'') && Encoding::beginsWith($sRight, '\'')) return "($sLeft . $sRight)";
 			default : return "($sLeft ".$this->_getPhpOperator($sOperator)." $sRight)";
 		}
 	}
@@ -149,7 +151,7 @@ class IPCO_Expression extends IPCO_Base {
 		return $bImplode ? implode(', ', $aParams) : $aParams;
 	}
 	
-	// TODO: stille some problems with advanced parsing stuff
+	// TODO: still some problems with advanced parsing stuff
 	private function _parseCall($sExpression, $mBase = null) {
 		echo $sExpression . '<br />';
 		$sExpression = Encoding::trim($sExpression);
