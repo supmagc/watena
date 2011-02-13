@@ -2,6 +2,11 @@
 
 class IPCO_Expression extends IPCO_Base {
 	
+	const ERROR_UNKNOWN = 0;
+	const ERROR_INVALIDSTRING = 1;
+	const ERROR_INVALIDPARENTHESES = 2;
+	const ERROR_INVALIDEXPRESSION = 3;
+	
 	private $m_sOriginalExpression;
 	private $m_sCleanedExpression;
 	private $m_aOperators = array(' or ', '||', '|', ' and ', '&&', '&', '<', '>', '<=', '>=', '!=', '==', '=', '-', '+', '/', '*', '%', '^');
@@ -15,72 +20,94 @@ class IPCO_Expression extends IPCO_Base {
 		return $this->m_sCleanedExpression;
 	}
 		
-	private function _setError($sMessage, $sExpression) {
-		die("$sMessage <<$sExpression>>");
+	private function _setError($nCode, $sExpression) {
+		switch($nCode) {
+			case self::ERROR_UNKNOWN: die("Unknown error <<$sExpression>>");
+			case self::ERROR_INVALIDSTRING: die("Invalid string sequence <<$sExpression>>");
+			case self::ERROR_INVALIDPARENTHESES: die("Invalid parentheses/braces <<$sExpression>>");
+			case self::ERROR_INVALIDEXPRESSION: die("Invalid expression <<$sExpression>>");
+			default: exit;
+		}
 	}
 	
 	private function _isOperator($sOperator, $sExpression, $nPos) {
-		if($sOperator === '-') {
-			for($i=$nPos ; $i>=0 ; --$i) {
-				if($i === 0) return false;
-				for($j=0 ; $j<count($this->m_aOperators) ; ++$j) {
-					$nOperatorLength = Encoding::length($this->m_aOperators[$j]);
-					if($i - $nOperatorLength >= 0 && Encoding::stringToLower(Encoding::substring($sExpression, $i - $nOperatorLength, $nOperatorLength)) === $this->m_aOperators[$j]) {
-						return false;
+		switch($sOperator) {
+			case '-':
+				for($i=$nPos ; $i>=0 ; --$i) {
+					if($i === 0) return false;
+					for($j=0 ; $j<count($this->m_aOperators) ; ++$j) {
+						$nOperatorLength = Encoding::length($this->m_aOperators[$j]);
+						if($i - $nOperatorLength >= 0 && Encoding::stringToLower(Encoding::substring($sExpression, $i - $nOperatorLength, $nOperatorLength)) === $this->m_aOperators[$j]) {
+							return false;
+						}
 					}
+					if($sExpression[$i - 1] !== ' ') return true;
 				}
-				if($sExpression[$i - 1] !== ' ') return true;
-			}
-			return false;
+				return false;
+			default: return true;
 		}
-		return true;
 	}
 	
 	private function _continuePastString($sExpression, $nIndex, $bCalculateParentheses = false) {
-		$nState = 0;
 		$nLength = Encoding::length($sExpression);
-		$nParetheses = 0;
-		if($nLength === 0) return $nIndex;
-		for($i=$nIndex ; $i<$nLength ; ++$i) {
-			$char = Encoding::substring($sExpression, $i, 1);
-			switch($nState) {
-				case 0:
-					if($bCalculateParentheses) {
-						if(in_array($char, array('(', '{', '['))) ++$nParetheses;
-						if(in_array($char, array(')', '}', ']'))) --$nParetheses;
-					}
-					if($nParetheses === 0) $nState = $char === '\'' ? 1 : 3;
-					break;
-				case 1:
-					if($char === '\\') $nState = 2;
-					else if($char === '\'') $nState = 3;
-					break;
-				case 2:
-					$nState = 1;
-					break;
-			}
-			if($nState === 3) return $char === '\'' ? $i + 1 : $i;
+		if($nLength === 0 || $nIndex >= $nLength) return $nIndex;
+		$char = Encoding::substring($sExpression, $nIndex, 1);
+		echo Encoding::substring($sExpression, $nIndex) . '<br />';
+		if($sExpression === '-1 + (!(-2*\'a\')) != 2^7 & {12, 3, 9, 8+2}') {
+			echo Encoding::substring($sExpression, $nIndex) . '<br />';
 		}
-		$this->_setError('Invalid string sequence.', $sExpression);
+
+		if($bCalculateParentheses && in_array($char, array('(', '[', '{'))) {
+			$nParetheses = 1;
+			for($i=$nIndex + 1 ; $i<$nLength ; ++$i) {
+				$temp = Encoding::substring($sExpression, $i, 1);
+				if(in_array($temp, array('(', '[', '{'))) ++$nParetheses;
+				else if(in_array($temp, array(')', ']', '}'))) {
+					--$nParetheses;
+					if()
+				}
+			}
+			if($nParetheses !== 0) $this->_setError(self::ERROR_INVALIDPARENTHESES, Encoding::substring($sExpression, $nIndex));
+		}
+
+		if($char === '\'') {
+			$nState = 0;
+			for($i=$nIndex + 1 ; $i<$nLength ; ++$i) {
+				$temp = Encoding::substring($sExpression, $i, 1);
+				switch($nState) {
+					case 0:
+						if($temp === '\\') $nState = 1;
+						else if($temp === '\'') return $i + 1;
+						break;
+					case 1:
+						$nState = 0;
+						break;
+				}
+			}
+		}
+		
+		$this->_setError(self::ERROR_INVALIDSTRING, Encoding::substring($sExpression, $nIndex));
 	}
 	
 	private function _findLastOccurance($sOperator, $sExpression) {
 		$nLength = Encoding::length($sExpression);
 		$nOperatorLength = Encoding::length($sOperator);
-		$nParentheses = 0;
 		$nState = 0;
+		//$nParentheses = 0;
 		$nIndex = $nLength + 1;
-		for($i=0 ; $i<$nLength ; ++$i) {
+		for($i=0 ; $i<$nLength ; $i = $this->_continuePastString($sExpression, ++$i, true)) {
+			//$i = $this->_continuePastString($sExpression, $i);
 			$char = Encoding::stringToLower(Encoding::substring($sExpression, $i, 1));
 			$chars = Encoding::stringToLower(Encoding::substring($sExpression, $i, $nOperatorLength));
+			if($chars === $sOperator && $this->_isOperator($sOperator, $sExpression, $i)) $nIndex = $i;
+			//else if($char === '\'') $nState = 1;
+			/*echo "$sExpression - $char - $chars <br />";
 			switch($nState) {
 				case 0 : 
-					if(in_array($char, array('(', '[', '{'))) ++$nParentheses;
-					else if(in_array($char, array(')', ']', '}'))) --$nParentheses;
-					else if($nParentheses === 0) {
-						if($chars === $sOperator && $this->_isOperator($sOperator, $sExpression, $i)) $nIndex = $i;
-						else if($char === '\'') $nState = 1;
-					}
+					//if(in_array($char, array('(', '[', '{'))) ++$nParentheses;
+					//else if(in_array($char, array(')', ']', '}'))) --$nParentheses;
+					//else if($nParentheses === 0) {
+					//}
 					break;
 				case 1 : 
 					if($char === '\'') $nState = 0;
@@ -89,9 +116,9 @@ class IPCO_Expression extends IPCO_Base {
 				case 2 : 
 					$nState = 1;
 					break;
-			}
+			}*/
 		}
-		if($nState !== 0 || $nParentheses !== 0) $this->_setError("Invalid expression found.", $sExpression);
+		//if($nState !== 0 || $nParentheses !== 0) $this->_setError("Invalid expression found.", $sExpression);
 		return $nIndex > $nLength ? -1 : $nIndex;
 	}
 	
@@ -110,7 +137,7 @@ class IPCO_Expression extends IPCO_Base {
 		switch($sOperator) {
 			case '^' : return "pow($sLeft, $sRight)"; 
 			case '+' :
-				if(Encoding::endsWith($sLeft, '\'') && Encoding::beginsWith($sRight, '\'')) return "($sLeft . $sRight)";
+				if(Encoding::endsWith($sLeft, '\'') || Encoding::beginsWith($sRight, '\'')) return "((\'\'.$sLeft) . (\'\'$sRight))";
 			default : return "($sLeft ".$this->_getPhpOperator($sOperator)." $sRight)";
 		}
 	}
@@ -211,8 +238,11 @@ class IPCO_Expression extends IPCO_Base {
 				return $sExpression;
 			}
 			// Look for string
-			else if($this->_continuePastString($sExpression, 0, false) === $nLength) {
-				return $sExpression;
+			else if(Encoding::beginsWith($sExpression, '\'')) {
+				if($this->_continuePastString($sExpression, 0, false) === $nLength)
+					return $sExpression;
+				else
+					return $this->_setError(self::ERROR_INVALIDSTRING, $sExpression);
 			}
 			// parsing for variablle, and or calling stuff
 			else {
