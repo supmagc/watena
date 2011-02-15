@@ -51,6 +51,33 @@ class IPCO_Expression extends IPCO_Base {
 	private function _continuePastString($sExpression, $nIndex, $bCalculateParentheses = false) {
 		$nLength = Encoding::length($sExpression);
 		if($nLength === 0 || $nIndex >= $nLength) return $nIndex;
+		
+		$nState = 0;
+		$nParentheses = 0;
+		//echo Encoding::substring($sExpression, $nIndex) . "<br />\n";
+		for($i=$nIndex ; $i<$nLength ; ++$i) {
+			$char = Encoding::substring($sExpression, $i, 1);
+			switch($nState) {
+				case 0:
+					if(in_array($char, array('(', '{', '['))) ++$nParentheses;
+					else if($nParentheses > 0 && in_array($char, array(')', '}', ']'))) --$nParentheses;
+					else if($nParentheses === 0) {
+						if($char === '\'') $nState = 1;
+						else return $i;
+					}
+					break;
+				case 1:
+					if($char === '\'') $nState = 0;
+					else if($char === '\\') $nState = 2;
+					break;
+				case 2:
+					$nState = 1;
+			}
+		}
+		if($nParentheses !== 0) $this->_setError(self::ERROR_INVALIDPARENTHESES, Encoding::substring($sExpression, $nIndex));
+		if($nState !== 0) $this->_setError(self::ERROR_INVALIDSTRING, Encoding::substring($sExpression, $nIndex));
+		return $nLength;
+		/*
 		$char = Encoding::substring($sExpression, $nIndex, 1);
 		echo Encoding::substring($sExpression, $nIndex) . '<br />';
 		if($sExpression === '-1 + (!(-2*\'a\')) != 2^7 & {12, 3, 9, 8+2}') {
@@ -87,6 +114,7 @@ class IPCO_Expression extends IPCO_Base {
 		}
 		
 		$this->_setError(self::ERROR_INVALIDSTRING, Encoding::substring($sExpression, $nIndex));
+		*/
 	}
 	
 	private function _findLastOccurance($sOperator, $sExpression) {
@@ -254,6 +282,7 @@ class IPCO_Expression extends IPCO_Base {
 	private function _parseExpression($sExpression) {
 		$sExpression = Encoding::trim($sExpression);
 		$nLength = Encoding::length($sExpression);
+		echo $sExpression . "<br />\n";
 		// Search for default operators
 		for($i=0 ; $i<count($this->m_aOperators) ; ++$i) {		
 			$nPos = $this->_findLastOccurance($this->m_aOperators[$i], $sExpression);
