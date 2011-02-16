@@ -9,12 +9,11 @@ require_once 'ipco_parser.php';
 require_once 'ipco_compiled.php';
 require_once 'ipco_expression.php';
 
-echo new IPCO_Expression('-1 + (!(-2*\'a\')) != 2^7 & {12, 3, 9, 8+2} & 8 - substr(\'bla\', 1, 2).length()[2, 1].myBla[check] & 3 && \'1\\\'\\\'2\' > 3+8 AND !8 + 2 OR 3', new IPCO());
+echo new IPCO_Expression('-1 + (!(-2*\'a\')) is not 2^7 & {12, 3, 9, 8+2} & 8 - substr(\'bla\', 1, 2).length()[2, 1].myBla[check] & 3 && \'1\\\'\\\'2\' > 3+8 AND !8 + 2 OR 3', new IPCO());
 
 exit;
 
 // TODO: First parse and search for function calls and component calls etc ... we need a syntax for this
-
 
 new IPCO_Condition('(\'a\' & !(\'b\' | 12.56 = 3.8))', new IPCO());
 //$ipco = new IPCO();
