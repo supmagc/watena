@@ -3,16 +3,21 @@
 // Inline PHP compilation
 class IPCO {
 	
-	public function load($sFileName) {
-		$oParser = new IPCO_Parser($sFileName, $this);
-		file_put_contents('compiled.php', $oParser->parse());
+	public function load($sIdentifier) {
+		$oParser = new IPCO_Parser($sIdentifier, $this);
+		$sClassName = $oParser->getClassName();
+		file_put_contents(Encoding::stringToLower($sClassName) . '.php', $oParser->parse());
 		
-		include 'compiled.php';
-		new  _Source_CV();
+		include Encoding::stringToLower($sClassName) . '.php';
+		new $sClassName();
 	}
 	
-	public function getSourcePath($sFileName) {
-		return "./$sFileName.tpl";
+	public function getSourcePath($sIdentifier) {
+		return "./$sIdentifier.tpl";
+	}
+	
+	public function getClassName($sIdentifier) {
+		return 'IPCO_Compiled_' . Encoding::regReplace('[-/\\. ]', '_', $sIdentifier);
 	}
 }
 

@@ -1,20 +1,4 @@
-{% extends 'base.tpl' %}
-
-{% while read() %}
-	within while
-	{% cycle bla 0 1 %}
-	{% if isPartOneValid() %}
-		within if
-	{% elseif isPartTwoValid() %}
-		within elseif
-	{% else %}
-		within else
-	{% end %}
+This template is beeing parsed !
+{% if isPartOneValid(name[0]) %}
+	within if
 {% end %}
-
-{% foreach dataArray %}
-	within foreach
-{% end %}
-
-{% component 'recentArticles' %}
-{% template 'recentArticles' %}

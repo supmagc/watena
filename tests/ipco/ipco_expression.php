@@ -117,6 +117,14 @@ class IPCO_Expression extends IPCO_Base {
 			default : return "($sLeft ".$this->_getPhpOperator($sOperator)." $sRight)";
 		}
 	}
+
+	private function _getPhpCall($sName, $aParams, $aSlices, $mBase) {
+		$sReturn = '';
+		if($aParams === null) $sReturn = "parent::processMember('$sName', $mBase)";
+		else $sReturn = "parent::processMethod('$sName', array(".implode(', ', $aParams)."), $mBase)";
+		if($aSlices != null) $sReturn = "parent::processSlices(array(".implode(', ', $aSlices)."), $sReturn)";
+		return $sReturn;
+	}
 	
 	private function _parseListing($sSplitter, $sExpression) {
 		$aParams = array();
@@ -191,16 +199,9 @@ class IPCO_Expression extends IPCO_Base {
 		$sName = Encoding::trim($sName);
 		if($aParams !== null) $aParams = array_map(array($this, '_parseExpression'), $aParams);
 		if($aSlices !== null) $aSlices = array_map(array($this, '_parseExpression'), $aSlices);
+		if($mBase === null) $mBase = 'null';
 		
-		// TODO: generate proper output
-		echo "<br />\n";
-		var_dump($sName);
-		echo "<br />\n";
-		var_dump($aParams);
-		echo "<br />\n";
-		var_dump($aSlices);
-		echo "<br />\n";
-		return '';
+		return $this->_getPhpCall($sName, $aParams, $aSlices, $mBase);
 	}
 	
 	private function _parseValue($sExpression) {
