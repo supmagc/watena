@@ -8,21 +8,41 @@ class IPCO_Parser extends IPCO_Base {
 	const STATE_IPCO_VAR 	= 4;
 	const STATE_IPCO_BQUOTE	= 5;
 	
+	private $m_sIdentifier;
+	private $m_sSourcePath;
+	private $m_sClassName;
 	private $m_sContent;
+	private $m_nDepth;
 	
-	public function __construct($sFileName, IPCO $ipco) {
+	public function __construct($sIdentifier, IPCO $ipco) {
 		parent::__construct($ipco);
-		$this->m_sContent = file_get_contents(parent::getIpco()->getSourcePath($sFileName));
+		$this->m_sIdentifier = $sIdentifier;
+		$this->m_sSourcePath = parent::getIpco()->getSourcePath($sIdentifier);
+		$this->m_sClassName = parent::getIpco()->getClassName($sIdentifier);
+		$this->m_sContent = file_get_contents(parent::getIpco()->getSourcePath($sIdentifier));
+	}
+	
+	public function getIdentifier() {
+		return $this->m_sIdentifier;
+	}
+	
+	public function getSourcePath() {
+		return $this->m_sSourcePath;
+	}
+	
+	public function getClassName() {
+		return $this->m_sClassName;
 	}
 	
 	public function getHeader() {
 		return '
 <?php
-class _Source_CV extends IPCO_Compiled {
+class '.$this->m_sClassName.' extends IPCO_Processor {
 
 	public function __construct() {
 		$_ob = \'\';
-		$_comp = null;';
+		$_comp = null;
+';
 	}
 	
 	public function getFooter() {
@@ -34,18 +54,12 @@ class _Source_CV extends IPCO_Compiled {
 	}
 	
 	public function parse() {
-		// While characters found
-		// Read next character
-		// If state is default, check if start of IPCO
-			// flush untill marker, set new marker
-
+		$this->m_nDepth = 0;
 		$nMark = 0;
 		$aBuffer = array($this->getHeader());
 		$nState = self::STATE_DEFAULT;
-		$nLength=Encoding::length($this->m_sContent);
-		
-		
-		
+		$nLength = Encoding::length($this->m_sContent);
+ 		
 		for($i=0 ; $i<$nLength ; ++$i) {
 			
 			$char1 = Encoding::substring($this->m_sContent, $i, 1);
@@ -54,12 +68,12 @@ class _Source_CV extends IPCO_Compiled {
 			switch($nState) {
 				case self::STATE_DEFAULT : 
 					if($char2 === '{%') {
-						$aBuffer []= $this->compileContent(Encoding::substring($this->m_sContent, $nMark, $i-$nMark));
+						$aBuffer []= $this->interpretContent(Encoding::substring($this->m_sContent, $nMark, $i-$nMark));
 						$nMark = $i += 2;
 						$nState = self::STATE_IPCO;
 					}
 					else if($char2 === '{{') {
-						$aBuffer []= $this->compileContent(Encoding::substring($this->m_sContent, $nMark, $i-$nMark));
+						$aBuffer []= $this->interpretContent(Encoding::substring($this->m_sContent, $nMark, $i-$nMark));
 						$nMark = $i += 2;
 						$nState = self::STATE_IPCO_VAR;
 					}
@@ -67,7 +81,7 @@ class _Source_CV extends IPCO_Compiled {
 					
 				case self::STATE_IPCO : 
 					if($char2 === '%}') {
-						$aBuffer []= $this->compileFilter(Encoding::substring($this->m_sContent, $nMark, $i-$nMark));
+						$aBuffer []= $this->interpretFilter(Encoding::substring($this->m_sContent, $nMark, $i-$nMark));
 						$nMark = $i += 2;
 						$nState = self::STATE_DEFAULT;
 					}
@@ -87,7 +101,7 @@ class _Source_CV extends IPCO_Compiled {
 					
 				case self::STATE_IPCO_VAR : 
 					if($char2 === '}}') {
-						$aBuffer []= $this->compileVariable(Encoding::substring($this->m_sContent, $nMark, $i-$nMark));
+						$aBuffer []= $this->interpretVariable(Encoding::substring($this->m_sContent, $nMark, $i-$nMark));
 						$nMark = $i += 2;
 						$nState = self::STATE_DEFAULT;
 					}
@@ -104,75 +118,45 @@ class _Source_CV extends IPCO_Compiled {
 		return implode('', $aBuffer);
 	}
 	
-	public function compileContent($sContent) {
-		return '
-		$_ob .= \''.Encoding::trim($sContent).'\';';
+	public function interpretContent($sContent) {
+		return $this->getDepthOffset() . '$_ob .= \''.Encoding::trim($sContent).'\';'."\n";
 	}
 	
-	public function compileFilter($sContent) {
+	public function interpretFilter($sContent) {
 		$aParts = array_map(array('Encoding', 'trim'), explode(' ', Encoding::trim($sContent)));
 		$sName = array_shift($aParts);
 		switch($sName) {
-			case 'if' : return $this->compileIf($aParts); break;
-			case 'foreach' : return $this->compileForeach($aParts); break;
-			case 'while' : return $this->compileWhile($aParts); break;
-			case 'else' : return $this->compileElse($aParts); break;
-			case 'elseif' : return $this->compileElseif($aParts); break;
-			case 'end' : return $this->compileEnd($aParts); break;
-			case 'component' : return $this->compileComponent($aParts); break;
-			case 'template' : return $this->compileTemplate($aParts); break;
+			case 'if' : return $this->interpretIf(new IPCO_Expression(implode(' ', $aParts), parent::getIpco())); break;
+			case 'foreach' : return $this->interpretForeach($aParts); break;
+			case 'while' : return $this->interpretWhile($aParts); break;
+			case 'else' : return $this->interpretElse($aParts); break;
+			case 'elseif' : return $this->interpretElseif($aParts); break;
+			case 'end' : return $this->interpretEnd(count($aParts) > 0 ? $aParts[0] : null); break;
+			case 'component' : return $this->interpretComponent($aParts); break;
+			case 'template' : return $this->interpretTemplate($aParts); break;
 		}
 	}
 	
-	public function compileVariable($sContent) {
+	public function interpretVariable($sContent) {
 		return '-variable-';
 	}
 	
-	public function compileIf($aParts) {
-		return <<<EOB
-		if(true) {
-EOB;
+	public function interpretIf(IPCO_Expression $oCondition) {
+		return $this->getDepthOffset(0, 1) . "if($oCondition) {\n";
 	}
 	
-	public function compileForeach($aParts) {
-		return '
-		foreach(array() as $a) {';
+	public function interpretEnd($aParts) {
+		return $this->getDepthOffset(-1, 0) . "}\n";
 	}
 	
-	public function compileWhile($aParts) {
-		return <<<EOB
-		while(false) {
-EOB;
-	}
-	
-	public function compileElse($aParts) {
-		return <<<EOB
+	public function getDepthOffset($nPreChange = 0, $nPostChange = 0) {
+		$sReturn = "\t\t";
+		$this->m_nDepth += $nPreChange;
+		for($i=0 ; $i<$this->m_nDepth ; ++$i) {
+			$sReturn .= "\t";
 		}
-		else {
-EOB;
-	}
-	
-	public function compileElseif($aParts) {
-		return <<<EOB
-		}
-		elseif(true) {
-EOB;
-	}
-	
-	public function compileEnd($aParts) {
-		return <<<EOB
-		}
-EOB;
-	}
-	
-	public function compileComponent($aParts) {
-		return <<<EOB
-EOB;
-	}
-	
-	public function compileTemplate($aParts) {
-		return <<<EOB
-EOB;
+		$this->m_nDepth += $nPostChange;
+		return $sReturn;
 	}
 }
 
