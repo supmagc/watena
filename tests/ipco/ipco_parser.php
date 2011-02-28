@@ -119,7 +119,7 @@ class '.$this->m_sClassName.' extends IPCO_Processor {
 	}
 	
 	public function interpretContent($sContent) {
-		return $this->getDepthOffset() . '$_ob .= \''.Encoding::trim($sContent).'\';'."\n";
+		return $this->getDepthOffset() . '$_ob .= \''.$sContent.'\';'."\n";
 	}
 	
 	public function interpretFilter($sContent) {
@@ -129,8 +129,8 @@ class '.$this->m_sClassName.' extends IPCO_Processor {
 			case 'if' : return $this->interpretIf(new IPCO_Expression(implode(' ', $aParts), parent::getIpco())); break;
 			case 'foreach' : return $this->interpretForeach($aParts); break;
 			case 'while' : return $this->interpretWhile($aParts); break;
-			case 'else' : return $this->interpretElse($aParts); break;
-			case 'elseif' : return $this->interpretElseif($aParts); break;
+			case 'else' : return $this->interpretElse(); break;
+			case 'elseif' : return $this->interpretElseIf(new IPCO_Expression(implode(' ', $aParts), parent::getIpco())); break;
 			case 'end' : return $this->interpretEnd(count($aParts) > 0 ? $aParts[0] : null); break;
 			case 'component' : return $this->interpretComponent($aParts); break;
 			case 'template' : return $this->interpretTemplate($aParts); break;
@@ -143,6 +143,14 @@ class '.$this->m_sClassName.' extends IPCO_Processor {
 	
 	public function interpretIf(IPCO_Expression $oCondition) {
 		return $this->getDepthOffset(0, 1) . "if($oCondition) {\n";
+	}
+	
+	public function interpretElse() {
+		return $this->getDepthOffset(-1, 1) . "} else {\n";
+	}
+	
+	public function interpretElseIf(IPCO_Expression $oCondition) {
+		return $this->getDepthOffset(-1, 1) . "} elseif($oCondition) {\n";
 	}
 	
 	public function interpretEnd($aParts) {
