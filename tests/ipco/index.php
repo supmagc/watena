@@ -1,5 +1,4 @@
 <?php
-
 require_once '../../base/classes/static.encoding.php';
 Encoding::init('UTF-8');
 
