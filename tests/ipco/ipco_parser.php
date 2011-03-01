@@ -128,7 +128,7 @@ class '.$this->m_sClassName.' extends IPCO_Processor {
 		switch($sName) {
 			case 'if' : return $this->interpretIf(new IPCO_Expression(implode(' ', $aParts), parent::getIpco())); break;
 			case 'foreach' : return $this->interpretForeach($aParts); break;
-			case 'while' : return $this->interpretWhile($aParts); break;
+			case 'while' : return $this->interpretWhile(new IPCO_Expression(implode(' ', $aParts), parent::getIpco())); break;
 			case 'else' : return $this->interpretElse(); break;
 			case 'elseif' : return $this->interpretElseIf(new IPCO_Expression(implode(' ', $aParts), parent::getIpco())); break;
 			case 'end' : return $this->interpretEnd(count($aParts) > 0 ? $aParts[0] : null); break;
@@ -143,6 +143,10 @@ class '.$this->m_sClassName.' extends IPCO_Processor {
 	
 	public function interpretIf(IPCO_Expression $oCondition) {
 		return $this->getDepthOffset(0, 1) . "if($oCondition) {\n";
+	}
+
+	public function interpretWhile(IPCO_Expression $oCondition) {
+		return $this->getDepthOffset(0, 1) . "while($oCondition) {\n";
 	}
 	
 	public function interpretElse() {
