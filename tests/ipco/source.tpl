@@ -1,7 +1,7 @@
 This template is beeing parsed !
-{% if isPartOneValid(name[0]) %}
+{% if variable %}
 	within if
-{% elseif isPartOneValid(name[1]) %}
+{% elseif variableNot %}
 	within elseif
 {% else %}
 	within else
