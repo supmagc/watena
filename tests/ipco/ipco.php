@@ -7,9 +7,16 @@ class IPCO {
 		$oParser = new IPCO_Parser($sIdentifier, $this);
 		$sClassName = $oParser->getClassName();
 		file_put_contents(Encoding::stringToLower($sClassName) . '.php', $oParser->parse());
+
+		$oDebug = new stdClass();
+		$oDebug->variable = true;
+		$oDebug->variableNot = false;
 		
 		include Encoding::stringToLower($sClassName) . '.php';
-		new $sClassName();
+		$oTemp = new $sClassName();
+		$oTemp->componentPush($oDebug);
+		
+		return $oTemp;
 	}
 	
 	public function getSourcePath($sIdentifier) {

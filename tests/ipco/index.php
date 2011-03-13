@@ -18,5 +18,5 @@ exit;
 */
 
 $ipco = new IPCO();
-$ipco->load('source');
+echo $ipco->load('source');
 ?>
