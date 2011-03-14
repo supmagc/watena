@@ -2,11 +2,11 @@
 <?php
 class IPCO_Compiled_source extends IPCO_Processor {
 
-	private $m_sOutput;
 
-	public function __construct() {
+	public function __construct() { }
+
+	public function __toString() {
 		$_ob = '';
-		$_comp = null;
 		$_ob .= 'This template is beeing parsed !
 ';
 		if(parent::processMember('variable', null)) {
@@ -22,11 +22,8 @@ class IPCO_Compiled_source extends IPCO_Processor {
 	within else
 ';
 		}
-
-		$this->m_sOutput = $_ob;
-	}
 	
-	public function __toString() {
-		return $this->m_sOutput;
+		return $_ob;
 	}
+}
 ?>

@@ -39,22 +39,19 @@ class IPCO_Parser extends IPCO_Base {
 <?php
 class '.$this->m_sClassName.' extends IPCO_Processor {
 
-	private $m_sOutput;
 
-	public function __construct() {
+	public function __construct() { }
+
+	public function __toString() {
 		$_ob = \'\';
-		$_comp = null;
 ';
 	}
 	
 	public function getFooter() {
-		return '
-		$this->m_sOutput = $_ob;
+		return '	
+		return $_ob;
 	}
-	
-	public function __toString() {
-		return $this->m_sOutput;
-	}
+}
 ?>';
 	}
 	
