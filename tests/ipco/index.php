@@ -1,5 +1,7 @@
 <?php
 require_once '../../base/classes/static.encoding.php';
+require_once '../../base/global.php';
+
 Encoding::init('UTF-8');
 
 require_once 'ipco.php';
