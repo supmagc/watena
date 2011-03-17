@@ -5,7 +5,7 @@ class IPCO_Processor {
 	private $m_aComponents = array();
 	
 	public function componentPush($mComponent) {
-		if($mComponent !== null) {
+		if(!empty($mComponent)) {
 			array_push($this->m_aComponents, $mComponent);
 			return true;
 		}
@@ -16,27 +16,82 @@ class IPCO_Processor {
 		array_pop($this->m_aComponents);
 	}
 	
-	protected function processMethod($sName, array $aParams, $mBase = null) {
-		$bCompCheck = $this->componentPush($mBase);
-		for($i=count($this->m_aComponents) ; $i>=0 ; --$i) {
-			if(method_exists($this->m_aComponents[$i], $sName)) return call_user_func_array(array($this->m_aComponents[$i], $sName), $aParams);
+	protected final function processMethod($sName, array $aParams, $mBase = null) {
+		static $bReturn = false;
+		if(!empty($mBase)) {
+			if(method_exists($mBase, $sName)) {
+				$bReturn = true;
+				return call_user_func_array(array($mBase, $sName), $aParams);
+			}
 		}
-		if($bCompCheck) $this->componentPop();
+		else {
+			$bReturn = false;
+			for($i=count($this->m_aComponents) - 1 ; $i>=0 ; --$i) {
+				$mBase = $this->processMethod($sName, $aParams, $this->m_aComponents[$i]);
+				if($bReturn) return $mBase;
+			}			
+		}
+		return null;
 	}
 	
-	protected function processMember($sName, $mBase = null) {
-		$bCompCheck = $this->componentPush($mBase);
-		for($i=count($this->m_aComponents) ; $i>=0 ; --$i) {
-			if(isset($this->m_aComponents[$i]->$sName)) return $this->m_aComponents[$i]->$sName;
+	protected final function processMember($sName, $mBase = null) {
+		static $bReturn = false;
+		if(!empty($mBase)) {
+			if(property_exists($mBase, $sName)) {
+				$bReturn = true;
+				return $mBase->$sName;
+			}
+			else if(array_key_exists($sName, get_class_vars(get_class($mBase)))) {
+				$bReturn = true;
+				return $mBase->$sName;
+			}
+			else if(is_array($mBase) && isset($mBase[$sName])) {
+				$bReturn = true;
+				return $mBase[$sName];
+			}
+			else if(method_exists($mBase, $sName)) {
+				$bReturn = true;
+				return call_user_func(array($mBase, $sName));
+			}
 		}
-		if($bCompCheck) $this->componentPop();
+		else {
+			$bReturn = false;
+			for($i=count($this->m_aComponents) - 1 ; $i>=0 ; --$i) {
+				echo 'Found component';
+				$mBase = $this->processMember($sName, $this->m_aComponents[$i]);
+				if($bReturn) {
+					echo 'return was true';
+					return $mBase;
+				}
+			}
+		}
+		return null;
 	}
 	
-	protected function processSlices(array $aSliced, $mBase = null) {
-		$bCompCheck = $this->componentPush($mBase);
-		for($i=count($this->m_aComponents) ; $i>=0 ; --$i) {
+	protected final function processSlices(array $aSliced, $mBase = null) {
+		static $bReturn = false;
+		if(!empty($mBase)) {
+			$mRoot = $this->m_aComponents[$i];
+			foreach($aSliced as $mSlice) {
+				if(is_array($mRoot) && isset($mRoot[$mSlice])) {
+					$bReturn = true;
+					$mRoot = &$mRoot[$mSlice];
+				}
+				else {
+					$bReturn = false;
+					break;
+				}
+			}
+			if($bReturn) return $mRoot;
 		}
-		if($bCompCheck) $this->componentPop();
+		else {
+			$bReturn = false;
+			for($i=count($this->m_aComponents) - 1 ; $i>=0 ; --$i) {
+				$mBase = $this->processSlices($aSliced, $this->m_aComponents[$i]);
+				if($bReturn) return $mBase;
+			}
+		}
+		return null;
 	}
 }
 
