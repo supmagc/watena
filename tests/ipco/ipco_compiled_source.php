@@ -9,7 +9,7 @@ class IPCO_Compiled_source extends IPCO_Processor {
 		$_ob = '';
 		$_ob .= 'This template is beeing parsed !
 ';
-		if(parent::processMember('variable', null)) {
+		if(parent::processMember('variableNot', null)) {
 			$_ob .= '
 	within if
 ';

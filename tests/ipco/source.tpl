@@ -1,5 +1,5 @@
 This template is beeing parsed !
-{% if variable %}
+{% if variableNot %}
 	within if
 {% elseif variableNot %}
 	within elseif

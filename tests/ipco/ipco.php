@@ -9,8 +9,8 @@ class IPCO {
 		file_put_contents(Encoding::stringToLower($sClassName) . '.php', $oParser->parse());
 
 		$oDebug = new stdClass();
-		$oDebug->variable = true;
-		$oDebug->variableNot = false;
+		$oDebug->variable = array(array(false, true), false);
+		$oDebug->variableNot = true;
 		
 		include Encoding::stringToLower($sClassName) . '.php';
 		$oTemp = new $sClassName();
