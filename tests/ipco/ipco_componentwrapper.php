@@ -5,8 +5,8 @@ class IPCO_ComponentWrapper extends IPCO_Base {
 	private $m_aInstanceProperties = array();
 	private $m_aStaticProperties = array();
 	
-	public function __construct($mCommponent, IPCO $ipco) {
-		$this->m_ipco = $ipco;
+	public function __construct($mCommponent, IPCO $oIpco) {
+		base::__construct($oIpco);
 		
 		if(is_object($mCommponent)) {
 			$oReflector = new ReflectionClass($mCommponent);
@@ -24,6 +24,16 @@ class IPCO_ComponentWrapper extends IPCO_Base {
 			}
 		}
 	}	
+	
+	public function tryGetProperty(&$mBase, $sName) {
+		// Try as property for objects or slice for arrays
+		
+		return false;
+	}
+	
+	public function tryGetMethod($mBase, $sName, array $aParams) {
+		return false;
+	}
 }
 
 ?>
