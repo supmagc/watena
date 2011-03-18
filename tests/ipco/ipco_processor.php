@@ -1,12 +1,12 @@
 <?php
 
-class IPCO_Processor {
+class IPCO_Processor extends IPCO_Base {
 	
 	private $m_aComponents = array();
 	
 	public function componentPush($mComponent) {
 		if(!empty($mComponent)) {
-			array_push($this->m_aComponents, $mComponent);
+			array_push($this->m_aComponents, new IPCO_ComponentWrapper($mComponent));
 			return true;
 		}
 		return false;

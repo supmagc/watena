@@ -39,9 +39,6 @@ class IPCO_Parser extends IPCO_Base {
 <?php
 class '.$this->m_sClassName.' extends IPCO_Processor {
 
-
-	public function __construct() { }
-
 	public function __toString() {
 		$_ob = \'\';
 ';

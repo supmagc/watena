@@ -2,9 +2,6 @@
 <?php
 class IPCO_Compiled_source extends IPCO_Processor {
 
-
-	public function __construct() { }
-
 	public function __toString() {
 		$_ob = '';
 		$_ob .= 'This template is beeing parsed !
