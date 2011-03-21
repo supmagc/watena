@@ -1,6 +1,6 @@
 <?php
-require_once '../../base/classes/static.encoding.php';
-require_once '../../base/global.php';
+define('NWATENA', true);
+require_once '../../base/watena.php';
 
 Encoding::init('UTF-8');
 
@@ -9,7 +9,7 @@ require_once 'ipco_base.php';
 require_once 'ipco_parser.php';
 require_once 'ipco_processor.php';
 require_once 'ipco_expression.php';
-require_once 'ipco_componentwrapper.php';
+//require_once 'ipco_componentwrapper.php';
 
 class Tester {
 	
@@ -17,11 +17,20 @@ class Tester {
 	private $mPrivate = true;
 	public static $sPublic = true;
 	private static $sPrivate = true;
+	
+	public function getMPublic() {return 'A';}
+	private function getMPrivate() {}
+	public static function getSPublic() {return 'B';}
+	private static function getSPrivate() {}
 }
 
 $oTester = new Tester();
-var_dump(property_exists($oTester, 'sPrivate'));
-echo $oTester->sPrivate;
+$aList = get_class_methods($oTester);
+print_r($aList);
+foreach($aList as $sMethod) {
+	echo call_user_func(array($oTester, $sMethod));
+}
+exit;
 
 /*
 echo new IPCO_Expression('-1 + (!(-2*\'a\')) is not 2^7 & {12, 3, 9, 8+2} & 8 - 0 & 3 && \'1\\\'\\\'2\' > 3+8 AND !8 + 2 OR 3', new IPCO());

@@ -1,5 +1,7 @@
 <?php
 
+require_once PATH_BASE . '/system/static.encoding.php';
+
 function terminate($sMessage) {
 	die($sMessage);
 }

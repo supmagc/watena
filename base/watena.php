@@ -1,25 +1,42 @@
 <?php
+if(!defined('PATH_BASE')) define('PATH_BASE', realpath(dirname(__FILE__)));
+if(!defined('PATH_DATA')) define('PATH_DATA', realpath(dirname(__FILE__) . '/../data'));
+if(!defined('PATH_ROOT')) define('PATH_ROOT', realpath(dirname(__FILE__) . '/..'));
 
-// ############################################################
-// Base inclusions needed for all Watena classes
-// ############################################################
-require_once PATH_BASE . '/global.php';
-require_once PATH_BASE . '/classes/interface.icache.php';
-require_once PATH_BASE . '/classes/static.encoding.php';
-require_once PATH_BASE . '/classes/class.object.php';
-require_once PATH_BASE . '/classes/class.cacheable.php';
-require_once PATH_BASE . '/classes/class.context.php';
-require_once PATH_BASE . '/classes/class.filter.php';
-require_once PATH_BASE . '/classes/class.plugin.php';
-require_once PATH_BASE . '/classes/class.mapping.php';
-require_once PATH_BASE . '/classes/class.model.php';
-require_once PATH_BASE . '/classes/class.view.php';
-require_once PATH_BASE . '/classes/class.controller.php';
-require_once PATH_BASE . '/classes/class.cacheempty.php';
-require_once PATH_BASE . '/classes/class.watena.php';
+if(!defined('NERRORTOEXCEPTION')) {
+	define('ERRORTOEXCEPTION', true);
+	function exception_error_handler($errno, $errstr, $errfile, $errline ) {
+	    throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
+	}
+	set_error_handler("exception_error_handler");
+}
 
-// ############################################################
-// Load the application framework
-// ############################################################
-new Watena();
+if(!defined('NGLOBAL')) {
+	define('GLOBAL', true);
+	require_once PATH_BASE . '/system/global.common.php';
+}
+
+if(!defined('NWATENA')) {
+	define('WATENA', true);
+	// ############################################################
+	// Base inclusions needed for all Watena classes
+	// ############################################################
+	require_once PATH_BASE . '/system/interface.icache.php';
+	require_once PATH_BASE . '/system/class.object.php';
+	require_once PATH_BASE . '/system/class.cacheable.php';
+	require_once PATH_BASE . '/system/class.context.php';
+	require_once PATH_BASE . '/system/class.filter.php';
+	require_once PATH_BASE . '/system/class.plugin.php';
+	require_once PATH_BASE . '/system/class.mapping.php';
+	require_once PATH_BASE . '/system/class.model.php';
+	require_once PATH_BASE . '/system/class.view.php';
+	require_once PATH_BASE . '/system/class.controller.php';
+	require_once PATH_BASE . '/system/class.cacheempty.php';
+	require_once PATH_BASE . '/system/class.watena.php';
+	
+	// ############################################################
+	// Load the application framework
+	// ############################################################
+	new Watena();
+}
 ?>
