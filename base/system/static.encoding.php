@@ -44,6 +44,11 @@ class Encoding {
 		return mb_strtolower($sData, $sEncoding === null ? self::$s_sEncoding : $sEncoding);
 	}
 	
+	public static function uperCaseFirst($sData, $sEncoding = null) {
+		$sData[0] = self::stringToUpper($sData[0], $sEncoding);
+		return $sData;
+	}
+	
 	public static function stringReplace($mSearch, $mReplace, $sData, $bCaseInsensitive = true, $sEncoding = null) {
 		if(!is_array($mSearch)) $mSearch = array($mSearch);
     	foreach($mSearch as $nSearch => $sSearch) {
