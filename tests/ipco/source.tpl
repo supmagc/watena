@@ -1,7 +1,7 @@
 This template is beeing parsed !
-{% if variableNot %}
+{% if getMPublic(sPublic) %}
 	within if
-{% elseif variableNot %}
+{% elseif sPublic %}
 	within elseif
 {% else %}
 	within else

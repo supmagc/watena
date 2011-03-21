@@ -1,8 +1,9 @@
 <?php
 
 class IPCO_Exception extends Exception {
-	
-	public function __construct($message, $code)
+
+	const UNKNOWN = 0;
+	const INVALIDCOMPONENTTYPE = 1;
 }
 
 ?>

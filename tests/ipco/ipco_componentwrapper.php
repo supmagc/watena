@@ -2,18 +2,18 @@
 
 abstract class IPCO_ComponentWrapper extends IPCO_Base {
 	
-	public abstract function tryGetProperty(&$mBase, $sName, $bFirstCall = true);
-	public abstract function tryGetMethod($mBase, $sName, array $aParams, $bFirstCall = true);
+	public abstract function tryGetProperty(&$mValue, $sName, $bFirstCall = true);
+	public abstract function tryGetMethod(&$mValue, $sName, array $aParams, $bFirstCall = true);
 
 	public static function createComponentWrapper($mComponent, IPCO $oIpco) {
 		if(is_object($mComponent)) {
-			return new IPCO_ObjectComponentWrapper($mCommponent, $oIpco);
+			return new IPCO_ObjectComponentWrapper($mComponent, $oIpco);
 		}
 		else if(is_array($mComponent)) {
-			return new IPCO_ArrayComponentWrapper($mCommponent, $oIpco);
+			return new IPCO_ArrayComponentWrapper($mComponent, $oIpco);
 		}
 		else {
-			throw new IPCO_Exe
+			throw new IPCO_Exception('The provided component is not a valid componenttype.', IPCO_Exception::INVALIDCOMPONENTTYPE);
 		}
 	}
 }
@@ -26,7 +26,7 @@ class IPCO_ObjectComponentWrapper extends IPCO_ComponentWrapper {
 	private $m_oComponent = null;
 	
 	public function __construct($mComponent, IPCO $oIpco) {
-		base::__construct($oIpco);
+		parent::__construct($oIpco);
 		
 		$this->m_aInstanceProperties = get_object_vars($mComponent);
 		$this->m_aStaticProperties = get_class_vars(get_class($mComponent));
@@ -34,27 +34,27 @@ class IPCO_ObjectComponentWrapper extends IPCO_ComponentWrapper {
 		$this->m_oComponent = $mComponent;
 	}	
 	
-	public abstract function tryGetProperty(&$mBase, $sName, $bFirstCall = true) {
-		if(isset($this->m_aInstanceProperties[$sName])) {
-			$mBase = $this->m_aInstanceProperties[$sName];
+	public function tryGetProperty(&$mValue, $sName, $bFirstCall = true) {
+		if(array_key_exists($sName, $this->m_aInstanceProperties)) {
+			$mValue = $this->m_aInstanceProperties[$sName];
 			return true;
 		}
-		else if(isset($this->m_aStaticProperties[$sName])) {
-			$mBase = $this->m_aStaticProperties[$sName];
+		else if(array_key_exists($sName, $this->m_aStaticProperties)) {
+			$mValue = $this->m_aStaticProperties[$sName];
 			return true;
 		}
 		else {
-			return $bFirstCall ? self::tryGetMethod($mBase, $sName, array(), false) : false;
+			return $bFirstCall ? self::tryGetMethod($mValue, $sName, array(), false) : false;
 		}
 	}
 	
-	public abstract function tryGetMethod($mBase, $sName, array $aParams, $bFirstCall = true) {
+	public function tryGetMethod(&$mValue, $sName, array $aParams, $bFirstCall = true) {
 		if(in_array($sName, $this->m_aMethods)) {
-			$mBase = call_user_func_array(array($this->m_oComponent, $sName), $aParams);
+			$mValue = call_user_func_array(array($this->m_oComponent, $sName), $aParams);
 			return true;
 		}
 		else {
-			return $bFirstCall && count($aParams) == 0 ? self::tryGetProperty($mBase, $sName, false) : false;
+			return $bFirstCall && count($aParams) == 0 ? self::tryGetProperty($mValue, $sName, false) : false;
 		}
 	}
 }
@@ -64,9 +64,23 @@ class IPCO_ArrayComponentWrapper extends IPCO_ComponentWrapper {
 	private $m_aComponent;
 	
 	public function __construct($mComponent, IPCO $oIpco) {
-		base::__construct($oIpco);
+		parent::__construct($oIpco);
 		
 		$this->m_aComponent = $mComponent;
+	}
+	
+	public  function tryGetProperty(&$mValue, $sName, $bFirstCall = true) {
+		if(array_key_exists($sName, $this->m_aComponent)) {
+			$mValue = $this->m_aComponent[$sName];
+			return true;
+		}
+		else {
+			return $bFirstCall ? self::tryGetMethod($mValue, $sName, array(), false) : false;
+		}
+	}
+	
+	public function tryGetMethod(&$mValue, $sName, array $aParams, $bFirstCall = true) {
+		return false;
 	}
 }
 

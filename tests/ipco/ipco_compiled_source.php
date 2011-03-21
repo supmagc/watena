@@ -3,24 +3,29 @@
 class IPCO_Compiled_source extends IPCO_Processor {
 
 	public function __toString() {
-		$_ob = '';
-		$_ob .= 'This template is beeing parsed !
+		try {
+			$_ob = '';
+			$_ob .= 'This template is beeing parsed !
 ';
-		if(parent::processMember('variableNot', null)) {
-			$_ob .= '
+			if(parent::processMethod('getMPublic', array(parent::processMember('sPublic', null)), null)) {
+				$_ob .= '
 	within if
 ';
-		} elseif(parent::processMember('variableNot', null)) {
-			$_ob .= '
+			} elseif(parent::processMember('sPublic', null)) {
+				$_ob .= '
 	within elseif
 ';
-		} else {
-			$_ob .= '
+			} else {
+				$_ob .= '
 	within else
 ';
+			}
+
+			return $_ob;
 		}
-	
-		return $_ob;
+		catch(Exception $e) {
+			return $e;
+		}
 	}
 }
 ?>
