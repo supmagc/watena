@@ -3,18 +3,14 @@
 // Inline PHP compilation
 class IPCO {
 	
-	public function load($sIdentifier) {
+	public function load($sIdentifier, $mComponent) {
 		$oParser = new IPCO_Parser($sIdentifier, $this);
 		$sClassName = $oParser->getClassName();
 		file_put_contents(Encoding::stringToLower($sClassName) . '.php', $oParser->parse());
-
-		$oDebug = new stdClass();
-		$oDebug->variable = array(array(false, true), false);
-		$oDebug->variableNot = true;
 		
 		include Encoding::stringToLower($sClassName) . '.php';
-		$oTemp = new $sClassName();
-		$oTemp->componentPush($oDebug);
+		$oTemp = new $sClassName($this);
+		$oTemp->componentPush($mComponent);
 		
 		return $oTemp;
 	}

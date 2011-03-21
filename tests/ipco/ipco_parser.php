@@ -40,13 +40,18 @@ class IPCO_Parser extends IPCO_Base {
 class '.$this->m_sClassName.' extends IPCO_Processor {
 
 	public function __toString() {
-		$_ob = \'\';
+		try {
+			$_ob = \'\';
 ';
 	}
 	
 	public function getFooter() {
-		return '	
-		return $_ob;
+		return '
+			return $_ob;
+		}
+		catch(Exception $e) {
+			return $e;
+		}
 	}
 }
 ?>';
@@ -167,7 +172,7 @@ class '.$this->m_sClassName.' extends IPCO_Processor {
 	}
 	
 	public function getDepthOffset($nPreChange = 0, $nPostChange = 0) {
-		$sReturn = "\t\t";
+		$sReturn = "\t\t\t";
 		$this->m_nDepth += $nPreChange;
 		for($i=0 ; $i<$this->m_nDepth ; ++$i) {
 			$sReturn .= "\t";
