@@ -14,19 +14,18 @@ require_once 'ipco_componentwrapper.php';
 
 class Tester {
 	
-	public $mPublic = true;
+	public $mPublic = array(true, false);
 	private $mPrivate = true;
 	public static $sPublic = true;
 	private static $sPrivate = true;
 	
-	public function getMPublic($b) {return $b;}
+	public function getMPublic($b) {return !$b;}
 	private function getMPrivate() {}
 	public static function getSPublic() {return 'B';}
 	private static function getSPrivate() {}
 }
 
 /*
-$oTester = new Tester();
 $aList = get_class_methods($oTester);
 print_r($aList);
 foreach($aList as $sMethod) {
@@ -44,6 +43,9 @@ echo new IPCO_Expression('test.substr(1, pow(2, 5) + 5 * 9)[2, \'test\']', new I
 exit;
 */
 
+$oTester = new Tester();
+$oTester->mPublic[1] = $oTester;
+
 $ipco = new IPCO();
-echo $ipco->load('source', new Tester());
+echo $ipco->load('source', $oTester);
 ?>
