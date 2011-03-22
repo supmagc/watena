@@ -11,7 +11,7 @@ class IPCO_Compiled_source extends IPCO_Processor {
 				$_ob .= '
 	within if
 ';
-			} elseif(parent::processMember('sPublic', null)) {
+			} elseif(parent::processMember('0', parent::processMember('mPublic', parent::processMember('1', parent::processMember('mPublic', null))))) {
 				$_ob .= '
 	within elseif
 ';

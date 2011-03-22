@@ -18,7 +18,7 @@ class IPCO_Expression extends IPCO_Base {
 	}
 	
 	public function __toString() {
-		return $this->m_sCleanedExpression;
+		return '' . $this->m_sCleanedExpression;
 	}
 		
 	private function _setError($nCode, $sExpression) {
@@ -120,9 +120,18 @@ class IPCO_Expression extends IPCO_Base {
 
 	private function _getPhpCall($sName, $aParams, $aSlices, $mBase) {
 		$sReturn = '';
-		if($aParams === null) $sReturn = "parent::processMember('$sName', $mBase)";
-		else $sReturn = "parent::processMethod('$sName', array(".implode(', ', $aParams)."), $mBase)";
-		if($aSlices != null) $sReturn = "parent::processSlices(array(".implode(', ', $aSlices)."), $sReturn)";
+		if(!empty($sName)) {
+			if(empty($aParams)) $sReturn = "parent::processMember('$sName', $mBase)";
+			else $sReturn = "parent::processMethod('$sName', array(".implode(', ', $aParams)."), $mBase)";
+		}
+		else {
+			$sReturn = null;
+		}		
+		foreach($aSlices as $sSlice) {
+			$sReturn = "parent::processMember('$sSlice', $sReturn)";
+		}
+
+		// DEPRECATED if($aSlices != null) $sReturn = "parent::processSlices(array(".implode(', ', $aSlices)."), $sReturn)";
 		return $sReturn;
 	}
 	
@@ -151,8 +160,8 @@ class IPCO_Expression extends IPCO_Base {
 		$nState = 0;
 		$nMark = 0;
 		$sName = null;
-		$aParams = null;
-		$aSlices = null;
+		$aParams = array();
+		$aSlices = array();
 		$i = 0;
 		while($i<$nLength) {
 			$char = Encoding::substring($sExpression, $i, 1);
@@ -187,7 +196,6 @@ class IPCO_Expression extends IPCO_Base {
 				case 4:
 					if($char === ']') {
 						$nState = 3;
-						if($aSlices === null) $aSlices = array();
 						$aSlices = array_merge($aSlices, $this->_parseListing(',', Encoding::substring($sExpression, $nMark, $i - $nMark)));
 					}
 					break;
@@ -197,8 +205,8 @@ class IPCO_Expression extends IPCO_Base {
 		}
 		if($nState === 1 && $sName === null) $sName = Encoding::substring($sExpression, 0, $nLength);
 		$sName = Encoding::trim($sName);
-		if($aParams !== null) $aParams = array_map(array($this, '_parseExpression'), $aParams);
-		if($aSlices !== null) $aSlices = array_map(array($this, '_parseExpression'), $aSlices);
+		$aParams = array_map(array($this, '_parseExpression'), $aParams);
+		$aSlices = array_map(array($this, '_parseExpression'), $aSlices);
 		if($mBase === null) $mBase = 'null';
 		
 		return $this->_getPhpCall($sName, $aParams, $aSlices, $mBase);
