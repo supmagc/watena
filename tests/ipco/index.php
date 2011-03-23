@@ -10,6 +10,7 @@ require_once 'ipco_parser.php';
 require_once 'ipco_processor.php';
 require_once 'ipco_expression.php';
 require_once 'ipco_componentwrapper.php';
+require_once 'ipco_parsersettings.php';
 
 
 class Tester {
@@ -18,6 +19,12 @@ class Tester {
 	private $mPrivate = true;
 	public static $sPublic = true;
 	private static $sPrivate = true;
+	
+	public $TEXT = 'dfmsvjisldkjfdghmfjk';
+	
+	public function getForeach() {
+		return array(array('value' => 'man'), array('value' => 'woman'));
+	}
 	
 	public function getMPublic($b) {return !$b;}
 	private function getMPrivate() {}

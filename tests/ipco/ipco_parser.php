@@ -13,6 +13,7 @@ class IPCO_Parser extends IPCO_Base {
 	private $m_sClassName;
 	private $m_sContent;
 	private $m_nDepth;
+	private $m_aEndings;
 	
 	public function __construct($sIdentifier, IPCO $ipco) {
 		parent::__construct($ipco);
@@ -59,6 +60,7 @@ class '.$this->m_sClassName.' extends IPCO_Processor {
 	
 	public function parse() {
 		$this->m_nDepth = 0;
+		$this->m_aEndings = array();
 		$nMark = 0;
 		$aBuffer = array($this->getHeader());
 		$nState = self::STATE_DEFAULT;
@@ -76,7 +78,7 @@ class '.$this->m_sClassName.' extends IPCO_Processor {
 						$nMark = $i += 2;
 						$nState = self::STATE_IPCO;
 					}
-					else if($char2 === '{{') {
+					else if($char2 === '{[') {
 						$aBuffer []= $this->interpretContent(Encoding::substring($this->m_sContent, $nMark, $i-$nMark));
 						$nMark = $i += 2;
 						$nState = self::STATE_IPCO_VAR;
@@ -104,7 +106,7 @@ class '.$this->m_sClassName.' extends IPCO_Processor {
 					break;
 					
 				case self::STATE_IPCO_VAR : 
-					if($char2 === '}}') {
+					if($char2 === ']}') {
 						$aBuffer []= $this->interpretVariable(Encoding::substring($this->m_sContent, $nMark, $i-$nMark));
 						$nMark = $i += 2;
 						$nState = self::STATE_DEFAULT;
@@ -142,33 +144,44 @@ class '.$this->m_sClassName.' extends IPCO_Processor {
 	}
 	
 	public function interpretVariable($sContent) {
-		return '-variable-';
+		$sCondition = new IPCO_Expression($sContent, parent::getIpco());
+		return $this->getDepthOffset() . '$_ob .= '.$sCondition.";\n";
 	}
 	
 	public function interpretIf(IPCO_Expression $oCondition) {
-		return $this->getDepthOffset(0, 1) . "if($oCondition) {\n";
-	}
-
-	/*
-	public function interpretForeach(IPCO_Expression $oData) {
-		return $this->getDepthOffset(0, 1) . "foreach($oData as $_comp) {\n";
-	}
-	*/
-	
-	public function interpretWhile(IPCO_Expression $oCondition) {
-		return $this->getDepthOffset(0, 1) . "while($oCondition) {\n";
-	}
-	
-	public function interpretElse() {
-		return $this->getDepthOffset(-1, 1) . "} else {\n";
+		array_push($this->m_aEndings, 'if');
+		return $this->getDepthOffset(0, 1) . IPCO_ParserSettings::getFilterIf($oCondition->__toString());
 	}
 	
 	public function interpretElseIf(IPCO_Expression $oCondition) {
-		return $this->getDepthOffset(-1, 1) . "} elseif($oCondition) {\n";
+		return $this->getDepthOffset(-1, 1) . IPCO_ParserSettings::getFilterElseIf($oCondition->__toString());
+	}
+	
+	public function interpretElse() {
+		return $this->getDepthOffset(-1, 1) . IPCO_ParserSettings::getFilterElse();
+	}
+	
+	public function interpretForeach(IPCO_Expression $oCondition) {
+		array_push($this->m_aEndings, 'foreach');
+		return $this->getDepthOffset(0, 1) . IPCO_ParserSettings::getFilterForeach($oCondition);
+	}
+	
+	public function interpretWhile(IPCO_Expression $oCondition) {
+		array_push($this->m_aEndings, 'while');
+		return $this->getDepthOffset(0, 1) . "while($oCondition) {\n";
 	}
 	
 	public function interpretEnd($aParts) {
-		return $this->getDepthOffset(-1, 0) . "}\n";
+		$sExpectedEnding = array_pop($this->m_aEndings);
+		$sGivenEnding = Encoding::stringToLower(Encoding::trim($aParts));
+		if(Encoding::length($sGivenEnding) > 0 && $sExpectedEnding != $sGivenEnding) {
+			throw new IPCO_Exception('Invalid IPCO-tag nesting.', IPCO_Exception::INVALIDNESTING);
+		}
+		switch($sExpectedEnding) {
+			case 'if' : return $this->getDepthOffset(-1, 0) . IPCO_ParserSettings::getFilterEndIf();
+			case 'foreach' : return $this->getDepthOffset(-1, 0) . IPCO_ParserSettings::getFilterEndForeach();
+		}
+		return '';
 	}
 	
 	public function getDepthOffset($nPreChange = 0, $nPostChange = 0) {
