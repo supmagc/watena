@@ -126,6 +126,12 @@ class Watena extends Object {
 	public final function getController() {
 		return $this->m_oController;
 	}
+	
+	public function loadLibrary($sName, array $aFiles) {
+		foreach($aFiles as $sFile) {
+			require_once self::getPath("B:/libraries/$sName/$sFile");
+		}
+	}
 }
 
 ?>

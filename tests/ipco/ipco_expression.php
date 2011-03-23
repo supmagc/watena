@@ -24,16 +24,26 @@ class IPCO_Expression extends IPCO_Base {
 	private function _setError($nCode, $sExpression) {
 		debug_print_backtrace();
 		switch($nCode) {
-			case self::ERROR_UNKNOWN: die("Unknown error <<$sExpression>>");
-			case self::ERROR_INVALIDSTRING: die("Invalid string sequence <<$sExpression>>");
-			case self::ERROR_INVALIDPARENTHESES: die("Invalid parentheses/braces <<$sExpression>>");
-			case self::ERROR_INVALIDEXPRESSION: die("Invalid expression <<$sExpression>>");
-			case self::ERROR_INVALIDWHITESPACE: die("Invalid whitespace <<$sExpression>>");
-			case self::ERROR_INVALIDQUOTE: die("Invalid quote <<$sExpression>>");
+			case self::ERROR_UNKNOWN: throw new IPCO_ExpressionException("Unknown error.", $sExpression);
+			case self::ERROR_INVALIDSTRING: throw new IPCO_ExpressionException("Invalid string sequence.", $sExpression);
+			case self::ERROR_INVALIDPARENTHESES: throw new IPCO_ExpressionException("Invalid parentheses/braces.", $sExpression);
+			case self::ERROR_INVALIDEXPRESSION: throw new IPCO_ExpressionException("Invalid expression.", $sExpression);
+			case self::ERROR_INVALIDWHITESPACE: throw new IPCO_ExpressionException("Invalid whitespace.", $sExpression);
+			case self::ERROR_INVALIDQUOTE: throw new IPCO_ExpressionException("Invalid quote.", $sExpression);
 			default: exit;
 		}
 	}
 	
+	/**
+	 * Check if the occurance of the specified operator within the specified expression
+	 * is meant as an operator. This is required for operators who can occur both as
+	 * operator and/or as value formatter.
+	 * 
+	 * @param string $sOperator
+	 * @param string $sExpression
+	 * @param string $nPos
+	 * @return bool
+	 */
 	private function _isOperator($sOperator, $sExpression, $nPos) {
 		switch($sOperator) {
 			case '-':
@@ -50,7 +60,17 @@ class IPCO_Expression extends IPCO_Base {
 			default: return true;
 		}
 	}
-	
+
+	/**
+	 * Proceed the given index passed any possible string value within the provided
+	 * expression sequence.
+	 * It's possible to automatically pass all found parentheses.
+	 * 
+	 * @param string $sExpression
+	 * @param int $nIndex
+	 * @param bool $bCalculateParentheses
+	 * @return int The new index
+	 */
 	private function _continuePastString($sExpression, $nIndex, $bCalculateParentheses = true) {
 		$nLength = Encoding::length($sExpression);
 		if($nLength === 0 || $nIndex >= $nLength) return $nIndex;
@@ -81,6 +101,13 @@ class IPCO_Expression extends IPCO_Base {
 		return $nLength;
 	}
 	
+	/**
+	 * Find the last occurance of the given operator in the given expression.
+	 * The return value will be the position-index if found, or -1.
+	 * 
+	 * @param string $sOperator
+	 * @param string $sExpression
+	 */
 	private function _findLastOccurance($sOperator, $sExpression) {
 		$nLength = Encoding::length($sExpression);
 		$nOperatorLength = Encoding::length($sOperator);
@@ -95,6 +122,12 @@ class IPCO_Expression extends IPCO_Base {
 		return $nIndex > $nLength ? -1 : $nIndex;
 	}
 	
+	/**
+	 * Returns the correct php-operator that matches the IPCO operator.
+	 * 
+	 * @param string $sOperator
+	 * @return string
+	 */
 	private function _getPhpOperator($sOperator) {
 		switch($sOperator) {
 			case ' and ' : return '&&'; 
@@ -109,6 +142,14 @@ class IPCO_Expression extends IPCO_Base {
 		}
 	}
 	
+	/**
+	 * Returns the correct php-expression that matches the IPCO operator and before-/after-sequences
+	 * 
+	 * @param string $sOperator
+	 * @param string $sLeft
+	 * @param string $sRight
+	 * @return string
+	 */
 	private function _getPhpExpression($sOperator, $sLeft, $sRight) {
 		switch($sOperator) {
 			case '^' : return "pow($sLeft, $sRight)"; 
@@ -118,20 +159,25 @@ class IPCO_Expression extends IPCO_Base {
 		}
 	}
 
-	private function _getPhpCall($sName, $aParams, $aSlices, $mBase) {
-		$sReturn = '';
-		if(!empty($sName)) {
-			if(empty($aParams)) $sReturn = "parent::processMember('$sName', $mBase)";
-			else $sReturn = "parent::processMethod('$sName', array(".implode(', ', $aParams)."), $mBase)";
+	/**
+	 * Returns the correct php-call thet matches the input parameters as needed by IPCO
+	 * 
+	 * @param string $sName
+	 * @param array $aParams
+	 * @param array $aSlices
+	 * @param mixed $mBase
+	 */
+	private function _getPhpCall($sName = null, array $aParams = array(), array $aSlices = array(), $sBase = 'null') {
+		$sReturn = 'null';
+		if(isset($sName)) {
+			if(empty($aParams)) 
+				$sReturn = IPCO_ParserSettings::getCallMember($sName, $sBase);
+			else 				
+				$sReturn = IPCO_ParserSettings::getCallMethod($sName, 'array('.implode(', ', $aParams).')', $sBase);
 		}
-		else {
-			$sReturn = null;
-		}		
 		foreach($aSlices as $sSlice) {
-			$sReturn = "parent::processMember('$sSlice', $sReturn)";
+			$sReturn = IPCO_ParserSettings::getCallSlice($sSlice, $sReturn);
 		}
-
-		// DEPRECATED if($aSlices != null) $sReturn = "parent::processSlices(array(".implode(', ', $aSlices)."), $sReturn)";
 		return $sReturn;
 	}
 	
@@ -157,7 +203,7 @@ class IPCO_Expression extends IPCO_Base {
 		$sExpression = Encoding::trim($sExpression);
 		$nLength = Encoding::length($sExpression);
 		
-		$nState = 0;
+		$nState = 1;
 		$nMark = 0;
 		$sName = null;
 		$aParams = array();
@@ -166,9 +212,6 @@ class IPCO_Expression extends IPCO_Base {
 		while($i<$nLength) {
 			$char = Encoding::substring($sExpression, $i, 1);
 			switch($nState) {
-				case 0:
-					$nState = 1;
-					break;
 				case 1:
 					if($char === '(') {
 						$nState = 2;
@@ -208,24 +251,32 @@ class IPCO_Expression extends IPCO_Base {
 		$aParams = array_map(array($this, '_parseExpression'), $aParams);
 		$aSlices = array_map(array($this, '_parseExpression'), $aSlices);
 		if($mBase === null) $mBase = 'null';
-		
+
 		return $this->_getPhpCall($sName, $aParams, $aSlices, $mBase);
 	}
 	
 	private function _parseValue($sExpression) {
 		$sExpression = Encoding::trim($sExpression);
 		$nLength = Encoding::length($sExpression);
+		
+		// Edge case with empty valueexpression
 		if($nLength === 0) {
 			$this->_setError('Whitespace value detected, you might have an invalid double operator sequence.', $sExpression);
 		}
+		
+		// Edge case with single quote
 		if($sExpression === '\'') {
 			$this->_setError('Single quote detected without meaning.', $sExpression);
 		}
+		
+		// All normal cases
 		else {
-			// easy primitives
+			
+			// Look for easy primitives
 			if($sExpression === 'true' || $sExpression === 'false' || Encoding::regMatch('^-?[0-9]+(\.[0-9]+)?$', $sExpression)) {
 				return $sExpression;
 			}
+			
 			// Look for string
 			else if(Encoding::beginsWith($sExpression, '\'')) {
 				if($this->_continuePastString($sExpression, 0, false) === $nLength)
@@ -233,7 +284,15 @@ class IPCO_Expression extends IPCO_Base {
 				else
 					return $this->_setError(self::ERROR_INVALIDSTRING, $sExpression);
 			}
-			// parsing for variablle, and or calling stuff
+			
+			// Look for array
+			else if(Encoding::beginsWith($sExpression, '{') && Encoding::endsWith($sExpression, '}')) {
+				$aParams = $this->_parseListing(',', Encoding::substring($sExpression, 1, $nLength - 2));
+				$sParams = implode(', ', array_map(array($this, '_parseExpression'), $aParams));
+				return 'array('.$sParams.')';
+			}
+			
+			// parsing for calling stuff
 			else {
 				$aCalls = $this->_parseListing('.', $sExpression);
 				$sReturn = null;
@@ -248,7 +307,7 @@ class IPCO_Expression extends IPCO_Base {
 	private function _parseExpression($sExpression) {
 		$sExpression = Encoding::trim($sExpression);
 		$nLength = Encoding::length($sExpression);
-		// echo $sExpression . "<br />\n";
+		
 		// Search for default operators
 		for($i=0 ; $i<count($this->m_aOperators) ; ++$i) {		
 			$nPos = $this->_findLastOccurance($this->m_aOperators[$i], $sExpression);
@@ -257,20 +316,26 @@ class IPCO_Expression extends IPCO_Base {
 				return $this->_getPhpExpression($this->m_aOperators[$i], $this->_parseExpression(Encoding::substring($sExpression, 0, $nPos)), $this->_parseExpression(Encoding::substring($sExpression, $nPos + $nOperatorLength, $nLength - $nPos - $nOperatorLength)));
 			}
 		}
-		// Recursivly parse within ()
+		
+		// If no valid operator was found, check if the entire expression
+		// is encapsulated within braces. If so, we know they are outer
+		// (Inner braces must have been concatenated with an operator) and
+		// we can safly remove them. At this stage we return the parsed 
+		// inner-expression.
 		if(Encoding::beginsWith($sExpression, '(') && Encoding::endsWith($sExpression, ')')) {
 			return $this->_parseExpression(Encoding::substring($sExpression, 1, $nLength - 2));
 		}
-		// Recursivly parse within {}
-		if(Encoding::beginsWith($sExpression, '{') && Encoding::endsWith($sExpression, '}')) {
-			$aParams = $this->_parseListing(',', Encoding::substring($sExpression, 1, $nLength - 2));
-			$sParams = implode(', ', array_map(array($this, '_parseExpression'), $aParams));
-			return 'array('.$sParams.')';
-		}
-		// Recursivly remove negation sign
+		
+		// If no expression construction can be found, check if this part
+		// is negated with a negation sign. If so, remove it and recursivly
+		// parse the remaining expression.
 		if(Encoding::beginsWith($sExpression, '!')) {
 			return '!' . $this->_parseExpression(Encoding::substring($sExpression, 1));
 		}
+		if(Encoding::beginsWith($sExpression, 'not ')) {
+			return '!' . $this->_parseExpression(Encoding::substring($sExpression, 4));
+		}
+		
 		// If nothing found, parse as value
 		return $this->_parseValue($sExpression);
 	}
