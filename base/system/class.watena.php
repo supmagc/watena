@@ -1,6 +1,6 @@
 <?php
 
-class Watena extends Object {
+class Watena extends Configurable {
 	
 	private $m_oContext = null;
 	private $m_oCache = null;
@@ -47,6 +47,16 @@ class Watena extends Object {
 		return $this->m_oContext;
 	}
 	
+	/**
+	 * Retrieve a valid watena path.
+	 * The input path should specify a protocol such as:
+	 * r (or R) => for Root
+	 * d (or D) => for Data
+	 * b (or B) => for Base
+	 * 
+	 * @param string $sPath
+	 * @return string
+	 */
 	public final function getPath($sPath) {
 		$aMatches = array();
 		if(preg_match('%^([brd]):(/?)(.*?)(/?)$%i', $sPath, $aMatches)) {
@@ -125,12 +135,6 @@ class Watena extends Object {
 	 */
 	public final function getController() {
 		return $this->m_oController;
-	}
-	
-	public function loadLibrary($sName, array $aFiles) {
-		foreach($aFiles as $sFile) {
-			require_once self::getPath("B:/libraries/$sName/$sFile");
-		}
 	}
 }
 

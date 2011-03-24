@@ -196,6 +196,14 @@ class Context extends Object {
 		return $bSucces;						
 	}
 
+	public function writeDataFile($sPath, $mData) {
+		
+	}
+	
+	public function readDataFile($sPath) {
+		
+	}
+	
 	/**
 	 * Callback method that loads all filters from the filesystem.
 	 */

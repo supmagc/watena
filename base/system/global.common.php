@@ -6,6 +6,15 @@ function terminate($sMessage) {
 	die($sMessage);
 }
 
+function includeLibrary($sName, array $aFiles, $bOnce = true) {
+	foreach($aFiles as $sFile) {
+		if($bOnce)
+			include_once PATH_BASE . "/libraries/$sName/$sFile";
+		else
+			include PATH_BASE . "/libraries/$sName/$sFile";
+	}
+}
+
 /**
  * Assure the array structure exists as provided
  * The structure is as defined by the keys array

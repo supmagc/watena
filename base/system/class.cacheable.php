@@ -1,6 +1,6 @@
 <?php
 
-abstract class Cacheable extends Object {
+abstract class Cacheable extends Configurable {
 	
 	const EXP_DEFAULT = 0;
 	const EXP_NEVER = -1;
@@ -22,7 +22,7 @@ abstract class Cacheable extends Object {
 	 * The format is an associative array as needed by Context::checkRequirements(...)
 	 */
 	public static function getRequirements() {return null;}
-	
+
 	public final function __construct(array $aConfig = array()) {
 		parent::__construct($aConfig);
 		$this->init();
