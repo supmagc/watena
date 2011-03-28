@@ -3,24 +3,35 @@
 // Inline PHP compilation
 class IPCO {
 	
-	public function load($sIdentifier, $mComponent) {
-		$oParser = new IPCO_Parser($sIdentifier, $this);
-		$sClassName = $oParser->getClassName();
-		file_put_contents(Encoding::stringToLower($sClassName) . '.php', $oParser->parse());
-		
-		include Encoding::stringToLower($sClassName) . '.php';
-		$oTemp = new $sClassName($this);
-		$oTemp->componentPush($mComponent);
-		
-		return $oTemp;
+	private $m_sSourceDirectory = '';
+	private $m_sSourcePrefix = '';
+	private $m_sSourceSuffix = '';
+	private $m_sCompiledDirectory = '';
+	private $m_sCompiledPrefix = '';
+	private $m_sCompiledSuffix = '';
+	
+	public function __construct($sSourceDirectory, $sSourcePrefix, $sSourceSuffix, $sCompiledDirectory, $sCompiledPrefix, $sCompiledSuffix) {
+		$this->m_sSourceDirectory = $sSourceDirectory;
+		$this->m_sSourcePrefix = $sSourcePrefix;
+		$this->m_sSourceSuffix = $sSourceSuffix;
+		$this->m_sCompiledDirectory = $sCompiledDirectory;
+		$this->m_sCompiledPrefix = $sCompiledPrefix;
+		$this->m_sCompiledSuffix = $sCompiledSuffix;
 	}
 	
 	public function getSourcePath($sIdentifier) {
-		return "./$sIdentifier.tpl";
+		$sIdentifier = Encoding::stringToLower($sIdentifier);
+		return $this->m_sSourceDirectory . '/' . $this->m_sSourcePrefix . $sIdentifier . $this->m_sCompiledSuffix;
+	}
+	
+	public function getCompiledPath($sIdentifier) {
+		$sIdentifier = Encoding::stringToLower($sIdentifier);
+		return $this->m_sSourceDirectory . '/' . $this->m_sSourcePrefix . $sIdentifier . $this->m_sCompiledSuffix;
 	}
 	
 	public function getClassName($sIdentifier) {
-		return 'IPCO_Compiled_' . Encoding::regReplace('[-/\\. ]', '_', $sIdentifier);
+		$sIdentifier = Encoding::stringToLower($sIdentifier);
+		return $this->m_sSourcePrefix . Encoding::regReplace('[-/\\. ]', '_', $sIdentifier);
 	}
 }
 

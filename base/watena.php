@@ -34,6 +34,7 @@ if(!defined('NWATENA')) {
 	require_once PATH_BASE . '/system/class.controller.php';
 	require_once PATH_BASE . '/system/class.cacheempty.php';
 	require_once PATH_BASE . '/system/class.watena.php';
+	require_once PATH_BASE . '/system/class.datafile.php';
 	
 	// ############################################################
 	// Load the application framework
