@@ -14,7 +14,7 @@ class Watena extends Configurable {
 		$aConfig = parse_ini_file(PATH_BASE . '/watena.ini', true);
 		if(!$aConfig) parent::terminate('No readable Watena config file could be found.');
 		parent::__construct($aConfig);
-		$this->assurePHPSettings();
+		$this->assureEnvironment();
 		
 		// Create a new Context and load all required plugins
 		$this->m_oCache = new CacheEmpty();
@@ -93,12 +93,13 @@ class Watena extends Configurable {
 	/**
 	 * Sett all required PHP-settings
 	 */
-	public final function assurePHPSettings() {
+	public final function assureEnvironment() {
 		set_include_path(get_include_path() . PATH_SEPARATOR . str_replace(',', PATH_SEPARATOR, self::getConfig('INCLUDE', '')));
 		Encoding::init(self::getConfig('CHARSET', 'UTF-8'));
 		ini_set('default_charset', self::getConfig('CHARSET', 'UTF-8'));
 		ini_set('date.timezone', self::getConfig('TIMEZONE', 'UTC'));
 		ini_set('error_reporting', E_ALL);
+		if(!is_writable(PATH_DATA)) throw new Exception('Data path is not writeable.');
 	}
 	
 	/**

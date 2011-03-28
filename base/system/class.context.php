@@ -3,6 +3,7 @@
 class Context extends Object {
 	
 	private $m_aPlugins = array();
+	private $m_aDataFiles = array(); 
 	
 	/**
 	 * Try to retrieve a plugin based on its name.
@@ -196,12 +197,11 @@ class Context extends Object {
 		return $bSucces;						
 	}
 
-	public function writeDataFile($sPath, $mData) {
-		
-	}
-	
-	public function readDataFile($sPath) {
-		
+	public function getDataFile($sPath) {
+		if(!isset($this->m_aDataFiles[$sPath])) {
+			$this->m_aDataFiles[$sPath] = new DataFile($sPath);
+		}
+		return $this->m_aDataFiles[$sPath];
 	}
 	
 	/**

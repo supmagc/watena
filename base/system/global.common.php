@@ -9,9 +9,9 @@ function terminate($sMessage) {
 function includeLibrary($sName, array $aFiles, $bOnce = true) {
 	foreach($aFiles as $sFile) {
 		if($bOnce)
-			include_once PATH_BASE . "/libraries/$sName/$sFile";
+			include_once PATH_BASE . "/libraries/$sName/$sFile.php";
 		else
-			include PATH_BASE . "/libraries/$sName/$sFile";
+			include PATH_BASE . "/libraries/$sName/$sFile.php";
 	}
 }
 
