@@ -18,6 +18,10 @@ class IPCO {
 		$this->m_sCompiledPrefix = $sCompiledPrefix;
 		$this->m_sCompiledSuffix = $sCompiledSuffix;
 	}
+
+	public function getParser($sIdentifier) {
+		
+	}
 	
 	public function getSourcePath($sIdentifier) {
 		$sIdentifier = Encoding::stringToLower($sIdentifier);

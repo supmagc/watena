@@ -42,6 +42,7 @@ class FilterGroup extends Object {
 class Filter extends Cacheable {
 
 	private $m_sName = '';
+	private $m_sTheme = '';
 	private $m_oModel = null;
 	private $m_oView = null;
 	private $m_oController = null;
@@ -60,6 +61,7 @@ class Filter extends Cacheable {
 						$oXml->moveToAttributeNo($i);
 						if($oXml->name == 'name') $this->m_sName = $oXml->value;
 						else if($oXml->name == 'order') $this->m_nOrder = (int)$oXml->value;
+						else if($oXml->name == 'theme') $this->m_sTheme = (int)$oXml->value;
 					}
 				}
 				else if(($sName = $this->_matchesGetName($oXml, 'model')) !== null) {
@@ -97,6 +99,10 @@ class Filter extends Cacheable {
 	
 	public function getController() {
 		return $this->m_oController ? Cacheable::create($this->m_oController->getName(), $this->m_oController->getParams(), 'W_CONTROLLER_'.$this->m_oController->getName(), 5, $this->m_oController->getFile(), 'Controller') : null;
+	}
+	
+	public function getTheme() {
+		return $this->m_sTheme;
 	}
 	
 	public function getName() {
