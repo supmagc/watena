@@ -1,6 +1,7 @@
 <?php
 if(!defined('PATH_BASE')) define('PATH_BASE', realpath(dirname(__FILE__)));
 if(!defined('PATH_DATA')) define('PATH_DATA', realpath(dirname(__FILE__) . '/../data'));
+if(!defined('PATH_THEMES')) define('PATH_THEMES', realpath(dirname(__FILE__) . '/../themes'));
 if(!defined('PATH_ROOT')) define('PATH_ROOT', realpath(dirname(__FILE__) . '/..'));
 
 if(!defined('NERRORTOEXCEPTION')) {
