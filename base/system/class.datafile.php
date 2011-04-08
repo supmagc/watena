@@ -10,8 +10,8 @@ class DataFile extends Object {
 		
 		$this->m_sPath = $sPath;
 		
-		$sPath = Encoding::stringReplace(array('/../', '/..', '..'), '', $sPath);
-		$sPath = Encoding::stringReplace('\\', '/', $sPath);		
+		$sPath = Encoding::replace(array('/../', '/..', '..'), '', $sPath);
+		$sPath = Encoding::replace('\\', '/', $sPath);		
 		$this->m_sFullPath = PATH_DATA . '/' . $sPath . '.df';
 	}
 	

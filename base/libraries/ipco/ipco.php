@@ -24,17 +24,17 @@ class IPCO {
 	}
 	
 	public function getSourcePath($sIdentifier) {
-		$sIdentifier = Encoding::stringToLower($sIdentifier);
+		$sIdentifier = Encoding::toLower($sIdentifier);
 		return $this->m_sSourceDirectory . '/' . $this->m_sSourcePrefix . $sIdentifier . $this->m_sCompiledSuffix;
 	}
 	
 	public function getCompiledPath($sIdentifier) {
-		$sIdentifier = Encoding::stringToLower($sIdentifier);
+		$sIdentifier = Encoding::toLower($sIdentifier);
 		return $this->m_sSourceDirectory . '/' . $this->m_sSourcePrefix . $sIdentifier . $this->m_sCompiledSuffix;
 	}
 	
 	public function getClassName($sIdentifier) {
-		$sIdentifier = Encoding::stringToLower($sIdentifier);
+		$sIdentifier = Encoding::toLower($sIdentifier);
 		return $this->m_sSourcePrefix . Encoding::regReplace('[-/\\. ]', '_', $sIdentifier);
 	}
 }

@@ -29,7 +29,7 @@ class Mapping extends Object {
 	}
 	
 	public function getVariable($sName) {
-		return $this->m_aVariables[Encoding::stringToLower($sName)];
+		return $this->m_aVariables[Encoding::toLower($sName)];
 	}
 }
 

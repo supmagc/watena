@@ -50,7 +50,7 @@ class IPCO_Expression extends IPCO_Base {
 				for($i=$nPos-1 ; $i>=0 ; --$i) {
 					for($j=0 ; $j<count($this->m_aOperators) ; ++$j) {
 						$nOperatorLength = Encoding::length($this->m_aOperators[$j]);
-						if($i - $nOperatorLength >= 0 && Encoding::stringToLower(Encoding::substring($sExpression, $i - $nOperatorLength, $nOperatorLength)) === $this->m_aOperators[$j]) {
+						if($i - $nOperatorLength >= 0 && Encoding::toLower(Encoding::substring($sExpression, $i - $nOperatorLength, $nOperatorLength)) === $this->m_aOperators[$j]) {
 							return false;
 						}
 					}
@@ -115,8 +115,8 @@ class IPCO_Expression extends IPCO_Base {
 		$nIndex = $nLength + 1;
 		for($i=0 ; ($i = $this->_continuePastString($sExpression, $i, true))<$nLength ; ++$i) {
 			$i = $this->_continuePastString($sExpression, $i);
-			$char = Encoding::stringToLower(Encoding::substring($sExpression, $i, 1));
-			$chars = Encoding::stringToLower(Encoding::substring($sExpression, $i, $nOperatorLength));
+			$char = Encoding::toLower(Encoding::substring($sExpression, $i, 1));
+			$chars = Encoding::toLower(Encoding::substring($sExpression, $i, $nOperatorLength));
 			if($chars === $sOperator && $this->_isOperator($sOperator, $sExpression, $i)) $nIndex = $i;
 		}
 		return $nIndex > $nLength ? -1 : $nIndex;

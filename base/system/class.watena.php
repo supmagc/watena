@@ -59,14 +59,17 @@ class Watena extends Configurable {
 	 */
 	public final function getPath($sPath) {
 		$aMatches = array();
-		if(preg_match('%^([brd]):(/?)(.*?)(/?)$%i', $sPath, $aMatches)) {
+		$aPositions = array();
+		if(Encoding::regFind('%^([brdt]):(/?)(.*?)(/?)$%i', $sPath, $aMatches, $aPositions)) {
 			switch($aMatches[1]) {
 				case 'b' :
-				case 'B' : return PATH_BASE . (strlen($aMatches[3]) > 0 ? "/$aMatches[3]" : '');
+				case 'B' : return PATH_BASE . (Encoding::length($aMatches[3]) > 0 ? "/$aMatches[3]" : '');
 				case 'd' :
-				case 'D' : return PATH_DATA . (strlen($aMatches[3]) > 0 ? "/$aMatches[3]" : '');
+				case 'D' : return PATH_DATA . (Encoding::length($aMatches[3]) > 0 ? "/$aMatches[3]" : '');
 				case 'r' :
-				case 'R' : return PATH_ROOT . (strlen($aMatches[3]) > 0 ? "/$aMatches[3]" : '');
+				case 'R' : return PATH_ROOT . (Encoding::length($aMatches[3]) > 0 ? "/$aMatches[3]" : '');
+				case 't' :
+				case 'T' : return PATH_THEMES . (Encoding::length($aMatches[3]) > 0 ? "/$aMatches[3]" : '');
 			}
 		}
 		return realpath($sPath);

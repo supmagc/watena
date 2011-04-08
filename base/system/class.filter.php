@@ -14,7 +14,7 @@ class FilterGroup extends Object {
 	 */
 	public function __construct($sName, $sType) {
 		$this->m_sName = $sName;
-		$this->m_sFile = PATH_BASE . '/' . Encoding::stringToLower($sType) . 's/' . Encoding::stringToLower($sType) . '.' . Encoding::stringToLower($sName) . '.php';
+		$this->m_sFile = PATH_BASE . '/' . Encoding::toLower($sType) . 's/' . Encoding::toLower($sType) . '.' . Encoding::toLower($sName) . '.php';
 
 		if(!file_exists($this->m_sFile)) parent::terminate('The specified '.$sType.'-file could not be found: ' . $this->m_sFile);
 		require_once $this->m_sFile;
