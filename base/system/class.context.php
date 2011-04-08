@@ -47,7 +47,7 @@ class Context extends Object {
 	 * @return boolean Indicator if the plugin was loaded
 	 */
 	public function loadPlugin($sPlugin, $bTerminate = true) {
-		$sKey = Encoding::stringToLower($sPlugin);
+		$sKey = Encoding::toLower($sPlugin);
 		$sFilePHP = PATH_BASE . "/plugins/plugin.$sKey.php";
 		$sFileINI = PATH_BASE . "/plugins/config.$sKey.ini";
 		if(!isset($this->m_aPlugins[$sKey])) {
@@ -104,15 +104,17 @@ class Context extends Object {
 	 * @param Mapping $oMapping
 	 * @return array(Model, View, Controller)
 	 */
-	public function getMVC(Mapping $oMapping) {
+	public function getMVCT(Mapping $oMapping) {
 		$aFilters = $this->getWatena()->getCache()->retrieve('W_FILTERS', array($this, '_loadFiltersFromFile'), 5);
 		$oModel = null;
 		$oView = null;
 		$oController = null;
+		$oTheme = null;
 		foreach($aFilters as $nOrder => $oFilter) {
 			if($oFilter->match($oMapping)) {
 				if(!$oModel) $oModel = $oFilter->getModel();
 				if(!$oView) $oView = $oFilter->getView();
+				if(!$oController) $oController = $oFilter->getController();
 				if(!$oController) $oController = $oFilter->getController();
 			}
 		}

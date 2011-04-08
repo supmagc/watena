@@ -173,7 +173,7 @@ class '.$this->m_sClassName.' extends IPCO_Processor {
 	
 	public function interpretEnd($aParts) {
 		$sExpectedEnding = array_pop($this->m_aEndings);
-		$sGivenEnding = Encoding::stringToLower(Encoding::trim($aParts));
+		$sGivenEnding = Encoding::toLower(Encoding::trim($aParts));
 		if(Encoding::length($sGivenEnding) > 0 && $sExpectedEnding != $sGivenEnding) {
 			throw new IPCO_Exception('Invalid IPCO-tag nesting.', IPCO_Exception::INVALIDNESTING);
 		}

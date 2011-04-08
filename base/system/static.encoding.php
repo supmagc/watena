@@ -36,20 +36,20 @@ class Encoding {
 		else return mb_strstr($sData, $sSearch, true, $sEncoding === null ? self::$s_sEncoding : $sEncoding) !== false;
 	}
 	
-	public static function stringToUpper($sData, $sEncoding = null) {
+	public static function toUpper($sData, $sEncoding = null) {
 		return mb_strtoupper($sData, $sEncoding === null ? self::$s_sEncoding : $sEncoding);
 	}
 	
-	public static function stringToLower($sData, $sEncoding = null) {
+	public static function toLower($sData, $sEncoding = null) {
 		return mb_strtolower($sData, $sEncoding === null ? self::$s_sEncoding : $sEncoding);
 	}
 	
-	public static function uperCaseFirst($sData, $sEncoding = null) {
-		$sData[0] = self::stringToUpper($sData[0], $sEncoding);
+	public static function upperCaseFirst($sData, $sEncoding = null) {
+		$sData[0] = self::toUpper($sData[0], $sEncoding);
 		return $sData;
 	}
 	
-	public static function stringReplace($mSearch, $mReplace, $sData, $bCaseInsensitive = true, $sEncoding = null) {
+	public static function replace($mSearch, $mReplace, $sData, $bCaseInsensitive = true, $sEncoding = null) {
 		if(!is_array($mSearch)) $mSearch = array($mSearch);
     	foreach($mSearch as $nSearch => $sSearch) {
     		$nOffset = 0;
@@ -64,16 +64,16 @@ class Encoding {
 	
 	public static function beginsWith($sData, $sSearch, $bCaseInsensitive = true, $sEncoding = null) {
 		if($bCaseInsensitive) {
-			$sData = self::stringToLower($sData, $sEncoding);
-			$sSearch = self::stringToLower($sSearch, $sEncoding);
+			$sData = self::toLower($sData, $sEncoding);
+			$sSearch = self::toLower($sSearch, $sEncoding);
 		}
 		return self::substring($sData, 0, self::Length($sSearch, $sEncoding), $sEncoding) == $sSearch;
 	}
 	
 	public static function endsWith($sData, $sSearch, $bCaseInsensitive = true, $sEncoding = null) {
 		if($bCaseInsensitive) {
-			$sData = self::stringToLower($sData, $sEncoding);
-			$sSearch = self::stringToLower($sSearch, $sEncoding);
+			$sData = self::toLower($sData, $sEncoding);
+			$sSearch = self::toLower($sSearch, $sEncoding);
 		}
 		$nLength = self::Length($sSearch, $sEncoding);
 		return self::substring($sData, self::length($sData) - $nLength, $nLength, $sEncoding) == $sSearch;
