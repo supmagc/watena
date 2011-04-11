@@ -16,12 +16,6 @@ abstract class Cacheable extends Configurable {
 	 * For example: creating a database connection should be done at this time.
 	 */
 	public function wakeup() {}
-	
-	/**
-	 * This method provides the possibility to autodetermine required modules etc.
-	 * The format is an associative array as needed by Context::checkRequirements(...)
-	 */
-	public static function getRequirements() {return null;}
 
 	public final function __construct(array $aConfig = array()) {
 		parent::__construct($aConfig);
@@ -31,6 +25,24 @@ abstract class Cacheable extends Configurable {
 	public final function __wakeup() {
 		$this->wakeup();
 	}
+	
+	public static final function createByIdentifier() {
+		
+	}
+	
+	public static final function createByTimestamp() {
+		
+	}
+		
+	public static final function createByIdentifier() {
+		
+	}
+		
+	public static final function createByIdentifier() {
+		
+	}
+	
+	
 	
 	public static final function create($sObject, array $aConfig = array(), $sIdentifier = null, $nExpirationSec = Cacheable::EXP_DEFAULT, $sIncludeFile = null, $sExtends = null, $sImplements = null, $nTimestamp = null) {
 		// Generate an identifier if none is given

@@ -62,6 +62,7 @@ class Context extends Object {
 		}
 		return $this->m_aPlugins[$sKey] !== null;
 	}
+	
 
 	/**
 	 * Try to load a specified class and retrieve an instance of it
@@ -72,6 +73,42 @@ class Context extends Object {
 	 * @param string $sExtends
 	 * @param string $sImplements
 	 */
+	public function loadObject($sObjectName, array $aParams = array(), $sIncludeFile = null, $sExtends = null, $sImplements = null, &$aIncludes = null, &$aExtensionLoads = null, &$aPluginLoads = null) {
+		// Include main file
+		if($sIncludeFile) {
+			if(file_exists($sIncludeFile)) include_once($sIncludeFile);
+			else parent::terminate('Unable to include unexisting file: ' . $sIncludeFile);
+		}
+		
+		if(!class_exists($sObjectName, false)) throw new WatCeption('The class of the object to be loaded could not be found.', array('object' => $sObjectName), $this);		
+		
+		$aExtends = class_parents($sObjectName);
+		$aImplements = class_implements($sObjectName);
+		
+		if(!in_array("Object", $aParents)) parent::terminate("The object you are loading ($sObjectName) does not extend 'Object'.");
+		if($sExtends && !in_array($sExtends, $aParents)) parent::terminate("The object you are loading ($sObjectName) does not extend the required class: $sExtends");
+		if($sImplements && !in_array($sImplements, $aImplements)) parent::terminate("The object you are loading ($sObjectName) does not implement the required interface: $sImplements");
+		
+		// Check requirements if possible/required
+		$bCanLoad = method_exists($sClassName, 'getRequirements') ? self::checkRequirements(call_user_func(array($sClassName, 'getRequirements')), true, $aIncludes, $aExtensionLoads, $aPluginLoads) : true;
+		if($sIncludeFile && is_array($aIncludes)) $aIncludes []= $sIncludeFile;
+		foreach($aParents as $sParent) {
+			if(method_exists($sParent, 'getRequirements')) {
+				$bCanLoad = $bCanLoad && self::checkRequirements(call_user_func(array($sClassName, 'getRequirements')), true, $aIncludes, $aExtensionLoads, $aPluginLoads);
+			}
+		}
+		
+		// Create instance
+		if($bCanLoad) {
+			$oTmp = new $sObjectName($aParams);
+			return $oTmp;
+		}
+		else {
+			throw new WatCeption('The object you are loading has some requirements that couldn\'t be met.', array('object' => $sObjectName), $this);
+		}
+	}
+	
+	/*
 	public function loadClass($sClassName, array $aConfig = array(), $sIncludeFile = null, $sExtends = null, $sImplements = null) {
 		// Include main file
 		if($sIncludeFile) {
@@ -80,9 +117,10 @@ class Context extends Object {
 		}
 		
 		// Check inheritance stuff and existing
+		$aParents = class_parents($sClassName, false);
 		if(!class_exists($sClassName, false)) parent::terminate("The class $sClassName could not be found.");
-		if(!in_array("Cacheable", class_parents($sClassName))) parent::terminate("The class $sClassName does not extends Cacheable.");
-		if($sExtends && !in_array($sExtends, class_parents($sClassName))) parent::terminate("The class $sClassName needs to extend $sExtends.");
+		if(!in_array("Object", $aParents)) parent::terminate("The class $sClassName does not extends Object.");
+		if($sExtends && !in_array($sExtends, $aParents)) parent::terminate("The class $sClassName needs to extend $sExtends.");
 		if($sImplements && !in_array($sImplements, class_implements($sClassName))) parent::terminate("The class $sClassName needs to implement $sImplements.");
 
 		// Instantiate dependency holders
@@ -90,13 +128,19 @@ class Context extends Object {
 		$aExtensionLoads = array();
 		$aPluginLoads = array();
 		
-		// CHeck requirements if possible/required
-		if(method_exists($sClassName, 'getRequirements') && self::checkRequirements(call_user_func(array($sClassName, 'getRequirements')), true, $aIncludes, $aExtensionLoads, $aPluginLoads))
+		// Check requirements if possible/required
+		$bCanLoad = method_exists($sClassName, 'getRequirements') ? self::checkRequirements(call_user_func(array($sClassName, 'getRequirements')), true, $aIncludes, $aExtensionLoads, $aPluginLoads) : true;
+		foreach($aParents as $sParent) {
+			if(method_exists($sParent, 'getRequirements')) {
+				$bCanLoad = $bCanLoad && self::checkRequirements(call_user_func(array($sClassName, 'getRequirements')), true, $aIncludes, $aExtensionLoads, $aPluginLoads);
+			}
+		}
 		
 		// Create instance
 		$oTmp = new $sClassName($aConfig);
 		return array($aIncludes, $aExtensionLoads, $aPluginLoads, serialize($oTmp));
 	}
+	*/
 	
 	/**
 	 * Get an array with respectibly the MVC components for the given mapping
@@ -104,7 +148,7 @@ class Context extends Object {
 	 * @param Mapping $oMapping
 	 * @return array(Model, View, Controller)
 	 */
-	public function getMVCT(Mapping $oMapping) {
+	public function getMVC(Mapping $oMapping) {
 		$aFilters = $this->getWatena()->getCache()->retrieve('W_FILTERS', array($this, '_loadFiltersFromFile'), 5);
 		$oModel = null;
 		$oView = null;
@@ -114,7 +158,6 @@ class Context extends Object {
 			if($oFilter->match($oMapping)) {
 				if(!$oModel) $oModel = $oFilter->getModel();
 				if(!$oView) $oView = $oFilter->getView();
-				if(!$oController) $oController = $oFilter->getController();
 				if(!$oController) $oController = $oFilter->getController();
 			}
 		}
@@ -129,10 +172,11 @@ class Context extends Object {
 	 * 'files' => A list of required files to include
 	 * 
 	 * @param array $aRequirements An array formatted to the requirement specifications.
-	 * @param boolean $bTerminate Indicator if we should autoterminate whan the requirements are not meat. (default = true)
+	 * @param bool $bTerminate Indicator if we should autoterminate whan the requirements are not meat. (default = true)
 	 * @param array $aIncludes (out) Returns by reference a list with all the required includes
 	 * @param array $aExtensionLoads (out) Returns by reference a list with all the required extensions
 	 * @param array $aPluginLoads (out) Returns by reference a list with all the required plugins
+	 * @return bool
 	 */
 	public function checkRequirements($aRequirements, $bTerminate = true, &$aIncludes = null, &$aExtensionLoads = null, &$aPluginLoads = null) {
 		$bSucces = true;
