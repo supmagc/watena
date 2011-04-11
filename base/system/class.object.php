@@ -2,6 +2,12 @@
 
 class Object {
 	
+	/**
+	 * This method provides the possibility to autodetermine required modules etc.
+	 * The format is an associative array as needed by Context::checkRequirements(...)
+	 */
+	public static function getRequirements() {return null;}
+	
 	private static $s_oSingleton;
 	
 	protected function __construct() {
@@ -11,7 +17,7 @@ class Object {
 	protected final function terminate($sMessage) {
 		die($sMessage);
 	}
-
+	
 	/**
 	 * @return Watena
 	 */
