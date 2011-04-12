@@ -23,10 +23,12 @@ if(!defined('NWATENA')) {
 	// Base inclusions needed for all Watena classes
 	// ############################################################
 	require_once PATH_BASE . '/system/interface.icache.php';
+	require_once PATH_BASE . '/system/exception.watception.php';
 	require_once PATH_BASE . '/system/class.object.php';
 	require_once PATH_BASE . '/system/class.configurable.php';
 	require_once PATH_BASE . '/system/class.cacheable.php';
 	require_once PATH_BASE . '/system/class.context.php';
+	require_once PATH_BASE . '/system/class.requirementbuffer.php';
 	require_once PATH_BASE . '/system/class.filter.php';
 	require_once PATH_BASE . '/system/class.plugin.php';
 	require_once PATH_BASE . '/system/class.mapping.php';
