@@ -73,7 +73,7 @@ class Context extends Object {
 	 * @param string $sExtends
 	 * @param string $sImplements
 	 */
-	public function loadObject($sObjectName, array $aParams = array(), $sIncludeFile = null, $sExtends = null, $sImplements = null, &$aIncludes = null, &$aExtensionLoads = null, &$aPluginLoads = null) {
+	public function loadObject($sObjectName, array $aParams = array(), $sIncludeFile = null, $sExtends = null, $sImplements = null) {
 		// Include main file
 		if($sIncludeFile) {
 			if(file_exists($sIncludeFile)) include_once($sIncludeFile);
@@ -104,7 +104,7 @@ class Context extends Object {
 			return $oTmp;
 		}
 		else {
-			throw new WatCeption('The object you are loading has some requirements that couldn\'t be met.', array('object' => $sObjectName), $this);
+			parent::terminate("The object you are loading ($sObjectName) has some requirements that couldn\'t be met.");
 		}
 	}
 	
@@ -162,85 +162,6 @@ class Context extends Object {
 			}
 		}
 		return array($oModel, $oView, $oController);
-	}
-	
-	/**
-	 * Check the provided list with requirements and their compatibility.
-	 * 'extension' => Required PHP-Extensions (This call uses 'dl' when available)
-	 * 'plugins' => Required Watena-plugins
-	 * 'pear' => Required pear installs 
-	 * 'files' => A list of required files to include
-	 * 
-	 * @param array $aRequirements An array formatted to the requirement specifications.
-	 * @param bool $bTerminate Indicator if we should autoterminate whan the requirements are not meat. (default = true)
-	 * @param array $aIncludes (out) Returns by reference a list with all the required includes
-	 * @param array $aExtensionLoads (out) Returns by reference a list with all the required extensions
-	 * @param array $aPluginLoads (out) Returns by reference a list with all the required plugins
-	 * @return bool
-	 */
-	public function checkRequirements($aRequirements, $bTerminate = true, &$aIncludes = null, &$aExtensionLoads = null, &$aPluginLoads = null) {
-		$bSucces = true;
-		if($bSucces && $aRequirements && isset($aRequirements['extensions'])) {
-			if(!is_array($aRequirements['extensions'])) $aRequirements['extensions'] = array($aRequirements['extensions']);
-			foreach($aRequirements['extensions'] as $sExtension) {
-				if(!extension_loaded($sExtension)) {
-					$sFile = (PHP_SHLIB_SUFFIX === 'dll' ? 'php_' : '') . $sExtension . '.' . PHP_SHLIB_SUFFIX;
-					if(!function_exists('dl') || !@dl($sFile)) {						
-						if($bTerminate) parent::terminate("The required php-extension was not loaded: $sFile");
-						$bSucces = false;
-						break;
-					}
-					else if(is_array($aExtensionLoads)) {
-						$aExtensionLoads []= $sFile;
-					}
-				}
-			}
-		}
-		if($bSucces && $aRequirements && isset($aRequirements['plugins'])) {
-			if(!is_array($aRequirements['plugins'])) $aRequirements['plugins'] = array($aRequirements['plugins']);
-			foreach($aRequirements['plugins'] as $sPlugin) {
-				if(!self::loadPlugin($sPlugin, false)) {
-					if($bTerminate) parent::terminate("The required watena-plugin was not loaded: $sPlugin");
-					$bSucces = false;
-					break;
-				}
-				else if(is_array($aPluginLoads)) {
-					$aPluginLoads []= $sPlugin;
-				}
-			}
-		}
-		if($bSucces && $aRequirements && isset($aRequirements['pear'])) {
-			$nOld = error_reporting(E_ERROR);
-			$bTemp = @include_once('PEAR.php');
-			if($bTemp && class_exists('PEAR')) {
-				if(!is_array($aRequirements['pear'])) $aRequirements['pear'] = array($aRequirements['pear']);
-				foreach($aRequirements['pear'] as $sPear) {
-					$bTemp = @include_once($sPear.'.php');		
-					if(!$bTemp || !class_exists($sPear)) {
-						if($bTerminate) parent::terminate("The required pear-install was not loaded: $sPear");
-						$bSucces = false;
-						break;
-					}
-					if(is_array($aIncludes)) $aIncludes[]= $sPear . '.php';
-				}
-			}
-			else {
-				if($bTerminate) parent::terminate("PEAR was not installed on this system.");
-				$bSucces = false;
-			}
-			error_reporting($nOld);
-		}
-		if($bSucces && $aRequirements && isset($aRequirements['files'])) {
-			foreach($aRequirements['files'] as $sFile) {
-				if(!file_exists($filename)) {
-					if($bTerminate) parent::terminate("The required could not be found: $sFile");
-				}
-				else if(is_array($aIncludes)) {
-					$aIncludes[]= $sFile;
-				}
-			}
-		}
-		return $bSucces;						
 	}
 
 	public function getDataFile($sPath) {
