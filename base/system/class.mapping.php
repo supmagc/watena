@@ -5,7 +5,7 @@ class Mapping extends Object {
 	private $m_aVariables = array();
 	private $m_sMain;
 	
-	public function __construct() {
+	public final function __construct() {
 		$this->m_aVariables['host'] = $_SERVER['HTTP_HOST'];
 		$this->m_aVariables['root'] = $_SERVER['DOCUMENT_ROOT'];
 		$this->m_aVariables['port'] = $_SERVER['SERVER_PORT'];
@@ -24,12 +24,36 @@ class Mapping extends Object {
 		
 	}
 	
-	public function getMain() {
+	public final function getMain() {
 		return $this->m_sMain;
 	}
 	
-	public function getVariable($sName) {
+	public final function getVariable($sName) {
 		return $this->m_aVariables[Encoding::toLower($sName)];
+	}
+	
+	public final function getHost() {
+		return $this->getVariable('host');
+	}
+	
+	public final function getRoot() {
+		return $this->getVariable('root');
+	}
+	
+	public final function getPort() {
+		return $this->getVariable('port');
+	}
+	
+	public final function getOffset() {
+		return $this->getVariable('offset');
+	}
+	
+	public final function getUseragent() {
+		return $this->getVariable('useragent');
+	}
+	
+	public final function getMapping() {
+		return $this->getVariable('mapping');
 	}
 }
 

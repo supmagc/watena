@@ -39,6 +39,10 @@ class TemplateLoader extends Plugin {
 	public function getVersion() {
 		return array('major' => 0, 'minor' => 1, 'build' => 1, 'state' > 'dev');
 	}
+
+	public static function getRequirements() {
+		return array('plugins' => 'ThemeManager');
+	}
 }
 
 ?>
