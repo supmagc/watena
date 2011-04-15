@@ -35,7 +35,9 @@ class CacheableFile extends Cacheable {
 		$oObj = null;		
 		if($nFileExp > $nCacheExp) {
 			$aIncludes = array();
-			parent::getWatena()->getContext()->loa
+			list($oObject, $oRequirements) = parent::getWatena()->getContext()->loadObjectAndRequirements($sObject, array($aConfig), $sIncludeFile, $sExtends, $sImplements);
+			
+			
 			parent::getWatena()->getContext()->checkRequirements($aRequirements)
 			
 			parent::getWatena()->getContext()->loadClass($sObject, $aConfig)

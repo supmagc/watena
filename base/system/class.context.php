@@ -76,7 +76,7 @@ class Context extends Object {
 		// Include main file
 		if($sIncludeFile) {
 			if(file_exists($sIncludeFile)) include_once($sIncludeFile);
-			else parent::terminate('Unable to include unexisting file: ' . $sIncludeFile);
+			else throw new WatCeption('The object to be loaded needs to include an unexisting file.', array('object' => $sObjectName, 'file' => $sIncludeFile), $this);
 		}
 		
 		if(!class_exists($sObjectName, false)) throw new WatCeption('The class of the object to be loaded could not be found.', array('object' => $sObjectName), $this);		
@@ -84,26 +84,26 @@ class Context extends Object {
 		$aExtends = class_parents($sObjectName);
 		$aImplements = class_implements($sObjectName);
 		
-		if(!in_array("Object", $aParents)) parent::terminate("The object you are loading ($sObjectName) does not extend 'Object'.");
-		if($sExtends && !in_array($sExtends, $aParents)) parent::terminate("The object you are loading ($sObjectName) does not extend the required class: $sExtends");
-		if($sImplements && !in_array($sImplements, $aImplements)) parent::terminate("The object you are loading ($sObjectName) does not implement the required interface: $sImplements");
+		if(!in_array("Object", $aParents)) throw new WatCeption('The object top be loaded does not extend \'Object\'.', array('object' => $sObjectName), $this);
+		if($sExtends && !in_array($sExtends, $aParents)) throw new WatCeption('The object to be loaded does not extend the required class.', array('object' => $sObjectName, 'class' => $sExtends), $this);
+		if($sImplements && !in_array($sImplements, $aImplements)) throw new WatCeption('The object to be loaded does not implement the required interface.', array('object' => $sObjectName, 'interface' => $sImplements), $this);
 		
 		// Check requirements if possible/required
-		$bCanLoad = method_exists($sClassName, 'getRequirements') ? self::checkRequirements(call_user_func(array($sClassName, 'getRequirements')), true, $aIncludes, $aExtensionLoads, $aPluginLoads) : true;
+		$oRequirement = method_exists($sClassName, 'getRequirements') ? new RequirementBuffer(call_user_func(array($sClassName, 'getRequirements'))) : new RequirementBuffer();
 		if($sIncludeFile && is_array($aIncludes)) $aIncludes []= $sIncludeFile;
 		foreach($aParents as $sParent) {
 			if(method_exists($sParent, 'getRequirements')) {
-				$bCanLoad = $bCanLoad && self::checkRequirements(call_user_func(array($sClassName, 'getRequirements')), true, $aIncludes, $aExtensionLoads, $aPluginLoads);
+				$oRequirement->addRequirements(call_user_func(array($sClassName, 'getRequirements')));
 			}
 		}
 		
 		// Create instance
 		if($bCanLoad) {
 			$oTmp = new $sObjectName($aParams);
-			return $oTmp;
+			return array($oTmp, $oRequirement);
 		}
 		else {
-			parent::terminate("The object you are loading ($sObjectName) has some requirements that couldn\'t be met.");
+			throw new WatCeption("The object you are loading has some requirements that couldn\'t be met.", array('object' => $sObjectName, 'requirements' => $oRequirement), $this);
 		}
 	}
 	
