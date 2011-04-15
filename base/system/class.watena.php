@@ -99,7 +99,6 @@ class Watena extends Configurable {
 	public final function assureEnvironment() {
 		set_include_path(get_include_path() . PATH_SEPARATOR . str_replace(',', PATH_SEPARATOR, self::getConfig('INCLUDE', '')));
 		Encoding::init(self::getConfig('CHARSET', 'UTF-8'));
-		ini_set('default_charset', self::getConfig('CHARSET', 'UTF-8'));
 		ini_set('date.timezone', self::getConfig('TIMEZONE', 'UTC'));
 		ini_set('error_reporting', E_ALL);
 		if(!is_writable(PATH_DATA)) throw new Exception('Data path is not writeable.');

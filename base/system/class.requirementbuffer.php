@@ -6,6 +6,7 @@ class RequirementBuffer extends Object {
 	private $m_aExtensions = array();
 	private $m_aPlugins = array();
 	private $m_aProblems = array();
+	private $m_aDefines = array();
 	private $m_bSucces = true;
 	
 	public final function __construct(array $aRequirements = array()) {
@@ -87,13 +88,28 @@ class RequirementBuffer extends Object {
 		
 		// Check files
 		if($aRequirements && isset($aRequirements['files'])) {
+			if(!is_array($aRequirements['files'])) $aRequirements['files'] = array($aRequirements['files']);
 			foreach($aRequirements['files'] as $sFile) {
 				if(file_exists($filename)) {
+					$aIncludes []= $sFile;
+				}
+				else {
 					$this->m_aProblems []= "The required file could not be found: $sFile";
 					$bSucces = false;
 				}
-				else if(is_array($aIncludes)) {
-					$aIncludes[]= $sFile;
+			}
+		}
+		
+		// Check defines
+		if($aRequirements && isset($aRequirements['defines'])) {
+			if(!is_array($aRequirements['defines'])) $aRequirements['defines'] = array($aRequirements['defines']);
+			foreach($aRequirements['defines'] as $sDefine) {
+				if(defined($sDefine)) {
+					$this->m_aDefines []= $sDefine;
+				}
+				else {
+					$this->m_aProblems []= "The required defines could not be found: $sDefine";
+					$bSucces = false;
 				}
 			}
 		}
@@ -109,6 +125,7 @@ class RequirementBuffer extends Object {
 		foreach($this->m_aIncludes as $sFile) include_once $sFile;
 		foreach($this->m_aExtensions as $sName) if(!extension_loaded($sName)) dl($sName);
 		foreach($this->m_aPlugins as $sName) parent::getWatena()->getContext()->loadPlugin($sName);
+		foreach($this->m_aDefines as $sDefine) $this->m_bSucces = $this->m_bSucces && defined($sDefine);
 	}
 	
 	/**

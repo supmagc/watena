@@ -9,6 +9,7 @@ class Encoding {
 		mb_detect_order(array('UTF-8', 'UTF-7', 'ISO-8859-1', 'ASCII', 'EUC-JP', 'SJIS', 'eucJP-win', 'SJIS-win', 'JIS', 'ISO-2022-JP'));
 		mb_internal_encoding(self::$s_sEncoding);
 		mb_regex_encoding(self::$s_sEncoding);
+		ini_set('default_charset', $sCharset);
 	}
 	
 	public static function charset() {

@@ -63,7 +63,6 @@ class Context extends Object {
 		return $this->m_aPlugins[$sKey] !== null;
 	}
 	
-
 	/**
 	 * Try to load a specified class and retrieve an instance of it
 	 * 
@@ -73,7 +72,7 @@ class Context extends Object {
 	 * @param string $sExtends
 	 * @param string $sImplements
 	 */
-	public function loadObject($sObjectName, array $aParams = array(), $sIncludeFile = null, $sExtends = null, $sImplements = null) {
+	public function loadObjectAndRequirements($sObjectName, array $aParams = array(), $sIncludeFile = null, $sExtends = null, $sImplements = null) {
 		// Include main file
 		if($sIncludeFile) {
 			if(file_exists($sIncludeFile)) include_once($sIncludeFile);
