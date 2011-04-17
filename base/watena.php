@@ -3,12 +3,21 @@ if(!defined('PATH_BASE')) define('PATH_BASE', realpath(dirname(__FILE__)));
 if(!defined('PATH_DATA')) define('PATH_DATA', realpath(dirname(__FILE__) . '/../data'));
 if(!defined('PATH_ROOT')) define('PATH_ROOT', realpath(dirname(__FILE__) . '/..'));
 
+if(!defined('NEXCEPTIONCATCH')) {
+	define('EXCEPTIONCATCH', true);
+	function exception_handler(Exception $e) {
+		echo "<pre>$e</pre>";
+		exit;
+	}
+	set_exception_handler('exception_handler');
+}
+
 if(!defined('NERRORTOEXCEPTION')) {
 	define('ERRORTOEXCEPTION', true);
-	function exception_error_handler($errno, $errstr, $errfile, $errline ) {
+	function error_handler($errno, $errstr, $errfile, $errline ) {
 	    throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
 	}
-	set_error_handler("exception_error_handler");
+	set_error_handler('error_handler');
 }
 
 if(!defined('NGLOBAL')) {

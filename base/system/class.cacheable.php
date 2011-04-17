@@ -26,6 +26,7 @@ abstract class Cacheable extends Configurable {
 		$this->wakeup();
 	}
 	
+	/*
 	public static final function createByIdentifier() {
 		
 	}
@@ -41,8 +42,7 @@ abstract class Cacheable extends Configurable {
 	public static final function createByIdentifier() {
 		
 	}
-	
-	
+	*/
 	
 	public static final function create($sObject, array $aConfig = array(), $sIdentifier = null, $nExpirationSec = Cacheable::EXP_DEFAULT, $sIncludeFile = null, $sExtends = null, $sImplements = null, $nTimestamp = null) {
 		// Generate an identifier if none is given

@@ -1,5 +1,5 @@
-#Tue Feb 08 10:07:50 CET 2011
+#Sat Apr 16 22:17:52 CEST 2011
 eclipse.preferences.version=1
-include_path=1;D\:/Zend/PEAR/pear
-phpVersion=php5
+include_path=0;/watena
+phpVersion=php5.3
 use_asp_tags_as_php=false

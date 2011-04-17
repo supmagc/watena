@@ -98,12 +98,12 @@ class Context extends Object {
 		}
 		
 		// Create instance
-		if($bCanLoad) {
+		if($oRequirement->isSucces()) {
 			$oTmp = new $sObjectName($aParams);
 			return array($oTmp, $oRequirement);
 		}
 		else {
-			throw new WatCeption("The object you are loading has some requirements that couldn\'t be met.", array('object' => $sObjectName, 'requirements' => $oRequirement), $this);
+			throw new WatCeption('The object you are loading has some requirements that couldn\'t be met.', array('object' => $sObjectName, 'errors' => $oRequirement->getErrors()), $this);
 		}
 	}
 	
