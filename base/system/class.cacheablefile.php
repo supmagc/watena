@@ -35,17 +35,27 @@ class CacheableFile extends Cacheable {
 		$oObj = null;		
 		if($nFileExp > $nCacheExp) {
 			$aIncludes = array();
-			list($oObject, $oRequirements) = parent::getWatena()->getContext()->loadObjectAndRequirements($sObject, array($aConfig), $sIncludeFile, $sExtends, $sImplements);
-			
-			
-			parent::getWatena()->getContext()->checkRequirements($aRequirements)
-			
-			parent::getWatena()->getContext()->loadClass($sObject, $aConfig)
-			
-			$oObj = new $sObject($sFilename, $sFilepath, $aConfig);*/
+			try {
+				list($oObject, $oRequirements) = parent::getWatena()->getContext()->loadObjectAndRequirements($sObject, array($aConfig), $sIncludeFile, $sExtends, $sImplements);
+				if($oRequirements->isSucces()) {
+					$oCache->set("CACHEFILE_{$sIdentifier}_EXPIRATION", $mData);
+					$oCache->set("CACHEFILE_{$sIdentifier}_REQUIREMENTS", $oRequirements);
+					$oCache->set("CACHEFILE_{$sIdentifier}_OBJECT", $oObject);
+				}
+				else {
+					throw new WatCeption('Unable to load')
+				}
+			}
+            catch(WatCeption $e) {
+				throw new WatCeption('An exception occured while loading the required object.', array('object' => $sObject, 'file' => $sFilename), $this, $e);
+            }
 		}
 		else {
-			
+			$oRequirements = $oCache->get("CACHEFILE_{$sIdentifier}_REQUIREMENTS", null);
+			if($oRequirements->IsSucces()) {
+				$oObject = $oCache->get("CACHEFILE_{$sIdentifier}_OBJECT", null);
+				return $oObject;
+			}
 		}
 	}
 }

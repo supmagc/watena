@@ -136,6 +136,15 @@ class RequirementBuffer extends Object {
 	public final function isSucces() {
 		return $this->m_bSucces;
 	}
+	
+	/**
+	 * Retrieve all occured errors as an array
+	 * 
+	 * @return array
+	 */
+	public final function getErrors() {
+		return $this->m_aProblems;
+	}
 
 	/**
 	 * Scan the class structure as provided (or instance structure if needed)

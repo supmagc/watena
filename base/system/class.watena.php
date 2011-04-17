@@ -60,7 +60,7 @@ class Watena extends Configurable {
 	public final function getPath($sPath) {
 		$aMatches = array();
 		$aPositions = array();
-		if(Encoding::regFind('%^([brdt]):(/?)(.*?)(/?)$%i', $sPath, $aMatches, $aPositions)) {
+		if(Encoding::regFind('%^([brd]):(/?)(.*?)(/?)$%i', $sPath, $aMatches, $aPositions)) {
 			switch($aMatches[1]) {
 				case 'b' :
 				case 'B' : return PATH_BASE . (Encoding::length($aMatches[3]) > 0 ? "/$aMatches[3]" : '');
@@ -68,8 +68,6 @@ class Watena extends Configurable {
 				case 'D' : return PATH_DATA . (Encoding::length($aMatches[3]) > 0 ? "/$aMatches[3]" : '');
 				case 'r' :
 				case 'R' : return PATH_ROOT . (Encoding::length($aMatches[3]) > 0 ? "/$aMatches[3]" : '');
-				case 't' :
-				case 'T' : return PATH_THEMES . (Encoding::length($aMatches[3]) > 0 ? "/$aMatches[3]" : '');
 			}
 		}
 		return realpath($sPath);
