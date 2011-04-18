@@ -37,14 +37,9 @@ class CacheableFile extends Cacheable {
 			$aIncludes = array();
 			try {
 				list($oObject, $oRequirements) = parent::getWatena()->getContext()->loadObjectAndRequirements($sObject, array($aConfig), $sIncludeFile, $sExtends, $sImplements);
-				if($oRequirements->isSucces()) {
-					$oCache->set("CACHEFILE_{$sIdentifier}_EXPIRATION", $mData);
-					$oCache->set("CACHEFILE_{$sIdentifier}_REQUIREMENTS", $oRequirements);
-					$oCache->set("CACHEFILE_{$sIdentifier}_OBJECT", $oObject);
-				}
-				else {
-					throw new WatCeption('Unable to load')
-				}
+				$oCache->set("CACHEFILE_{$sIdentifier}_EXPIRATION", $mData);
+				$oCache->set("CACHEFILE_{$sIdentifier}_REQUIREMENTS", $oRequirements);
+				$oCache->set("CACHEFILE_{$sIdentifier}_OBJECT", $oObject);
 			}
             catch(WatCeption $e) {
 				throw new WatCeption('An exception occured while loading the required object.', array('object' => $sObject, 'file' => $sFilename), $this, $e);
@@ -55,6 +50,9 @@ class CacheableFile extends Cacheable {
 			if($oRequirements->IsSucces()) {
 				$oObject = $oCache->get("CACHEFILE_{$sIdentifier}_OBJECT", null);
 				return $oObject;
+			}
+			else {
+				throw new WatCeption('A previously loaded and cached object no longer meets it requirements.', array('object' => $sObject, 'requirements' => $oRequirements), $this);
 			}
 		}
 	}

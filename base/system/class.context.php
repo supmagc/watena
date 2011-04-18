@@ -103,7 +103,7 @@ class Context extends Object {
 			return array($oTmp, $oRequirement);
 		}
 		else {
-			throw new WatCeption('The object you are loading has some requirements that couldn\'t be met.', array('object' => $sObjectName, 'errors' => $oRequirement->getErrors()), $this);
+			throw new WatCeption('The object you are loading has some requirements that couldn\'t be met.', array('object' => $sObjectName, 'errors' => $oRequirement->getErrors(), 'requirements' => $oRequirement), $this);
 		}
 	}
 	
