@@ -11,18 +11,18 @@ class CacheableFile extends Cacheable {
 	}
 	
 	public function getFilename() {
-		
+		return $this->m_sFilename;
 	}
 	
 	public function getFileData() {
-		
+		return file_get_contents($this->m_sFilepath);
 	}
 	
 	public function printFileData() {
-		
+		echo file_get_contents($this->m_sFilepath);		
 	}
 	
-	public static function load($sFilename, array $aConfig = array(), $sIncludeFile = null, $sExtends = null, $sImplements = null) {
+	public static function load($sFilename, array $aConfig = array()) {
 		$sObject = get_called_class();
 		$oCache = parent::getWatena()->getCache();
 		$sFilepath = parent::getWatena()->getPath($sFilename);
@@ -36,7 +36,7 @@ class CacheableFile extends Cacheable {
 		if($nFileExp > $nCacheExp) {
 			$aIncludes = array();
 			try {
-				list($oObject, $oRequirements) = parent::getWatena()->getContext()->loadObjectAndRequirements($sObject, array($aConfig), $sIncludeFile, $sExtends, $sImplements);
+				list($oObject, $oRequirements) = parent::getWatena()->getContext()->loadObjectAndRequirements($sObject, array($aConfig), null, 'CacheableFile', null);
 				$oCache->set("CACHEFILE_{$sIdentifier}_EXPIRATION", $mData);
 				$oCache->set("CACHEFILE_{$sIdentifier}_REQUIREMENTS", $oRequirements);
 				$oCache->set("CACHEFILE_{$sIdentifier}_OBJECT", $oObject);
