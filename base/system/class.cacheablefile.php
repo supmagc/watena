@@ -5,9 +5,10 @@ class CacheableFile extends Cacheable {
 	private $m_sFilename;
 	private $m_sFilepath;
 	
-	protected function __construct($sFilename, $sFilepath, array $aConfig = array()) {
+	protected final function CacheableFile($sFilename, $sFilepath, array $aConfig = array()) {
 		$this->m_sFilename = $sFilename;
 		$this->m_sFilepath = $sFilepath;
+		parent::__construct($aConfig);
 	}
 	
 	public function getFilename() {
@@ -24,9 +25,13 @@ class CacheableFile extends Cacheable {
 	
 	public static function load($sFilename, array $aConfig = array()) {
 		$sObject = get_called_class();
-		$oCache = parent::getWatena()->getCache();
 		$sFilepath = parent::getWatena()->getPath($sFilename);
 		if($sFilepath === false) throw new Exception("Cachefile does not exist: $sFilename");
+		
+		return parent::load($sObject, 'CacheableFile', array($sFilename, $sFilepath, $aConfig), "FILE_$sFilepath", filemtime($sFilepath));
+		
+		/*
+		$oCache = parent::getWatena()->getCache();
 		
 		$sIdentifier = md5($sFilename);
 		$nCacheExp = $oCache->get("CACHEFILE_{$sIdentifier}_EXPIRATION", 0);
@@ -55,6 +60,8 @@ class CacheableFile extends Cacheable {
 				throw new WatCeption('A previously loaded and cached object no longer meets it requirements.', array('object' => $sObject, 'requirements' => $oRequirements), $this);
 			}
 		}
+		 * 
+		 */
 	}
 }
 

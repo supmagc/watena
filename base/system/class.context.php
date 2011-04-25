@@ -99,7 +99,8 @@ class Context extends Object {
 		
 		// Create instance
 		if($oRequirement->isSucces()) {
-			$oTmp = new $sObjectName($aParams);
+			$oConstructor = new ReflectionMethod($sObjectName, '__construct');
+			$oTmp = $oConstructor->invokeArgs(null, $aParams);			
 			return array($oTmp, $oRequirement);
 		}
 		else {
