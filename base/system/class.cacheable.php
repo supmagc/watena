@@ -16,8 +16,8 @@ abstract class Cacheable extends Configurable {
 	 * For example: creating a database connection should be done at this time.
 	 */
 	public function wakeup() {}
-
-	public final function __construct(array $aConfig = array()) {
+	
+	protected function Cacheable(array $aConfig) {
 		parent::__construct($aConfig);
 		$this->init();
 	}
@@ -26,24 +26,36 @@ abstract class Cacheable extends Configurable {
 		$this->wakeup();
 	}
 	
+	protected static function load($sObject, $sExtends, $aParams, $sIdentifier, $nExpiration) {
+		$sIdentifier = md5($sIdentifier);
+		$oCache = parent::getWatena()->getCache();
+		$nCacheExp = $oCache->get("CACHE_{$sIdentifier}_EXPIRATION", 0);
+		
+		$oObj = null;		
+		if($nExpiration > $nCacheExp) {
+			try {
+				list($oObject, $oRequirements) = parent::getWatena()->getContext()->loadObjectAndRequirements($sObject, $aParams, null, $sExtends, null);
+				$oCache->set("CACHE_{$sIdentifier}_EXPIRATION", $mData);
+				$oCache->set("CACHE_{$sIdentifier}_REQUIREMENTS", $oRequirements);
+				$oCache->set("CACHE_{$sIdentifier}_OBJECT", $oObject);
+			}
+            catch(WatCeption $e) {
+				throw new WatCeption('An exception occured while loading the required object.', array('object' => $sObject, 'file' => $sFilename), $this, $e);
+            }
+		}
+		else {
+			$oRequirements = $oCache->get("CACHE_{$sIdentifier}_REQUIREMENTS", null);
+			if($oRequirements->IsSucces()) {
+				$oObject = $oCache->get("CACHE_{$sIdentifier}_OBJECT", null);
+				return $oObject;
+			}
+			else {
+				throw new WatCeption('A previously loaded and cached object no longer meets it requirements.', array('object' => $sObject, 'requirements' => $oRequirements), $this);
+			}
+		}		
+	}
+	
 	/*
-	public static final function createByIdentifier() {
-		
-	}
-	
-	public static final function createByTimestamp() {
-		
-	}
-		
-	public static final function createByIdentifier() {
-		
-	}
-		
-	public static final function createByIdentifier() {
-		
-	}
-	*/
-	
 	public static final function create($sObject, array $aConfig = array(), $sIdentifier = null, $nExpirationSec = Cacheable::EXP_DEFAULT, $sIncludeFile = null, $sExtends = null, $sImplements = null, $nTimestamp = null) {
 		// Generate an identifier if none is given
 		if(!$sIdentifier) $sIdentifier = $sObject . count($aPermanentConfig) . implode('', array_keys($aPermanentConfig)) . implode('', array_values($aPermanentConfig));
@@ -88,6 +100,8 @@ abstract class Cacheable extends Configurable {
 		// If all succeeded, unserialize the object and return it
 		return unserialize($sObject);
 	}
+	 * 
+	 */
 }
 
 ?>

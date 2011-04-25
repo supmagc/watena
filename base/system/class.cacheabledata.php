@@ -2,6 +2,10 @@
 
 
 class CacheableData extends Cacheable {
+	
+	protected function CacheableData(array $aConfig) {
+		parent::__construct($aConfig);
+	}
 
 	public static function load(array $aConfig = array(), $nExpiration = null) {
 		$sObject = get_called_class();
