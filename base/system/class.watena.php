@@ -70,6 +70,9 @@ class Watena extends Configurable {
 				case 'R' : return PATH_ROOT . (Encoding::length($aMatches[3]) > 0 ? "/$aMatches[3]" : '');
 			}
 		}
+		print_r($aMatches);
+		echo $sPath;
+		// TODO: remove this
 		return realpath($sPath);
 	}
 	

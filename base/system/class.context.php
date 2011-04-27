@@ -57,7 +57,8 @@ class Context extends Object {
 					'$a', 
 					'return file_exists($a) ? parse_ini_file($a, true) : array();'),
 				5, array($sFileINI));
-			$oPlugin = Cacheable::create($sPlugin, $aConfig, 'W_PLUGIN_'.$sPlugin, 5, $sFilePHP, 'Plugin');
+			include_once $sFilePHP;
+			$oPlugin = call_user_func(array($sPlugin, 'create'), $aConfig);
 			$this->m_aPlugins[$sKey] = $oPlugin;
 		}
 		return $this->m_aPlugins[$sKey] !== null;
@@ -84,23 +85,23 @@ class Context extends Object {
 		$aExtends = class_parents($sObjectName);
 		$aImplements = class_implements($sObjectName);
 		
-		if(!in_array("Object", $aParents)) throw new WatCeption('The object top be loaded does not extend \'Object\'.', array('object' => $sObjectName), $this);
-		if($sExtends && !in_array($sExtends, $aParents)) throw new WatCeption('The object to be loaded does not extend the required class.', array('object' => $sObjectName, 'class' => $sExtends), $this);
+		if(!in_array("Object", $aExtends)) throw new WatCeption('The object top be loaded does not extend \'Object\'.', array('object' => $sObjectName), $this);
+		if($sExtends && !in_array($sExtends, $aExtends)) throw new WatCeption('The object to be loaded does not extend the required class.', array('object' => $sObjectName, 'class' => $sExtends), $this);
 		if($sImplements && !in_array($sImplements, $aImplements)) throw new WatCeption('The object to be loaded does not implement the required interface.', array('object' => $sObjectName, 'interface' => $sImplements), $this);
 		
 		// Check requirements if possible/required
-		$oRequirement = method_exists($sClassName, 'getRequirements') ? new RequirementBuffer(call_user_func(array($sClassName, 'getRequirements'))) : new RequirementBuffer();
+		$oRequirement = method_exists($sObjectName, 'getRequirements') ? new RequirementBuffer(call_user_func(array($sObjectName, 'getRequirements'))) : new RequirementBuffer();
 		if($sIncludeFile && is_array($aIncludes)) $aIncludes []= $sIncludeFile;
-		foreach($aParents as $sParent) {
+		foreach($aExtends as $sParent) {
 			if(method_exists($sParent, 'getRequirements')) {
-				$oRequirement->addRequirements(call_user_func(array($sClassName, 'getRequirements')));
+				$oRequirement->addRequirements(call_user_func(array($sObjectName, 'getRequirements')));
 			}
 		}
 		
 		// Create instance
 		if($oRequirement->isSucces()) {
-			$oConstructor = new ReflectionMethod($sObjectName, '__construct');
-			$oTmp = $oConstructor->invokeArgs(null, $aParams);			
+			$oClass = new ReflectionClass($sObjectName);
+			$oTmp = $oClass->newInstanceArgs($aParams);			
 			return array($oTmp, $oRequirement);
 		}
 		else {
@@ -180,7 +181,9 @@ class Context extends Object {
 		foreach($aFiles as $sFile) {
 			if(Encoding::RegMatch('filter\\.[_a-z0-9_]*\\.xml', $sFile)) {
 				$sFile = parent::getWatena()->getPath('b:/filters/'.$sFile);
-				$oFilter = Cacheable::create('Filter', array('file' => $sFile), "W_FILTER_$sFile", Cacheable::EXP_NEVER, null, null, null, filemtime($sFile));
+				// TODO: remove this
+				echo $sFile;
+				$oFilter = Filter::create($sFile, array('file' => $sFile));
 				if(isset($aFilters[$oFilter->getOrder()])) parent::terminate('A filter with this order-number allready exists: ' . $oFilter->getOrder() . ' {' . $aFilters[$oFilter->getOrder()]->getName() . ', ' . $oFilter->getName() . '}');
 				$aFilters[$oFilter->getOrder()] = $oFilter; 
 			}

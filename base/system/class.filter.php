@@ -39,7 +39,7 @@ class FilterGroup extends Object {
 	}
 }
 
-class Filter extends Cacheable {
+class Filter extends CacheableFile {
 
 	private $m_sName = '';
 	private $m_sTheme = '';
@@ -52,7 +52,7 @@ class Filter extends Cacheable {
 	public function init() {
 		$oXml = new XMLReader();
 		$oLast = null;
-		if($oXml->open(parent::getConfig('file', null))) {
+		if($oXml->open(parent::getFilepath())) {
 			while($oXml->read()) {
 				
 				if($oXml->nodeType == XMLReader::ELEMENT && $oXml->name == 'filter') {
