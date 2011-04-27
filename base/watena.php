@@ -35,6 +35,8 @@ if(!defined('NWATENA')) {
 	require_once PATH_BASE . '/system/class.object.php';
 	require_once PATH_BASE . '/system/class.configurable.php';
 	require_once PATH_BASE . '/system/class.cacheable.php';
+	require_once PATH_BASE . '/system/class.cacheabledata.php';
+	require_once PATH_BASE . '/system/class.cacheablefile.php';
 	require_once PATH_BASE . '/system/class.context.php';
 	require_once PATH_BASE . '/system/class.requirementbuffer.php';
 	require_once PATH_BASE . '/system/class.filter.php';

@@ -9,7 +9,7 @@ class RequirementBuffer extends Object {
 	private $m_aDefines = array();
 	private $m_bSucces = true;
 	
-	public final function __construct(array $aRequirements = array()) {
+	public final function __construct($aRequirements = null) {
 		$this->addRequirements($aRequirements);
 	}
 	
@@ -27,93 +27,96 @@ class RequirementBuffer extends Object {
 	 * @param array $aRequirements An array formatted to the requirement specifications.
 	 * @return bool Indicate if this set of requirements was succesfully loaded
 	 */
-	public final function addRequirements(array $aRequirements) {
+	public final function addRequirements($aRequirements) {
 		$bSucces = true;
 		
-		// Check extensions
-		if($aRequirements && isset($aRequirements['extensions'])) {
-			if(!is_array($aRequirements['extensions'])) $aRequirements['extensions'] = array($aRequirements['extensions']);
-			foreach($aRequirements['extensions'] as $sExtension) {
-				if(!extension_loaded($sExtension)) {
-					$sFile = (PHP_SHLIB_SUFFIX === 'dll' ? 'php_' : '') . $sExtension . '.' . PHP_SHLIB_SUFFIX;
-					if(function_exists('dl') && @dl($sFile)) {						
-						$this->m_aExtensions []= $sFile;
+		if(is_array($aRequirements)) {
+
+			// Check extensions
+			if($aRequirements && isset($aRequirements['extensions'])) {
+				if(!is_array($aRequirements['extensions'])) $aRequirements['extensions'] = array($aRequirements['extensions']);
+				foreach($aRequirements['extensions'] as $sExtension) {
+					if(!extension_loaded($sExtension)) {
+						$sFile = (PHP_SHLIB_SUFFIX === 'dll' ? 'php_' : '') . $sExtension . '.' . PHP_SHLIB_SUFFIX;
+						if(function_exists('dl') && @dl($sFile)) {						
+							$this->m_aExtensions []= $sFile;
+						}
+						else {
+							$this->m_aProblems []= "The required php-extension was not loaded: $sFile";
+							$bSucces = false;
+						}
+					}
+				}
+			}
+
+			// Check plugins
+			if($aRequirements && isset($aRequirements['plugins'])) {
+				if(!is_array($aRequirements['plugins'])) $aRequirements['plugins'] = array($aRequirements['plugins']);
+				foreach($aRequirements['plugins'] as $sPlugin) {
+					if(self::loadPlugin($sPlugin, false)) {
+						$this->m_aPlugins []= $sPlugin;
 					}
 					else {
-						$this->m_aProblems []= "The required php-extension was not loaded: $sFile";
+						$this->m_aProblems []= "The required watena-plugin was not loaded: $sPlugin";
+						$bSucces = false;
+					}
+				}
+			}
+
+			// Check PEAR
+			if($aRequirements && isset($aRequirements['pear'])) {
+				$nOld = error_reporting(E_ERROR);
+				$bTemp = @include_once('PEAR.php');
+				if($bTemp && class_exists('PEAR')) {
+					$this->m_aIncludes []= 'PEAR.php';
+					if(!is_array($aRequirements['pear'])) $aRequirements['pear'] = array($aRequirements['pear']);
+					foreach($aRequirements['pear'] as $sPear) {
+						$bTemp = @include_once($sPear.'.php');		
+						if($bTemp && class_exists($sPear)) {
+							$this->m_aIncludes []= $sPear . '.php';
+						}
+						else {
+							$this->m_aProblems []= "The required pear-install was not loaded: $sPear";
+							$bSucces = false;
+						}
+					}
+				}
+				else {
+					$this->m_aProblems []= "PEAR was not installed on this system.";
+					$bSucces = false;
+				}
+				error_reporting($nOld);
+			}
+
+			// Check files
+			if($aRequirements && isset($aRequirements['files'])) {
+				if(!is_array($aRequirements['files'])) $aRequirements['files'] = array($aRequirements['files']);
+				foreach($aRequirements['files'] as $sFile) {
+					if(file_exists($filename)) {
+						$aIncludes []= $sFile;
+					}
+					else {
+						$this->m_aProblems []= "The required file could not be found: $sFile";
+						$bSucces = false;
+					}
+				}
+			}
+
+			// Check defines
+			if($aRequirements && isset($aRequirements['defines'])) {
+				if(!is_array($aRequirements['defines'])) $aRequirements['defines'] = array($aRequirements['defines']);
+				foreach($aRequirements['defines'] as $sDefine) {
+					if(defined($sDefine)) {
+						$this->m_aDefines []= $sDefine;
+					}
+					else {
+						$this->m_aProblems []= "The required defines could not be found: $sDefine";
 						$bSucces = false;
 					}
 				}
 			}
 		}
-		
-		// Check plugins
-		if($aRequirements && isset($aRequirements['plugins'])) {
-			if(!is_array($aRequirements['plugins'])) $aRequirements['plugins'] = array($aRequirements['plugins']);
-			foreach($aRequirements['plugins'] as $sPlugin) {
-				if(self::loadPlugin($sPlugin, false)) {
-					$this->m_aPlugins []= $sPlugin;
-				}
-				else {
-					$this->m_aProblems []= "The required watena-plugin was not loaded: $sPlugin";
-					$bSucces = false;
-				}
-			}
-		}
-		
-		// Check PEAR
-		if($aRequirements && isset($aRequirements['pear'])) {
-			$nOld = error_reporting(E_ERROR);
-			$bTemp = @include_once('PEAR.php');
-			if($bTemp && class_exists('PEAR')) {
-				$this->m_aIncludes []= 'PEAR.php';
-				if(!is_array($aRequirements['pear'])) $aRequirements['pear'] = array($aRequirements['pear']);
-				foreach($aRequirements['pear'] as $sPear) {
-					$bTemp = @include_once($sPear.'.php');		
-					if($bTemp && class_exists($sPear)) {
-						$this->m_aIncludes []= $sPear . '.php';
-					}
-					else {
-						$this->m_aProblems []= "The required pear-install was not loaded: $sPear";
-						$bSucces = false;
-					}
-				}
-			}
-			else {
-				$this->m_aProblems []= "PEAR was not installed on this system.";
-				$bSucces = false;
-			}
-			error_reporting($nOld);
-		}
-		
-		// Check files
-		if($aRequirements && isset($aRequirements['files'])) {
-			if(!is_array($aRequirements['files'])) $aRequirements['files'] = array($aRequirements['files']);
-			foreach($aRequirements['files'] as $sFile) {
-				if(file_exists($filename)) {
-					$aIncludes []= $sFile;
-				}
-				else {
-					$this->m_aProblems []= "The required file could not be found: $sFile";
-					$bSucces = false;
-				}
-			}
-		}
-		
-		// Check defines
-		if($aRequirements && isset($aRequirements['defines'])) {
-			if(!is_array($aRequirements['defines'])) $aRequirements['defines'] = array($aRequirements['defines']);
-			foreach($aRequirements['defines'] as $sDefine) {
-				if(defined($sDefine)) {
-					$this->m_aDefines []= $sDefine;
-				}
-				else {
-					$this->m_aProblems []= "The required defines could not be found: $sDefine";
-					$bSucces = false;
-				}
-			}
-		}
-		
+
 		$this->m_bSucces = $this->m_bSucces && $bSucces;
 		return $bSucces;					
 	}
