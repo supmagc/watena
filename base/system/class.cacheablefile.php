@@ -32,10 +32,10 @@ class CacheableFile extends Cacheable {
 		return self::createObject($sObject, $sFilename, $aConfig);
 	}
 	
-	public static function createObject($sObject, $sFilename, array $aConfig = array()) {
+	public static function createObject($sObject, $sFilename, array $aConfig = array(), $sObjectInclude = null) {
 		$sFilepath = parent::getWatena()->getPath($sFilename);
 		if($sFilepath === false) throw new Exception("Cachefile does not exist: $sFilename");
-		return parent::_create($sObject, 'CacheableFile', array($sFilename, $sFilepath, $aConfig), "FILE_$sFilepath", filemtime($sFilepath));		
+		return parent::_create($sObject, $sObjectInclude, 'CacheableFile', array($sFilename, $sFilepath, $aConfig), "FILE_$sFilepath", filemtime($sFilepath), $sObjectInclude);		
 	}
 }
 

@@ -181,8 +181,6 @@ class Context extends Object {
 		foreach($aFiles as $sFile) {
 			if(Encoding::RegMatch('filter\\.[_a-z0-9_]*\\.xml', $sFile)) {
 				$sFile = parent::getWatena()->getPath('b:/filters/'.$sFile);
-				// TODO: remove this
-				echo $sFile;
 				$oFilter = Filter::create($sFile, array('file' => $sFile));
 				if(isset($aFilters[$oFilter->getOrder()])) parent::terminate('A filter with this order-number allready exists: ' . $oFilter->getOrder() . ' {' . $aFilters[$oFilter->getOrder()]->getName() . ', ' . $oFilter->getName() . '}');
 				$aFilters[$oFilter->getOrder()] = $oFilter; 
