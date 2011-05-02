@@ -12,10 +12,10 @@ class CacheableData extends Cacheable {
 		return self::createObject($sObject, $aConfig, $nExpiration);
 	}
 	
-	public static function createObject($sObject, array $aConfig = array(), $nExpiration = null, $sObjectInclude = null) {
+	public static function createObject($sObject, array $aConfig = array(), $nExpiration = null, $sIncludeFile = null, $sExtends = null, $sImplements = null) {
 		$sIdentifier = 'DATA_' . $sObject . '_' . md5(serialize($aConfig));
 		if(!$nExpiration) $nExpiration = parent::getWatena()->getConfig('CACHE_EXPIRATION', 5);
-		return parent::_create($sObject, $sObjectInclude, 'CacheableData', array($aConfig), $sIdentifier, $nExpiration);		
+		return parent::_create($sObject, array($aConfig), $sIncludeFile, $sExtends === null ? 'CacheableFile' : $sExtends, $sImplements, 'DATA_' . $sIdentifier, $nExpiration);		
 	}
 }
 

@@ -90,7 +90,7 @@ class Filter extends CacheableFile {
 	}
 	
 	public function getModel() {
-		return $this->m_oModel ? Cacheable::create($this->m_oModel->getName(), $this->m_oModel->getParams(), 'W_MODEL_'.$this->m_oModel->getName(), 5, $this->m_oModel->getFile(), 'Model') : null;
+		return $this->m_oModel ? CacheableData::createObject($this->m_oModel->getName(), $this->m_oModel->getParams(), null, $this->m_oModel->getFile(), 'Model') : null;
 	}
 	
 	public function getView() {
