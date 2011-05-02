@@ -6,6 +6,13 @@ if(!defined('PATH_ROOT')) define('PATH_ROOT', realpath(dirname(__FILE__) . '/..'
 if(!defined('NEXCEPTIONCATCH')) {
 	define('EXCEPTIONCATCH', true);
 	function exception_handler(Exception $e) {
+		echo get_class($e);
+		if(is_a($e, 'WatCeption')) {
+			echo "<h2>{$e->getDebugMessage()}</h2>";
+			echo '<pre>';
+			print_r($e->getData());
+			echo '</pre>';
+		}
 		echo "<pre>$e</pre>";
 		exit;
 	}

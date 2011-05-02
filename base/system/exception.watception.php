@@ -7,8 +7,12 @@ class WatCeption extends Exception {
 	private $m_oContext;
 	private $m_oInnerException;
 	
-	public function __construct($sMessage, array $aData = array(), Object $oContext = null, Exception $oInnerException) {
+	public function __construct($sMessage, array $aData = array(), Object $oContext = null, Exception $oInnerException = null) {
 		parent::__construct('A \'Watena\'-error occured. Contact an administrator if you are unable to continue.', null);
+		$this->m_sMessage = $sMessage;
+		$this->m_aData = $aData;
+		$this->m_oContext = $oContext;
+		$this->m_oInnerException = $oInnerException;
 	}
 	
 	public final function getDebugMessage() {

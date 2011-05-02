@@ -109,40 +109,6 @@ class Context extends Object {
 		}
 	}
 	
-	/*
-	public function loadClass($sClassName, array $aConfig = array(), $sIncludeFile = null, $sExtends = null, $sImplements = null) {
-		// Include main file
-		if($sIncludeFile) {
-			if(file_exists($sIncludeFile)) include_once($sIncludeFile);
-			else parent::terminate("Unable to include unexisting file $sIncludeFile.");
-		}
-		
-		// Check inheritance stuff and existing
-		$aParents = class_parents($sClassName, false);
-		if(!class_exists($sClassName, false)) parent::terminate("The class $sClassName could not be found.");
-		if(!in_array("Object", $aParents)) parent::terminate("The class $sClassName does not extends Object.");
-		if($sExtends && !in_array($sExtends, $aParents)) parent::terminate("The class $sClassName needs to extend $sExtends.");
-		if($sImplements && !in_array($sImplements, class_implements($sClassName))) parent::terminate("The class $sClassName needs to implement $sImplements.");
-
-		// Instantiate dependency holders
-		$aIncludes = $sIncludeFile ? array($sIncludeFile) : array();
-		$aExtensionLoads = array();
-		$aPluginLoads = array();
-		
-		// Check requirements if possible/required
-		$bCanLoad = method_exists($sClassName, 'getRequirements') ? self::checkRequirements(call_user_func(array($sClassName, 'getRequirements')), true, $aIncludes, $aExtensionLoads, $aPluginLoads) : true;
-		foreach($aParents as $sParent) {
-			if(method_exists($sParent, 'getRequirements')) {
-				$bCanLoad = $bCanLoad && self::checkRequirements(call_user_func(array($sClassName, 'getRequirements')), true, $aIncludes, $aExtensionLoads, $aPluginLoads);
-			}
-		}
-		
-		// Create instance
-		$oTmp = new $sClassName($aConfig);
-		return array($aIncludes, $aExtensionLoads, $aPluginLoads, serialize($oTmp));
-	}
-	*/
-	
 	/**
 	 * Get an array with respectibly the MVC components for the given mapping
 	 * 
@@ -180,8 +146,7 @@ class Context extends Object {
 		$aFilters = array();
 		foreach($aFiles as $sFile) {
 			if(Encoding::RegMatch('filter\\.[_a-z0-9_]*\\.xml', $sFile)) {
-				$sFile = parent::getWatena()->getPath('b:/filters/'.$sFile);
-				$oFilter = Filter::create($sFile, array('file' => $sFile));
+				$oFilter = Filter::create('b:/filters/'.$sFile);
 				if(isset($aFilters[$oFilter->getOrder()])) parent::terminate('A filter with this order-number allready exists: ' . $oFilter->getOrder() . ' {' . $aFilters[$oFilter->getOrder()]->getName() . ', ' . $oFilter->getName() . '}');
 				$aFilters[$oFilter->getOrder()] = $oFilter; 
 			}

@@ -26,21 +26,27 @@ abstract class Cacheable extends Configurable {
 		$this->wakeup();
 	}
 	
-	protected static function _create($sObject, $sExtends, $aParams, $sIdentifier, $nExpiration) {
-		$sIdentifier = md5($sIdentifier);
+	protected static function _create($sObject, $aParams, $sIncludeFile, $sExtends, $sImplements, $sIdentifier, $nExpiration) {
+		$sIdentifier = $sIdentifier . '_' . md5(serialize($aParams));
 		$oCache = parent::getWatena()->getCache();
 		$nCacheExp = $oCache->get("CACHE_{$sIdentifier}_EXPIRATION", 0);
 		
-		$oObj = null;		
 		if($nExpiration > $nCacheExp) {
 			try {
-				list($oObject, $oRequirements) = parent::getWatena()->getContext()->loadObjectAndRequirements($sObject, $aParams, null, $sExtends, null);
+				list($oObject, $oRequirements) = parent::getWatena()->getContext()->loadObjectAndRequirements($sObject, $aParams, $sIncludeFile, $sExtends, $sImplements);
 				$oCache->set("CACHE_{$sIdentifier}_EXPIRATION", $nExpiration);
 				$oCache->set("CACHE_{$sIdentifier}_REQUIREMENTS", $oRequirements);
 				$oCache->set("CACHE_{$sIdentifier}_OBJECT", $oObject);
+				return $oObject;
 			}
             catch(WatCeption $e) {
-				throw new WatCeption('An exception occured while loading the required object.', array('object' => $sObject, 'file' => $sFilename), $this, $e);
+				throw new WatCeption('An exception occured while loading the required object.', array(
+					'object' => $sObject,
+					'params' => $aParams,
+					'includeFile' => $sIncludeFile,
+					'extends' => $sExtends,
+					'implements' => $sImplements,
+					'identifier' => $sIdentifier), null, $e);
             }
 		}
 		else {
