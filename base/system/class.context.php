@@ -58,7 +58,7 @@ class Context extends Object {
 					'return file_exists($a) ? parse_ini_file($a, true) : array();'),
 				5, array($sFileINI));
 			include_once $sFilePHP;
-			$oPlugin = call_user_func(array($sPlugin, 'create'), $aConfig);
+			$oPlugin = CacheableData::createObject($sPlugin, $aConfig, null, $sFilePHP, 'Plugin');
 			$this->m_aPlugins[$sKey] = $oPlugin;
 		}
 		return $this->m_aPlugins[$sKey] !== null;
