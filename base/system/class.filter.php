@@ -26,6 +26,8 @@ class FilterGroup extends Object {
 		$this->m_aParams[$sName] = $sValue;
 	}
 	
+	public function setFinal($bFinal) {
+	
 	public function getFile() {
 		return $this->m_sFile;
 	}
@@ -94,11 +96,11 @@ class Filter extends CacheableFile {
 	}
 	
 	public function getView() {
-		return $this->m_oView ? Cacheable::create($this->m_oView->getName(), $this->m_oView->getParams(), 'W_VIEW_'.$this->m_oView->getName(), 5, $this->m_oView->getFile(), 'View') : null;
+		return $this->m_oView ? CacheableData::createObject($this->m_oView->getName(), $this->m_oView->getParams(), null, $this->m_oView->getFile(), 'View') : null;
 	}
 	
 	public function getController() {
-		return $this->m_oController ? Cacheable::create($this->m_oController->getName(), $this->m_oController->getParams(), 'W_CONTROLLER_'.$this->m_oController->getName(), 5, $this->m_oController->getFile(), 'Controller') : null;
+		return $this->m_oController ? CacheableData::createObject($this->m_oController->getName(), $this->m_oController->getParams(), null, $this->m_oController->getFile(), 'Controller') : null;
 	}
 	
 	public function getTheme() {
