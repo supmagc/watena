@@ -1,6 +1,6 @@
 <?php
 
-abstract class Controller extends Cacheable {
+abstract class Controller extends CacheableData {
 	
 	abstract public function process(Model $oModel, View $oView);
 	

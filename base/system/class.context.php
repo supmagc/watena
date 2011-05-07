@@ -91,7 +91,7 @@ class Context extends Object {
 		
 		// Check requirements if possible/required
 		$oRequirement = method_exists($sObjectName, 'getRequirements') ? new RequirementBuffer(call_user_func(array($sObjectName, 'getRequirements'))) : new RequirementBuffer();
-		if($sIncludeFile && is_array($aIncludes)) $aIncludes []= $sIncludeFile;
+		if($sIncludeFile) $oRequirement->addInclude($sIncludeFile);
 		foreach($aExtends as $sParent) {
 			if(method_exists($sParent, 'getRequirements')) {
 				$oRequirement->addRequirements(call_user_func(array($sObjectName, 'getRequirements')));

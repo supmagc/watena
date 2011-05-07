@@ -2,10 +2,6 @@
 
 abstract class Cacheable extends Configurable {
 	
-	const EXP_DEFAULT = 0;
-	const EXP_NEVER = -1;
-	const EXP_REFRESH = -2;
-	
 	/**
 	 * This method is called when initting the object and should leave the object in a cacheable/serializeable state.
 	 */
@@ -17,7 +13,7 @@ abstract class Cacheable extends Configurable {
 	 */
 	public function wakeup() {}
 	
-	protected function Cacheable(array $aConfig) {
+	public function Cacheable(array $aConfig) {
 		parent::__construct($aConfig);
 		$this->init();
 	}
@@ -29,14 +25,14 @@ abstract class Cacheable extends Configurable {
 	protected static function _create($sObject, $aParams, $sIncludeFile, $sExtends, $sImplements, $sIdentifier, $nExpiration) {
 		$sIdentifier = $sIdentifier . '_' . md5(serialize($aParams));
 		$oCache = parent::getWatena()->getCache();
-		$nCacheExp = $oCache->get("CACHE_{$sIdentifier}_EXPIRATION", 0);
+		$nCacheExp = $oCache->get("W_CACHE_{$sIdentifier}_EXPIRATION", 0);
 		
 		if($nExpiration > $nCacheExp) {
 			try {
 				list($oObject, $oRequirements) = parent::getWatena()->getContext()->loadObjectAndRequirements($sObject, $aParams, $sIncludeFile, $sExtends, $sImplements);
-				$oCache->set("CACHE_{$sIdentifier}_EXPIRATION", $nExpiration);
-				$oCache->set("CACHE_{$sIdentifier}_REQUIREMENTS", $oRequirements);
-				$oCache->set("CACHE_{$sIdentifier}_OBJECT", $oObject);
+				$oCache->set("W_CACHE_{$sIdentifier}_EXPIRATION", $nExpiration);
+				$oCache->set("W_CACHE_{$sIdentifier}_REQUIREMENTS", $oRequirements);
+				$oCache->set("W_CACHE_{$sIdentifier}_OBJECT", $oObject);
 				return $oObject;
 			}
             catch(WatCeption $e) {
@@ -50,9 +46,9 @@ abstract class Cacheable extends Configurable {
             }
 		}
 		else {
-			$oRequirements = $oCache->get("CACHE_{$sIdentifier}_REQUIREMENTS", null);
+			$oRequirements = $oCache->get("W_CACHE_{$sIdentifier}_REQUIREMENTS", null);
 			if($oRequirements->IsSucces()) {
-				$oObject = $oCache->get("CACHE_{$sIdentifier}_OBJECT", null);
+				$oObject = $oCache->get("W_CACHE_{$sIdentifier}_OBJECT", null);
 				return $oObject;
 			}
 			else {

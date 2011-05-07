@@ -4,19 +4,15 @@
 class IPCO {
 	
 	private $m_sSourceDirectory = '';
-	private $m_sSourcePrefix = '';
+	private $m_sSourceExtension = '';
 	private $m_sSourceSuffix = '';
 	private $m_sCompiledDirectory = '';
 	private $m_sCompiledPrefix = '';
 	private $m_sCompiledSuffix = '';
 	
-	public function __construct($sSourceDirectory, $sSourcePrefix, $sSourceSuffix, $sCompiledDirectory, $sCompiledPrefix, $sCompiledSuffix) {
+	public function __construct($sSourceDirectory, $sSourceExtension) {
 		$this->m_sSourceDirectory = $sSourceDirectory;
-		$this->m_sSourcePrefix = $sSourcePrefix;
-		$this->m_sSourceSuffix = $sSourceSuffix;
-		$this->m_sCompiledDirectory = $sCompiledDirectory;
-		$this->m_sCompiledPrefix = $sCompiledPrefix;
-		$this->m_sCompiledSuffix = $sCompiledSuffix;
+		$this->m_sSourceExtension = $sSourceExtension;
 	}
 
 	public function getParser($sIdentifier) {
@@ -25,7 +21,7 @@ class IPCO {
 	
 	public function getSourcePath($sIdentifier) {
 		$sIdentifier = Encoding::toLower($sIdentifier);
-		return $this->m_sSourceDirectory . '/' . $this->m_sSourcePrefix . $sIdentifier . $this->m_sCompiledSuffix;
+		return $this->m_sSourceDirectory . '/' . $sIdentifier . '.' . $this->m_sSourceExtension;
 	}
 	
 	public function getCompiledPath($sIdentifier) {
@@ -35,7 +31,7 @@ class IPCO {
 	
 	public function getClassName($sIdentifier) {
 		$sIdentifier = Encoding::toLower($sIdentifier);
-		return $this->m_sSourcePrefix . Encoding::regReplace('[-/\\. ]', '_', $sIdentifier);
+		return 'IPCO_Compiled_' . Encoding::regReplace('[-/\\. ]', '_', $sIdentifier);
 	}
 }
 

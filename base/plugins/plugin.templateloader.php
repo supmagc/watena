@@ -11,7 +11,8 @@ class TemplateLoader extends Plugin {
 	
 	public function init() {
 		$this->m_oIpco = new IPCO(
-			parent::getWatena()->getPath(parent::getConfig('SOURCE_DIRECTORY', 'R'))$sSourceDirectory, $sSourcePrefix, $sSourceSuffix, $sCompiledDirectory, $sCompiledPrefix, $sCompiledSuffix);
+			parent::getWatena()->getPath(parent::getConfig('SOURCE_DIRECTORY', 'T:templates')),
+			parent::getConfig('SOURCE_EXTENSION', 'tpl'));
 		
 		$this->m_sDirectory = parent::getWatena()->getPath(parent::getConfig('DIRECTORY', 'D:templates'));
 		$this->m_sExtension = parent::getConfig('EXTENSION', 'tpl');

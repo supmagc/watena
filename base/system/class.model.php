@@ -1,6 +1,6 @@
 <?php
 
-abstract class Model extends Cacheable {
+abstract class Model extends CacheableData {
 
 	
 }
