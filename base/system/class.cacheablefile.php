@@ -8,7 +8,7 @@ class CacheableFile extends Cacheable {
 	public final function CacheableFile($sFilename, $sFilepath, array $aConfig = array()) {
 		$this->m_sFilename = $sFilename;
 		$this->m_sFilepath = $sFilepath;
-		parent::__construct($aConfig);
+		parent::Cacheable($aConfig);
 	}
 	
 	public function getFilename() {
@@ -34,7 +34,8 @@ class CacheableFile extends Cacheable {
 	
 	public static function createObject($sObject, $sFilename, array $aConfig = array(), $sIncludeFile = null, $sExtends = null, $sImplements = null) {
 		$sFilepath = parent::getWatena()->getPath($sFilename);
-		if($sFilepath === false) throw new Exception("Cachefile does not exist: $sFilename");
+		if($sFilepath === false) throw new WatCeption("Cachefile does not exist: $sFilename");
+		if(!is_file($sFilepath)) throw new WatCeption("Cachefile is no file: $sFilename");
 		return parent::_create($sObject, array($sFilename, $sFilepath, $aConfig), $sIncludeFile, $sExtends === null ? 'CacheableFile' : $sExtends, $sImplements, 'FILE_' . $sObject, filemtime($sFilepath));
 	}
 }

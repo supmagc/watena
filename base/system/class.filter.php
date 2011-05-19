@@ -1,6 +1,6 @@
 <?php
 
-class FilterGroup extends Object {
+class _FilterGroup extends Object {
 	
 	private $m_sFile;
 	private $m_sName;
@@ -25,8 +25,6 @@ class FilterGroup extends Object {
 	public function addParam($sName, $sValue) {
 		$this->m_aParams[$sName] = $sValue;
 	}
-	
-	public function setFinal($bFinal) {
 	
 	public function getFile() {
 		return $this->m_sFile;
@@ -67,13 +65,13 @@ class Filter extends CacheableFile {
 					}
 				}
 				else if(($sName = $this->_matchesGetName($oXml, 'model')) !== null) {
-					$oLast = ($this->m_oModel = new FilterGroup($sName, 'Model'));
+					$oLast = ($this->m_oModel = new _FilterGroup($sName, 'Model'));
 				}
 				else if(($sName = $this->_matchesGetName($oXml, 'view')) !== null) {
-					$oLast = ($this->m_oView = new FilterGroup($sName, 'View'));
+					$oLast = ($this->m_oView = new _FilterGroup($sName, 'View'));
 				}
 				else if(($sName = $this->_matchesGetName($oXml, 'controller')) !== null) {
-					$oLast = ($this->m_oController = new FilterGroup($sName, 'Controller'));
+					$oLast = ($this->m_oController = new _FilterGroup($sName, 'Controller'));
 				}
 				else if(($sName = $this->_matchesGetName($oXml, 'param')) !== null) {
 					$oXml->read();
