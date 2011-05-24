@@ -1,13 +1,17 @@
 <?php
 
-class _ProjectGroup extends CacheableFile {
+class _ProjectGroup {
 	
 }
 
 class Projects extends Object {
 	
 	public function __construct() {
-		$aProjects = parent::getWatena()->getConfig('PROJECTS', '');
+		$aProjects = explode(',', parent::getWatena()->getConfig('PROJECTS', ''));
+		foreach($aProjects as $sProject) {
+			$sProject = Encoding::trim($sProject);
+			$sPath = parent::getWatena()->getPath($sProject);
+		}
 	}
 }
 ?>
