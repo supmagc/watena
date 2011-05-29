@@ -13,7 +13,7 @@ abstract class Cacheable extends Configurable {
 	 */
 	public function wakeup() {}
 	
-	public function Cacheable(array $aConfig) {
+	public function __construct(array $aConfig) {
 		parent::__construct($aConfig);
 		$this->init();
 	}
