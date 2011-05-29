@@ -3,8 +3,8 @@
 
 class CacheableData extends Cacheable {
 	
-	public function CacheableData(array $aConfig) {
-		parent::Cacheable($aConfig);
+	public function __construct(array $aConfig) {
+		parent::__construct($aConfig);
 	}
 
 	public static function create(array $aConfig = array(), $nExpiration = null) {

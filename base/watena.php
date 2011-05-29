@@ -1,6 +1,7 @@
 <?php
 if(!defined('PATH_BASE')) define('PATH_BASE', realpath(dirname(__FILE__)));
 if(!defined('PATH_DATA')) define('PATH_DATA', realpath(dirname(__FILE__) . '/../data'));
+if(!defined('PATH_LIBS')) define('PATH_LIBS', realpath(dirname(__FILE__) . '/../libs'));
 if(!defined('PATH_ROOT')) define('PATH_ROOT', realpath(dirname(__FILE__) . '/..'));
 
 if(!defined('NEXCEPTIONCATCH')) {
@@ -47,6 +48,7 @@ if(!defined('NWATENA')) {
 	require_once PATH_BASE . '/system/class.cacheable.php';
 	require_once PATH_BASE . '/system/class.cacheabledata.php';
 	require_once PATH_BASE . '/system/class.cacheablefile.php';
+	require_once PATH_BASE . '/system/class.cacheabledirectory.php';
 	require_once PATH_BASE . '/system/class.context.php';
 	require_once PATH_BASE . '/system/class.requirementbuffer.php';
 	require_once PATH_BASE . '/system/class.filter.php';
