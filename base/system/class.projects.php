@@ -1,5 +1,6 @@
 <?php
 
+/*
 class _ProjectGroup extends CacheableDirectory {
 
 	private $m_bHasFilters, $m_bHasModels, $m_bHasViews, $m_bHasControllers, $m_bHasComponents, $m_bHasTheme, $m_bHasPlugins;
@@ -36,27 +37,31 @@ class _ProjectGroup extends CacheableDirectory {
 		krsort($this->m_aFilters);
 	}
 }
+*/
 
-class Projects extends Object {
+class Libraries extends CacheableData {
 	
-	private $m_aProjectGroups = array();
+	//private $m_aProjectGroups = array();
+	private $m_aPaths = array();
 	
-	public function __construct() {
-		$aProjects = explode(',', parent::getWatena()->getConfig('PROJECTS', ''));
+	public function init() {
+		$aProjects = explode(',', parent::getWatena()->getConfig('LIBRARIES', ''));
 		foreach($aProjects as $sProject) {
 			$sProject = Encoding::trim($sProject);
-			$sPath = parent::getWatena()->getPath($sProject);
-			$oGroup = _ProjectGroup::create($sPath);
-			$this->m_aProjectGroups []= $oGroup;
+			$sPath = realpath(PATH_LIBS . "/$sProject");
+			if($sPath === null) throw new WatCeption($sMessage);
+			else $this->m_aPaths []= $sPath;
 		}
 	}
 	
-	public function getProjectFilePath($sDirectory, $sFile, $sPreferedProject = null) {
-		if(($sTemp = realpath(PATH_BASE . "/$sPreferedProject/$sDirectory/$sFile")) !== false) return $sTemp;
-		if($sPreferedProject != null && ($sTemp = realpath(PATH_LIBS . "/$sDirectory/$sFile")) !== false) return $sTemp;
-		foreach($this->m_aProjectGroups as $oGroup) {
-			if((!$sTemp = realpath(PATH_LIBS . "/$sDirectory")) !== false) return $sTemp;
+	public function getProjectFilePath($sDirectory, $sFile, $sPreferredLibrary = null) {
+		if(($sTemp = realpath(PATH_BASE . "/$sDirectory/$sFile")) !== false) return $sTemp;
+		if(($nIndex = Encoding::indexOf($sFile, '$')) !== false && ($sTemp = realpath(PATH_LIBS . '/' . Encoding::substring($sFile, 0, $nIndex) . "/$sDirectory/" . Encoding::substring($sFile, $nIndex + 1))) !== false) return $sTemp;
+		if($sPreferredLibrary != null && ($sTemp = realpath(PATH_LIBS . "/$sPreferredLibrary/$sDirectory/$sFile")) !== false) return $sTemp;
+		foreach($this->m_aPaths as $sPath) {
+			if((!$sTemp = realpath($sPath . "/$sDirectory")) !== false) return $sTemp;
 		}
+		return false;
 	}
 }
 ?>

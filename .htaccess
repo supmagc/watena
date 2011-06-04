@@ -9,31 +9,29 @@ Options +FollowSymLinks
 Options -Indexes
 
 #Redirect all errors
-ErrorDocument 400 /index.php?error=400
-ErrorDocument 401 /index.php?error=401
-ErrorDocument 403 /index.php?error=403
-ErrorDocument 404 /index.php?error=404
-ErrorDocument 500 /index.php?error=500
+ErrorDocument 400 /index.php?w_error=400
+ErrorDocument 401 /index.php?w_error=401
+ErrorDocument 403 /index.php?w_error=403
+ErrorDocument 404 /index.php?w_error=404
+ErrorDocument 500 /index.php?w_error=500
 
 ############ Rewrite Engine ##############
-<IfModule mod_rewrite.c>
+<IfModule rewrite_module>
   RewriteEngine On
   
-  #Fix the following directive if you experience problems with url redirections:
-  #RewriteBase /base/url/to/your/application
+  # Fix the following directive if you experience problems with url redirections:
+  # RewriteBase /base/url/to/your/application
 
-  #Skip routing for existent requested files/directories:
-  #RewriteCond %{REQUEST_FILENAME} -f [OR] 
-  #RewriteCond %{REQUEST_FILENAME} -d  
-  #RewriteRule .* - [L]
-
-  #Only urls starting with requests/ or index.php are allowed
-  RewriteRule ^(requests/|index.php) - [QSA,L]
+  # Url's pointing to index.php are allways priority
+  RewriteRule ^index.php - [QSA,L]
 
   # When a url can qualify as a requests/-page, redirect it  
-  RewriteRule ^([^/]+\.(php|xml|txt)) requests/$1 [QSA,L]
+  RewriteRule ^([^/]+\.(php|xml|txt|ico)) requests/$1 [QSA,L]
 
-  #Redirect the rest of requests to the index.php:
-  RewriteRule ^(.*)$ index.php [QSA,L]
+  # Redirect the rest of requests to the index.php
+  # This is the fallthrough for most requests.
+  # This rule will only be triggered on original requests
+  RewriteCond %{ENV:REDIRECT_STATUS} ^$
+  RewriteRule ^(.*)$ index.php?w_page=$1 [QSA,L]
 </IfModule>
 
