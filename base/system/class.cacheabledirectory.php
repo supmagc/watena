@@ -19,7 +19,7 @@ class CacheableDirectory extends Cacheable {
 		return $this->m_sDirectoryPath;
 	}
 	
-	public function getFiles($sExtention = null, $bFullPath = false) {
+	public function getFiles($sExtention = null, $bFullPath = false, $sRegex = null) {
 		$hDir = opendir($this->m_sDirectoryPath);
 		$aEntries = readdir($hDir);
 		closedir($hDir);
@@ -27,7 +27,7 @@ class CacheableDirectory extends Cacheable {
 		if(is_array($aEntries)) {
 			foreach($aEntries as $sEntry) {
 				$sPath = realpath($this->m_sDirectoryPath . '/' . $sEntry);
-				if(is_file($sPath) && ($sExtention === null || Encoding::endsWith($sEntry, ".$sExtention")))
+				if(is_file($sPath) && ($sExtention === null || Encoding::endsWith($sEntry, ".$sExtention", true)) && ($sRegex === null || Encoding::regMatch($sRegex, $sEntry, 'i')))
 					$aFiles []= $bFullPath ? $sPath : $sEntry;
 			}
 		}
@@ -62,10 +62,10 @@ class CacheableDirectory extends Cacheable {
 		return self::createObject($sObject, $sDirectoryName, $aConfig);
 	}
 	
-	public static function createObject($sObject, $sDirectoryName, array $aConfig = array(), $sIncludeDirectory = null, $sExtends = null, $sImplements = null) {
+	public static function createObject($sObject, $sDirectoryName, array $aConfig = array(), $sIncludeFile = null, $sExtends = null, $sImplements = null) {
 		$sDirectoryPath = parent::getWatena()->getPath($sDirectoryName);
-		if($sDirectoryPath === false || !is_Directory($sDirectoryPath)) throw new WatCeption('CacheDirectory does not exist.', array('Directory' => $sDirectoryName));
-		return parent::_create($sObject, array($sDirectoryName, $sDirectoryPath, $aConfig), $sIncludeDirectory, $sExtends === null ? 'CacheableDirectory' : $sExtends, $sImplements, 'DIRECTORY_' . $sObject, Directorymtime($sDirectorypath));
+		if($sDirectoryPath === false || !is_dir($sDirectoryPath)) throw new WatCeption('CacheDirectory does not exist.', array('Directory' => $sDirectoryName));
+		return parent::_create($sObject, array($sDirectoryName, $sDirectoryPath, $aConfig), $sIncludeFile, $sExtends === null ? 'CacheableDirectory' : $sExtends, $sImplements, 'DIRECTORY_' . $sObject, filemtime($sDirectoryPath));
 	}
 }
 
