@@ -11,9 +11,13 @@ Options -Indexes
 #Redirect all errors
 ErrorDocument 400 /index.php?w_error=400
 ErrorDocument 401 /index.php?w_error=401
+ErrorDocument 401 /index.php?w_error=402
 ErrorDocument 403 /index.php?w_error=403
 ErrorDocument 404 /index.php?w_error=404
 ErrorDocument 500 /index.php?w_error=500
+ErrorDocument 501 /index.php?w_error=501
+ErrorDocument 502 /index.php?w_error=502
+ErrorDocument 503 /index.php?w_error=503
 
 ############ Rewrite Engine ##############
 <IfModule rewrite_module>

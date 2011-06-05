@@ -24,7 +24,7 @@ class Watena extends Configurable {
 			$this->m_oContext->loadPlugin($sCachePlugin);
 			$this->m_oCache = $this->m_oContext->GetPlugin($sCachePlugin, 'ICache');
 		}
-		$this->m_oContext->loadPlugins(array_map('trim', explode(',', parent::getConfig('PLUGINS', ''))));		
+		$this->m_oContext->init();
 		
 		// Load the mapping and retrieve the appropriate controller
 		$this->m_oMapping = new Mapping();

@@ -4,6 +4,21 @@ class Context extends Object {
 	
 	private $m_aPlugins = array();
 	private $m_aDataFiles = array(); 
+	private $m_oLibraries = null;
+	
+	public function init() {
+		$this->m_oLibraries = Libraries::create();
+		$this->loadPlugins(array_map('trim', explode(',', parent::getWatena()->getConfig('PLUGINS', ''))));		
+	}
+	
+	/**
+	 * Retrieve the object that handles all libraries as defined by the system
+	 * 
+	 * @return Libraries
+	 */
+	public function getLibraries() {
+		return $this->m_oLibraries;
+	}
 	
 	/**
 	 * Try to retrieve a plugin based on its name.
@@ -43,13 +58,13 @@ class Context extends Object {
 	 * Try to load a plugin is it's not loaded allready
 	 * 
 	 * @param string $sPlugin
-	 * @param boolean $bTerminate
 	 * @return boolean Indicator if the plugin was loaded
 	 */
-	public function loadPlugin($sPlugin, $bTerminate = true) {
+	public function loadPlugin($sPlugin) {
 		$sKey = Encoding::toLower($sPlugin);
-		$sFilePHP = PATH_BASE . "/plugins/plugin.$sKey.php";
-		$sFileINI = PATH_BASE . "/plugins/config.$sKey.ini";
+		$sFilePHP = $this->getLibraries()->getProjectFilePath('plugins', "plugin.$sKey.php");
+		$sFileINI = $this->getLibraries()->getProjectFilePath('plugins', "config.$sKey.ini");
+		if($sFilePHP === false) throw new WatCeption('Unable to find a library that contains the plugin.', array('plugin' => $sPlugin));
 		if(!isset($this->m_aPlugins[$sKey])) {
 			$aConfig = parent::getWatena()->getCache()->retrieve(
 				"W_PLUGININI_$sPlugin", 
@@ -116,16 +131,20 @@ class Context extends Object {
 	 * @return array(Model, View, Controller)
 	 */
 	public function getMVC(Mapping $oMapping) {
-		$aFilters = $this->getWatena()->getCache()->retrieve('W_FILTERS', array($this, '_loadFiltersFromFile'), 5);
+		$aFilterGroups = $this->getLibraries()->getFilterGroups();
+		print_r($aFilterGroups);
 		$oModel = null;
 		$oView = null;
 		$oController = null;
 		$oTheme = null;
-		foreach($aFilters as $nOrder => $oFilter) {
-			if($oFilter->match($oMapping)) {
-				if(!$oModel) $oModel = $oFilter->getModel();
-				if(!$oView) $oView = $oFilter->getView();
-				if(!$oController) $oController = $oFilter->getController();
+		foreach($aFilterGroups as $oFilterGroup) {
+			$aFilters = $oFilterGroup->getFilters();
+			foreach($aFilters as $nOrder => $oFilter) {
+				if($oFilter->match($oMapping)) {
+					if(!$oModel) $oModel = $oFilter->getModel();
+					if(!$oView) $oView = $oFilter->getView();
+					if(!$oController) $oController = $oFilter->getController();
+				}
 			}
 		}
 		return array($oModel, $oView, $oController);
@@ -136,23 +155,6 @@ class Context extends Object {
 			$this->m_aDataFiles[$sPath] = new DataFile($sPath);
 		}
 		return $this->m_aDataFiles[$sPath];
-	}
-	
-	/**
-	 * Callback method that loads all filters from the filesystem.
-	 */
-	public function _loadFiltersFromFile() {
-		$aFiles = scandir(PATH_BASE . '/filters/');
-		$aFilters = array();
-		foreach($aFiles as $sFile) {
-			if(Encoding::RegMatch('filter\\.[_a-z0-9_]*\\.xml', $sFile)) {
-				$oFilter = Filter::create('b:/filters/'.$sFile);
-				if(isset($aFilters[$oFilter->getOrder()])) parent::terminate('A filter with this order-number allready exists: ' . $oFilter->getOrder() . ' {' . $aFilters[$oFilter->getOrder()]->getName() . ', ' . $oFilter->getName() . '}');
-				$aFilters[$oFilter->getOrder()] = $oFilter; 
-			}
-		}
-		krsort($aFilters);
-		return $aFilters;
 	}
 }
 
