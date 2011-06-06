@@ -30,10 +30,16 @@ abstract class Cacheable extends Configurable {
 		if($nExpiration > $nCacheExp) {
 			try {
 				list($oObject, $oRequirements) = parent::getWatena()->getContext()->loadObjectAndRequirements($sObject, $aParams, $sIncludeFile, $sExtends, $sImplements);
-				$oCache->set("W_CACHE_{$sIdentifier}_EXPIRATION", $nExpiration);
-				$oCache->set("W_CACHE_{$sIdentifier}_REQUIREMENTS", $oRequirements);
-				$oCache->set("W_CACHE_{$sIdentifier}_OBJECT", $oObject);
-				return $oObject;
+				if($oRequirements->IsSucces()) {
+					$oCache->set("W_CACHE_{$sIdentifier}_EXPIRATION", $nExpiration);
+					$oCache->set("W_CACHE_{$sIdentifier}_REQUIREMENTS", $oRequirements);
+					$oCache->set("W_CACHE_{$sIdentifier}_OBJECT", $oObject);
+					$oObject->wakeup();
+					return $oObject;
+				}
+				else {
+					throw new WatCeption('The object required for caching does not meets it requirements.', array('object' => $sObject, 'requirements' => $oRequirements), $this);
+				}
 			}
             catch(WatCeption $e) {
 				throw new WatCeption('An exception occured while loading the required object.', array(
@@ -42,7 +48,7 @@ abstract class Cacheable extends Configurable {
 					'includeFile' => $sIncludeFile,
 					'extends' => $sExtends,
 					'implements' => $sImplements,
-					'identifier' => $sIdentifier), null, $e);
+					'identifier' => $sIdentifier), parent::getWatena(), $e);
             }
 		}
 		else {

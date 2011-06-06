@@ -1,0 +1,3 @@
+<?php
+
+$nA = microtime();

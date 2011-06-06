@@ -21,16 +21,13 @@ class CacheableDirectory extends Cacheable {
 	
 	public function getFiles($sExtention = null, $bFullPath = false, $sRegex = null) {
 		$hDir = opendir($this->m_sDirectoryPath);
-		$aEntries = readdir($hDir);
-		closedir($hDir);
 		$aFiles = array();
-		if(is_array($aEntries)) {
-			foreach($aEntries as $sEntry) {
-				$sPath = realpath($this->m_sDirectoryPath . '/' . $sEntry);
-				if(is_file($sPath) && ($sExtention === null || Encoding::endsWith($sEntry, ".$sExtention", true)) && ($sRegex === null || Encoding::regMatch($sRegex, $sEntry, 'i')))
-					$aFiles []= $bFullPath ? $sPath : $sEntry;
-			}
+		while(($sEntry = readdir($hDir)) !== false) {
+			$sPath = realpath($this->m_sDirectoryPath . '/' . $sEntry);
+			if(is_file($sPath) && ($sExtention === null || Encoding::endsWith($sEntry, ".$sExtention", true)) && ($sRegex === null || Encoding::regMatch($sRegex, $sEntry, 'i')))
+				$aFiles []= $bFullPath ? $sPath : $sEntry;
 		}
+		closedir($hDir);
 		return $aFiles;
 	}
 	

@@ -19,7 +19,7 @@ class Watena extends Configurable {
 		// Create a new Context and load all required plugins
 		$this->m_oCache = new CacheEmpty();
 		$this->m_oContext = new Context();
-		$sCachePlugin = self::getConfig('CACHE', null);
+		$sCachePlugin = self::getConfig('CACHE_ENGINE', null);
 		if($sCachePlugin) {
 			$this->m_oContext->loadPlugin($sCachePlugin);
 			$this->m_oCache = $this->m_oContext->GetPlugin($sCachePlugin, 'ICache');
