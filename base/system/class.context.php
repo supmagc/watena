@@ -178,6 +178,9 @@ class Context extends Object {
 		$oView = null;
 		$oController = null;
 		$oTheme = null;
+		$bViewLast = false;
+		$bControllerLast = false;
+		$bThemeLast = false;
 		foreach($aFilterGroups as $oFilterGroup) {
 			$aFilters = $oFilterGroup->getFilters();
 			foreach($aFilters as $nOrder => $oFilter) {
