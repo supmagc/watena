@@ -1,6 +1,6 @@
 <?php
 
-class _FilterGroup extends Object {
+class _FilterData extends Object {
 	
 	private $m_sFile;
 	private $m_sName;
@@ -24,6 +24,14 @@ class _FilterGroup extends Object {
 	
 	public function addParam($sName, $sValue) {
 		$this->m_aParams[$sName] = $sValue;
+	}
+	
+	public function setFirst($bFirst) {
+		$this->m_bFirst = $bFirst;
+	}
+	
+	public function setLast($bLast) {
+		$this->m_bLast = $bLast;
 	}
 	
 	public function getFile() {
@@ -61,31 +69,36 @@ class Filter extends CacheableFile {
 						$oXml->moveToAttributeNo($i);
 						if($oXml->name == 'name') $this->m_sName = $oXml->value;
 						else if($oXml->name == 'order') $this->m_nOrder = (int)$oXml->value;
-						else if($oXml->name == 'theme') $this->m_sTheme = (int)$oXml->value;
 					}
 				}
-				else if(($sName = $this->_matchesGetName($oXml, 'model')) !== null) {
-					$oLast = ($this->m_oModel = new _FilterGroup($sName, 'Model'));
+				else if(($sName = $this->_matchesGetName($oXml, 'model')) !== false) {
+					$oLast = ($this->m_oModel = new _FilterData($sName, 'Model'));
+					$oLast->setFirst((bool)($oXml->moveToAttribute('first') && $oXml->value));
+					$oLast->setLast((bool)($oXml->moveToAttribute('last') && $oXml->value));
 				}
-				else if(($sName = $this->_matchesGetName($oXml, 'view')) !== null) {
-					$oLast = ($this->m_oView = new _FilterGroup($sName, 'View'));
+				else if(($sName = $this->_matchesGetName($oXml, 'view')) !== false) {
+					$oLast = ($this->m_oView = new _FilterData($sName, 'View'));
+					$oLast->setFirst((bool)($oXml->moveToAttribute('first') && $oXml->value));
+					$oLast->setLast((bool)($oXml->moveToAttribute('last') && $oXml->value));
 				}
-				else if(($sName = $this->_matchesGetName($oXml, 'controller')) !== null) {
-					$oLast = ($this->m_oController = new _FilterGroup($sName, 'Controller'));
+				else if(($sName = $this->_matchesGetName($oXml, 'controller')) !== false) {
+					$oLast = ($this->m_oController = new _FilterData($sName, 'Controller'));
+					$oLast->setFirst((bool)($oXml->moveToAttribute('first') && $oXml->value));
+					$oLast->setLast((bool)($oXml->moveToAttribute('last') && $oXml->value));
 				}
-				else if(($sName = $this->_matchesGetName($oXml, 'param')) !== null) {
+				else if(($sName = $this->_matchesGetName($oXml, 'param')) !== false) {
 					$oXml->read();
 					$oLast->addParam($sName, $oXml->readString());
 				}
-				else if(($sName = $this->_matchesGetName($oXml, 'rule', 'variable')) !== null) {
+				else if(($sName = $this->_matchesGetName($oXml, 'rule', 'variable')) !== false) {
 					$oXml->read();
 					$this->m_aRules[$sName] = $oXml->readString();
 				}
 			}
-			if(count($this->m_aRules) == 0) parent::terminate('You need at least one rule in each filter.');
+			if(count($this->m_aRules) == 0) throw new WatCeption('You need at least one rule in each filter.', array('filter' => parent::getFilePath()), $this);
 		}
 		else {
-			parent::terminate('Unable to Parse XML-filter definition: ' . $sData);
+			throw new WatCeption('Unable to Parse XML-filter definition.', array('data' => $sData), $this);
 		}
 	}
 	
@@ -122,7 +135,7 @@ class Filter extends CacheableFile {
 	}
 	
 	private function _matchesGetName(XMLReader $oXml, $sMatch, $sNameTag = 'name') {
-		return $oXml->nodeType == XMLReader::ELEMENT && $oXml->name == $sMatch && $oXml->moveToAttribute($sNameTag) ? $oXml->value : null;
+		return $oXml->nodeType == XMLReader::ELEMENT && $oXml->name == $sMatch && $oXml->moveToAttribute($sNameTag) ? $oXml->value : false;
 	}
 }
 

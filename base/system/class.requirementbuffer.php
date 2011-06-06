@@ -13,6 +13,12 @@ class RequirementBuffer extends Object {
 		$this->addRequirements($aRequirements);
 	}
 	
+	/**
+	 * Called when the object is beeing deserialized.
+	 * This will automatically call load()
+	 * 
+	 * You only need to check if isSucces() returns true
+	 */
 	public final function __wakeup() {
 		$this->load();
 	}

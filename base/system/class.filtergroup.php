@@ -19,7 +19,7 @@ class FilterGroup extends CacheableDirectory {
 			));
 			$this->m_aFilters[$oFilter->getOrder()] = $oFilter;
 		}
-		krsort($this->m_aFiles);
+		krsort($this->m_aFilters);
 	}
 	
 	public function getFilters() {

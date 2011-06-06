@@ -4,20 +4,61 @@ class Context extends Object {
 	
 	private $m_aPlugins = array();
 	private $m_aDataFiles = array(); 
-	private $m_oLibraries = null;
+	private $m_aLibraryPaths = array();
+	private $m_aFilterGroups = null;
 	
 	public function init() {
-		$this->m_oLibraries = Libraries::create();
+		$aProjects = explode(',', parent::getWatena()->getConfig('LIBRARIES', ''));
+		foreach($aProjects as $sProject) {
+			$sProject = Encoding::trim($sProject);
+			$sPath = realpath(PATH_LIBS . "/$sProject");
+			if($sPath === null) throw new WatCeption($sMessage);
+			else $this->m_aLibraryPaths []= $sPath;
+		}
 		$this->loadPlugins(array_map('trim', explode(',', parent::getWatena()->getConfig('PLUGINS', ''))));		
 	}
 	
 	/**
-	 * Retrieve the object that handles all libraries as defined by the system
+	 * Retrieve a list with all filtergroups found on the system.
+	 * Since the groups are not loaded by default, this function handles the caching.
 	 * 
-	 * @return Libraries
+	 * return array
 	 */
-	public function getLibraries() {
-		return $this->m_oLibraries;
+	public function getFilterGroups() {
+		if($this->m_aFilterGroups === null) {
+			$this->m_aFilterGroups = array();
+			foreach($this->m_aLibraryPaths as $sLibrary) {
+				$sFiltersPath = realpath($sLibrary . '/filters/');
+				if($sFiltersPath !== false) $this->m_aFilterGroups []= FilterGroup::create($sFiltersPath);
+			}
+			// Add the last default filtergroup
+			$this->m_aFilterGroups []= FilterGroup::create(parent::getWatena()->getPath('b:filters'));
+		}
+		return $this->m_aFilterGroups;
+	}
+	
+	/**
+	 * Retrieve the path of the specified file on the system
+	 * Their is an order of presedence:
+	 * 1) Check base path
+	 * 2) Check if file has a library prepending (lib$file)
+	 * 3) If a preferred library is set, check it
+	 * 4) Check all libraries on the system
+	 * 
+	 * @param string $sDirectory
+	 * @param string $sFile
+	 * @param string $sPreferredLibrary
+	 * 
+	 * @return string (or false)
+	 */
+	public function getProjectFilePath($sDirectory, $sFile, $sPreferredLibrary = null) {
+		if(($sTemp = realpath(PATH_BASE . "/$sDirectory/$sFile")) !== false) return $sTemp;
+		if(($nIndex = Encoding::indexOf($sFile, '$')) !== false && ($sTemp = realpath(PATH_LIBS . '/' . Encoding::substring($sFile, 0, $nIndex) . "/$sDirectory/" . Encoding::substring($sFile, $nIndex + 1))) !== false) return $sTemp;
+		if($sPreferredLibrary != null && ($sTemp = realpath(PATH_LIBS . "/$sPreferredLibrary/$sDirectory/$sFile")) !== false) return $sTemp;
+		foreach($this->m_aLibraryPaths as $sPath) {
+			if((!$sTemp = realpath($sPath . "/$sDirectory")) !== false) return $sTemp;
+		}
+		return false;
 	}
 	
 	/**
@@ -62,8 +103,8 @@ class Context extends Object {
 	 */
 	public function loadPlugin($sPlugin) {
 		$sKey = Encoding::toLower($sPlugin);
-		$sFilePHP = $this->getLibraries()->getProjectFilePath('plugins', "plugin.$sKey.php");
-		$sFileINI = $this->getLibraries()->getProjectFilePath('plugins', "config.$sKey.ini");
+		$sFilePHP = $this->getProjectFilePath('plugins', "plugin.$sKey.php");
+		$sFileINI = $this->getProjectFilePath('plugins', "config.$sKey.ini");
 		if($sFilePHP === false) throw new WatCeption('Unable to find a library that contains the plugin.', array('plugin' => $sPlugin));
 		if(!isset($this->m_aPlugins[$sKey])) {
 			$aConfig = parent::getWatena()->getCache()->retrieve(
@@ -131,7 +172,7 @@ class Context extends Object {
 	 * @return array(Model, View, Controller)
 	 */
 	public function getMVC(Mapping $oMapping) {
-		$aFilterGroups = $this->getLibraries()->getFilterGroups();
+		$aFilterGroups = $this->getFilterGroups();
 		print_r($aFilterGroups);
 		$oModel = null;
 		$oView = null;
