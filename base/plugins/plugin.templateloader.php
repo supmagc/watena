@@ -2,6 +2,25 @@
 
 includeLibrary('ipco', array('ipco', 'ipco_base', 'ipco_processor', 'ipco_componentwrapper'));
 
+class TemplateFile extends CacheableFile {
+
+	private $m_sSavePath;
+	private $m_sDataPath;
+	
+	public function init() {
+		$sTemplate = parent::getConfig('template');
+		$this->m_sSavePath = Encoding::replace(array('/', '.', '\\', '-', ' '), '_', $sTemplate);
+		$this->m_sDataPath = 'IPCO/' . $this->m_sSavePath . '.inc';
+		$oFile = parent::getWatena()->getContext()->getDataFile($this->m_sDataPath);
+		
+		$oFile->writeContent();
+	}
+	
+	public function wakeup() {
+		
+	}
+}
+
 class TemplateLoader extends Plugin {
 
 	private $m_oIpco;
@@ -11,22 +30,14 @@ class TemplateLoader extends Plugin {
 	
 	public function init() {
 		$this->m_oIpco = new IPCO(
-			parent::getWatena()->getPath(parent::getConfig('SOURCE_DIRECTORY', 'T:templates')),
+			parent::getWatena()->getPath(parent::getConfig('SOURCE_DIRECTORY', 'T:ipco_templates')),
 			parent::getConfig('SOURCE_EXTENSION', 'tpl'));
 		
-		$this->m_sDirectory = parent::getWatena()->getPath(parent::getConfig('DIRECTORY', 'D:templates'));
+		$this->m_sDirectory = parent::getWatena()->getPath(parent::getConfig('DIRECTORY', 'D:ipco_templates'));
 		$this->m_sExtension = parent::getConfig('EXTENSION', 'tpl');
 	}
 	
 	public function load($sTemplate) {
-		$oIpco = new IPCO();
-		$oIpco->load($sIdentifier, $mComponent)
-		
-		if($this->m_sDirectory && $this->m_sExtension) {
-			$sFile = $this->m_sDirectory . '/' . $sTemplate . '.' . $this->m_sExtension;
-			$oTemplate = Cacheable::create('Template', array('file' => $sFile), "TL_$sTemplate", 5);
-			return $oTemplate;
-		}
 	}
 		
 	/**

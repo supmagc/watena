@@ -191,6 +191,11 @@ class Context extends Object {
 		return array($oModel, $oView, $oController);
 	}
 
+	/**
+	 * Retrieve a linked datafile-object
+	 * 
+	 * @param DataFile $sPath
+	 */
 	public function getDataFile($sPath) {
 		if(!isset($this->m_aDataFiles[$sPath])) {
 			$this->m_aDataFiles[$sPath] = new DataFile($sPath);
