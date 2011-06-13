@@ -1,5 +1,9 @@
 <?php
 
+function IPCO_LoadTemplate($sName) {
+	
+}
+
 // Inline PHP compilation
 class IPCO {
 	
