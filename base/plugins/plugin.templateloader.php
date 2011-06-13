@@ -4,20 +4,18 @@ includeLibrary('ipco', array('ipco', 'ipco_base', 'ipco_processor', 'ipco_compon
 
 class TemplateFile extends CacheableFile {
 
-	private $m_sSavePath;
 	private $m_sDataPath;
 	
 	public function init() {
-		$sTemplate = parent::getConfig('template');
-		$this->m_sSavePath = Encoding::replace(array('/', '.', '\\', '-', ' '), '_', $sTemplate);
-		$this->m_sDataPath = 'IPCO/' . $this->m_sSavePath . '.inc';
-		$oFile = parent::getWatena()->getContext()->getDataFile($this->m_sDataPath);
-		
-		$oFile->writeContent();
+		$oIpco = new IPCO();
+		$this->m_sDataPath = 'IPCO/' . $oIpco->getClassName(parent::getFilePath()) . '.inc';
+		$oFile = parent::getWatena()->getContext()->getDataFile($this->m_sDataPath);		
+		$oParser = $oIpco->getParser(parent::getFilePath(), parent::getFileData());
+		$oFile->writeContent($oParser->parse());
 	}
 	
 	public function wakeup() {
-		
+		parent::getWatena()->getContext()->getDataFile($this->m_sDataPath)->includeFileOnce();
 	}
 }
 

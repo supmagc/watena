@@ -9,18 +9,16 @@ class IPCO_Parser extends IPCO_Base {
 	const STATE_IPCO_BQUOTE	= 5;
 	
 	private $m_sIdentifier;
-	private $m_sSourcePath;
 	private $m_sClassName;
 	private $m_sContent;
 	private $m_nDepth;
 	private $m_aEndings;
 	
-	public function __construct($sIdentifier, IPCO $ipco) {
+	public function __construct($sIdentifier, &$sContent, IPCO $ipco) {
 		parent::__construct($ipco);
 		$this->m_sIdentifier = $sIdentifier;
-		$this->m_sSourcePath = parent::getIpco()->getSourcePath($sIdentifier);
 		$this->m_sClassName = parent::getIpco()->getClassName($sIdentifier);
-		$this->m_sContent = file_get_contents(parent::getIpco()->getSourcePath($sIdentifier));
+		$this->m_sContent = $sContent;
 	}
 	
 	public function getIdentifier() {
