@@ -29,7 +29,9 @@ class Context extends Object {
 			$this->m_aFilterGroups = array();
 			foreach($this->m_aLibraryPaths as $sLibrary) {
 				$sFiltersPath = realpath($sLibrary . '/filters/');
-				if($sFiltersPath !== false) $this->m_aFilterGroups []= FilterGroup::create($sFiltersPath);
+				if($sFiltersPath !== false) {
+					$this->m_aFilterGroups []= FilterGroup::create($sFiltersPath);
+				}
 			}
 			// Add the last default filtergroup
 			$this->m_aFilterGroups []= FilterGroup::create(parent::getWatena()->getPath('b:filters'));
