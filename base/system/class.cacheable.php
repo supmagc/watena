@@ -55,6 +55,7 @@ abstract class Cacheable extends Configurable {
 			$oRequirements = $oCache->get("W_CACHE_{$sIdentifier}_REQUIREMENTS", null);
 			if($oRequirements->IsSucces()) {
 				$oObject = $oCache->get("W_CACHE_{$sIdentifier}_OBJECT", null);
+				// TODO: Check if the value retrieved is not false
 				return $oObject;
 			}
 			else {
