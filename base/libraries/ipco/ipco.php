@@ -1,14 +1,14 @@
 <?php
 
-function IPCO_LoadTemplate($sName) {
-	
-}
-
 // Inline PHP compilation
 class IPCO {
 
-	public function getParser($sIdentifier, &$sContent) {
+	public function createParserFromContent($sIdentifier, &$sContent) {
 		return new IPCO_Parser($sIdentifier, $sContent, $this);
+	}
+	
+	public function createParserFromFile($sFilePath) {
+		return $this->createParserFromContent($sFilePath, file_get_contents($sFilePath), $this);
 	}
 	
 	public function getClassName($sIdentifier) {

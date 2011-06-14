@@ -3,7 +3,7 @@
 	<model name="HelloWorldModel">
 	</model>
 	<view first="1" last="1" name="TemplateView">
-		<param name="template">blaV</param>
+		<param name="template">index.tpl</param>
 	</view>
 	<controller last="1" first="1" name="HelloWorldController">
 	</controller>

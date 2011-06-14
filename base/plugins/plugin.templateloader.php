@@ -5,17 +5,24 @@ includeLibrary('ipco', array('ipco', 'ipco_base', 'ipco_processor', 'ipco_compon
 class TemplateFile extends CacheableFile {
 
 	private $m_sDataPath;
+	private $m_sClassName;
 	
 	public function init() {
 		$oIpco = new IPCO();
-		$this->m_sDataPath = 'IPCO/' . $oIpco->getClassName(parent::getFilePath()) . '.inc';
+		$this->m_sClassName = $oIpco->getClassName(parent::getFilePath());
+		$this->m_sDataPath = 'IPCO/' . $this->m_sClassName . '.inc';
 		$oFile = parent::getWatena()->getContext()->getDataFile($this->m_sDataPath);		
-		$oParser = $oIpco->getParser(parent::getFilePath(), parent::getFileData());
+		$oParser = $oIpco->createParserFromFile(parent::getFilePath());
 		$oFile->writeContent($oParser->parse());
 	}
 	
 	public function wakeup() {
 		parent::getWatena()->getContext()->getDataFile($this->m_sDataPath)->includeFileOnce();
+	}
+	
+	public function getTemplateClass() {
+		$sClass = $this->m_sClassName;
+		return new $sClass();
 	}
 }
 
@@ -27,15 +34,13 @@ class TemplateLoader extends Plugin {
 	private $m_sExtension;
 	
 	public function init() {
-		$this->m_oIpco = new IPCO(
-			parent::getWatena()->getPath(parent::getConfig('SOURCE_DIRECTORY', 'T:ipco_templates')),
-			parent::getConfig('SOURCE_EXTENSION', 'tpl'));
-		
-		$this->m_sDirectory = parent::getWatena()->getPath(parent::getConfig('DIRECTORY', 'D:ipco_templates'));
-		$this->m_sExtension = parent::getConfig('EXTENSION', 'tpl');
+		$this->m_oIpco = new IPCO();
 	}
 	
 	public function load($sTemplate) {
+		$sFilePath = parent::getWatena()->getContext()->getProjectFilePath('templates', $sTemplate);
+		if(!$sFilePath) throw new WatCeption('Templatefile does not exists.', array('template' => $sTemplate), $this);
+		return TemplateFile::create($sFilePath);
 	}
 		
 	/**
