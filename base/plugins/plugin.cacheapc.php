@@ -4,7 +4,7 @@ class CacheAPC extends Plugin implements ICache {
 
 	public function retrieve($sKey, $cbRetriever, $nExpirationSec = 0, array $aParams = array(), $bForceRefresh = false) {
 		$bSucces = false;
-		$mData = $bForceRefresh ? null : apc_fetch($sKey, $bSucces);
+		$mData = $bForceRefresh ? false : apc_fetch($sKey, $bSucces);
 		if(!$bSucces || $bForceRefresh) {
 			$mData = call_user_func_array($cbRetriever, $aParams);
 			apc_store($sKey, $mData, $nExpirationSec);

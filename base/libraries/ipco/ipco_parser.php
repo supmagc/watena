@@ -25,42 +25,15 @@ class IPCO_Parser extends IPCO_Base {
 		return $this->m_sIdentifier;
 	}
 	
-	public function getSourcePath() {
-		return $this->m_sSourcePath;
-	}
-	
 	public function getClassName() {
 		return $this->m_sClassName;
-	}
-	
-	public function getHeader() {
-		return '
-<?php
-class '.$this->m_sClassName.' extends IPCO_Processor {
-
-	public function __toString() {
-		try {
-			$_ob = \'\';
-';
-	}
-	
-	public function getFooter() {
-		return '
-			return $_ob;
-		}
-		catch(Exception $e) {
-			return $e;
-		}
-	}
-}
-?>';
 	}
 	
 	public function parse() {
 		$this->m_nDepth = 0;
 		$this->m_aEndings = array();
 		$nMark = 0;
-		$aBuffer = array($this->getHeader());
+		$aBuffer = array(IPCO_ParserSettings::getPageHeader($this->m_sClassName, 'IPCO_Processor'));
 		$nState = self::STATE_DEFAULT;
 		$nLength = Encoding::length($this->m_sContent);
  		
@@ -116,14 +89,14 @@ class '.$this->m_sClassName.' extends IPCO_Processor {
 					break;
 			}
 		}
-		$aBuffer []= Encoding::substring($this->m_sContent, $nMark, $nLength-$nMark);
-		$aBuffer []= $this->getFooter();
+		$aBuffer []= $this->interpretContent(Encoding::substring($this->m_sContent, $nMark, $nLength-$nMark));
+		$aBuffer []= IPCO_ParserSettings::getPageFooter();
 		
 		return implode('', $aBuffer);
 	}
 	
 	public function interpretContent($sContent) {
-		return $this->getDepthOffset() . '$_ob .= \''.$sContent.'\';'."\n";
+		return $this->getDepthOffset() . IPCO_ParserSettings::getContent($sContent) . "\n";
 	}
 	
 	public function interpretFilter($sContent) {

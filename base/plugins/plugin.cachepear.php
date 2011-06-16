@@ -19,7 +19,7 @@ class CachePEAR extends Plugin implements ICache {
 	
 	public function retrieve($sKey, $cbRetriever, $nExpirationSec = 0, array $aParams = array(), $bForceRefresh = false) {
 		$nID = $this->m_oCache->generateID($sKey);
-		$mData = $bForceRefresh ? null : $this->m_oCache->load($nID);
+		$mData = $bForceRefresh ? false : $this->m_oCache->load($nID);
 		if(!$mData || $bForceRefresh) {
 			$mData = call_user_func_array($cbRetriever, $aParams);
 			$this->m_oCache->save($nID, $mData, $nExpirationSec);

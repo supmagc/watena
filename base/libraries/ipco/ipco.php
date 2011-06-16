@@ -8,12 +8,13 @@ class IPCO {
 	}
 	
 	public function createParserFromFile($sFilePath) {
-		return $this->createParserFromContent($sFilePath, file_get_contents($sFilePath), $this);
+		$sContent = file_get_contents($sFilePath);
+		return $this->createParserFromContent($sFilePath, $sContent, $this);
 	}
 	
 	public function getClassName($sIdentifier) {
 		$sIdentifier = Encoding::toLower($sIdentifier);
-		return 'IPCO_Compiled_' . Encoding::regReplace('[-/\\. ]', '_', $sIdentifier);
+		return 'IPCO_Compiled_' . Encoding::regReplace('[-/\\\\.: ]', '_', $sIdentifier);
 	}
 }
 

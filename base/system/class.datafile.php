@@ -32,7 +32,9 @@ class DataFile extends Object {
 	}
 	
 	public function writeContent($mContent) {
-		mkdir(dirname($this->m_sFullPath), 0777, true);
+		$sDir = dirname($this->m_sFullPath);
+		if(!file_exists($sDir))
+			mkdir($sDir, 0777, true);
 		file_put_contents($this->m_sFullPath, $mContent);
 		chmod($this->m_sFullPath, 0777);
 	}
