@@ -2,6 +2,22 @@
 
 class IPCO_ParserSettings extends IPCO_Base {
 	
+	const PAGE_HEADER			= '
+class %s extends %s {
+
+	public function __toString() {
+		try {
+			$_ob = \'\';
+';
+	const PAGE_FOOTER			= '			return $_ob;
+		}
+		catch(Exception $e) {
+			return $e;
+		}
+	}
+}
+';
+	
 	const FILTER_IF 			= "if(%s) {\n";
 	const FILTER_ELSEIF 		= "} else if(%s) {\n";
 	const FILTER_ELSE			= "} else {\n";
@@ -15,6 +31,17 @@ class IPCO_ParserSettings extends IPCO_Base {
 	const CALL_METHOD			= "parent::processMethod('%s', %s, %s)";
 	const CALL_MEMBER			= "parent::processMember('%s', %s)";
 	const CALL_SLICE			= "parent::processMember(%s, %s)";
+	
+	const CONTENT				= '$_ob .= \'%s\';
+';
+	
+	public static function getPageHeader($sClassName, $sExtendsName) {
+		return sprintf(self::PAGE_HEADER, $sClassName, $sExtendsName);
+	}
+	
+	public static function getPageFooter() {
+		return sprintf(self::PAGE_FOOTER);
+	}
 	
 	public static function getFilterIf($sCondition) {
 		return sprintf(self::FILTER_IF, $sCondition);
@@ -50,6 +77,10 @@ class IPCO_ParserSettings extends IPCO_Base {
 	
 	public static function getCallSlice($sSlice, $sBase) {
 		return sprintf(self::CALL_SLICE, $sSlice, $sBase);
+	}
+	
+	public static function getContent($sContent) {
+		return sprintf(self::CONTENT, addcslashes($sContent, '\''));
 	}
 }
 

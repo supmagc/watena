@@ -26,14 +26,16 @@ abstract class Cacheable extends Configurable {
 		$sIdentifier = $sIdentifier . '_' . md5(serialize($aParams));
 		$oCache = parent::getWatena()->getCache();
 		$nCacheExp = $oCache->get("W_CACHE_{$sIdentifier}_EXPIRATION", 0);
+		$oRequirements = $oCache->get("W_CACHE_{$sIdentifier}_REQUIREMENTS", null);
+		$oObject = $oCache->get("W_CACHE_{$sIdentifier}_OBJECT", null);
 		
-		if($nExpiration > $nCacheExp) {
+		if($nExpiration > $nCacheExp || !$oRequirements || !$oObject) {
 			try {
 				list($oObject, $oRequirements) = parent::getWatena()->getContext()->loadObjectAndRequirements($sObject, $aParams, $sIncludeFile, $sExtends, $sImplements);
 				if($oRequirements->IsSucces()) {
 					$oCache->set("W_CACHE_{$sIdentifier}_EXPIRATION", $nExpiration);
 					$oCache->set("W_CACHE_{$sIdentifier}_REQUIREMENTS", $oRequirements);
-					$oCache->set("W_CACHE_{$sIdentifier}_OBJECT", $oObject);
+					$oCache->set("W_CACHE_{$sIdentifier}_OBJECT", serialize($oObject));
 					$oObject->wakeup();
 					return $oObject;
 				}
@@ -52,11 +54,8 @@ abstract class Cacheable extends Configurable {
             }
 		}
 		else {
-			$oRequirements = $oCache->get("W_CACHE_{$sIdentifier}_REQUIREMENTS", null);
 			if($oRequirements->IsSucces()) {
-				$oObject = $oCache->get("W_CACHE_{$sIdentifier}_OBJECT", null);
-				// TODO: Check if the value retrieved is not false
-				return $oObject;
+				return unserialize($oObject);
 			}
 			else {
 				throw new WatCeption('A previously loaded and cached object no longer meets it requirements.', array('object' => $sObject, 'requirements' => $oRequirements), $this);

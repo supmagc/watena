@@ -54,11 +54,12 @@ class Context extends Object {
 	 * @return string (or false)
 	 */
 	public function getProjectFilePath($sDirectory, $sFile, $sPreferredLibrary = null) {
-		if(($sTemp = realpath(PATH_BASE . "/$sDirectory/$sFile")) !== false) return $sTemp;
+		$sSearch = "/$sDirectory/$sFile";
+		if(($sTemp = realpath(PATH_BASE . $sSearch)) !== false) return $sTemp;
 		if(($nIndex = Encoding::indexOf($sFile, '$')) !== false && ($sTemp = realpath(PATH_LIBS . '/' . Encoding::substring($sFile, 0, $nIndex) . "/$sDirectory/" . Encoding::substring($sFile, $nIndex + 1))) !== false) return $sTemp;
-		if($sPreferredLibrary != null && ($sTemp = realpath(PATH_LIBS . "/$sPreferredLibrary/$sDirectory/$sFile")) !== false) return $sTemp;
+		if($sPreferredLibrary != null && ($sTemp = realpath(PATH_LIBS . "/$sPreferredLibrary" . $sSearch)) !== false) return $sTemp;
 		foreach($this->m_aLibraryPaths as $sPath) {
-			if((!$sTemp = realpath($sPath . "/$sDirectory")) !== false) return $sTemp;
+			if(($sTemp = realpath($sPath . $sSearch)) !== false) return $sTemp;
 		}
 		return false;
 	}
@@ -175,7 +176,6 @@ class Context extends Object {
 	 */
 	public function getMVC(Mapping $oMapping) {
 		$aFilterGroups = $this->getFilterGroups();
-		print_r($aFilterGroups);
 		$oModel = null;
 		$oView = null;
 		$oController = null;

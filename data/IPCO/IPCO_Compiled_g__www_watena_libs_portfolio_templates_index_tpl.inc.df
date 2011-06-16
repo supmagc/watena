@@ -1,4 +1,10 @@
-<!DOCTYPE html>
+<?php
+class IPCO_Compiled_g__www_watena_libs_portfolio_templates_index_tpl extends IPCO_Processor {
+
+	public function __toString() {
+		try {
+			$_ob = '';
+			$_ob .= '<!DOCTYPE html>
 <html lang="en" xmlns:tpl="http://www.tomo-design.be/tpl/">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -75,10 +81,10 @@
 				<tr>
 					<td class="llt"></td>
 					<td class="center" size-ref="top" size-min="42" colspan="3" rowspan="3"><div id="top">
-							<div id="btn_archive"><a href=""><img src="/laf/btn_archive.png" onMouseOver="this.src='<[LAF]>/btn_archive_over.png';" onMouseOut="this.src='<[LAF]>/btn_archive.png';" /></a></div>
-							<div id="btn_contact"><a href=""><img src="/laf/btn_contact.png" onMouseOver="this.src='<[LAF]>/btn_contact_over.png';" onMouseOut="this.src='<[LAF]>/btn_contact.png';" /></a></div>
-							<div id="btn_profile"><a href=""><img src="/laf/btn_profile.png" onMouseOver="this.src='<[LAF]>/btn_profile_over.png';" onMouseOut="this.src='<[LAF]>/btn_profile.png';" /></a></div>
-							<div id="btn_search"><a href=""><img src="/laf/btn_search.png" onMouseOver="this.src='<[LAF]>/btn_search_over.png';" onMouseOut="this.src='<[LAF]>/btn_search.png';" /></a></div>
+							<div id="btn_archive"><a href=""><img src="/laf/btn_archive.png" onMouseOver="this.src=\'<[LAF]>/btn_archive_over.png\';" onMouseOut="this.src=\'<[LAF]>/btn_archive.png\';" /></a></div>
+							<div id="btn_contact"><a href=""><img src="/laf/btn_contact.png" onMouseOver="this.src=\'<[LAF]>/btn_contact_over.png\';" onMouseOut="this.src=\'<[LAF]>/btn_contact.png\';" /></a></div>
+							<div id="btn_profile"><a href=""><img src="/laf/btn_profile.png" onMouseOver="this.src=\'<[LAF]>/btn_profile_over.png\';" onMouseOut="this.src=\'<[LAF]>/btn_profile.png\';" /></a></div>
+							<div id="btn_search"><a href=""><img src="/laf/btn_search.png" onMouseOver="this.src=\'<[LAF]>/btn_search_over.png\';" onMouseOut="this.src=\'<[LAF]>/btn_search.png\';" /></a></div>
 						</div></td>
 					<td class="rrt"></td>
 				</tr>
@@ -167,4 +173,13 @@
 	</div>
 </div>
 </body>
-</html>
+</html>';
+
+			return $_ob;
+		}
+		catch(Exception $e) {
+			return $e;
+		}
+	}
+}
+?>
