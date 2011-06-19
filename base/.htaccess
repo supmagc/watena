@@ -1,7 +1,6 @@
-#Security options:
-Options +FollowSymLinks
-Options -Indexes
-
+<DirectoryMatch "^(files|theme)/">
+	Allow from all
+</FilesMatch>
 <FilesMatch "\.(php|txt|ini|inc|xml)$">
 	Deny from all
 </FilesMatch>
