@@ -53,7 +53,7 @@ class Context extends Object {
 	 * 
 	 * @return string (or false)
 	 */
-	public function getProjectFilePath($sDirectory, $sFile, $sPreferredLibrary = null) {
+	public function getLibraryFilePath($sDirectory, $sFile, $sPreferredLibrary = null) {
 		$sSearch = "/$sDirectory/$sFile";
 		if(($sTemp = realpath(PATH_BASE . $sSearch)) !== false) return $sTemp;
 		if(($nIndex = Encoding::indexOf($sFile, '$')) !== false && ($sTemp = realpath(PATH_LIBS . '/' . Encoding::substring($sFile, 0, $nIndex) . "/$sDirectory/" . Encoding::substring($sFile, $nIndex + 1))) !== false) return $sTemp;
@@ -106,8 +106,8 @@ class Context extends Object {
 	 */
 	public function loadPlugin($sPlugin) {
 		$sKey = Encoding::toLower($sPlugin);
-		$sFilePHP = $this->getProjectFilePath('plugins', "plugin.$sKey.php");
-		$sFileINI = $this->getProjectFilePath('plugins', "config.$sKey.ini");
+		$sFilePHP = $this->getLibraryFilePath('plugins', "plugin.$sKey.php");
+		$sFileINI = $this->getLibraryFilePath('plugins', "config.$sKey.ini");
 		if($sFilePHP === false) throw new WatCeption('Unable to find a library that contains the plugin.', array('plugin' => $sPlugin));
 		if(!isset($this->m_aPlugins[$sKey])) {
 			$aConfig = parent::getWatena()->getCache()->retrieve(
@@ -184,9 +184,9 @@ class Context extends Object {
 			$aFilters = $oFilterGroup->getFilters();
 			foreach($aFilters as $nOrder => $oFilter) {
 				if($oFilter->match($oMapping)) {
-					if(!$oModel) $oModel = $oFilter->getModel();
-					if(!$oView) $oView = $oFilter->getView();
-					if(!$oController) $oController = $oFilter->getController();
+					if(!$oModel) $oModel = $oFilter->createModel();
+					if(!$oView) $oView = $oFilter->createView();
+					if(!$oController) $oController = $oFilter->createController();
 				}
 			}
 		}

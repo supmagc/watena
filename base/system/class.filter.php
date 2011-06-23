@@ -2,8 +2,10 @@
 
 class _FilterData extends Object {
 	
-	private $m_sFile;
+	private $m_sType;
 	private $m_sName;
+	private $m_sFileName;
+	private $m_sFilePath;
 	private $m_aParams = array();
 	
 	/**
@@ -12,14 +14,14 @@ class _FilterData extends Object {
 	 * @param string $sName The name of the class we require
 	 * @param string $sType Typename (Model/View/Controller)
 	 */
-	public function __construct($sName, $sType) {
+	public function __construct($sName, $sType, $sDirectory) {
+		$this->m_sType = $sType;
 		$this->m_sName = $sName;
-		$this->m_sFile = PATH_BASE . '/' . Encoding::toLower($sType) . 's/' . Encoding::toLower($sType) . '.' . Encoding::toLower($sName) . '.php';
+		$this->m_sFileName = Encoding::toLower($sType) . '.' . Encoding::toLower($sName) . '.php';
+		$this->m_sFilePath = parent::getWatena()->getContext()->getLibraryFilePath($sDirectory, $this->m_sFileName);
+		//$this->m_sFile = PATH_BASE . '/' . Encoding::toLower($sType) . 's/' . Encoding::toLower($sType) . '.' . Encoding::toLower($sName) . '.php';
 
-		if(!file_exists($this->m_sFile)) parent::terminate('The specified '.$sType.'-file could not be found: ' . $this->m_sFile);
-		require_once $this->m_sFile;
-		if(!class_exists($this->m_sName, false)) parent::terminate('The specified '.$sType.'-class could not be found: ' . $this->m_sName);
-		if(!in_array($sType, class_parents($this->m_sName, false))) parent::terminate('The specified '.$sType.'-class does not implement '.$sType.': ' . $this->m_sName);
+		if($this->m_sFilePath === false) throw new WatCeption('The specified '.$sType.'-file could not be found.', array('name' => $this->m_sName, 'filename' => $this->m_sFileName), $this);
 	}
 	
 	public function addParam($sName, $sValue) {
@@ -44,6 +46,10 @@ class _FilterData extends Object {
 	
 	public function getParams() {
 		return $this->m_aParams;
+	}
+	
+	public function create() {
+		return CacheableData::createObject($this->m_sName, $this->m_aParams, null, $this->m_sFilePath, $this->m_sType);
 	}
 }
 
@@ -72,17 +78,17 @@ class Filter extends CacheableFile {
 					}
 				}
 				else if(($sName = $this->_matchesGetName($oXml, 'model')) !== false) {
-					$oLast = ($this->m_oModel = new _FilterData($sName, 'Model'));
+					$oLast = ($this->m_oModel = new _FilterData($sName, 'Model', 'models'));
 					$oLast->setFirst((bool)($oXml->moveToAttribute('first') && $oXml->value));
 					$oLast->setLast((bool)($oXml->moveToAttribute('last') && $oXml->value));
 				}
 				else if(($sName = $this->_matchesGetName($oXml, 'view')) !== false) {
-					$oLast = ($this->m_oView = new _FilterData($sName, 'View'));
+					$oLast = ($this->m_oView = new _FilterData($sName, 'View', 'views'));
 					$oLast->setFirst((bool)($oXml->moveToAttribute('first') && $oXml->value));
 					$oLast->setLast((bool)($oXml->moveToAttribute('last') && $oXml->value));
 				}
 				else if(($sName = $this->_matchesGetName($oXml, 'controller')) !== false) {
-					$oLast = ($this->m_oController = new _FilterData($sName, 'Controller'));
+					$oLast = ($this->m_oController = new _FilterData($sName, 'Controller', 'controllers'));
 					$oLast->setFirst((bool)($oXml->moveToAttribute('first') && $oXml->value));
 					$oLast->setLast((bool)($oXml->moveToAttribute('last') && $oXml->value));
 				}
@@ -102,16 +108,16 @@ class Filter extends CacheableFile {
 		}
 	}
 	
-	public function getModel() {
-		return $this->m_oModel ? CacheableData::createObject($this->m_oModel->getName(), $this->m_oModel->getParams(), null, $this->m_oModel->getFile(), 'Model') : null;
+	public function createModel() {
+		return $this->m_oModel ? $this->m_oModel->create() : null;
 	}
 	
-	public function getView() {
-		return $this->m_oView ? CacheableData::createObject($this->m_oView->getName(), $this->m_oView->getParams(), null, $this->m_oView->getFile(), 'View') : null;
+	public function createView() {
+		return $this->m_oView ? $this->m_oView->create() : null;
 	}
 	
-	public function getController() {
-		return $this->m_oController ? CacheableData::createObject($this->m_oController->getName(), $this->m_oController->getParams(), null, $this->m_oController->getFile(), 'Controller') : null;
+	public function createController() {
+		return $this->m_oController ? $this->m_oController->create() : null;
 	}
 	
 	public function getTheme() {
