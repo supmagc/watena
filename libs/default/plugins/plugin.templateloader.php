@@ -52,7 +52,7 @@ class TemplateLoader extends Plugin {
 	}
 	
 	public function load($sTemplate) {
-		$sFilePath = parent::getWatena()->getContext()->getProjectFilePath('templates', $sTemplate);
+		$sFilePath = parent::getWatena()->getContext()->getLibraryFilePath('templates', $sTemplate);
 		if(!$sFilePath) throw new WatCeption('Templatefile does not exists in any of the libraries.', array('template' => $sTemplate), $this);
 		return TemplateFile::create($sFilePath);
 	}

@@ -1,6 +1,0 @@
-<DirectoryMatch "^(files|theme)/">
-	Allow from all
-</FilesMatch>
-<FilesMatch "\.(php|txt|ini|inc|xml)$">
-	Deny from all
-</FilesMatch>
