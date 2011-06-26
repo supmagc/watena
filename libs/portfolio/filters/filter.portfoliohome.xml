@@ -2,7 +2,7 @@
 <filter name="PortfolioHome filter" order="1">
 	<model name="HelloWorldModel">
 	</model>
-	<view first="1" last="1" name="TemplateView">
+	<view first="1" last="1" name="HtmlTemplateView">
 		<param name="template">index.tpl</param>
 	</view>
 	<controller last="1" first="1" name="HelloWorldController">

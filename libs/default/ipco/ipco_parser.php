@@ -13,12 +13,17 @@ class IPCO_Parser extends IPCO_Base {
 	private $m_sContent;
 	private $m_nDepth;
 	private $m_aEndings;
+	private $m_aParsers = array();
 	
 	public function __construct($sIdentifier, &$sContent, IPCO $ipco) {
 		parent::__construct($ipco);
 		$this->m_sIdentifier = $sIdentifier;
 		$this->m_sClassName = parent::getIpco()->getClassName($sIdentifier);
 		$this->m_sContent = $sContent;
+	}
+	
+	public function addParserCallback($cbParser) {
+		$this->m_aParsers []= $cbParser;
 	}
 	
 	public function getIdentifier() {
@@ -96,7 +101,24 @@ class IPCO_Parser extends IPCO_Base {
 	}
 	
 	public function interpretContent($sContent) {
-		return $this->getDepthOffset() . IPCO_ParserSettings::getContent($sContent) . "\n";
+		if(Encoding::length($sContent) > 0) {
+			$aParserParts = array();
+			$aReturn = array();
+			foreach($this->m_aParsers as $cbParser) {
+				$mReturn = call_user_func($cbParser, $sContent);
+				if(is_array($mReturn))
+					$aParserParts = array_merge($aParserParts, $mReturn);				
+			}
+			$nOffset = 0;
+			foreach($aParserParts as $oParserPart) {
+				
+			}
+			$aReturn []= $this->getDepthOffset() . IPCO_ParserSettings::getContent(Encoding::substring($sContent, $nOffset));
+			return implode('', $aReturn);
+		}
+		else {
+			return null;
+		}
 	}
 	
 	public function interpretFilter($sContent) {
