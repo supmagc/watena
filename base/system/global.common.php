@@ -6,15 +6,6 @@ function terminate($sMessage) {
 	die($sMessage);
 }
 
-function includeLibrary($sName, array $aFiles, $bOnce = true) {
-	foreach($aFiles as $sFile) {
-		if($bOnce)
-			include_once PATH_BASE . "/libraries/$sName/$sFile.php";
-		else
-			include PATH_BASE . "/libraries/$sName/$sFile.php";
-	}
-}
-
 /**
  * Assure the array structure exists as provided
  * The structure is as defined by the keys array
@@ -94,6 +85,108 @@ function array_value(&$arr, array $aKeys, $mDefault = null) {
 	// We arrived ath the end of our routine without an early return
 	// This means all has gone well, and we can simply return the value encompased with $aHelper
 	return $aHelper;
+}
+
+function is_alphabetical($var) {
+	return ctype_alpha($var);
+}
+
+function is_alphanumeric($var) {
+	return ctype_alnum($var);
+}
+
+function is_whitespace($var) {
+	return ctype_space($var);
+}
+
+/**
+ * Add Backslashes to string you want to use in ereg-expressions
+ *
+ * @param string $sString
+ * @return string
+ */
+function addEregSlashes($sString) {
+	return addcslashes($sString, '[\\^$.|?*+(){}');
+}
+
+/**
+ * Add Backslashes to string you want to use in preg-expressions
+ *
+ * @param string $sString
+ * @return string
+ */
+function addPregSlashes($sString) {
+	return preg_quote($sString, '/');
+}
+
+/**
+ * Parse all external links included in a the given content var
+ * WARNING: the first param ($sContent) is used as a call by reference for optimalisation
+ * WARNING: only set $bOnlyAbsolute to false in case you need it (since it runs an extra preg_match and runs 2 extra str_replace
+ * WARNING: don't try to inject your own regex since they are escaped
+ *
+ * @param string $sContent
+ * @param mixed $mTag
+ * @param mixed $mAttribute
+ * @param mixed $mExtension
+ * @param string $sRemove
+ * @param string $sAppend
+ * @param bool $bRemoveOptional
+ * @param bool $bStripBack
+ * @param bool $bOnlyAbsolute
+ */
+function ParseExternalLinks(&$sContent, $mTag, $mAttribute, $mExtension, $sRemove,  $sAppend, $bRemoveOptional = true, $bStripBack = true, $bOnlyAbsolute = true) {
+	// Check if the params are correct
+	if(!is_string($sContent) || !is_string($sRemove) || !is_string($sAppend)) {
+		trigger_error('Illegal params for data-manipulation', 'Ensure you are using the correct type of var as param', E_USER_WARNING);
+	}
+	
+	// some optimalisations
+	if(!$bRemoveOptional && Encoding::length($sRemove) > 0 && Encoding::substring($sRemove, 0, 1) == '/') {
+		$bOnlyAbsolute = true;
+		$sRemove = Encoding::substring($sRemove, 1);
+	}
+	else if($bOnlyAbsolute && Encoding::length($sRemove) > 0 && Encoding::substring($sRemove, 0, 1) == '/') {
+		$sRemove = Encoding::substring($sRemove, 1);
+	}
+	
+	// Create the correct vars for the preg-expressions
+	$sTag = is_array($mTag) ? implode('|', array_map(array('TMD_Data', 'AddPregSlashes'), $mTag)) : TMD_Data::AddPregSlashes($mTag);
+	$sAttribute = is_array($mAttribute) ? implode('|', array_map(array('TMD_Data', 'AddPregSlashes'), $mAttribute)) : TMD_Data::AddPregSlashes($mAttribute);
+	$sExtension = is_array($mExtension) ? implode('|', array_map(array('TMD_Data', 'AddPregSlashes'), $mExtension)) : TMD_Data::AddPregSlashes($mExtension);
+	$sRemove = TMD_Data::AddPregSlashes(preg_replace('/^\//', '', $sRemove));
+	$sExtension = !empty($sExtension) ? '()' : "\.($sExtension)";
+	
+	// Save the external links if needed
+	$aExternalLinks = array();
+	if(!$bOnlyAbsolute && $bRemoveOptional && Encoding::length($sRemove) > 0) {
+		$aMatches = array();
+		$aPositions = array();
+		Encoding::regFindAll("/<($sTag) .*?($sAttribute)=[\"'](http|https|mailto|callto):\/\/.*?[\"'].*?>/i", $sContent, $aMatches, $aMatches);
+		foreach($aMatches as $sMatch) {
+			$aExternalLinks[md5($sMatch[0])] = $sMatch[0];
+		}
+		$sContent = Encoding::replace(array_values($aExternalLinks), array_keys($aExternalLinks), $sContent);
+	}
+	
+	// Parse absolute URL's
+	if($bOnlyAbsolute) {
+		if($bStripBack) $sContent = Encoding::regReplace("/(<($sTag) .*?($sAttribute)=[\"'])\/(\.\.\/)*(.+?".$sExtension."[\"'].*?>)/i", "\\1/\\5", $sContent);
+		$sContent = Encoding::regReplace("/(<($sTag) .*?($sAttribute)=[\"'])\/($sRemove)".($bRemoveOptional ? '?' : '')."(.+?".$sExtension."[\"'].*?>)/i", "\\1$sAppend\\5", $sContent);
+	}
+	
+	// Parse none-absolute URL's
+	else {
+		if($bStripBack) $sContent = Encoding::regReplace("/(<($sTag) .*?($sAttribute)=[\"'])(\.\.\/)*(.+?".$sExtension."[\"'].*?>)/i", "\\1\\5", $sContent);
+		$sContent = Encoding::regReplace("/(<($sTag) .*?($sAttribute)=[\"'])($sRemove)".($bRemoveOptional ? '?' : '')."(.+?".$sExtension."[\"'].*?>)/i", "\\1$sAppend\\5", $sContent);
+	}
+
+	// Restore the external links if needed
+	if(!$bOnlyAbsolute && $bRemoveOptional && Encoding::length($sRemove) > 0) {
+		$sContent = Encoding::replace(array_keys($aExternalLinks), array_values($aExternalLinks), $sContent);
+	}
+	
+	// since we are using call by reference, we don't need to return the $sContent
 }
 
 /********************************

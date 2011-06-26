@@ -1,16 +1,5 @@
 <?php
-
-includeLibrary('ipco', array(
-	'ipco', 
-	'ipco_base', 
-	'ipco_processor',
-	'ipco_parsersettings',
-	'ipco_parser', 
-	'ipco_expression', 
-	'ipco_exception', 
-	'ipco_expressionexception', 
-	'ipco_componentwrapper'
-));
+require_once dirname(__FILE__) . '/../ipco/ipco.php';
 
 class TemplateFile extends CacheableFile {
 
@@ -24,6 +13,9 @@ class TemplateFile extends CacheableFile {
 		$this->m_sDataPath = 'IPCO/' . $this->m_sClassName . '.inc';
 		$oFile = parent::getWatena()->getContext()->getDataFile($this->m_sDataPath);		
 		$oParser = $this->m_oIpco->createParserFromFile(parent::getFilePath());
+		$aParsers = parent::getConfig('parsers', array());
+		foreach($aParsers as $cbParser)
+			$oParser->addParserCallback($cbParser);
 		$oFile->writeContent('<?php' . $oParser->parse() . '?>');
 	}
 	
@@ -34,7 +26,7 @@ class TemplateFile extends CacheableFile {
 		$oDataFile->includeFileOnce();
 	}
 	
-	public function getTemplateClass() {
+	public function createTemplateClass() {
 		$sClass = $this->m_sClassName;
 		return new $sClass($this->m_oIpco);
 	}
@@ -50,11 +42,20 @@ class TemplateLoader extends Plugin {
 	public function init() {
 		$this->m_oIpco = new IPCO();
 	}
-	
-	public function load($sTemplate) {
+
+	/**
+	 * Load the specified template-file.
+	 * If required, you can specify an array with callbacks.
+	 * Make sure these callbacks point to static or global functions.
+	 * 
+	 * @param unknown_type $sTemplate
+	 * @param array $aTemplateContentSearchers
+	 * @throws WatCeption
+	 */
+	public function load($sTemplate, array $aParsers = array()) {
 		$sFilePath = parent::getWatena()->getContext()->getLibraryFilePath('templates', $sTemplate);
 		if(!$sFilePath) throw new WatCeption('Templatefile does not exists in any of the libraries.', array('template' => $sTemplate), $this);
-		return TemplateFile::create($sFilePath);
+		return TemplateFile::create($sFilePath, array('parsers' => $aParsers));
 	}
 		
 	/**
