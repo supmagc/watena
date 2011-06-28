@@ -6,10 +6,15 @@ class HtmlTemplateView extends View {
 	const CHAR_ELEMENT_END = '>';
 	const CHAR_ELEMENT_CLOSE = '/';
 	const CHAR_ATTRIBUTE_EQUALITY = '=';
-	const CHAR_ATTRIBUTE_QUOTE_DOUBLE = '=';
+	const CHAR_ATTRIBUTE_QUOTE_DOUBLE = '"';
 	const CHAR_ATTRIBUTE_QUOTE_SINGLE = '\'';
 	const CHAR_ATTRIBUTE_ESCAPE = '\\';
-	const CHAR_DOCTYPE = '!';
+	const CHAR_DOCTYPE_BEGIN = '<!';
+	const CHAR_COMMENT_BEGIN = '<!--';
+	const CHAR_CDATA_BEGIN = '<![CDATA[';
+	const CHAR_DOCTYPE_END = '>';
+	const CHAR_COMMENT_END = '-->';
+	const CHAR_CDATA_END = ']]>';
 	
 	const STATE_NORMAL = 1;
 	const STATE_ELEMENT_NAME = 2;
@@ -44,8 +49,10 @@ class HtmlTemplateView extends View {
 			switch($nState) {
 				case self::STATE_NORMAL:
 					if($sChar === self::CHAR_ELEMENT_BEGIN) {
+						$nNext = $i + 1;
 						$sNextChar = Encoding::substring($sContent, ++$i, 1);
-						if($sNextChar === self::CHAR_DOCTYPE) {
+						if(Encoding::substring($sContent, $i, Encoding::length(self::CHAR_DOCTYPE_BEGIN)) == self::CHAR_DOCTYPE_BEGIN) {
+							$i = Encoding::indexOf($sContent, , $sSearch)
 							$nState = self::STATE_DOCTYPE;
 						}
 						else if($sNextChar === self::CHAR_ELEMENT_CLOSE) {
@@ -63,7 +70,7 @@ class HtmlTemplateView extends View {
 						if($sChar === self::CHAR_ELEMENT_CLOSE)
 							$nState = self::STATE_ELEMENT_CLOSURE;
 						else if($sChar === self::CHAR_ELEMENT_END)
-							$nState = self::STATE_ELEMENT_NORMAL;
+							$nState = self::STATE_NORMAL;
 						else if(is_whitespace($sChar))
 							$nState = self::STATE_ELEMENT_ATTRIBUTES;
 						$sElement = Encoding::substring($sContent, $nMarker, $i - $nMarker);
@@ -71,12 +78,10 @@ class HtmlTemplateView extends View {
 					break;
 					
 				case self::STATE_ELEMENT_ATTRIBUTES:
-					if($sChar === self::CHAR_ELEMENT_CLOSE) {
+					if($sChar === self::CHAR_ELEMENT_CLOSE)
 						$nState = self::STATE_ELEMENT_CLOSURE;
-					}
-					else if($sChar === self::CHAR_ELEMENT_END) {
-						$nState = self::STATE_ELEMENT_NORMAL;
-					}
+					else if($sChar === self::CHAR_ELEMENT_END)
+						$nState = self::STATE_NORMAL;
 					else if(self::isHtmlNameCharacter($sChar)) {
 						$nState = self::STATE_ATTRIBUTE_NAME;
 						$nMarker = $i;
@@ -84,7 +89,7 @@ class HtmlTemplateView extends View {
 					break;
 					
 				case self::STATE_ATTRIBUTE_NAME:
-					if($sChar === self::CHAR_ATTRIBUTE_EQUALITY) {
+					if(!self::isHtmlNameCharacter($sChar)) {
 						$nState = self::STATE_ATTRIBUTE_QUOTE;
 						$sAttribute = Encoding::substring($sContent, $nMarker, $i - $nMarker);
 					}
@@ -109,7 +114,7 @@ class HtmlTemplateView extends View {
 					}
 					else if($sChar === $sQuote) {
 						$nState = self::STATE_ELEMENT_ATTRIBUTES;
-						$sValue = Encoding::substring($sContent, $nMarker, $i - $nMarker - 1);
+						$sValue = Encoding::substring($sContent, $nMarker, $i - $nMarker);
 						echo "$sElement ($sAttribute = $sValue) \n";
 					}
 					break;

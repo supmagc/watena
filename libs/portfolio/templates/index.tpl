@@ -3,7 +3,7 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta charset="UTF-8" />
-	<title tpl:content="getTitle()">Portfolio main template</title>
+	<title>Portfolio main template </title>
 	<link href="/laf/zoom.css" rel="stylesheet" type="text/css" />
 	<link href="/laf/style.css" rel="stylesheet" type="text/css" />
 	<script type="text/javascript">
