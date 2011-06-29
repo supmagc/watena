@@ -39,6 +39,7 @@ class HtmlTemplateView extends View {
 	public static function searchTemplateContent($sContent) {
 		$nLength = Encoding::length($sContent);
 		$nState = self::STATE_NORMAL;
+		$aParts = array();
 		$nMarker = 0;
 		$sElement = '';
 		$sAttribute = '';
@@ -49,18 +50,20 @@ class HtmlTemplateView extends View {
 			switch($nState) {
 				case self::STATE_NORMAL:
 					if($sChar === self::CHAR_ELEMENT_BEGIN) {
-						$nNext = $i + 1;
-						$sNextChar = Encoding::substring($sContent, ++$i, 1);
-						if(Encoding::substring($sContent, $i, Encoding::length(self::CHAR_DOCTYPE_BEGIN)) == self::CHAR_DOCTYPE_BEGIN) {
-							$i = Encoding::indexOf($sContent, , $sSearch)
-							$nState = self::STATE_DOCTYPE;
-						}
-						else if($sNextChar === self::CHAR_ELEMENT_CLOSE) {
-							$nState = self::STATE_ELEMENT_CLOSURE;
-						}
-						else if(self::isHtmlNameCharacter($sNextChar)) {
-							$nState = self::STATE_ELEMENT_NAME;
-							$nMarker = $i;
+						$nIndex = $i;
+						$nIndex = self::_findAndGoPassed($sContent, $nIndex, self::CHAR_CDATA_BEGIN, self::CHAR_CDATA_END);
+						$nIndex = self::_findAndGoPassed($sContent, $nIndex, self::CHAR_COMMENT_BEGIN, self::CHAR_COMMENT_END);
+						$nIndex = self::_findAndGoPassed($sContent, $nIndex, self::CHAR_DOCTYPE_BEGIN, self::CHAR_DOCTYPE_END);
+						if($nIndex !== $i) 
+							$i = $nIndex;
+						else {
+							$sNextChar = Encoding::substring($sContent, ++$i, 1);
+							if($sNextChar === self::CHAR_ELEMENT_CLOSE)
+								$nState = self::STATE_ELEMENT_CLOSURE;
+							else if(self::isHtmlNameCharacter($sNextChar)) {
+								$nState = self::STATE_ELEMENT_NAME;
+								$nMarker = $i;
+							}							
 						}
 					}
 					break;
@@ -139,6 +142,16 @@ class HtmlTemplateView extends View {
 	
 	public static function isHtmlNameCharacter($sChar) {
 		return is_alphabetical($sChar) || $sChar === '-' || $sChar === ':';
+	}
+	
+	private static function _findAndGoPassed(&$sContent, $nIndex, $sBegin, $sEnd) {
+		if(Encoding::substring($sContent, $nIndex, Encoding::length($sBegin)) == $sBegin) {
+			$nTemp = Encoding::indexOf($sContent, $sEnd, $nIndex + Encoding::length($sBegin));
+			if($nTemp !== false) {
+				return $nTemp + Encoding::length($sEnd);
+			}
+		}
+		return $nIndex;
 	}
 }
 
