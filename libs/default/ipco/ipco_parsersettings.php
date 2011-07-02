@@ -5,14 +5,14 @@ class IPCO_ParserSettings extends IPCO_Base {
 	const PAGE_HEADER			= '
 class %s extends %s {
 
-	public function __toString() {
+	public function create() {
 		try {
 			$_ob = \'\';
 ';
 	const PAGE_FOOTER			= '			return $_ob;
 		}
 		catch(Exception $e) {
-			return $e;
+			throw new WatCeption(\'Unable to create template-output.\', array(), null, $e); 
 		}
 	}
 }
@@ -33,6 +33,8 @@ class %s extends %s {
 	const CALL_SLICE			= "parent::processMember(%s, %s)";
 	
 	const CONTENT				= '$_ob .= \'%s\';
+';
+	const CONTENTPARSERPART		= '$_ob .= \'\' . parent::callContentParser(\'%s\', %s);
 ';
 	
 	public static function getPageHeader($sClassName, $sExtendsName) {
@@ -81,6 +83,11 @@ class %s extends %s {
 	
 	public static function getContent($sContent) {
 		return sprintf(self::CONTENT, addcslashes($sContent, '\''));
+	}
+	
+	public static function getContentParserPart($sMethod, $aParams) {
+		$sParams = 'unserialize(\'' . addcslashes(serialize($aParams), '\'') . '\')';
+		return sprintf(self::CONTENTPARSERPART, addcslashes($sMethod, '\''), $sParams);
 	}
 }
 

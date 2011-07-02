@@ -49,7 +49,7 @@ class _FilterData extends Object {
 	}
 	
 	public function create() {
-		return CacheableData::createObject($this->m_sName, $this->m_aParams, null, $this->m_sFilePath, $this->m_sType);
+		return CacheableData::createObject($this->m_sName, $this->m_aParams, array(), null, $this->m_sFilePath, $this->m_sType);
 	}
 }
 

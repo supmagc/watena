@@ -54,15 +54,15 @@ class CacheableDirectory extends Cacheable {
 		return is_dir($this->m_sDirectoryPath . '/' . $sName);
 	}
 	
-	public static function create($sDirectoryName, array $aConfig = array()) {
+	public static function create($sDirectoryName, array $aConfig = array(), array $aInstances = array()) {
 		$sObject = get_called_class();
-		return self::createObject($sObject, $sDirectoryName, $aConfig);
+		return self::createObject($sObject, $sDirectoryName, $aConfig, $aInstances);
 	}
 	
-	public static function createObject($sObject, $sDirectoryName, array $aConfig = array(), $sIncludeFile = null, $sExtends = null, $sImplements = null) {
+	public static function createObject($sObject, $sDirectoryName, array $aConfig = array(), array $aInstances = array(), $sIncludeFile = null, $sExtends = null, $sImplements = null) {
 		$sDirectoryPath = parent::getWatena()->getPath($sDirectoryName);
 		if($sDirectoryPath === false || !is_dir($sDirectoryPath)) throw new WatCeption('CacheDirectory does not exist.', array('Directory' => $sDirectoryName));
-		return parent::_create($sObject, array($sDirectoryName, $sDirectoryPath, $aConfig), $sIncludeFile, $sExtends === null ? 'CacheableDirectory' : $sExtends, $sImplements, 'DIRECTORY_' . $sObject, filemtime($sDirectoryPath));
+		return parent::_create($sObject, array($sDirectoryName, $sDirectoryPath, $aConfig), $aInstances, $sIncludeFile, $sExtends === null ? 'CacheableDirectory' : $sExtends, $sImplements, 'DIRECTORY_' . $sObject, filemtime($sDirectoryPath));
 	}
 }
 

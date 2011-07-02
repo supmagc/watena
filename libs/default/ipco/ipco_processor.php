@@ -1,8 +1,22 @@
 <?php
 
-class IPCO_Processor extends IPCO_Base {
+abstract class IPCO_Processor extends IPCO_Base {
 	
 	private $m_aComponents = array();
+	private $m_oContentParser;
+	private $m_sContent ='';
+	
+	public abstract function create();
+	
+	public function __construct(IPCO $oIpco, IPCO_IContentParser $oContentParser = null) {
+		parent::__construct($oIpco);
+		$this->m_oContentParser = $oContentParser;
+		$this->m_sContent = $this->create();
+	}
+	
+	public function __toString() {
+		return $this->m_sContent;
+	}
 	
 	public function componentPush($mComponent) {
 		if(!empty($mComponent)) {
@@ -14,6 +28,15 @@ class IPCO_Processor extends IPCO_Base {
 	
 	public function componentPop() {
 		array_pop($this->m_aComponents);
+	}
+	
+	protected function callContentParser($sMethod, array $aParams) {
+		if($this->m_oContentParser !== null) {
+			if(!method_exists($this->m_oContentParser, $sMethod))
+				throw new WatCeption('Unable to call unknown method on the specified ContentParser-instance.', array('method' => $sMethod, 'params' => $aParams));
+			return call_user_func_array(array($this->m_oContentParser, $sMethod), $aParams);
+		}
+		return '';
 	}
 	
 	protected final function processMethod($sName, array $aParams, $mBase = null) {

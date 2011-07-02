@@ -27,15 +27,15 @@ class CacheableFile extends Cacheable {
 		echo file_get_contents($this->m_sFilePath);		
 	}
 	
-	public static function create($sFile, array $aConfig = array()) {
+	public static function create($sFile, array $aConfig = array(), array $aInstances = array()) {
 		$sObject = get_called_class();
-		return self::createObject($sObject, $sFile, $aConfig);
+		return self::createObject($sObject, $sFile, $aConfig, $aInstances);
 	}
 	
-	public static function createObject($sObject, $sFile, array $aConfig = array(), $sIncludeFile = null, $sExtends = null, $sImplements = null) {
+	public static function createObject($sObject, $sFile, array $aConfig = array(), array $aInstances = array(), $sIncludeFile = null, $sExtends = null, $sImplements = null) {
 		$sFilePath = parent::getWatena()->getPath($sFile);
 		if($sFilePath === false || !is_file($sFilePath)) throw new WatCeption('Cachefile does not exist.', array('file' => $sFile));
-		return parent::_create($sObject, array($sFile, $sFilePath, $aConfig), $sIncludeFile, $sExtends === null ? 'CacheableFile' : $sExtends, $sImplements, 'FILE_' . $sObject, filemtime($sFilePath));
+		return parent::_create($sObject, array($sFile, $sFilePath, $aConfig), $aInstances, $sIncludeFile, $sExtends === null ? 'CacheableFile' : $sExtends, $sImplements, 'FILE_' . $sObject, filemtime($sFilePath));
 	}
 }
 

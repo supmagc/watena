@@ -13,21 +13,25 @@ abstract class Cacheable extends Configurable {
 	 */
 	public function wakeup() {}
 	
+	
+	private $m_aInstances;
+	
 	public function __construct(array $aConfig) {
 		parent::__construct($aConfig);
-		$this->init();
 	}
 	
-	public final function __wakeup() {
-		$this->wakeup();
+	public function getInstance($sKey, $mDefault = null) {
+		$sKey = strtoupper($sKey); // Don't use Encoding, since it might not be inited yet
+		return isset($this->m_aInstances[$sKey]) ? $this->m_aInstances[$sKey] : $mDefault;
 	}
 	
-	protected static function _create($sObject, $aParams, $sIncludeFile, $sExtends, $sImplements, $sIdentifier, $nExpiration) {
+	protected static function _create($sObject, $aParams, $aInstances, $sIncludeFile, $sExtends, $sImplements, $sIdentifier, $nExpiration) {
 		$sIdentifier = $sIdentifier . '_' . md5(serialize($aParams));
 		$oCache = parent::getWatena()->getCache();
 		$nCacheExp = $oCache->get("W_CACHE_{$sIdentifier}_EXPIRATION", 0);
 		$oRequirements = $oCache->get("W_CACHE_{$sIdentifier}_REQUIREMENTS", null);
 		$oObject = $oCache->get("W_CACHE_{$sIdentifier}_OBJECT", null);
+		$aInstances = array_change_key_case($aInstances, CASE_UPPER);
 		
 		if($nExpiration > $nCacheExp || !$oRequirements || !$oObject) {
 			try {
@@ -36,6 +40,8 @@ abstract class Cacheable extends Configurable {
 					$oCache->set("W_CACHE_{$sIdentifier}_EXPIRATION", $nExpiration);
 					$oCache->set("W_CACHE_{$sIdentifier}_REQUIREMENTS", $oRequirements);
 					$oCache->set("W_CACHE_{$sIdentifier}_OBJECT", serialize($oObject));
+					$oObject->m_aInstances = $aInstances;
+					$oObject->init();
 					$oObject->wakeup();
 					return $oObject;
 				}
@@ -55,7 +61,10 @@ abstract class Cacheable extends Configurable {
 		}
 		else {
 			if($oRequirements->IsSucces()) {
-				return unserialize($oObject);
+				$oObject = unserialize($oObject);
+				$oObject->m_aInstances = $aInstances;
+				$oObject->wakeup();
+				return $oObject;
 			}
 			else {
 				throw new WatCeption('A previously loaded and cached object no longer meets it requirements.', array('object' => $sObject, 'requirements' => $oRequirements), $this);
