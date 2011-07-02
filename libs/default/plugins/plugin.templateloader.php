@@ -13,9 +13,7 @@ class TemplateFile extends CacheableFile {
 		$this->m_sDataPath = 'IPCO/' . $this->m_sClassName . '.inc';
 		$oFile = parent::getWatena()->getContext()->getDataFile($this->m_sDataPath);		
 		$oParser = $this->m_oIpco->createParserFromFile(parent::getFilePath());
-		$aParsers = parent::getConfig('parsers', array());
-		foreach($aParsers as $cbParser)
-			$oParser->addParserCallback($cbParser);
+		$oParser->setContentParser($this->_getContentParser());
 		$oFile->writeContent('<?php' . $oParser->parse() . '?>');
 	}
 	
@@ -28,7 +26,17 @@ class TemplateFile extends CacheableFile {
 	
 	public function createTemplateClass() {
 		$sClass = $this->m_sClassName;
-		return new $sClass($this->m_oIpco);
+		return new $sClass($this->m_oIpco, $this->_getContentParser());
+	}
+	
+	private function _getContentParser() {
+		$oContentParser = parent::getInstance('contentparser', array());
+		if(!is_a($oContentParser, 'IPCO_IContentParser'))
+			throw new WatCeption(
+				'One of the additional content parsers you provided for the selected template is not an IPCO_IContentParser.', 
+				array('contentparser' => is_object($oContentParser) ? get_class($oContentParser) : 'None Object', 'file' => parent::getFilePath()), 
+				$this);
+		return $oContentParser;
 	}
 }
 
@@ -45,17 +53,15 @@ class TemplateLoader extends Plugin {
 
 	/**
 	 * Load the specified template-file.
-	 * If required, you can specify an array with callbacks.
-	 * Make sure these callbacks point to static or global functions.
 	 * 
-	 * @param unknown_type $sTemplate
-	 * @param array $aTemplateContentSearchers
+	 * @param string $sTemplate
+	 * @param array $aParsers
 	 * @throws WatCeption
 	 */
-	public function load($sTemplate, array $aParsers = array()) {
+	public function load($sTemplate, IPCO_IContentParser $oContentParser = null) {
 		$sFilePath = parent::getWatena()->getContext()->getLibraryFilePath('templates', $sTemplate);
 		if(!$sFilePath) throw new WatCeption('Templatefile does not exists in any of the libraries.', array('template' => $sTemplate), $this);
-		return TemplateFile::create($sFilePath, array('parsers' => $aParsers));
+		return TemplateFile::create($sFilePath, array(), array('contentparser' => $oContentParser));
 	}
 		
 	/**

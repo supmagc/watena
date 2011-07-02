@@ -13,7 +13,7 @@ class IPCO_Parser extends IPCO_Base {
 	private $m_sContent;
 	private $m_nDepth;
 	private $m_aEndings;
-	private $m_aParsers = array();
+	private $m_oContentParser = null;
 	
 	public function __construct($sIdentifier, &$sContent, IPCO $ipco) {
 		parent::__construct($ipco);
@@ -22,8 +22,8 @@ class IPCO_Parser extends IPCO_Base {
 		$this->m_sContent = $sContent;
 	}
 	
-	public function addParserCallback($cbParser) {
-		$this->m_aParsers []= $cbParser;
+	public function setContentParser(IPCO_IContentParser $oContentParser) {
+		$this->m_oContentParser = $oContentParser;
 	}
 	
 	public function getIdentifier() {
@@ -102,16 +102,20 @@ class IPCO_Parser extends IPCO_Base {
 	
 	public function interpretContent($sContent) {
 		if(Encoding::length($sContent) > 0) {
-			$aParserParts = array();
 			$aReturn = array();
-			foreach($this->m_aParsers as $cbParser) {
-				$mReturn = call_user_func($cbParser, $sContent);
-				if(is_array($mReturn))
-					$aParserParts = array_merge($aParserParts, $mReturn);				
-			}
+			$aContentParserParts = $this->m_oContentParser->parseContent($sContent);
 			$nOffset = 0;
-			foreach($aParserParts as $oParserPart) {
-				
+			if(is_array($aContentParserParts)) {
+				foreach($aContentParserParts as $oContentParserPart) {
+					$aReturn []= $this->getDepthOffset() . IPCO_ParserSettings::getContent(
+						Encoding::substring($sContent, $nOffset, $oContentParserPart->getStart() - $nOffset)
+					);
+					$aReturn []= $this->getDepthOffset() . IPCO_ParserSettings::getContentParserPart(
+						$oContentParserPart->getMethod(),
+						$oContentParserPart->getParams()
+					);
+					$nOffset = $oContentParserPart->getStart() + $oContentParserPart->getLength();
+				}
 			}
 			$aReturn []= $this->getDepthOffset() . IPCO_ParserSettings::getContent(Encoding::substring($sContent, $nOffset));
 			return implode('', $aReturn);

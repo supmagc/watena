@@ -1,6 +1,6 @@
 <?php
 
-class TemplateView extends View {
+class TemplateView extends View implements IPCO_IContentParser {
 	
 	public function render(Model $oModel) {
 		$oPlugin = parent::getWatena()->getContext()->getPlugin('TemplateLoader');

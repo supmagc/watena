@@ -2,14 +2,14 @@
 
 class IPCO_Base {
 	
-	private $m_ipco;
+	private $m_oIpco;
 	
-	public function __construct(IPCO $ipco) {
-		$this->m_ipco = $ipco;
+	public function __construct(IPCO $oIpco) {
+		$this->m_oIpco = $oIpco;
 	}
 	
 	public function getIpco() {
-		return $this->m_ipco;
+		return $this->m_oIpco;
 	}
 }
 

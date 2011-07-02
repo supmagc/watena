@@ -1,6 +1,7 @@
 <?php
+include_once dirname(__FILE__) . '/../ipco/ipco.php';
 
-class HtmlTemplateView extends View {
+class HtmlTemplateView extends View implements IPCO_IContentParser {
 
 	const CHAR_ELEMENT_BEGIN = '<';
 	const CHAR_ELEMENT_END = '>';
@@ -28,7 +29,7 @@ class HtmlTemplateView extends View {
 	
 	public function render(Model $oModel) {
 		$oPlugin = parent::getWatena()->getContext()->getPlugin('TemplateLoader');
-		$oTemplate = $oPlugin->load(parent::getConfig('template', 'index.tpl'), array(array('HtmlTemplateView', 'searchTemplateContent')));
+		$oTemplate = $oPlugin->load(parent::getConfig('template', 'index.tpl'), $this);
 		echo "" . $oTemplate->createTemplateClass();
 	}
 	
@@ -36,7 +37,15 @@ class HtmlTemplateView extends View {
 		return array('plugins' => 'TemplateLoader');
 	}
 	
-	public static function searchTemplateContent($sContent) {
+	public function _parseTest($s0, $s1, $s2) {
+		return $s2;
+	}
+	
+	public function addMappingOffset($sElement, $sAttribute, $sValue) {
+		return parent::getWatena()->getMapping()->getOffset() . $sValue;
+	}
+	
+	public function parseContent(&$sContent) {
 		$nLength = Encoding::length($sContent);
 		$nState = self::STATE_NORMAL;
 		$aParts = array();
@@ -60,7 +69,7 @@ class HtmlTemplateView extends View {
 							$sNextChar = Encoding::substring($sContent, ++$i, 1);
 							if($sNextChar === self::CHAR_ELEMENT_CLOSE)
 								$nState = self::STATE_ELEMENT_CLOSURE;
-							else if(self::isHtmlNameCharacter($sNextChar)) {
+							else if($this->_isHtmlNameCharacter($sNextChar)) {
 								$nState = self::STATE_ELEMENT_NAME;
 								$nMarker = $i;
 							}							
@@ -69,7 +78,7 @@ class HtmlTemplateView extends View {
 					break;
 					
 				case self::STATE_ELEMENT_NAME:
-					if(!self::isHtmlNameCharacter($sChar)) {
+					if(!$this->_isHtmlNameCharacter($sChar)) {
 						if($sChar === self::CHAR_ELEMENT_CLOSE)
 							$nState = self::STATE_ELEMENT_CLOSURE;
 						else if($sChar === self::CHAR_ELEMENT_END)
@@ -85,14 +94,14 @@ class HtmlTemplateView extends View {
 						$nState = self::STATE_ELEMENT_CLOSURE;
 					else if($sChar === self::CHAR_ELEMENT_END)
 						$nState = self::STATE_NORMAL;
-					else if(self::isHtmlNameCharacter($sChar)) {
+					else if($this->_isHtmlNameCharacter($sChar)) {
 						$nState = self::STATE_ATTRIBUTE_NAME;
 						$nMarker = $i;
 					}
 					break;
 					
 				case self::STATE_ATTRIBUTE_NAME:
-					if(!self::isHtmlNameCharacter($sChar)) {
+					if(!$this->_isHtmlNameCharacter($sChar)) {
 						$nState = self::STATE_ATTRIBUTE_QUOTE;
 						$sAttribute = Encoding::substring($sContent, $nMarker, $i - $nMarker);
 					}
@@ -118,7 +127,16 @@ class HtmlTemplateView extends View {
 					else if($sChar === $sQuote) {
 						$nState = self::STATE_ELEMENT_ATTRIBUTES;
 						$sValue = Encoding::substring($sContent, $nMarker, $i - $nMarker);
-						echo "$sElement ($sAttribute = $sValue) \n";
+						$sNewValue = $this->_modifyValue($sElement, $sAttribute, $sValue);
+						if($sValue != $sNewValue) {
+							$sContent = Encoding::substring($sContent, 0, $nMarker) . $sNewValue . Encoding::substring($sContent, $i);
+							$nDif = Encoding::length($sNewValue) - Encoding::length($sValue);
+							$nLength += $nDif;
+							$i += $nDif;
+						}
+						$sMethod = $this->_filterForMethod($sElement, $sAttribute, $sNewValue);
+						if($sMethod !== false)
+							$aParts []= new IPCO_ContentParserPart($nMarker, $i - $nMarker, $sMethod, array($sElement, $sAttribute, $sNewValue));
 					}
 					break;
 					
@@ -137,14 +155,14 @@ class HtmlTemplateView extends View {
 					break;
 			}
 		}
-		return array();
+		return $aParts;
 	}
 	
-	public static function isHtmlNameCharacter($sChar) {
+	private function _isHtmlNameCharacter($sChar) {
 		return is_alphabetical($sChar) || $sChar === '-' || $sChar === ':';
 	}
 	
-	private static function _findAndGoPassed(&$sContent, $nIndex, $sBegin, $sEnd) {
+	private function _findAndGoPassed(&$sContent, $nIndex, $sBegin, $sEnd) {
 		if(Encoding::substring($sContent, $nIndex, Encoding::length($sBegin)) == $sBegin) {
 			$nTemp = Encoding::indexOf($sContent, $sEnd, $nIndex + Encoding::length($sBegin));
 			if($nTemp !== false) {
@@ -152,6 +170,37 @@ class HtmlTemplateView extends View {
 			}
 		}
 		return $nIndex;
+	}
+	
+	private function _modifyValue($sElement, $sAttribute, $sValue) {
+		$aFilter = array(
+			'a' => 'href', 
+			'link' => 'href',
+			'img' => 'src',
+			'form' => 'action');
+		if(isset($aFilter[$sElement]) && $aFilter[$sElement] == $sAttribute && Encoding::beginsWith($sValue, '/'))
+				return parent::getWatena()->getMapping()->getOffset() . $sValue;
+		else
+			return $sValue;
+	}
+	
+	private function _filterForMethod($sElement, $sAttribute, $sValue) {
+		$aFilter = array(
+			'a' => 'href', 
+			'link' => 'href',
+			'img' => 'src',
+			'form' => 'action');
+		if(isset($aFilter[$sElement]) && $aFilter[$sElement] == $sAttribute) {
+			if(Encoding::beginsWith($sValue, 'http://') || Encoding::beginsWith($sValue, 'https://')) 
+				return false;
+			else if(Encoding::beginsWith($sValue, '/'))
+				return false;
+			else
+				return '_parseTest';
+		}
+		else {
+			return false;
+		}
 	}
 }
 
