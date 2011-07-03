@@ -14,7 +14,7 @@ abstract class Cacheable extends Configurable {
 	public function wakeup() {}
 	
 	
-	private $m_aInstances;
+	private $m_aInstances = null;
 	
 	public function __construct(array $aConfig) {
 		parent::__construct($aConfig);
@@ -37,11 +37,13 @@ abstract class Cacheable extends Configurable {
 			try {
 				list($oObject, $oRequirements) = parent::getWatena()->getContext()->loadObjectAndRequirements($sObject, $aParams, $sIncludeFile, $sExtends, $sImplements);
 				if($oRequirements->IsSucces()) {
+					$oObject->m_aInstances = $aInstances;
+					$oObject->init();
+					$oObject->m_aInstances = null;
 					$oCache->set("W_CACHE_{$sIdentifier}_EXPIRATION", $nExpiration);
 					$oCache->set("W_CACHE_{$sIdentifier}_REQUIREMENTS", $oRequirements);
 					$oCache->set("W_CACHE_{$sIdentifier}_OBJECT", serialize($oObject));
 					$oObject->m_aInstances = $aInstances;
-					$oObject->init();
 					$oObject->wakeup();
 					return $oObject;
 				}
