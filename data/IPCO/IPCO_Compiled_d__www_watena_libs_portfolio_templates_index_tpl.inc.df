@@ -187,7 +187,7 @@ class IPCO_Compiled_d__www_watena_libs_portfolio_templates_index_tpl extends IPC
 			return $_ob;
 		}
 		catch(Exception $e) {
-			throw new WatCeption(' Unable to create template-output.', array(), null, $e); 
+			throw new WatCeption('Unable to create template-output.', array(), null, $e); 
 		}
 	}
 }
