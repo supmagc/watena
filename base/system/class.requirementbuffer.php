@@ -7,6 +7,7 @@ class RequirementBuffer extends Object {
 	private $m_aPlugins = array();
 	private $m_aProblems = array();
 	private $m_aDefines = array();
+	private $m_aLibraries = array();
 	private $m_bSucces = true;
 	
 	public final function __construct($aRequirements = null) {
@@ -58,6 +59,24 @@ class RequirementBuffer extends Object {
 				if(is_array($aRequirements['defines'])) $bSucces = $bSucces && $this->addDefines($aRequirements['defines']);
 				else $bSucces = $bSucces && $this->addDefine($aRequirements['defines']);
 			}
+			if($aRequirements && isset($aRequirements['libraries'])) {
+				if(is_array($aRequirements['libraries'])) $bSucces = $bSucces && $this->addLibraries($aRequirements['libraries']);
+				else $bSucces = $bSucces && $this->addLibrary($aRequirements['libraries']);
+			}
+			/*
+			if($aRequirements && isset($aRequirements['models'])) {
+				if(is_array($aRequirements['models'])) $bSucces = $bSucces && $this->addLibraries($aRequirements['models']);
+				else $bSucces = $bSucces && $this->addLibrary($aRequirements['models']);
+			}
+			if($aRequirements && isset($aRequirements['views'])) {
+				if(is_array($aRequirements['views'])) $bSucces = $bSucces && $this->addLibraries($aRequirements['views']);
+				else $bSucces = $bSucces && $this->addLibrary($aRequirements['views']);
+			}
+			if($aRequirements && isset($aRequirements['controllers'])) {
+				if(is_array($aRequirements['controllers'])) $bSucces = $bSucces && $this->addLibraries($aRequirements['controllers']);
+				else $bSucces = $bSucces && $this->addLibrary($aRequirements['controllers']);
+			}
+			*/
 		}
 
 		$this->m_bSucces = $this->m_bSucces && $bSucces;
@@ -160,6 +179,17 @@ class RequirementBuffer extends Object {
 			return false;
 		}		
 	}
+	
+	public final function addLibraries(array $aLibraries) {
+		$bResult = true;
+		foreach($aLibraries as $sLibrary) $bResult = $bResult && $this->addLibrary($sLibrary);
+		$this->m_bSucces = $this->m_bSucces && $bResult;
+		return $bResult;
+	}
+	
+	public final function addLibrary($sLibrary) {
+		// TODO: implement library requirement check
+	} 
 	
 	/**
 	 * Explicitly call to load all required files and extensions and plugins, ...
