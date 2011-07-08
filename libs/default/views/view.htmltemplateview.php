@@ -27,6 +27,12 @@ class HtmlTemplateView extends View implements IPCO_IContentParser {
 	const STATE_ATTRIBUTE_VALUE_ESCAPED = 7;
 	const STATE_DOCTYPE = 8;
 	
+	private $m_aLinkFilters = array(
+		'a' => 'href', 
+		'link' => 'href',
+		'img' => 'src',
+		'form' => 'action');
+	
 	public function render(Model $oModel) {
 		$oPlugin = parent::getWatena()->getContext()->getPlugin('TemplateLoader');
 		$oTemplate = $oPlugin->load(parent::getConfig('template', 'index.tpl'), $this);
@@ -37,12 +43,8 @@ class HtmlTemplateView extends View implements IPCO_IContentParser {
 		return array('plugins' => 'TemplateLoader');
 	}
 	
-	public function _parseTest($s0, $s1, $s2) {
-		return $s2;
-	}
-	
-	public function addMappingOffset($sElement, $sAttribute, $sValue) {
-		return parent::getWatena()->getMapping()->getOffset() . $sValue;
+	public function addMappingRoot($sElement, $sAttribute, $sValue) {
+		return parent::getWatena()->getMapping()->getRoot() . $sValue;
 	}
 	
 	public function parseContent(&$sContent) {
@@ -127,16 +129,9 @@ class HtmlTemplateView extends View implements IPCO_IContentParser {
 					else if($sChar === $sQuote) {
 						$nState = self::STATE_ELEMENT_ATTRIBUTES;
 						$sValue = Encoding::substring($sContent, $nMarker, $i - $nMarker);
-						$sNewValue = $this->_modifyValue($sElement, $sAttribute, $sValue);
-						if($sValue != $sNewValue) {
-							$sContent = Encoding::substring($sContent, 0, $nMarker) . $sNewValue . Encoding::substring($sContent, $i);
-							$nDif = Encoding::length($sNewValue) - Encoding::length($sValue);
-							$nLength += $nDif;
-							$i += $nDif;
+						if(isset($this->m_aLinkFilters[$sElement]) && $this->m_aLinkFilters[$sElement] == $sAttribute && Encoding::beginsWith($sValue, '/')) {
+							$aParts []= new IPCO_ContentParserPart($nMarker, $i - $nMarker, 'addMappingRoot', array($sElement, $sAttribute, $sValue));
 						}
-						$sMethod = $this->_filterForMethod($sElement, $sAttribute, $sNewValue);
-						if($sMethod !== false)
-							$aParts []= new IPCO_ContentParserPart($nMarker, $i - $nMarker, $sMethod, array($sElement, $sAttribute, $sNewValue));
 					}
 					break;
 					
@@ -170,37 +165,6 @@ class HtmlTemplateView extends View implements IPCO_IContentParser {
 			}
 		}
 		return $nIndex;
-	}
-	
-	private function _modifyValue($sElement, $sAttribute, $sValue) {
-		$aFilter = array(
-			'a' => 'href', 
-			'link' => 'href',
-			'img' => 'src',
-			'form' => 'action');
-		if(isset($aFilter[$sElement]) && $aFilter[$sElement] == $sAttribute && Encoding::beginsWith($sValue, '/'))
-				return parent::getWatena()->getMapping()->getOffset() . $sValue;
-		else
-			return $sValue;
-	}
-	
-	private function _filterForMethod($sElement, $sAttribute, $sValue) {
-		$aFilter = array(
-			'a' => 'href', 
-			'link' => 'href',
-			'img' => 'src',
-			'form' => 'action');
-		if(isset($aFilter[$sElement]) && $aFilter[$sElement] == $sAttribute) {
-			if(Encoding::beginsWith($sValue, 'http://') || Encoding::beginsWith($sValue, 'https://')) 
-				return false;
-			else if(Encoding::beginsWith($sValue, '/'))
-				return false;
-			else
-				return '_parseTest';
-		}
-		else {
-			return false;
-		}
 	}
 }
 
