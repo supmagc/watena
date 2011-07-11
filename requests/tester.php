@@ -1,36 +1,26 @@
 <?php
 
-class MyParent {
+class MyClass {
 	
-	private $var1; // serialise
-	private $var2; // don't' serialise
-	
-	function __construct() {
-		$this -> var1 = "Hello World";
-		$this -> var2 = "Goodbye World";
-	}
-	
-	function __sleep() {
-		return array("var1");
-	}
+	private $priva;
+	var $publi = 'member';
+	const CONSTVAR = 1;
+	private static $spriva;
+	static $spubli = 'static';
 }
 
-class MyChild extends MyParent {
-	
-	private $var3; // serialise
-	private $var4; // don't serialise
-	
-	function __construct() {
-		$this -> var3 = "Hello World II";
-		$this -> var4 = "Goodbye World II";
-	}
-	
-	function __sleep() {
-		return array("var3");
-	}
-}
+$oClass = new MyClass();
+$oReflector = new ReflectionClass($oClass);
 
-$mc = new MyChild();
-$mcSerialised = serialize($mc);
-print_r($mcSerialised);
+var_dump(ReflectionProperty::IS_PUBLIC);
+var_dump(ReflectionProperty::IS_STATIC);
+
+print_r($oReflector->getConstants());
+print_r($oReflector->getProperties(ReflectionProperty::IS_PUBLIC));
+print_r($oReflector->getProperties(ReflectionProperty::IS_STATIC));
+
+$aProp = $oReflector->getProperties(ReflectionProperty::IS_PUBLIC);
+foreach($aProp as $oProp) {
+	var_dump($oProp->getValue($oClass));
+}
 ?>

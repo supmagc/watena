@@ -1,7 +1,10 @@
+{% extends base.tpl %}
 {% if continue %}
+	count:
 	{% while next() %}
-	{[ count ]}
+		{[ count ]},
 	{%end while %}
+	go !!
 {% else %}
-no
+	no
 {% end if %}

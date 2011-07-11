@@ -50,7 +50,7 @@ class CachePEAR extends Plugin implements ICache {
 		return array('major' => 0, 'minor' => 1, 'build' => 1, 'state' => 'dev');
 	}
 
-	public function getRequirements() {
+	public static function getRequirements() {
 		return array('pear' => 'Cache');
 	}
 }
