@@ -20,29 +20,25 @@ abstract class IPCO_ComponentWrapper extends IPCO_Base {
 
 class IPCO_ObjectComponentWrapper extends IPCO_ComponentWrapper {
 
-	private $m_aInstanceProperties = array();
-	private $m_aStaticProperties = array();
+	private $m_aProperties = array();
 	private $m_aMethods = array();
 	private $m_oComponent = null;
 	private $m_oReflector = null;
 	
 	public function __construct($mComponent, IPCO $oIpco) {
-		parent::__construct($oIpco);
-		
-		$this->m_aInstanceProperties = get_object_vars($mComponent);
-		$this->m_aStaticProperties = get_class_vars(get_class($mComponent));
+		parent::__construct($oIpco);		
 		$this->m_aMethods = get_class_methods($mComponent);
 		$this->m_oComponent = $mComponent;
 		$this->m_oReflector = new ReflectionClass($mComponent);
-	}	
+	}
 	
 	public function tryGetProperty(&$mValue, $sName, $bFirstCall = true) {
-		if(array_key_exists($sName, $this->m_aInstanceProperties)) {
-			$mValue = $this->m_aInstanceProperties[$sName];
-			return true;
+		if(!array_key_exists($sName, $this->m_aProperties)) {
+			$oProperty = $this->m_oReflector->hasProperty($sName) ? $this->m_oReflector->getProperty($sName) : false;
+			$this->m_aProperties[$sName] = $oProperty && $oProperty->isPublic() ? $oProperty : false;
 		}
-		else if(array_key_exists($sName, $this->m_aStaticProperties)) {
-			$mValue = $this->m_aStaticProperties[$sName];
+		if(($oProperty = $this->m_aProperties[$sName]) !== false) {
+			$mValue = $oProperty->getValue($this->m_oComponent);
 			return true;
 		}
 		else {

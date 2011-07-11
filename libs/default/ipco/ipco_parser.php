@@ -135,6 +135,7 @@ class IPCO_Parser extends IPCO_Base {
 			case 'else' : return $this->interpretElse(); break;
 			case 'elseif' : return $this->interpretElseIf(new IPCO_Expression(implode(' ', $aParts), parent::getIpco())); break;
 			case 'end' : return $this->interpretEnd(count($aParts) > 0 ? $aParts[0] : null); break;
+			case 'extends' : return $this->interpretExtends($aParts); break;
 			case 'component' : return $this->interpretComponent($aParts); break;
 			case 'template' : return $this->interpretTemplate($aParts); break;
 		}
@@ -180,6 +181,10 @@ class IPCO_Parser extends IPCO_Base {
 			case 'while' : return $this->getDepthOffset(-1, 0) . IPCO_ParserSettings::getFilterEndWhile();
 		}
 		return '';
+	}
+
+	public function interpretExtends($sName) {
+		
 	}
 	
 	public function getDepthOffset($nPreChange = 0, $nPostChange = 0) {

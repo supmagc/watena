@@ -4,21 +4,25 @@ class IPCO_Compiled_g__www_watena_libs_demo_templates_tester_tpl extends IPCO_Pr
 	public function generate() {
 		try {
 			$_ob = '';
+			$_ob .= '
+';
 			if(parent::processMember('continue', null)) {
 				$_ob .= '
+	count:
 	';
 				while(parent::processMember('next', null)) {
 					$_ob .= '
-	';
+		';
 					$_ob .= parent::processMember('count', null);
-					$_ob .= '
+					$_ob .= ',
 	';
 				}
 				$_ob .= '
+	go !!
 ';
 			} else {
 				$_ob .= '
-no
+	no
 ';
 			}
 			return $_ob;
