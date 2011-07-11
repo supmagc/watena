@@ -24,7 +24,7 @@ class TemplateFile extends CacheableFile {
 		$oDataFile->includeFileOnce();
 	}
 	
-	public function createTemplateClass() {
+	public function createTemplateClass(Model $oModel = null) {
 		$sClass = $this->m_sClassName;
 		return new $sClass($this->m_oIpco, $this->_getContentParser());
 	}

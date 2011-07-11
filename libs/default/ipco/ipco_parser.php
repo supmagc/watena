@@ -177,6 +177,7 @@ class IPCO_Parser extends IPCO_Base {
 		switch($sExpectedEnding) {
 			case 'if' : return $this->getDepthOffset(-1, 0) . IPCO_ParserSettings::getFilterEndIf();
 			case 'foreach' : return $this->getDepthOffset(-1, 0) . IPCO_ParserSettings::getFilterEndForeach();
+			case 'while' : return $this->getDepthOffset(-1, 0) . IPCO_ParserSettings::getFilterEndWhile();
 		}
 		return '';
 	}
