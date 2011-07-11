@@ -4,17 +4,18 @@ abstract class IPCO_Processor extends IPCO_Base {
 	
 	private $m_aComponents = array();
 	private $m_oContentParser;
-	private $m_sContent ='';
+	private $m_sContent = null;
 	
-	public abstract function create();
+	public abstract function generate();
 	
 	public function __construct(IPCO $oIpco, IPCO_IContentParser $oContentParser = null) {
 		parent::__construct($oIpco);
 		$this->m_oContentParser = $oContentParser;
-		$this->m_sContent = $this->create();
 	}
 	
-	public function __toString() {
+	public function getContent($bForceRenewal = false) {
+		if($this->m_sContent === null || $bForceRenewal)
+			$this->m_sContent = $this->generate();
 		return $this->m_sContent;
 	}
 	

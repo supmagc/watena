@@ -5,7 +5,7 @@ class IPCO_ParserSettings extends IPCO_Base {
 	const PAGE_HEADER			= '
 class %s extends %s {
 
-	public function create() {
+	public function generate() {
 		try {
 			$_ob = \'\';
 ';
@@ -67,6 +67,10 @@ class %s extends %s {
 	
 	public static function getFilterEndForeach() {
 		return sprintf(self::FILTER_END_FOREACH);
+	}
+	
+	public static function getFilterEndWhile() {
+		return sprintf(self::FILTER_END_WHILE);
 	}
 	
 	public static function getCallMethod($sName, $sParams, $sBase) {

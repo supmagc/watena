@@ -36,15 +36,17 @@ class HtmlTemplateView extends View implements IPCO_IContentParser {
 	public function render(Model $oModel) {
 		$oPlugin = parent::getWatena()->getContext()->getPlugin('TemplateLoader');
 		$oTemplate = $oPlugin->load(parent::getConfig('template', 'index.tpl'), $this);
-		echo "" . $oTemplate->createTemplateClass();
+		$oGenerator = $oTemplate->createTemplateClass();
+		$oGenerator->componentPush($oModel);
+		echo $oGenerator->getContent(true);
 	}
 	
 	public static function getRequirements() {
 		return array('plugins' => 'TemplateLoader');
 	}
 	
-	public function addMappingRoot($sElement, $sAttribute, $sValue) {
-		return parent::getWatena()->getMapping()->getRoot() . $sValue;
+	public function addMappingMain($sElement, $sAttribute, $sValue) {
+		return parent::getWatena()->getMapping()->getMain() . $sValue;
 	}
 	
 	public function parseContent(&$sContent) {
@@ -130,7 +132,7 @@ class HtmlTemplateView extends View implements IPCO_IContentParser {
 						$nState = self::STATE_ELEMENT_ATTRIBUTES;
 						$sValue = Encoding::substring($sContent, $nMarker, $i - $nMarker);
 						if(isset($this->m_aLinkFilters[$sElement]) && $this->m_aLinkFilters[$sElement] == $sAttribute && Encoding::beginsWith($sValue, '/')) {
-							$aParts []= new IPCO_ContentParserPart($nMarker, $i - $nMarker, 'addMappingRoot', array($sElement, $sAttribute, $sValue));
+							$aParts []= new IPCO_ContentParserPart($nMarker, $i - $nMarker, 'addMappingMain', array($sElement, $sAttribute, $sValue));
 						}
 					}
 					break;

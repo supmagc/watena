@@ -24,6 +24,7 @@ class IPCO_ObjectComponentWrapper extends IPCO_ComponentWrapper {
 	private $m_aStaticProperties = array();
 	private $m_aMethods = array();
 	private $m_oComponent = null;
+	private $m_oReflector = null;
 	
 	public function __construct($mComponent, IPCO $oIpco) {
 		parent::__construct($oIpco);
@@ -32,6 +33,7 @@ class IPCO_ObjectComponentWrapper extends IPCO_ComponentWrapper {
 		$this->m_aStaticProperties = get_class_vars(get_class($mComponent));
 		$this->m_aMethods = get_class_methods($mComponent);
 		$this->m_oComponent = $mComponent;
+		$this->m_oReflector = new ReflectionClass($mComponent);
 	}	
 	
 	public function tryGetProperty(&$mValue, $sName, $bFirstCall = true) {
