@@ -18,6 +18,23 @@ require_once dirname(__FILE__) . '/ipco_componentwrapper.php';
  */
 class IPCO {
 
+	private $m_cbTemplateToFile;
+	
+	public function __construct($cbTemplateToFile) {
+		$this->setTemplateToFileCallback($cbTemplateToFile);
+	}
+	
+	public function setTemplateToFileCallback($cbTemplateToFile) {
+		if(is_callable($cbTemplateToFile))
+			$this->m_cbTemplateToFile = $cbTemplateToFile;
+		else
+			throw new IPCO_Exception('The Template-To-File callback you specified is not callable.', IPCO_Exception::TEMPLATETOFILE_UNCALLABLE);
+	}
+	
+	public function getTemplateToFileCallback() {
+		return $this->m_cbTemplateToFile;
+	}
+	
 	/**
 	 * Create an IPCO parser from the given content.
 	 * You also need to provide an identifier that'll be used as generated class-name.
@@ -42,6 +59,11 @@ class IPCO {
 	public function createParserFromFile($sFilePath) {
 		$sContent = file_get_contents($sFilePath);
 		return $this->createParserFromContent($sFilePath, $sContent, $this);
+	}
+	
+	public function createParserFromTemplate($sTemplate) {
+		$sFilePath = call_user_func($this->m_cbTemplateToFile, $sTemplate);
+		return $this->createParserFromFile($sFilePath);
 	}
 	
 	/**
