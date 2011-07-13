@@ -14,6 +14,11 @@ class IPCO_Parser extends IPCO_Base {
 	private $m_nDepth;
 	private $m_aEndings;
 	private $m_oContentParser = null;
+	private $m_sExtends = null;
+	private $m_aMainBuffer = null;
+	private $m_aActiveBuffer = null;
+	private $m_aRegionBuffers = null;
+	private $m_sCurrentRegion = null;
 	
 	public function __construct($sIdentifier, &$sContent, IPCO $ipco) {
 		parent::__construct($ipco);
@@ -34,9 +39,14 @@ class IPCO_Parser extends IPCO_Base {
 		return $this->m_sClassName;
 	}
 	
+	public function getExtends() {
+		return $this->m_sExtends;
+	}
+	
 	public function parse() {
 		$this->m_nDepth = 0;
 		$this->m_aEndings = array();
+		$this->m_sExtends = null;
 		$nMark = 0;
 		$aBuffer = array(IPCO_ParserSettings::getPageHeader($this->m_sClassName, 'IPCO_Processor'));
 		$nState = self::STATE_DEFAULT;
@@ -135,9 +145,9 @@ class IPCO_Parser extends IPCO_Base {
 			case 'else' : return $this->interpretElse(); break;
 			case 'elseif' : return $this->interpretElseIf(new IPCO_Expression(implode(' ', $aParts), parent::getIpco())); break;
 			case 'end' : return $this->interpretEnd(count($aParts) > 0 ? $aParts[0] : null); break;
-			case 'extends' : return $this->interpretExtends($aParts); break;
-			case 'component' : return $this->interpretComponent($aParts); break;
-			case 'template' : return $this->interpretTemplate($aParts); break;
+			case 'extends' : return $this->interpretExtends(count($aParts) > 0 ? $aParts[0] : null); break;
+			case 'include' : return $this->interpretInclude(count($aParts) > 0 ? $aParts[0] : null); break;
+			case 'region' : return $this->interpretRegion($aParts); break;
 		}
 	}
 	
@@ -183,8 +193,45 @@ class IPCO_Parser extends IPCO_Base {
 		return '';
 	}
 
-	public function interpretExtends($sName) {
+	public function interpretExtends($sName = null) {
+		$sName = Encoding::trim($sName);
+		$this->m_sExtends = Encoding::length($sName) > 0 ? $sName : null;
+	}
+	
+	public function interpretInclude($sName = null) {
 		
+	}
+	
+	public function interpretRegion(array $aParts) {
+		if(count($aParts) > 0) {
+			$sOperator = $aParts[0];
+			$sName = count($aParts) > 1 ? $aParts[1] : null; 
+			if($sOperator === 'end' || $sOperator === 'close' || $sOperator === 'stop') {
+				if($sName !== null && $sName != $this->m_sCurrentRegion)
+					throw new IPCO_Exception(IPCO_Exception::FILTER_REGION_END_CURRENT_MISMATCH);
+				if($this->m_sCurrentRegion === null)
+					throw new IPCO_Exception(IPCO_Exception::FILTER_REGION_END_NONE_CURRENT);
+				$this->m_aActiveBuffer = &$this->m_aMainBuffer;
+				$this->m_sCurrentRegion = null;
+			}
+			else if($sOperator === 'begin' || $sOperator === 'open' || $sOperator === 'start') {
+				if($this->m_sCurrentRegion !== null)
+					throw new IPCO_Exception(IPCO_Exception::FILTER_REGION_BEGIN_HAS_CURRENT);
+				if($sName === null)
+					throw new IPCO_Exception(IPCO_Exception::FILTER_REGION_NO_NAME);
+				$this->m_aRegionBuffers[$sName] = array();
+				$this->m_aActiveBuffer = &$this->m_aRegionBuffers[$sName];
+				$this->m_sCurrentRegion = $sName;
+			}
+			else if($sOperator === 'use' || $sOperator === 'include') {
+				if($sName === null)
+					throw new IPCO_Exception(IPCO_Exception::FILTER_REGION_NO_NAME);
+				return IPCO_ParserSettings::getCallRegion($sName);
+			}
+		}
+		else {
+			throw new IPCO_Exception(IPCO_Exception::FILTER_REGION_NO_TAG);
+		}
 	}
 	
 	public function getDepthOffset($nPreChange = 0, $nPostChange = 0) {

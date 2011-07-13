@@ -84,6 +84,10 @@ class %s extends %s {
 	public static function getCallSlice($sSlice, $sBase) {
 		return sprintf(self::CALL_SLICE, $sSlice, $sBase);
 	}
+
+	public static function getCallRegion($sName) {
+		
+	}
 	
 	public static function getContent($sContent) {
 		return sprintf(self::CONTENT, addcslashes($sContent, '\''));

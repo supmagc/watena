@@ -5,35 +5,44 @@ class TemplateFile extends CacheableFile {
 
 	private $m_sDataPath;
 	private $m_sClassName;
-	private $m_oIpco;
+	private $m_sExtends = null;
 	
 	public function init() {
-		$this->m_oIpco = new IPCO();
-		$this->m_sClassName = $this->m_oIpco->getClassName(parent::getFilePath());
+		$oIpco = new IPCO(array($this, '_getTemplatePath'));
+		$this->m_sClassName = $oIpco->getClassName(parent::getFilePath());
 		$this->m_sDataPath = 'IPCO/' . $this->m_sClassName . '.inc';
 		$oFile = parent::getWatena()->getContext()->getDataFile($this->m_sDataPath);		
-		$oParser = $this->m_oIpco->createParserFromFile(parent::getFilePath());
+		$oParser = $oIpco->createParserFromTemplate(parent::getFilePath());
 		$oParser->setContentParser($this->_getContentParser());
 		$oFile->writeContent('<?php' . $oParser->parse() . '?>');
+		$this->m_sExtends = $oParser->getExtends();
 	}
 	
 	public function wakeup() {
+		if($this->m_sExtends !== null) {
+			parent::getWatena()->getContext()->getPlugin('TemplateLoader')->load($this->m_sExtends, $this->_getContentParser());
+		}
 		$oDataFile = parent::getWatena()->getContext()->getDataFile($this->m_sDataPath);
 		while(!$oDataFile->exists())
 			$this->init();
 		$oDataFile->includeFileOnce();
 	}
 	
-	public function createTemplateClass(Model $oModel = null) {
+	public function createTemplateClass() {
+		$oIpco = new IPCO(array($this, '_getTemplatePath'));
 		$sClass = $this->m_sClassName;
-		return new $sClass($this->m_oIpco, $this->_getContentParser());
+		return new $sClass($oIpco, $this->_getContentParser());
+	}
+	
+	public function _getTemplatePath($sTemplate) {
+		return parent::getWatena()->getContext()->getLibraryFilePath('templates', $sTemplate);
 	}
 	
 	private function _getContentParser() {
-		$oContentParser = parent::getInstance('contentparser', array());
-		if(!is_a($oContentParser, 'IPCO_IContentParser'))
+		$oContentParser = parent::getInstance('contentparser', null);
+		if($oContentParser !== null && !is_a($oContentParser, 'IPCO_IContentParser'))
 			throw new WatCeption(
-				'One of the additional content parsers you provided for the selected template is not an IPCO_IContentParser.', 
+				'The additional content parsers you provided for the selected template is not an IPCO_IContentParser.', 
 				array('contentparser' => is_object($oContentParser) ? get_class($oContentParser) : 'None Object', 'file' => parent::getFilePath()), 
 				$this);
 		return $oContentParser;
@@ -42,13 +51,10 @@ class TemplateFile extends CacheableFile {
 
 class TemplateLoader extends Plugin {
 
-	private $m_oIpco;
-	
 	private $m_sDirectory;
 	private $m_sExtension;
 	
 	public function init() {
-		$this->m_oIpco = new IPCO();
 	}
 
 	/**
@@ -61,7 +67,7 @@ class TemplateLoader extends Plugin {
 	public function load($sTemplate, IPCO_IContentParser $oContentParser = null) {
 		$sFilePath = parent::getWatena()->getContext()->getLibraryFilePath('templates', $sTemplate);
 		if(!$sFilePath) throw new WatCeption('Templatefile does not exists in any of the libraries.', array('template' => $sTemplate), $this);
-		return TemplateFile::create($sFilePath, array(), array('contentparser' => $oContentParser));
+		return TemplateFile::create($sFilePath, array(), array('contentparser' => $oContentParser))->createTemplateClass();
 	}
 		
 	/**

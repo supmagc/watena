@@ -34,8 +34,9 @@ abstract class IPCO_Processor extends IPCO_Base {
 	protected function callContentParser($sMethod, array $aParams) {
 		if($this->m_oContentParser !== null) {
 			if(!method_exists($this->m_oContentParser, $sMethod))
-				throw new WatCeption('Unable to call unknown method on the specified ContentParser-instance.', array('method' => $sMethod, 'params' => $aParams));
-			return call_user_func_array(array($this->m_oContentParser, $sMethod), $aParams);
+				return null;
+			else
+				return call_user_func_array(array($this->m_oContentParser, $sMethod), $aParams);
 		}
 		return '';
 	}
@@ -44,7 +45,10 @@ abstract class IPCO_Processor extends IPCO_Base {
 		static $bReturn = false;
 		$mReturn = null;
 		if(!empty($mBase)) {
-			if(!is_subclass_of($mBase, 'IPCO_ComponentWrapper')) $mBase = IPCO_ComponentWrapper::createComponentWrapper($mBase, parent::getIpco());
+			
+			if(!is_subclass_of($mBase, 'IPCO_ComponentWrapper')) 
+				$mBase = IPCO_ComponentWrapper::createComponentWrapper($mBase, parent::getIpco());
+			
 			$bReturn = $mBase->tryGetMethod($mReturn, $sName, $aParams);
 			return $mReturn;
 		}
@@ -62,7 +66,10 @@ abstract class IPCO_Processor extends IPCO_Base {
 		static $bReturn = false;
 		$mReturn = null;
 		if(!empty($mBase)) {
-			if(!is_subclass_of($mBase, 'IPCO_ComponentWrapper')) $mBase = IPCO_ComponentWrapper::createComponentWrapper($mBase, parent::getIpco());
+			
+			if(!is_subclass_of($mBase, 'IPCO_ComponentWrapper')) 
+				$mBase = IPCO_ComponentWrapper::createComponentWrapper($mBase, parent::getIpco());
+			
 			$bReturn = $mBase->tryGetProperty($mReturn, $sName);
 			return $mReturn;
 		}
@@ -80,7 +87,9 @@ abstract class IPCO_Processor extends IPCO_Base {
 		static $bReturn = false;
 		$mReturn = null;
 		if(!empty($mBase)) {
-			if(!is_subclass_of($mBase, 'IPCO_ComponentWrapper')) $mBase = IPCO_ComponentWrapper::createComponentWrapper($mBase, parent::getIpco());
+			
+			if(!is_subclass_of($mBase, 'IPCO_ComponentWrapper')) 
+				$mBase = IPCO_ComponentWrapper::createComponentWrapper($mBase, parent::getIpco());
 			
 			$mRoot = $this->m_aComponents[$i];
 			foreach($aSliced as $mSlice) {
