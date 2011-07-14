@@ -18,10 +18,10 @@ class IPCO_Exception extends Exception {
 	const FILTER_REGION_BEGIN_HAS_CURRENT = 11;
 
 	public function __construct($nCode) {
-		parent::__construct(self::getMessage($nCode), $nCode);
+		parent::__construct(self::getCodedMessage($nCode), $nCode);
 	}
 	
-	public static function getMessage($nCode) {
+	public static function getCodedMessage($nCode) {
 		switch($nCode) {
 			case self::UNKNOWN :
 				return 'Unknown IPCO-Exception.';
