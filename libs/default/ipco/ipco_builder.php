@@ -1,5 +1,6 @@
 <?php
 
+// TODO: this file can be deleted ?
 class IPCO_BuilderBlock extends IPCO_Base {
 	
 	private $m_aSubBlocks = array();

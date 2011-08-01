@@ -25,6 +25,10 @@ abstract class Cacheable extends Configurable {
 		return isset($this->m_aInstances[$sKey]) ? $this->m_aInstances[$sKey] : $mDefault;
 	}
 	
+	public final function getInstances() {
+		return $this->m_aInstances;
+	}
+	
 	protected static function _create($sObject, $aParams, $aInstances, $sIncludeFile, $sExtends, $sImplements, $sIdentifier, $nExpiration) {
 		$sIdentifier = $sIdentifier . '_' . md5(serialize($aParams));
 		$oCache = parent::getWatena()->getCache();
