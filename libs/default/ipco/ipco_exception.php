@@ -7,15 +7,18 @@ class IPCO_Exception extends Exception {
 	const INVALIDCOMPONENTTYPE = 1;
 	const INVALIDEXPRESSION = 2;
 	const INVALIDNESTING = 3;
+	const FILTER_INCLUDE_NO_NAME = 8;
+	
 	const TEMPLATETOFILE_UNCALLABLE = 4;
 	const TEMPLATETOFILE_INVALID_FILE = 5;
-	const FILTER_INCLUDE_NO_NAME = 8;
+	const INVALID_FILE = 13;
 	
 	const FILTER_REGION_NO_TAG = 6;
 	const FILTER_REGION_NO_NAME = 7;
 	const FILTER_REGION_END_CURRENT_MISMATCH = 9;
 	const FILTER_REGION_END_NONE_CURRENT = 10;
 	const FILTER_REGION_BEGIN_HAS_CURRENT = 11;
+	const FILTER_EXTENDS_INVALID_FILE = 12;
 
 	public function __construct($nCode) {
 		parent::__construct(self::getCodedMessage($nCode), $nCode);

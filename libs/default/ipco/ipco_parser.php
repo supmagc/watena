@@ -14,7 +14,8 @@ class IPCO_Parser extends IPCO_Base {
 	private $m_nDepth;
 	private $m_aEndings;
 	private $m_oContentParser = null;
-	private $m_sExtends = null;
+	private $m_sExtendsTemplate = null;
+	private $m_sExtendsFilePath = null;
 	private $m_aMainBuffer = null;
 	private $m_aActiveBuffer = null;
 	private $m_aRegionBuffers = null;
@@ -39,8 +40,12 @@ class IPCO_Parser extends IPCO_Base {
 		return $this->m_sClassName;
 	}
 	
-	public function getExtends() {
-		return $this->m_sExtends;
+	public function getExtendsTemplate() {
+		return $this->m_sExtendsTemplate;
+	}
+	
+	public function getExtendsFilePath() {
+		return $this->m_sExtendsFilePath;
 	}
 	
 	public function parse() {
@@ -48,7 +53,7 @@ class IPCO_Parser extends IPCO_Base {
 		$this->m_aEndings = array();
 		$this->m_sExtends = null;
 		$nMark = 0;
-		$aBuffer = array(IPCO_ParserSettings::getPageHeader($this->m_sClassName, 'IPCO_Processor'));
+		$aBuffer = array(); //IPCO_ParserSettings::getPageHeader($this->m_sClassName, 'IPCO_Processor'));
 		$nState = self::STATE_DEFAULT;
 		$nLength = Encoding::length($this->m_sContent);
  		
@@ -105,7 +110,9 @@ class IPCO_Parser extends IPCO_Base {
 			}
 		}
 		$aBuffer []= $this->interpretContent(Encoding::substring($this->m_sContent, $nMark, $nLength-$nMark));
-		$aBuffer []= IPCO_ParserSettings::getPageFooter();
+		
+		array_unshift($aBuffer, IPCO_ParserSettings::getPageHeader($this->m_sClassName, $this->m_sExtendsFilePath ? parent::getIpco()->getClassName($this->m_sExtendsFilePath) : 'IPCO_Processor'));
+		array_push($aBuffer, IPCO_ParserSettings::getPageFooter());
 		
 		return implode('', $aBuffer);
 	}
@@ -195,7 +202,10 @@ class IPCO_Parser extends IPCO_Base {
 
 	public function interpretExtends($sName = null) {
 		$sName = Encoding::trim($sName);
-		$this->m_sExtends = Encoding::length($sName) > 0 ? $sName : null;
+		$this->m_sExtendsTemplate = Encoding::length($sName) > 0 ? $sName : null;
+		$this->m_sExtendsFilePath = parent::getIpco()->getFileFromTemplate($this->m_sExtendsTemplate);
+		if(!file_exists($this->m_sExtendsFilePath) || !is_readable($this->m_sExtendsFilePath))
+			throw new IPCO_Exception(IPCO_Exception::FILTER_EXTENDS_INVALID_FILE);
 	}
 	
 	public function interpretInclude($sName = null) {

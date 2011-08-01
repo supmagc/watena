@@ -12,15 +12,15 @@ class TemplateFile extends CacheableFile {
 		$this->m_sClassName = $oIpco->getClassName(parent::getFilePath());
 		$this->m_sDataPath = 'IPCO/' . $this->m_sClassName . '.inc';
 		$oFile = parent::getWatena()->getContext()->getDataFile($this->m_sDataPath);		
-		$oParser = $oIpco->createParserFromTemplate(parent::getFilePath());
+		$oParser = $oIpco->createParserFromFile(parent::getFilePath());
 		$oParser->setContentParser($this->_getContentParser());
 		$oFile->writeContent('<?php' . $oParser->parse() . '?>');
-		$this->m_sExtends = $oParser->getExtends();
+		$this->m_sExtends = $oParser->getExtendsFilePath();
 	}
 	
 	public function wakeup() {
 		if($this->m_sExtends !== null) {
-			parent::getWatena()->getContext()->getPlugin('TemplateLoader')->load($this->m_sExtends, $this->_getContentParser());
+			TemplateFile::create($this->m_sExtends, parent::getConfiguration(), parent::getInstances());
 		}
 		$oDataFile = parent::getWatena()->getContext()->getDataFile($this->m_sDataPath);
 		while(!$oDataFile->exists())
@@ -66,7 +66,7 @@ class TemplateLoader extends Plugin {
 	 */
 	public function load($sTemplate, IPCO_IContentParser $oContentParser = null) {
 		$sFilePath = parent::getWatena()->getContext()->getLibraryFilePath('templates', $sTemplate);
-		if(!$sFilePath) throw new WatCeption('Templatefile does not exists in any of the libraries.', array('template' => $sTemplate), $this);
+		if(!$sFilePath) throw new WatCeption('Templatefile does not exists in any of the libraries, unable to load.', array('template' => $sTemplate), $this);
 		return TemplateFile::create($sFilePath, array(), array('contentparser' => $oContentParser))->createTemplateClass();
 	}
 		
