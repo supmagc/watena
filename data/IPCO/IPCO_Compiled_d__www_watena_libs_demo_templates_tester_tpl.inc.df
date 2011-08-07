@@ -8,6 +8,13 @@ class IPCO_Compiled_d__www_watena_libs_demo_templates_tester_tpl extends IPCO_Co
 ';
 			if(parent::processMember('continue', null)) {
 				$_ob .= '
+	If succeeded !!!
+';
+			}
+			$_ob .= '
+';
+			if(parent::processMember('continue', null)) {
+				$_ob .= '
 	count:
 	';
 				while(parent::processMember('next', null)) {

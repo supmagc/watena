@@ -1,5 +1,8 @@
 {% extends base.tpl %}
 {% if continue %}
+	If succeeded !!!
+{% end if %}
+{% if continue %}
 	count:
 	{% while next() %}
 		{[ count ]},
