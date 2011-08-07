@@ -42,75 +42,83 @@ abstract class IPCO_Processor extends IPCO_Base {
 	}
 	
 	protected final function processMethod($sName, array $aParams, $mBase = null) {
-		static $bReturn = false;
 		$mReturn = null;
-		if(!empty($mBase)) {
-			
-			if(!is_subclass_of($mBase, 'IPCO_ComponentWrapper')) 
-				$mBase = IPCO_ComponentWrapper::createComponentWrapper($mBase, parent::getIpco());
-			
-			$bReturn = $mBase->tryGetMethod($mReturn, $sName, $aParams);
-			return $mReturn;
-		}
-		else {
-			$bReturn = false;
-			for($i=count($this->m_aComponents) - 1 ; $i>=0 ; --$i) {
-				$mReturn = self::processMethod($sName, $aParams, $this->m_aComponents[$i]);
-				if($bReturn) return $mReturn;
-			}			
-		}
-		return null;
+		$this->tryProcessMethod($mReturn, $sName, $aParams, $mBase);
+		return $mReturn;
 	}
 	
 	protected final function processMember($sName, $mBase = null) {
-		static $bReturn = false;
 		$mReturn = null;
+		$this->tryProcessMember($mReturn, $sName, $mBase);
+		return $mReturn;
+	}
+	
+	protected final function processSlices(array $aSliced, $mBase = null) {
+		$mReturn = null;
+		$this->tryProcessSlices($mReturn, $aSliced, $mBase);
+		return $mReturn;
+	}
+		
+	protected final function tryProcessMethod(&$mReturn, $sName, array $aParams, $mBase = null) {
 		if(!empty($mBase)) {
 			
 			if(!is_subclass_of($mBase, 'IPCO_ComponentWrapper')) 
 				$mBase = IPCO_ComponentWrapper::createComponentWrapper($mBase, parent::getIpco());
 			
-			$bReturn = $mBase->tryGetProperty($mReturn, $sName);
-			return $mReturn;
+			return $mBase->tryGetMethod($mReturn, $sName, $aParams);
 		}
 		else {
-			$bReturn = false;
 			for($i=count($this->m_aComponents) - 1 ; $i>=0 ; --$i) {
-				$mReturn = self::processMember($sName, $this->m_aComponents[$i]);
-				if($bReturn) return $mReturn;
-			}
+				$bReturn = self::tryProcessMethod($mReturn, $sName, $aParams, $this->m_aComponents[$i]);
+				if($bReturn) return true;
+			}			
 		}
-		return null;
+		return false;
 	}
 	
-	protected final function processSlices(array $aSliced, $mBase = null) {
-		static $bReturn = false;
-		$mReturn = null;
+	protected final function tryProcessMember(&$mReturn, $sName, $mBase = null) {
+		if(!empty($mBase)) {
+			
+			if(!is_subclass_of($mBase, 'IPCO_ComponentWrapper')) 
+				$mBase = IPCO_ComponentWrapper::createComponentWrapper($mBase, parent::getIpco());
+			
+			return $mBase->tryGetProperty($mReturn, $sName);
+		}
+		else {
+			for($i=count($this->m_aComponents) - 1 ; $i>=0 ; --$i) {
+				$bReturn = self::tryProcessMember($mReturn, $sName, $this->m_aComponents[$i]);
+				if($bReturn) return true;
+			}
+		}
+		return false;
+	}
+	
+	protected final function tryProcessSlices(&$mReturn, array $aSliced, $mBase = null) {
 		if(!empty($mBase)) {
 			
 			if(!is_subclass_of($mBase, 'IPCO_ComponentWrapper')) 
 				$mBase = IPCO_ComponentWrapper::createComponentWrapper($mBase, parent::getIpco());
 			
 			$mRoot = $this->m_aComponents[$i];
+			$bReturn = true;
 			foreach($aSliced as $mSlice) {
 				
 				
 				if(is_array($mRoot) && isset($mRoot[$mSlice])) {
+					$mReturn = &$mRoot[$mSlice];
 					$bReturn = true;
-					$mRoot = &$mRoot[$mSlice];
 				}
 				else {
 					$bReturn = false;
 					break;
 				}
 			}
-			if($bReturn) return $mRoot;
+			return $bReturn;
 		}
 		else {
-			$bReturn = false;
 			for($i=count($this->m_aComponents) - 1 ; $i>=0 ; --$i) {
-				$mReturn = self::processSlices($aSliced, $this->m_aComponents[$i]);
-				if($bReturn) return $mReturn;
+				$bReturn = self::tryProcessSlices($aSliced, $this->m_aComponents[$i]);
+				if($bReturn) return true;
 			}
 		}
 		return null;
