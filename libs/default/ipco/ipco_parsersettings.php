@@ -23,10 +23,12 @@ class %s extends %s {
 	const FILTER_ELSE			= "} else {\n";
 	const FILTER_FOREACH		= "foreach(%s as %s) {parent::componentPush(%s);\n";
 	const FILTER_WHILE			= "while(%s) {\n";
+	const FILTER_BEGIN_REGION	= "\tprotected function %s() {\n";
 	
 	const FILTER_END_IF			= "}\n";
 	const FILTER_END_FOREACH	= "parent::componentPop();}\n";
 	const FILTER_END_WHILE		= "}\n";
+	const FILTER_END_REGION		= "\t}\n";
 	
 	const CALL_METHOD			= "parent::processMethod('%s', %s, %s)";
 	const CALL_MEMBER			= "parent::processMember('%s', %s)";
@@ -61,6 +63,10 @@ class %s extends %s {
 		return sprintf(self::FILTER_FOREACH, $sCondition, '$_comp', '$_comp');
 	}
 	
+	public static function getFilterRegion($sName) {
+		return sprintf(self::FILTER_REGION_BEGIN, $sName);
+	}
+	
 	public static function getFilterEndIf() {
 		return sprintf(self::FILTER_END_IF);
 	}
@@ -71,6 +77,10 @@ class %s extends %s {
 	
 	public static function getFilterEndWhile() {
 		return sprintf(self::FILTER_END_WHILE);
+	}
+	
+	public static function getFilterEndRegion() {
+		return sprintf(self::FILTER_REGION_END);
 	}
 	
 	public static function getCallMethod($sName, $sParams, $sBase) {
@@ -86,7 +96,7 @@ class %s extends %s {
 	}
 
 	public static function getCallRegion($sName) {
-		
+		return '';
 	}
 	
 	public static function getContent($sContent) {
