@@ -63,6 +63,10 @@ class %s extends %s {
 		return sprintf(self::FILTER_FOREACH, $sCondition, '$_comp', '$_comp');
 	}
 	
+	public static function getFilterWhile($sCondition) {
+		return sprintf(self::FILTER_WHILE, $sCondition);
+	}
+	
 	public static function getFilterRegion($sName) {
 		return sprintf(self::FILTER_REGION_BEGIN, $sName);
 	}

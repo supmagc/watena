@@ -7,6 +7,7 @@ class IPCO_Parser extends IPCO_Base {
 	const STATE_IPCO_QUOTE 	= 3;
 	const STATE_IPCO_VAR 	= 4;
 	const STATE_IPCO_BQUOTE	= 5;
+	const REGION_MAIN		= '__MainRegion__';
 	
 	private $m_sIdentifier;
 	private $m_sClassName;
@@ -16,10 +17,11 @@ class IPCO_Parser extends IPCO_Base {
 	private $m_oContentParser = null;
 	private $m_sExtendsTemplate = null;
 	private $m_sExtendsFilePath = null;
-	private $m_aMainBuffer = null;
 	private $m_aActiveBuffer = null;
 	private $m_aRegionBuffers = null;
 	private $m_sCurrentRegion = null;
+	private $m_aRegions = array();
+	private $m_oRegion = null;
 	
 	public function __construct($sIdentifier, &$sContent, IPCO $ipco) {
 		parent::__construct($ipco);
@@ -52,6 +54,9 @@ class IPCO_Parser extends IPCO_Base {
 		$this->m_nDepth = 0;
 		$this->m_aEndings = array();
 		$this->m_sExtends = null;
+		$this->m_aRegions = array();
+		$this->m_oRegion = new IPCO_ParserRegion(self::REGION_MAIN, parent::getIpco());
+		$this->m_aRegions[$this->m_oRegion->getName()] = $this->m_oRegion;
 		$nMark = 0;
 		$aBuffer = array(); //IPCO_ParserSettings::getPageHeader($this->m_sClassName, 'IPCO_Processor'));
 		$nState = self::STATE_DEFAULT;
@@ -65,12 +70,12 @@ class IPCO_Parser extends IPCO_Base {
 			switch($nState) {
 				case self::STATE_DEFAULT : 
 					if($char2 === '{%') {
-						$aBuffer []= $this->interpretContent(Encoding::substring($this->m_sContent, $nMark, $i-$nMark));
+						$this->interpretContent(Encoding::substring($this->m_sContent, $nMark, $i-$nMark));
 						$nMark = $i += 2;
 						$nState = self::STATE_IPCO;
 					}
 					else if($char2 === '{[') {
-						$aBuffer []= $this->interpretContent(Encoding::substring($this->m_sContent, $nMark, $i-$nMark));
+						$this->interpretContent(Encoding::substring($this->m_sContent, $nMark, $i-$nMark));
 						$nMark = $i += 2;
 						$nState = self::STATE_IPCO_VAR;
 					}
@@ -78,7 +83,7 @@ class IPCO_Parser extends IPCO_Base {
 					
 				case self::STATE_IPCO : 
 					if($char2 === '%}') {
-						$aBuffer []= $this->interpretFilter(Encoding::substring($this->m_sContent, $nMark, $i-$nMark));
+						$this->interpretFilter(Encoding::substring($this->m_sContent, $nMark, $i-$nMark));
 						$nMark = $i += 2;
 						$nState = self::STATE_DEFAULT;
 					}
@@ -98,7 +103,7 @@ class IPCO_Parser extends IPCO_Base {
 					
 				case self::STATE_IPCO_VAR : 
 					if($char2 === ']}') {
-						$aBuffer []= $this->interpretVariable(Encoding::substring($this->m_sContent, $nMark, $i-$nMark));
+						$this->interpretVariable(Encoding::substring($this->m_sContent, $nMark, $i-$nMark));
 						$nMark = $i += 2;
 						$nState = self::STATE_DEFAULT;
 					}
@@ -109,10 +114,11 @@ class IPCO_Parser extends IPCO_Base {
 					break;
 			}
 		}
-		$aBuffer []= $this->interpretContent(Encoding::substring($this->m_sContent, $nMark, $nLength-$nMark));
+		$this->interpretContent(Encoding::substring($this->m_sContent, $nMark, $nLength-$nMark));
 		
-		array_unshift($aBuffer, IPCO_ParserSettings::getPageHeader($this->m_sClassName, $this->m_sExtendsFilePath ? parent::getIpco()->getClassName($this->m_sExtendsFilePath) : 'IPCO_Processor'));
-		array_push($aBuffer, IPCO_ParserSettings::getPageFooter());
+		// TODO: apply the new and final parser
+		//array_unshift($aBuffer, IPCO_ParserSettings::getPageHeader($this->m_sClassName, $this->m_sExtendsFilePath ? parent::getIpco()->getClassName($this->m_sExtendsFilePath) : 'IPCO_Processor'));
+		//array_push($aBuffer, IPCO_ParserSettings::getPageFooter());
 		
 		return implode('', $aBuffer);
 	}
@@ -142,48 +148,48 @@ class IPCO_Parser extends IPCO_Base {
 		}
 	}
 	
-	public function interpretFilter($sContent) {
+	private function interpretFilter($sContent) {
 		$aParts = array_map(array('Encoding', 'trim'), explode(' ', Encoding::trim($sContent)));
 		$sName = array_shift($aParts);
 		switch($sName) {
-			case 'if' : return $this->interpretIf(new IPCO_Expression(implode(' ', $aParts), parent::getIpco())); break;
-			case 'foreach' : return $this->interpretForeach(new IPCO_Expression(implode(' ', $aParts), parent::getIpco())); break;
-			case 'while' : return $this->interpretWhile(new IPCO_Expression(implode(' ', $aParts), parent::getIpco())); break;
-			case 'else' : return $this->interpretElse(); break;
-			case 'elseif' : return $this->interpretElseIf(new IPCO_Expression(implode(' ', $aParts), parent::getIpco())); break;
-			case 'end' : return $this->interpretEnd(count($aParts) > 0 ? $aParts[0] : null); break;
-			case 'extends' : return $this->interpretExtends(count($aParts) > 0 ? $aParts[0] : null); break;
-			case 'include' : return $this->interpretInclude(count($aParts) > 0 ? $aParts[0] : null); break;
-			case 'region' : return $this->interpretRegion($aParts); break;
+			case 'if' : $this->interpretIf(new IPCO_Expression(implode(' ', $aParts), parent::getIpco())); break;
+			case 'foreach' : $this->interpretForeach(new IPCO_Expression(implode(' ', $aParts), parent::getIpco())); break;
+			case 'while' : $this->interpretWhile(new IPCO_Expression(implode(' ', $aParts), parent::getIpco())); break;
+			case 'else' : $this->interpretElse(); break;
+			case 'elseif' : $this->interpretElseIf(new IPCO_Expression(implode(' ', $aParts), parent::getIpco())); break;
+			case 'end' : $this->interpretEnd(count($aParts) > 0 ? $aParts[0] : null); break;
+			case 'extends' : $this->interpretExtends(count($aParts) > 0 ? $aParts[0] : null); break;
+			case 'include' : $this->interpretInclude(count($aParts) > 0 ? $aParts[0] : null); break;
+			case 'region' : $this->interpretRegion($aParts); break;
 		}
 	}
 	
 	public function interpretVariable($sContent) {
 		$sCondition = new IPCO_Expression($sContent, parent::getIpco());
-		return $this->getDepthOffset() . '$_ob .= '.$sCondition.";\n";
+		$this->m_oRegion->addLine($this->getDepthOffset() . '$_ob .= '.$sCondition.";\n");
 	}
 	
 	public function interpretIf(IPCO_Expression $oCondition) {
 		array_push($this->m_aEndings, 'if');
-		return $this->getDepthOffset(0, 1) . IPCO_ParserSettings::getFilterIf($oCondition->__toString());
+		$this->m_oRegion->addLine($this->getDepthOffset(0, 1) . IPCO_ParserSettings::getFilterIf($oCondition->__toString()));
 	}
 	
 	public function interpretElseIf(IPCO_Expression $oCondition) {
-		return $this->getDepthOffset(-1, 1) . IPCO_ParserSettings::getFilterElseIf($oCondition->__toString());
+		$this->m_oRegion->addLine($this->getDepthOffset(-1, 1) . IPCO_ParserSettings::getFilterElseIf($oCondition->__toString()));
 	}
 	
 	public function interpretElse() {
-		return $this->getDepthOffset(-1, 1) . IPCO_ParserSettings::getFilterElse();
+		$this->m_oRegion->addLine($this->getDepthOffset(-1, 1) . IPCO_ParserSettings::getFilterElse());
 	}
 	
 	public function interpretForeach(IPCO_Expression $oCondition) {
 		array_push($this->m_aEndings, 'foreach');
-		return $this->getDepthOffset(0, 1) . IPCO_ParserSettings::getFilterForeach($oCondition);
+		$this->m_oRegion->addLine($this->getDepthOffset(0, 1) . IPCO_ParserSettings::getFilterForeach($oCondition->__toString()));
 	}
 	
 	public function interpretWhile(IPCO_Expression $oCondition) {
 		array_push($this->m_aEndings, 'while');
-		return $this->getDepthOffset(0, 1) . "while($oCondition) {\n";
+		$this->m_oRegion->addLine($this->getDepthOffset(0, 1) . IPCO_ParserSettings::getFilterWhile($oCondition->__toString()));
 	}
 	
 	public function interpretEnd($aParts) {
@@ -193,11 +199,10 @@ class IPCO_Parser extends IPCO_Base {
 			throw new IPCO_Exception('Invalid IPCO-tag nesting.', IPCO_Exception::INVALIDNESTING);
 		}
 		switch($sExpectedEnding) {
-			case 'if' : return $this->getDepthOffset(-1, 0) . IPCO_ParserSettings::getFilterEndIf();
-			case 'foreach' : return $this->getDepthOffset(-1, 0) . IPCO_ParserSettings::getFilterEndForeach();
-			case 'while' : return $this->getDepthOffset(-1, 0) . IPCO_ParserSettings::getFilterEndWhile();
+			case 'if' : $this->m_oRegion->addLine($this->getDepthOffset(-1, 0) . IPCO_ParserSettings::getFilterEndIf()); break;
+			case 'foreach' : $this->m_oRegion->addLine($this->getDepthOffset(-1, 0) . IPCO_ParserSettings::getFilterEndForeach()); break;
+			case 'while' : $this->m_oRegion->addLine($this->getDepthOffset(-1, 0) . IPCO_ParserSettings::getFilterEndWhile()); break;
 		}
-		return '';
 	}
 
 	public function interpretExtends($sName = null) {
@@ -217,26 +222,24 @@ class IPCO_Parser extends IPCO_Base {
 			$sOperator = $aParts[0];
 			$sName = count($aParts) > 1 ? $aParts[1] : null; 
 			if($sOperator === 'end' || $sOperator === 'close' || $sOperator === 'stop') {
-				if($sName !== null && $sName != $this->m_sCurrentRegion)
+				if($sName !== null && $sName !== $this->m_oRegion->getName())
 					throw new IPCO_Exception(IPCO_Exception::FILTER_REGION_END_CURRENT_MISMATCH);
-				if($this->m_sCurrentRegion === null)
+				if($this->m_oRegion->getName() === self::REGION_MAIN)
 					throw new IPCO_Exception(IPCO_Exception::FILTER_REGION_END_NONE_CURRENT);
-				$this->m_aActiveBuffer = &$this->m_aMainBuffer;
-				$this->m_sCurrentRegion = null;
+				$this->m_oRegion = $this->m_aRegions[self::REGION_MAIN];
 			}
 			else if($sOperator === 'begin' || $sOperator === 'open' || $sOperator === 'start') {
-				if($this->m_sCurrentRegion !== null)
+				if($this->m_oRegion->getName() !== self::REGION_MAIN)
 					throw new IPCO_Exception(IPCO_Exception::FILTER_REGION_BEGIN_HAS_CURRENT);
 				if($sName === null)
 					throw new IPCO_Exception(IPCO_Exception::FILTER_REGION_NO_NAME);
-				$this->m_aRegionBuffers[$sName] = array();
-				$this->m_aActiveBuffer = &$this->m_aRegionBuffers[$sName];
-				$this->m_sCurrentRegion = $sName;
+				$this->m_oRegion = new IPCO_ParserRegion($sName, parent::getIpco());
+				$this->m_aRegions[$this->m_oRegion->getName()] = $this->m_oRegion;
 			}
 			else if($sOperator === 'use' || $sOperator === 'include') {
 				if($sName === null)
 					throw new IPCO_Exception(IPCO_Exception::FILTER_REGION_NO_NAME);
-				return IPCO_ParserSettings::getCallRegion($sName);
+				$this->m_oRegion->addLine(IPCO_ParserSettings::getCallRegion($sName));
 			}
 		}
 		else {
