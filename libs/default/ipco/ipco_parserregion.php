@@ -10,6 +10,10 @@ class IPCO_ParserRegion extends IPCO_Base {
 		$this->m_sName = $sName;
 	}
 	
+	public function getName() {
+		return $this->m_sName;
+	}
+	
 	public function __toString() {
 		return '' .
 			IPCO_ParserSettings::getFilterRegion($this->m_sName) .

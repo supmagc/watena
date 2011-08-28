@@ -1,14 +1,1 @@
-<?php
-class IPCO_Compiled_d__www_watena_libs_demo_templates_base_tpl extends IPCO_Processor {
-
-	public function generate() {
-		try {
-			$_ob = '';
-			return $_ob;
-		}
-		catch(Exception $e) {
-			throw new WatCeption('Unable to create template-output.', array(), null, $e); 
-		}
-	}
-}
-?>
+<?php?>
