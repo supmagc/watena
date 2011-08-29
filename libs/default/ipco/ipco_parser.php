@@ -118,6 +118,8 @@ class IPCO_Parser extends IPCO_Base {
 		
 		$aBuffer = array();
 		$aBuffer []= IPCO_ParserSettings::getPageHeader($this->m_sClassName, $this->m_sExtendsFilePath ? parent::getIpco()->getClassName($this->m_sExtendsFilePath) : 'IPCO_Processor');
+		if($this->m_oRegion->hasContent())
+			$aBuffer []= IPCO_ParserSettings::getPageGenerator(self::REGION_MAIN);
 		foreach($this->m_aRegions as $oRegion) {
 			$aBuffer []= $oRegion->build();
 		}
@@ -144,10 +146,7 @@ class IPCO_Parser extends IPCO_Base {
 				}
 			}
 			$aReturn []= $this->getDepthOffset() . IPCO_ParserSettings::getContent(Encoding::substring($sContent, $nOffset));
-			return implode('', $aReturn);
-		}
-		else {
-			return null;
+			$this->m_oRegion->addLines($aReturn);
 		}
 	}
 	
@@ -168,8 +167,8 @@ class IPCO_Parser extends IPCO_Base {
 	}
 	
 	public function interpretVariable($sContent) {
-		$sCondition = new IPCO_Expression($sContent, parent::getIpco());
-		$this->m_oRegion->addLine($this->getDepthOffset() . '$_ob .= '.$sCondition.";\n");
+		$oCondition = new IPCO_Expression($sContent, parent::getIpco());
+		$this->m_oRegion->addLine($this->getDepthOffset() . IPCO_ParserSettings::getVariable($oCondition->__toString()));
 	}
 	
 	public function interpretIf(IPCO_Expression $oCondition) {
