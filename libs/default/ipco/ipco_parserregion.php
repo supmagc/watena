@@ -15,7 +15,7 @@ class IPCO_ParserRegion extends IPCO_Base {
 	}
 	
 	public function hasContent() {
-		return Encoding::length(Encoding::trim($this->build())) > 0;
+		return Encoding::length(Encoding::trim(implode('', $this->m_aLines))) > 0;
 	}
 	
 	public function build() {
