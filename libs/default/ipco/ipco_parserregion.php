@@ -14,6 +14,10 @@ class IPCO_ParserRegion extends IPCO_Base {
 		return $this->m_sName;
 	}
 	
+	public function hasContent() {
+		return Encoding::length(Encoding::trim($this->build())) > 0;
+	}
+	
 	public function build() {
 		return '' .
 			IPCO_ParserSettings::getFilterRegion($this->m_sName) .

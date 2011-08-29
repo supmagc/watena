@@ -6,11 +6,13 @@ abstract class IPCO_Processor extends IPCO_Base {
 	private $m_oContentParser;
 	private $m_sContent = null;
 	
-	public abstract function generate();
-	
 	public function __construct(IPCO $oIpco, IPCO_IContentParser $oContentParser = null) {
 		parent::__construct($oIpco);
 		$this->m_oContentParser = $oContentParser;
+	}
+	
+	public function generate() {
+		return 'Empty template';
 	}
 	
 	public function getContent($bForceRenewal = false) {

@@ -1,1 +1,41 @@
-<?php?>
+<?php
+class IPCO_Compiled_d__www_watena_libs_demo_templates_tester_tpl extends IPCO_Compiled_d__www_watena_libs_demo_templates_base_tpl {
+	public function generate() {
+		return self::__MainRegion__();
+	}
+	protected function __MainRegion__() {
+		try {
+			$_ob = array();
+			$_ob []= '
+';
+			if(parent::processMember('continue', null)) {
+				$_ob []= '
+	If succeeded !!!
+';
+			}
+			$_ob []= '
+';
+			if(parent::processMember('continue', null)) {
+				$_ob []= '
+	count:
+	';
+				while(parent::processMember('next', null)) {
+					$_ob []= '
+		';
+					$_ob []= '' . parent::processMember('count', null);
+					$_ob []= ',
+	';
+				}
+				$_ob []= '
+	go !!
+';
+			} else {
+				$_ob []= '
+	no
+';
+			}
+			return implode('', $_ob);
+		} catch(Exception $e) { throw new WatCeption('Unable to create template-output.', array(), null, $e); }
+	}
+}
+?>
