@@ -116,9 +116,12 @@ class IPCO_Parser extends IPCO_Base {
 		}
 		$this->interpretContent(Encoding::substring($this->m_sContent, $nMark, $nLength-$nMark));
 		
-		// TODO: apply the new and final parser
-		//array_unshift($aBuffer, IPCO_ParserSettings::getPageHeader($this->m_sClassName, $this->m_sExtendsFilePath ? parent::getIpco()->getClassName($this->m_sExtendsFilePath) : 'IPCO_Processor'));
-		//array_push($aBuffer, IPCO_ParserSettings::getPageFooter());
+		$aBuffer = array();
+		$aBuffer []= IPCO_ParserSettings::getPageHeader($this->m_sClassName, $this->m_sExtendsFilePath ? parent::getIpco()->getClassName($this->m_sExtendsFilePath) : 'IPCO_Processor');
+		foreach($this->m_aRegions as $oRegion) {
+			$aBuffer []= $oRegion->build();
+		}
+		$aBuffer []= IPCO_ParserSettings::getPageFooter();
 		
 		return implode('', $aBuffer);
 	}
