@@ -17,18 +17,19 @@ class %s extends %s {
 	}
 }
 ';
+	const PAGE_CONSTRUCTOR		= '';
 	
 	const FILTER_IF 			= "if(%s) {\n";
 	const FILTER_ELSEIF 		= "} else if(%s) {\n";
 	const FILTER_ELSE			= "} else {\n";
 	const FILTER_FOREACH		= "foreach(%s as %s) {parent::componentPush(%s);\n";
 	const FILTER_WHILE			= "while(%s) {\n";
-	const FILTER_BEGIN_REGION	= "\tprotected function %s() {\n";
+	const FILTER_REGION			= "\tprotected function %s() {\n\t\t\$_ob = '';\n";
 	
 	const FILTER_END_IF			= "}\n";
 	const FILTER_END_FOREACH	= "parent::componentPop();}\n";
 	const FILTER_END_WHILE		= "}\n";
-	const FILTER_END_REGION		= "\t}\n";
+	const FILTER_END_REGION		= "\t\treturn \$_ob;\n\t}\n";
 	
 	const CALL_METHOD			= "parent::processMethod('%s', %s, %s)";
 	const CALL_MEMBER			= "parent::processMember('%s', %s)";
@@ -45,6 +46,10 @@ class %s extends %s {
 	
 	public static function getPageFooter() {
 		return sprintf(self::PAGE_FOOTER);
+	}
+	
+	public static function getPageConstructor($sRegion) {
+		
 	}
 	
 	public static function getFilterIf($sCondition) {
@@ -68,7 +73,7 @@ class %s extends %s {
 	}
 	
 	public static function getFilterRegion($sName) {
-		return sprintf(self::FILTER_REGION_BEGIN, $sName);
+		return sprintf(self::FILTER_REGION, $sName);
 	}
 	
 	public static function getFilterEndIf() {
@@ -84,7 +89,7 @@ class %s extends %s {
 	}
 	
 	public static function getFilterEndRegion() {
-		return sprintf(self::FILTER_REGION_END);
+		return sprintf(self::FILTER_END_REGION);
 	}
 	
 	public static function getCallMethod($sName, $sParams, $sBase) {

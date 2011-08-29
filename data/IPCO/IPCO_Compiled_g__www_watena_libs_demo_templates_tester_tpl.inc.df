@@ -1,30 +1,21 @@
 <?php
-class IPCO_Compiled_g__www_watena_libs_demo_templates_tester_tpl extends IPCO_Processor {
+class IPCO_Compiled_g__www_watena_libs_demo_templates_tester_tpl extends IPCO_Compiled_g__www_watena_libs_demo_templates_base_tpl {
 
 	public function generate() {
 		try {
 			$_ob = '';
-			$_ob .= '
-';
+	protected function __MainRegion__() {
+		$_ob = '';
 			if(parent::processMember('continue', null)) {
-				$_ob .= '
-	count:
-	';
-				while(parent::processMember('next', null)) {
-					$_ob .= '
-		';
-					$_ob .= parent::processMember('count', null);
-					$_ob .= ',
-	';
-				}
-				$_ob .= '
-	go !!
-';
-			} else {
-				$_ob .= '
-	no
-';
 			}
+			if(parent::processMember('continue', null)) {
+				while(parent::processMember('next', null)) {
+					$_ob .= parent::processMember('count', null);
+				}
+			} else {
+			}
+		return $_ob;
+	}
 			return $_ob;
 		}
 		catch(Exception $e) {

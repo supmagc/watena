@@ -14,7 +14,7 @@ class IPCO_ParserRegion extends IPCO_Base {
 		return $this->m_sName;
 	}
 	
-	public function __toString() {
+	public function build() {
 		return '' .
 			IPCO_ParserSettings::getFilterRegion($this->m_sName) .
 			implode('', $this->m_aLines) .
