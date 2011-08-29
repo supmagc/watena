@@ -1,8 +1,5 @@
 <?php
 class IPCO_Compiled_d__www_watena_libs_demo_templates_base_tpl extends IPCO_Processor {
-	public function generate() {
-		return self::__MainRegion__();
-	}
 	protected function __MainRegion__() {
 		try {
 			$_ob = array();
