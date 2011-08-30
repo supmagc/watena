@@ -1,3 +1,7 @@
+{% region begin Extendable %}
+Extendableness is proven !!<br />
+{% region end Extendable %}
+{% region include Extendable %}
 {% extends base.tpl %}
 {% if continue %}
 	If succeeded !!!
@@ -11,3 +15,4 @@
 {% else %}
 	no
 {% end if %}
+{% region use MyTestRegion %}
