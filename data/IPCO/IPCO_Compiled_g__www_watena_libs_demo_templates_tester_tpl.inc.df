@@ -1,26 +1,35 @@
 <?php
 class IPCO_Compiled_g__www_watena_libs_demo_templates_tester_tpl extends IPCO_Compiled_g__www_watena_libs_demo_templates_base_tpl {
-
 	public function generate() {
-		try {
-			$_ob = '';
-	protected function __MainRegion__() {
-		$_ob = '';
-			if(parent::processMember('continue', null)) {
-			}
-			if(parent::processMember('continue', null)) {
-				while(parent::processMember('next', null)) {
-					$_ob .= parent::processMember('count', null);
-				}
-			} else {
-			}
-		return $_ob;
+		return self::__MainRegion__();
 	}
-			return $_ob;
-		}
-		catch(Exception $e) {
-			throw new WatCeption('Unable to create template-output.', array(), null, $e); 
-		}
+	protected function __MainRegion__() {
+		try {
+			$_ob = array();
+			if(parent::processMember('continue', null)) {
+				$_ob []= '
+	If succeeded !!!
+';
+			}
+			if(parent::processMember('continue', null)) {
+				$_ob []= '
+	count:
+	';
+				while(parent::processMember('next', null)) {
+					$_ob []= '' . parent::processMember('count', null);
+					$_ob []= ',
+	';
+				}
+				$_ob []= '
+	go !!
+';
+			} else {
+				$_ob []= '
+	no
+';
+			}
+			return implode('', $_ob);
+		} catch(Exception $e) { throw new WatCeption('Unable to create template-output.', array(), null, $e); }
 	}
 }
 ?>

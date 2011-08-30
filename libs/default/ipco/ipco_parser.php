@@ -14,12 +14,10 @@ class IPCO_Parser extends IPCO_Base {
 	private $m_sContent;
 	private $m_nDepth;
 	private $m_aEndings;
+	private $m_bRemoveWhitespaces;
 	private $m_oContentParser = null;
 	private $m_sExtendsTemplate = null;
 	private $m_sExtendsFilePath = null;
-	private $m_aActiveBuffer = null;
-	private $m_aRegionBuffers = null;
-	private $m_sCurrentRegion = null;
 	private $m_aRegions = array();
 	private $m_oRegion = null;
 	
@@ -28,6 +26,10 @@ class IPCO_Parser extends IPCO_Base {
 		$this->m_sIdentifier = $sIdentifier;
 		$this->m_sClassName = parent::getIpco()->getClassName($sIdentifier);
 		$this->m_sContent = $sContent;
+	}
+	
+	public function setRemoveWhitespaces($bRemove) {
+		$this->m_bRemoveWhitespaces = $bRemove;
 	}
 	
 	public function setContentParser(IPCO_IContentParser $oContentParser) {
@@ -121,7 +123,8 @@ class IPCO_Parser extends IPCO_Base {
 		if($this->m_oRegion->hasContent())
 			$aBuffer []= IPCO_ParserSettings::getPageGenerator(self::REGION_MAIN);
 		foreach($this->m_aRegions as $oRegion) {
-			$aBuffer []= $oRegion->build();
+			if($oRegion->getName() != self::REGION_MAIN || $oRegion->hasContent())
+				$aBuffer []= $oRegion->build();
 		}
 		$aBuffer []= IPCO_ParserSettings::getPageFooter();
 		
@@ -135,18 +138,19 @@ class IPCO_Parser extends IPCO_Base {
 			$nOffset = 0;
 			if(is_array($aContentParserParts)) {
 				foreach($aContentParserParts as $oContentParserPart) {
-					$aReturn []= $this->getDepthOffset() . IPCO_ParserSettings::getContent(
-						Encoding::substring($sContent, $nOffset, $oContentParserPart->getStart() - $nOffset)
-					);
-					$aReturn []= $this->getDepthOffset() . IPCO_ParserSettings::getContentParserPart(
+					$sTrimmable = Encoding::substring($sContent, $nOffset, $oContentParserPart->getStart() - $nOffset);
+					if(!$this->m_bRemoveWhitespaces || Encoding::length(Encoding::trim($sTrimmable)) > 0)
+						$this->m_oRegion->addLine($this->getDepthOffset() . IPCO_ParserSettings::getContent($sTrimmable));
+					$this->m_oRegion->addLine($this->getDepthOffset() . IPCO_ParserSettings::getContentParserPart(
 						$oContentParserPart->getMethod(),
 						$oContentParserPart->getParams()
-					);
+					));
 					$nOffset = $oContentParserPart->getStart() + $oContentParserPart->getLength();
 				}
 			}
-			$aReturn []= $this->getDepthOffset() . IPCO_ParserSettings::getContent(Encoding::substring($sContent, $nOffset));
-			$this->m_oRegion->addLines($aReturn);
+			$sTrimmable = Encoding::substring($sContent, $nOffset);
+			if(!$this->m_bRemoveWhitespaces || Encoding::length(Encoding::trim($sTrimmable)) > 0)
+				$this->m_oRegion->addLine($this->getDepthOffset() . IPCO_ParserSettings::getContent($sTrimmable));
 		}
 	}
 	

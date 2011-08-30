@@ -14,6 +14,7 @@ class TemplateFile extends CacheableFile {
 		$oFile = parent::getWatena()->getContext()->getDataFile($this->m_sDataPath);		
 		$oParser = $oIpco->createParserFromFile(parent::getFilePath());
 		$oParser->setContentParser($this->_getContentParser());
+		$oParser->setRemoveWhitespaces(true);
 		$oFile->writeContent('<?php' . $oParser->parse() . '?>');
 		$this->m_sExtends = $oParser->getExtendsFilePath();
 	}
