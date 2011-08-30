@@ -1,9 +1,9 @@
 <?php
 class IPCO_Compiled_g__www_watena_libs_portfolio_templates_index_tpl extends IPCO_Processor {
 	public function generate() {
-		return self::__MainRegion__();
+		return self::callRegion____MainRegion__();
 	}
-	protected function __MainRegion__() {
+	protected function callRegion____MainRegion__() {
 		try {
 			$_ob = array();
 			$_ob []= '<!DOCTYPE html>

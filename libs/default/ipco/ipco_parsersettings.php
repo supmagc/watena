@@ -4,14 +4,14 @@ class IPCO_ParserSettings extends IPCO_Base {
 	
 	const PAGE_HEADER			= "\nclass %s extends %s {\n";
 	const PAGE_FOOTER			= "}\n";
-	const PAGE_GENERATOR		= "\tpublic function generate() {\n\t\treturn self::%s();\n\t}\n";
+	const PAGE_GENERATOR		= "\tpublic function generate() {\n\t\treturn self::callRegion__%s();\n\t}\n";
 	
 	const FILTER_IF 			= "if(%s) {\n";
 	const FILTER_ELSEIF 		= "} else if(%s) {\n";
 	const FILTER_ELSE			= "} else {\n";
 	const FILTER_FOREACH		= "foreach(%s as %s) {parent::componentPush(%s);\n";
 	const FILTER_WHILE			= "while(%s) {\n";
-	const FILTER_REGION			= "\tprotected function %s() {\n\t\ttry {\n\t\t\t\$_ob = array();\n";
+	const FILTER_REGION			= "\tprotected function callRegion__%s() {\n\t\ttry {\n\t\t\t\$_ob = array();\n";
 	
 	const FILTER_END_IF			= "}\n";
 	const FILTER_END_FOREACH	= "parent::componentPop();}\n";
@@ -21,6 +21,7 @@ class IPCO_ParserSettings extends IPCO_Base {
 	const CALL_METHOD			= "parent::processMethod('%s', %s, %s)";
 	const CALL_MEMBER			= "parent::processMember('%s', %s)";
 	const CALL_SLICE			= "parent::processMember(%s, %s)";
+	const CALL_REGION			= "\$_ob []= '' . method_exists(\$this, 'callRegion__%s') ? \$this->callRegion__%s() : '';\n";
 	
 	const CONTENT				= "\$_ob []= '%s';\n";
 	const CONTENTPARSERPART		= "\$_ob []= '' . parent::callContentParser(\'%s\', %s);\n";
@@ -96,7 +97,7 @@ class IPCO_ParserSettings extends IPCO_Base {
 	}
 
 	public static function getCallRegion($sName) {
-		return '';
+		return sprintf(self::CALL_REGION, $sName, $sName);
 	}
 	
 	public static function getContent($sContent) {

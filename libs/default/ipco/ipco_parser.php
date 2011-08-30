@@ -73,12 +73,12 @@ class IPCO_Parser extends IPCO_Base {
 				case self::STATE_DEFAULT : 
 					if($char2 === '{%') {
 						$this->interpretContent(Encoding::substring($this->m_sContent, $nMark, $i-$nMark));
-						$nMark = $i += 2;
+						$nMark = 1 + (++$i);
 						$nState = self::STATE_IPCO;
 					}
 					else if($char2 === '{[') {
 						$this->interpretContent(Encoding::substring($this->m_sContent, $nMark, $i-$nMark));
-						$nMark = $i += 2;
+						$nMark = 1 + (++$i);
 						$nState = self::STATE_IPCO_VAR;
 					}
 					break;
@@ -86,7 +86,7 @@ class IPCO_Parser extends IPCO_Base {
 				case self::STATE_IPCO : 
 					if($char2 === '%}') {
 						$this->interpretFilter(Encoding::substring($this->m_sContent, $nMark, $i-$nMark));
-						$nMark = $i += 2;
+						$nMark = 1 + (++$i);
 						$nState = self::STATE_DEFAULT;
 					}
 					else if($char1 === '\'') {
@@ -106,7 +106,7 @@ class IPCO_Parser extends IPCO_Base {
 				case self::STATE_IPCO_VAR : 
 					if($char2 === ']}') {
 						$this->interpretVariable(Encoding::substring($this->m_sContent, $nMark, $i-$nMark));
-						$nMark = $i += 2;
+						$nMark = 1 + (++$i);
 						$nState = self::STATE_DEFAULT;
 					}
 					break;
@@ -139,7 +139,7 @@ class IPCO_Parser extends IPCO_Base {
 			if(is_array($aContentParserParts)) {
 				foreach($aContentParserParts as $oContentParserPart) {
 					$sTrimmable = Encoding::substring($sContent, $nOffset, $oContentParserPart->getStart() - $nOffset);
-					if(!$this->m_bRemoveWhitespaces || Encoding::length(Encoding::trim($sTrimmable)) > 0)
+					if(!$this->m_bRemoveWhitespaces || Encoding::length($sTrimmable = Encoding::trim($sTrimmable)) > 0)
 						$this->m_oRegion->addLine($this->getDepthOffset() . IPCO_ParserSettings::getContent($sTrimmable));
 					$this->m_oRegion->addLine($this->getDepthOffset() . IPCO_ParserSettings::getContentParserPart(
 						$oContentParserPart->getMethod(),
@@ -149,7 +149,7 @@ class IPCO_Parser extends IPCO_Base {
 				}
 			}
 			$sTrimmable = Encoding::substring($sContent, $nOffset);
-			if(!$this->m_bRemoveWhitespaces || Encoding::length(Encoding::trim($sTrimmable)) > 0)
+			if(!$this->m_bRemoveWhitespaces || Encoding::length($sTrimmable = Encoding::trim($sTrimmable)) > 0)
 				$this->m_oRegion->addLine($this->getDepthOffset() . IPCO_ParserSettings::getContent($sTrimmable));
 		}
 	}
@@ -245,7 +245,7 @@ class IPCO_Parser extends IPCO_Base {
 			else if($sOperator === 'use' || $sOperator === 'include') {
 				if($sName === null)
 					throw new IPCO_Exception(IPCO_Exception::FILTER_REGION_NO_NAME);
-				$this->m_oRegion->addLine(IPCO_ParserSettings::getCallRegion($sName));
+				$this->m_oRegion->addLine($this->getDepthOffset() . IPCO_ParserSettings::getCallRegion($sName));
 			}
 		}
 		else {
