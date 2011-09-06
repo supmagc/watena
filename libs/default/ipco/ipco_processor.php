@@ -60,7 +60,11 @@ abstract class IPCO_Processor extends IPCO_Base {
 		$this->tryProcessSlices($mReturn, $aSliced, $mBase);
 		return $mReturn;
 	}
-		
+
+	protected final function processInclude($sFilePath) {
+		$oParser = parent::getIpco()->createParserFromFile($sFilePath);
+	}
+	
 	protected final function tryProcessMethod(&$mReturn, $sName, array $aParams, $mBase = null) {
 		if(!empty($mBase)) {
 			

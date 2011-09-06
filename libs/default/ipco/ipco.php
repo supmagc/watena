@@ -19,9 +19,10 @@ require_once dirname(__FILE__) . '/ipco_componentwrapper.php';
  */
 class IPCO {
 
-	private $m_cbTemplateToFile;
+	private $m_oContentParser;
+	private $m_oCallbacks;
 	
-	public function __construct($cbTemplateToFile) {
+	public function __construct($oContentParser, $oCallbacks) {
 		$this->setTemplateToFileCallback($cbTemplateToFile);
 	}
 	
