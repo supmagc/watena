@@ -16,3 +16,4 @@ Extendableness is proven !!<br />
 	no
 {% end if %}
 {% region use MyTestRegion %}
+{% include extra.tpl %}

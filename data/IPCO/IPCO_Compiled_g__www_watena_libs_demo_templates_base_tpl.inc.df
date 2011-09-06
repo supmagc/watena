@@ -3,14 +3,18 @@ class IPCO_Compiled_g__www_watena_libs_demo_templates_base_tpl extends IPCO_Proc
 	protected function callRegion__MyTestRegion() {
 		try {
 			$_ob = array();
-			$_ob []= 'Region content ... succes !!!';
+			$_ob []= '
+Region content ... succes !!!
+';
 			return implode('', $_ob);
 		} catch(Exception $e) { throw new WatCeption('Unable to create template-output.', array(), null, $e); }
 	}
 	protected function callRegion__Extendable() {
 		try {
 			$_ob = array();
-			$_ob []= 'Extendable region -- shound not be here --';
+			$_ob []= '
+Extendable region -- shound not be here --
+';
 			return implode('', $_ob);
 		} catch(Exception $e) { throw new WatCeption('Unable to create template-output.', array(), null, $e); }
 	}

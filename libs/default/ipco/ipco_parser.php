@@ -131,7 +131,7 @@ class IPCO_Parser extends IPCO_Base {
 		return implode('', $aBuffer);
 	}
 	
-	public function interpretContent($sContent) {
+	private function interpretContent($sContent) {
 		if(Encoding::length($sContent) > 0) {
 			$aReturn = array();
 			$aContentParserParts = $this->m_oContentParser->parseContent($sContent);
@@ -139,7 +139,7 @@ class IPCO_Parser extends IPCO_Base {
 			if(is_array($aContentParserParts)) {
 				foreach($aContentParserParts as $oContentParserPart) {
 					$sTrimmable = Encoding::substring($sContent, $nOffset, $oContentParserPart->getStart() - $nOffset);
-					if(!$this->m_bRemoveWhitespaces || Encoding::length($sTrimmable = Encoding::trim($sTrimmable)) > 0)
+					if(!$this->m_bRemoveWhitespaces || Encoding::length($sTrimmable = $this->removeWhitespaces($sTrimmable)) > 0)
 						$this->m_oRegion->addLine($this->getDepthOffset() . IPCO_ParserSettings::getContent($sTrimmable));
 					$this->m_oRegion->addLine($this->getDepthOffset() . IPCO_ParserSettings::getContentParserPart(
 						$oContentParserPart->getMethod(),
@@ -149,7 +149,7 @@ class IPCO_Parser extends IPCO_Base {
 				}
 			}
 			$sTrimmable = Encoding::substring($sContent, $nOffset);
-			if(!$this->m_bRemoveWhitespaces || Encoding::length($sTrimmable = Encoding::trim($sTrimmable)) > 0)
+			if(!$this->m_bRemoveWhitespaces || Encoding::length($sTrimmable = $this->removeWhitespaces($sTrimmable)) > 0)
 				$this->m_oRegion->addLine($this->getDepthOffset() . IPCO_ParserSettings::getContent($sTrimmable));
 		}
 	}
@@ -220,7 +220,7 @@ class IPCO_Parser extends IPCO_Base {
 	}
 	
 	public function interpretInclude($sName = null) {
-		
+		$this->m_oRegion->addLine(IPCO_ParserSettings::getCallInclude($sName));
 	}
 	
 	public function interpretRegion(array $aParts) {
@@ -251,6 +251,10 @@ class IPCO_Parser extends IPCO_Base {
 		else {
 			throw new IPCO_Exception(IPCO_Exception::FILTER_REGION_NO_TAG);
 		}
+	}
+	
+	private function removeWhitespaces($sContent) {
+		return $sContent;
 	}
 	
 	public function getDepthOffset($nPreChange = 0, $nPostChange = 0) {
