@@ -2,6 +2,7 @@
 require_once dirname(__FILE__) . '/ipco_base.php';
 require_once dirname(__FILE__) . '/ipco_processor.php';
 require_once dirname(__FILE__) . '/ipco_parsersettings.php';
+require_once dirname(__FILE__) . '/ipco_icallbacks.php';
 require_once dirname(__FILE__) . '/ipco_icontentparser.php';
 require_once dirname(__FILE__) . '/ipco_contentparserpart.php';
 require_once dirname(__FILE__) . '/ipco_parserregion.php';
@@ -22,8 +23,28 @@ class IPCO {
 	private $m_oContentParser;
 	private $m_oCallbacks;
 	
-	public function __construct($oContentParser, $oCallbacks) {
+	public function __construct(IPCO_IContentParser $oContentParser = null, IPCO_ICallbacks $oCallbacks = null) {
 		$this->setTemplateToFileCallback($cbTemplateToFile);
+	}
+	
+	public function getFilePathForTemplate($sTemplate) {
+		
+	}
+	
+	public function loadProcessorFromTemplate($sTemplate) {
+		
+	}
+	
+	public function loadProcessorFromFilePath($sFilePath) {
+		
+	}
+	
+	public function loadParserFromTemplate($sTemplate) {
+		
+	}
+	
+	public function loadParserFromFilePath($sFilePath) {
+		
 	}
 	
 	/**
