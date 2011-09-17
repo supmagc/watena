@@ -101,7 +101,7 @@ class IPCO_ParserSettings extends IPCO_Base {
 	}
 	
 	public static function getContent($sContent) {
-		return sprintf(self::CONTENT, addcslashes($sContent, '\''));
+		return sprintf(self::CONTENT, var_export($sContent, true));
 	}
 	
 	public static function getContentParserPart($sMethod, $aParams) {
