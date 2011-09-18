@@ -8,6 +8,9 @@ class IPCO_Parser extends IPCO_Base {
 	const STATE_IPCO_VAR 	= 4;
 	const STATE_IPCO_BQUOTE	= 5;
 	const REGION_MAIN		= '__MainRegion__';
+	const WHITESPACEFILTER_NONE		= 0;
+	const WHITESPACEFILTER_SMART	= 1;
+	const WHITESPACEFILTER_ALL		= 2;
 	
 	private $m_sIdentifier;
 	private $m_sClassName;
