@@ -17,7 +17,7 @@ class IPCO_Parser extends IPCO_Base {
 	private $m_sContent;
 	private $m_nDepth;
 	private $m_aEndings;
-	private $m_bRemoveWhitespaces;
+	private $m_nWhitespaceFilter = self::WHITESPACEFILTER_NONE;
 	private $m_oContentParser = null;
 	private $m_sExtendsTemplate = null;
 	private $m_sExtendsFilePath = null;
@@ -31,8 +31,8 @@ class IPCO_Parser extends IPCO_Base {
 		$this->m_sContent = $sContent;
 	}
 	
-	public function setRemoveWhitespaces($bRemove) {
-		$this->m_bRemoveWhitespaces = $bRemove;
+	public function setWhitespaceFilter($nWhitespaceFilter) {
+		$this->m_nWhitespaceFilter = $nWhitespaceFilter;
 	}
 	
 	public function setContentParser(IPCO_IContentParser $oContentParser) {
@@ -53,6 +53,10 @@ class IPCO_Parser extends IPCO_Base {
 	
 	public function getExtendsFilePath() {
 		return $this->m_sExtendsFilePath;
+	}
+	
+	public function getWhitespaceFilter() {
+		return $this->m_nWhitespaceFilter;
 	}
 	
 	public function parse() {
@@ -257,7 +261,11 @@ class IPCO_Parser extends IPCO_Base {
 	}
 	
 	private function removeWhitespaces($sContent) {
-		return $sContent;
+		switch($this->m_nWhitespaceFilter) {
+			case self::WHITESPACEFILTER_ALL : return Encoding::trim($sContent);
+			case self::WHITESPACEFILTER_SMART : return !$this->m_oRegion->hasContent() ? Encoding::trim($sContent) : $sContent;
+			default : return $sContent;
+		}		
 	}
 	
 	public function getDepthOffset($nPreChange = 0, $nPostChange = 0) {
