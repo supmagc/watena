@@ -4,6 +4,10 @@ if(!defined('PATH_DATA')) define('PATH_DATA', realpath(dirname(__FILE__) . '/../
 if(!defined('PATH_LIBS')) define('PATH_LIBS', realpath(dirname(__FILE__) . '/../libs'));
 if(!defined('PATH_ROOT')) define('PATH_ROOT', realpath(dirname(__FILE__) . '/..'));
 
+if(!defined('NLOG4PHP')) {
+	define('LOG4PHP', true);
+}
+
 if(!defined('NEXCEPTIONCATCH')) {
 	define('EXCEPTIONCATCH', true);
 	function exception_handler(Exception $e) {
