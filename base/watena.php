@@ -4,8 +4,13 @@ if(!defined('PATH_DATA')) define('PATH_DATA', realpath(dirname(__FILE__) . '/../
 if(!defined('PATH_LIBS')) define('PATH_LIBS', realpath(dirname(__FILE__) . '/../libs'));
 if(!defined('PATH_ROOT')) define('PATH_ROOT', realpath(dirname(__FILE__) . '/..'));
 
+if(function_exists('__autoload')) {
+	die('You are not allowed to define __autoload(); since a part of the framework depends on it.');
+}
+
 if(!defined('NLOG4PHP')) {
 	define('LOG4PHP', true);
+	require_once PATH_BASE . '/logger/Logger.php';
 }
 
 if(!defined('NEXCEPTIONCATCH')) {
