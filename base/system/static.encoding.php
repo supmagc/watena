@@ -2,7 +2,7 @@
 
 class Encoding {
 	
-	private static $s_sEncoding = null;
+	private static $s_sEncoding = 'UTF-8';
 	
 	public static function init($sCharset) {
 		self::$s_sEncoding = $sCharset;
