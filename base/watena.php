@@ -8,11 +8,6 @@ if(function_exists('__autoload')) {
 	die('You are not allowed to define __autoload(); since a part of the framework depends on it.');
 }
 
-if(!defined('NLOG4PHP')) {
-	define('LOG4PHP', true);
-	require_once PATH_BASE . '/logger/Logger.php';
-}
-
 if(!defined('NEXCEPTIONCATCH')) {
 	define('EXCEPTIONCATCH', true);
 	function exception_handler(Exception $e) {
@@ -50,6 +45,9 @@ if(!defined('NWATENA')) {
 	// ############################################################
 	// Base inclusions needed for all Watena classes
 	// ############################################################
+	require_once PATH_BASE . '/system/static.encoding.php';
+	require_once PATH_BASE . '/system/static.logger.php';
+	require_once PATH_BASE . '/system/interface.ilog.php';
 	require_once PATH_BASE . '/system/interface.icache.php';
 	require_once PATH_BASE . '/system/exception.watception.php';
 	require_once PATH_BASE . '/system/class.object.php';
@@ -74,6 +72,8 @@ if(!defined('NWATENA')) {
 	// ############################################################
 	// Load the application framework
 	// ############################################################
-	new Watena();
+	$aConfig = parse_ini_file(PATH_BASE . '/watena.ini', true);
+	if(!$aConfig) die('No readable Watena config file could be found.');
+	new Watena($aConfig);
 }
 ?>

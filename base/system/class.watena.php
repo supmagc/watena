@@ -9,10 +9,7 @@ class Watena extends Configurable {
 	private $m_oView = null;
 	private $m_oController = null;
 	
-	public function __construct() {		
-		// Load the config-data and overwrite defaults with specific host settings
-		$aConfig = parse_ini_file(PATH_BASE . '/watena.ini', true);
-		if(!$aConfig) parent::terminate('No readable Watena config file could be found.');
+	public function __construct($aConfig) {		
 		parent::__construct($aConfig);
 		$this->assureEnvironment();
 		
