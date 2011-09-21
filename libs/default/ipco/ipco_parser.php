@@ -146,7 +146,7 @@ class IPCO_Parser extends IPCO_Base {
 			if(is_array($aContentParserParts)) {
 				foreach($aContentParserParts as $oContentParserPart) {
 					$sTrimmable = Encoding::substring($sContent, $nOffset, $oContentParserPart->getStart() - $nOffset);
-					if(!$this->m_bRemoveWhitespaces || Encoding::length($sTrimmable = $this->removeWhitespaces($sTrimmable)) > 0)
+					if(Encoding::length($sTrimmable = $this->removeWhitespaces($sTrimmable)) > 0)
 						$this->m_oRegion->addLine($this->getDepthOffset() . IPCO_ParserSettings::getContent($sTrimmable));
 					$this->m_oRegion->addLine($this->getDepthOffset() . IPCO_ParserSettings::getContentParserPart(
 						$oContentParserPart->getMethod(),
@@ -156,7 +156,7 @@ class IPCO_Parser extends IPCO_Base {
 				}
 			}
 			$sTrimmable = Encoding::substring($sContent, $nOffset);
-			if(!$this->m_bRemoveWhitespaces || Encoding::length($sTrimmable = $this->removeWhitespaces($sTrimmable)) > 0)
+			if(Encoding::length($sTrimmable = $this->removeWhitespaces($sTrimmable)) > 0)
 				$this->m_oRegion->addLine($this->getDepthOffset() . IPCO_ParserSettings::getContent($sTrimmable));
 		}
 	}
