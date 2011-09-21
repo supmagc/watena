@@ -29,10 +29,6 @@ class Watena extends Configurable {
 		
 		$this->m_oController->process($this->m_oModel, $this->m_oView);
 		$this->m_oView->render($this->m_oModel);
-		
-		/*if($this->m_oController) $this->m_oController->render();
-		else parent::terminate('No valid controller could be loaded for the given mapping.');
-		*/
 	}
 
 	/**
