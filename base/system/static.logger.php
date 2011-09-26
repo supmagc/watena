@@ -2,15 +2,26 @@
 
 class Logger {
 	
+	const ERROR = 0;
+	const WARNING = 1;
+	const INFO = 2;
+	const EXCEPTION = 3;
+	const DEBUG = 4;
+	
 	private $m_sIdentifier;
 	
 	private static $s_aInstances = array();
+	private static $s_aProcessors = array();
 	
 	private final function __construct($sIdentifier) {
 		$this->m_sIdentifier = $sIdentifier;
 	}
 	
 	public final function debug($sMessage, $aData = array()) {
+	
+	}
+	
+	public final function exception(Exception $oException) {
 	
 	}
 	
@@ -31,6 +42,10 @@ class Logger {
 			self::$s_aInstances[$sIdentifier] = new Logger($sIdentifier);
 		}
 		return self::$s_aInstances[$sIdentifier];
+	}
+	
+	public static function registerLogProcessor($sIdentifier) {
+		
 	}
 }
 
