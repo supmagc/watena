@@ -2,11 +2,12 @@
 
 class Logger {
 	
-	const ERROR = 0;
-	const WARNING = 1;
-	const INFO = 2;
-	const EXCEPTION = 3;
-	const DEBUG = 4;
+	const ALWAYS = 0;
+	const ERROR = 1;
+	const WARNING = 2;
+	const INFO = 3;
+	const EXCEPTION = 4;
+	const DEBUG = 5;
 	
 	private $m_sIdentifier;
 	
@@ -15,6 +16,20 @@ class Logger {
 	
 	private final function __construct($sIdentifier) {
 		$this->m_sIdentifier = $sIdentifier;
+	}
+	
+	public final function getIdentifier() {
+		return $this->m_sIdentifier;
+	}
+	
+	public final function getProcessors() {
+		return isset(self::$s_aProcessors[$this->getIdentifier()]) ? self::$s_aProcessors[$this->getIdentifier()] : array();
+	}
+	
+	public final function log($nCode = self::ALWAYS, $sMessage = 'empty log-message', Exception $oException = null, $aData = array()) {
+		foreach($this->getProcessors() as $oProcessor) {
+			$oProcessor
+		}
 	}
 	
 	public final function debug($sMessage, $aData = array()) {
@@ -44,8 +59,11 @@ class Logger {
 		return self::$s_aInstances[$sIdentifier];
 	}
 	
-	public static function registerLogProcessor($sIdentifier) {
-		
+	public static function registerProcessor($sIdentifier, $oProcessor) {
+		if(!isset(self::$s_aProcessors[$sIdentifier])) {
+			self::$s_aProcessors[$sIdentifier] = array();
+		}
+		self::$s_aProcessors[$sIdentifier] []= $oProcessor;
 	}
 }
 
