@@ -13,11 +13,7 @@ class Object {
 	protected function __construct() {
 		if(get_class($this) == "Watena") self::$s_oSingleton = $this;
 	}
-	
-	protected final function terminate($sMessage) {
-		die($sMessage);
-	}
-	
+		
 	/**
 	 * @return Watena
 	 */
