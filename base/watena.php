@@ -11,10 +11,7 @@ if(function_exists('__autoload')) {
 if(!defined('NEXCEPTIONCATCH')) {
 	define('EXCEPTIONCATCH', true);
 	function exception_handler(Exception $e) {
-		if(class_exists('Logger', false)) {
-			Logger::processUnhandledException($e);
-		}
-		else if(is_a($e, 'WatCeption')) {
+		if(is_a($e, 'WatCeption')) {
 			echo "<h2>{$e->getDebugMessage()}</h2>";
 			echo '<pre>';
 			print_r($e->getData());

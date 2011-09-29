@@ -13,7 +13,35 @@ class Object {
 	protected function __construct() {
 		if(get_class($this) == "Watena") self::$s_oSingleton = $this;
 	}
-		
+	
+	public final function debug($sMessage, $aData = array()) {
+	
+	}
+	
+	public final function exception(Exception $oException) {
+	
+	}
+	
+	public final function info($sMessage, $aData = array()) {
+	
+	}
+	
+	public final function warning($sMessage, $aData = array()) {
+	
+	}
+	
+	public final function error($sMessage, $aData = array()) {
+	
+	}
+	
+	public final function exceptionUnhandled(Exception $oException) {
+
+	}
+	
+	public final function terminate($sMessage, $aData = array()) {
+
+	}
+	
 	/**
 	 * @return Watena
 	 */

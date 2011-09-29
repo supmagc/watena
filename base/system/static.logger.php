@@ -16,6 +16,7 @@ class Logger {
 	
 	private static $s_aInstances = array();
 	private static $s_aProcessors = array();
+	private static $s_oGlobalLogger;
 	
 	private final function __construct($sIdentifier) {
 		$this->m_sIdentifier = $sIdentifier;
@@ -37,16 +38,11 @@ class Logger {
 		return isset(self::$s_aProcessors[$this->getIdentifier()]) ? self::$s_aProcessors[$this->getIdentifier()] : array();
 	}
 	
-	public final function log($nCode = self::ALWAYS, $sMessage = 'empty log-message', Exception $oException = null, $aData = array()) {
-		foreach($this->getProcessors() as $oProcessor) {
-		}
-	}
-	
 	public final function debug($sMessage, $aData = array()) {
 	
 	}
 	
-	public final function exceptionHandled(Exception $oException) {
+	public final function exception(Exception $oException) {
 	
 	}
 	
@@ -63,12 +59,13 @@ class Logger {
 	}
 	
 	public final function exceptionUnhandled(Exception $oException) {
-		
+		exit;
 	}
 	
 	public final function terminate($sMessage, $aData = array()) {
-		
+		exit;
 	}
+	
 	
 	public static final function getInstance($sIdentifier) {
 		if(!isset(self::$s_aInstances[$sIdentifier])) {
@@ -77,15 +74,30 @@ class Logger {
 		return self::$s_aInstances[$sIdentifier];
 	}
 	
-	public static final function processUnhandledException(Exception $oException) {
-		
+	public static final function processError($errno, $errstr, $errfile, $errline) {
+		switch($nCode) {
+			// TODO: process this to the appropriate loggings
+		}
+		throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
 	}
 	
-	public static function registerProcessor($sIdentifier, $oProcessor) {
-		if(!isset(self::$s_aProcessors[$sIdentifier])) {
-			self::$s_aProcessors[$sIdentifier] = array();
+	public static final function processException(Exception $oException) {
+		if(is_a($oException, 'WatCeption')) {
+			$oObject = $oException->getContext();
+			$oObject->getLogger()->exceptionUnhandled($oException);
 		}
-		self::$s_aProcessors[$sIdentifier] []= $oProcessor;
+		else {
+			// TODO: generic logger-instance
+		}
+	}
+	
+	public static final function init() {
+		set_error_handler('Logger::processError');
+		set_exception_handler('Logger::processException');
+	}
+	
+	public static final function registerProcessor($oProcessor) {
+		self::$s_aProcessors []= $oProcessor;
 	}
 }
 
