@@ -23,11 +23,11 @@ class Logger {
 	}
 
 	public final function setFilterLevel($nLevel) {
-		
+		$this->m_nFilterLevel = $nLevel;
 	}
 	
 	public final function getFilterLevel() {
-		
+		return $this->m_nFilterLevel;
 	}
 	
 	public final function getIdentifier() {
@@ -74,20 +74,40 @@ class Logger {
 		return self::$s_aInstances[$sIdentifier];
 	}
 	
-	public static final function processError($errno, $errstr, $errfile, $errline) {
+	public static final function processError($nCode, $sMessage, $errfile, $errline) {
+		$oLogger = self::getGenericInstance();
 		switch($nCode) {
-			// TODO: process this to the appropriate loggings
+			case E_ERROR :
+			case E_USER_ERROR :
+			case E_CORE_ERROR :
+			case E_COMPILE_ERROR :
+			case E_RECOVERABLE_ERROR :
+				$oLogger->error($sMessage);
+				break;
+			case E_WARNING :
+			case E_USER_WARNING :
+			case E_CORE_WARNING :
+			case E_COMPILE_WARNING :
+				$oLogger->warning($sMessage);
+				break;
+			case E_NOTICE :
+			case E_USER_NOTICE :
+			case E_STRICT :
+			case E_DEPRECATED :
+			case E_USER_DEPRECATED :
+				$oLogger->warning($sMessage);
+				break;
 		}
-		throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
+		throw new ErrorException($sMessage, 0, $nCode, $errfile, $errline);
 	}
 	
 	public static final function processException(Exception $oException) {
-		if(is_a($oException, 'WatCeption')) {
+		if(is_a($oException, 'WatCeption') && is_a($oException->getContext(), 'Object')) {
 			$oObject = $oException->getContext();
 			$oObject->getLogger()->exceptionUnhandled($oException);
 		}
 		else {
-			// TODO: generic logger-instance
+			self::getGenericInstance()->exceptionUnhandled($oException);
 		}
 	}
 	
@@ -98,6 +118,11 @@ class Logger {
 	
 	public static final function registerProcessor($oProcessor) {
 		self::$s_aProcessors []= $oProcessor;
+	}
+	
+	public static final function getGenericInstance() {
+		// TODO: create generic logger
+		return null;
 	}
 }
 

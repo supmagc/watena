@@ -1,7 +1,7 @@
 #Block the visibility of these documents
 <Files .htaccess>
-  order allow,deny
-  deny from all
+  Order Allow, Deny
+  Deny from all
 </Files>
 
 #Security options:
