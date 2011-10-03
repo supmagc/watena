@@ -1,6 +1,6 @@
 #Block the visibility of these documents
 <Files .htaccess>
-  Order Allow, Deny
+  Order Allow,Deny
   Deny from all
 </Files>
 

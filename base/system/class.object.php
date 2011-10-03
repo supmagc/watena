@@ -10,36 +10,11 @@ class Object {
 	
 	private static $s_oSingleton;
 	
+	private $m_oLogger;
+	
 	protected function __construct() {
 		if(get_class($this) == "Watena") self::$s_oSingleton = $this;
-	}
-	
-	public final function debug($sMessage, $aData = array()) {
-	
-	}
-	
-	public final function exception(Exception $oException) {
-	
-	}
-	
-	public final function info($sMessage, $aData = array()) {
-	
-	}
-	
-	public final function warning($sMessage, $aData = array()) {
-	
-	}
-	
-	public final function error($sMessage, $aData = array()) {
-	
-	}
-	
-	public final function exceptionUnhandled(Exception $oException) {
-
-	}
-	
-	public final function terminate($sMessage, $aData = array()) {
-
+		$this->m_oLogger = Logger::getInstance(get_class($this));
 	}
 	
 	/**
@@ -49,6 +24,15 @@ class Object {
 		return self::$s_oSingleton;
 	}
 
+	/**
+	 * Retrurn the logger-instance linked to this class
+	 * 
+	 * @return Logger
+	 */
+	public final function getLogger() {
+		$this->m_oLogger;
+	}
+	
 	public function toString() {
 		return get_class($this);
 	}

@@ -11,15 +11,19 @@ class Logger {
 	const EXCEPTION_HANDLED = 6;
 	const DEBUG = 7;
 	
+	const GENERIC_IDENTIFIER = '__GENERIC__';
+	
 	private $m_sIdentifier;
-	private $m_nFilterLevel = self::ERROR;
+	private $m_nFilterLevel;
 	
 	private static $s_aInstances = array();
 	private static $s_aProcessors = array();
-	private static $s_oGlobalLogger;
+	private static $s_oGenericLogger;
+	private static $s_nDefaultFilterLevel = self::ERROR;
 	
 	private final function __construct($sIdentifier) {
 		$this->m_sIdentifier = $sIdentifier;
+		$this->m_nFilterLevel = self::$s_nDefaultFilterLevel;
 	}
 
 	public final function setFilterLevel($nLevel) {
@@ -38,31 +42,50 @@ class Logger {
 		return isset(self::$s_aProcessors[$this->getIdentifier()]) ? self::$s_aProcessors[$this->getIdentifier()] : array();
 	}
 	
-	public final function debug($sMessage, $aData = array()) {
+	public final function log($nLevel, $nStrip, $sMessage, array $aData = array(), Exception $oException = null) {
+		if($nLevel <= $this->getFilterLevel()) {
+			$aTrace = debug_backtrace();
+			$sFile = __FILE__;
+			$nLine = __LINE__;
+			if($nStrip > 0) {
+				$aTrace = array_slice($aTrace, $nStrip - 1);
+				$aLast = array_shift($aTrace);
+				$sFile = $aLast['file'];
+				$nLine = $aLast['line'];
+			}
+			foreach(self::$s_aProcessors as $oProcessor) {
+				$oProcessor->process($this->getIdentifier(), $nLevel, $sFile, $nLine, $sMessage, $aData, $oException, $aTrace);
+			}
+		}
+	}
 	
+	public final function debug($sMessage, $aData = array()) {
+		$this->log(self::DEBUG, $sMessage, $aData);
 	}
 	
 	public final function exception(Exception $oException) {
-	
+		$this->log(self::EXCEPTION_HANDLED, 'An handled exception occured', array(), $oException);
 	}
 	
 	public final function info($sMessage, $aData = array()) {
-		
+		$this->log(self::INFO, $sMessage, $aData);
 	}
 	
 	public final function warning($sMessage, $aData = array()) {
-	
+		$this->log(self::WARNING, $sMessage, $aData);
 	}
 	
 	public final function error($sMessage, $aData = array()) {
-	
+		$this->log(self::ERROR, $sMessage, $aData);
 	}
 	
 	public final function exceptionUnhandled(Exception $oException) {
+		$this->log(self::EXCEPTION_UNHANDLED, 'An unhandled exception occured', array(), $oException);
 		exit;
 	}
 	
 	public final function terminate($sMessage, $aData = array()) {
+		$this->log(self::TERMINATE, $sMessage, $aData);
 		exit;
 	}
 	
@@ -82,20 +105,20 @@ class Logger {
 			case E_CORE_ERROR :
 			case E_COMPILE_ERROR :
 			case E_RECOVERABLE_ERROR :
-				$oLogger->error($sMessage);
+				$oLogger->log(self::ERROR, 4, $sMessage);
 				break;
 			case E_WARNING :
 			case E_USER_WARNING :
 			case E_CORE_WARNING :
 			case E_COMPILE_WARNING :
-				$oLogger->warning($sMessage);
+				$oLogger->log(self::WARNING, 4, $sMessage);
 				break;
 			case E_NOTICE :
 			case E_USER_NOTICE :
 			case E_STRICT :
 			case E_DEPRECATED :
 			case E_USER_DEPRECATED :
-				$oLogger->warning($sMessage);
+				$oLogger->log(self::INFO, 4, $sMessage);
 				break;
 		}
 		throw new ErrorException($sMessage, 0, $nCode, $errfile, $errline);
@@ -121,8 +144,7 @@ class Logger {
 	}
 	
 	public static final function getGenericInstance() {
-		// TODO: create generic logger
-		return null;
+		return self::getInstance(self::GENERIC_IDENTIFIER);
 	}
 }
 
