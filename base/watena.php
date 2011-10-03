@@ -47,7 +47,7 @@ if(!defined('NWATENA')) {
 	// ############################################################
 	require_once PATH_BASE . '/system/static.encoding.php';
 	require_once PATH_BASE . '/system/static.logger.php';
-	require_once PATH_BASE . '/system/interface.ilog.php';
+	require_once PATH_BASE . '/system/interface.ilogprocessor.php';
 	require_once PATH_BASE . '/system/interface.icache.php';
 	require_once PATH_BASE . '/system/exception.watception.php';
 	require_once PATH_BASE . '/system/class.object.php';
