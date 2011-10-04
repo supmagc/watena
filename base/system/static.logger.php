@@ -108,6 +108,9 @@ class Logger {
 	}
 	
 	public static final function processException(Exception $oException) {
+		if(is_a($oException, 'WatCeption') && $oException->getInnerException() !== null) {
+			self::processException($oException->getInnerException());
+		}
 		$oLogger = null;
 		if(is_a($oException, 'WatCeption') && is_a($oException->getContext(), 'Object')) {
 			$oObject = $oException->getContext();
@@ -118,7 +121,10 @@ class Logger {
 		}
 		
 		if($oLogger != null) {
-			$oLogger->log(self::TERMINATE, $oException->getFile(), $oException->getLine(), $oException->getMessage(), array(), $oException->getTrace());
+			$aTrace = $oException->getTrace();
+			if(is_a($oException, 'ErrorException'))
+				$aTrace = array_slice($aTrace, 2);
+			$oLogger->log(self::TERMINATE, $oException->getFile(), $oException->getLine(), $oException->getMessage(), array(), $aTrace);
 		}
 		exit; // explicit call this (but shoudn't be needed)
 	}
