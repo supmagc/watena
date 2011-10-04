@@ -37,27 +37,15 @@ class Logger {
 		return $this->m_sIdentifier;
 	}
 	
-	public final function getProcessors() {
-		return isset(self::$s_aProcessors[$this->getIdentifier()]) ? self::$s_aProcessors[$this->getIdentifier()] : array();
-	}
-	
-	public final function log($nLevel, $nStrip, $sMessage, array $aData = array(), Exception $oException = null) {
+	public final function log($nLevel, $sFile, $nLine, $sMessage, array $aData = array(), array $aTrace = array()) {
 		if($nLevel <= $this->getFilterLevel()) {
-			$aTrace = debug_backtrace();
-			$sFile = $oException === null ? __FILE__ : $oException->getFile();
-			$nLine = $oException === null ? __LINE__ : $oException->getLine();
-			if($nStrip > 0) {
-				$aTrace = array_slice($aTrace, $nStrip - 1);
-				$aLast = array_shift($aTrace);
-				$sFile = $aLast['file'];
-				$nLine = $aLast['line'];
-			}
 			foreach(self::$s_aProcessors as $oProcessor) {
-				$oProcessor->process($this->getIdentifier(), $nLevel, $sFile, $nLine, $sMessage, $aData, $oException, $aTrace);
+				$oProcessor->process($this->getIdentifier(), $nLevel, $sFile, $nLine, $sMessage, $aData, $aTrace);
 			}
 		}
 	}
 	
+	/*
 	public final function debug($sMessage, $aData = array()) {
 		$this->log(self::DEBUG, 1, $sMessage, $aData);
 	}
@@ -82,7 +70,7 @@ class Logger {
 		$this->log(self::TERMINATE, $sMessage, $aData);
 		exit;
 	}
-	
+	*/
 	
 	public static final function getInstance($sIdentifier) {
 		if(!isset(self::$s_aInstances[$sIdentifier])) {
@@ -91,31 +79,32 @@ class Logger {
 		return self::$s_aInstances[$sIdentifier];
 	}
 	
-	public static final function processError($nCode, $sMessage, $errfile, $errline) {
+	public static final function processError($nCode, $sMessage, $sFile, $nLine) {
 		$oLogger = self::getGenericInstance();
+		$aTrace = array_slice(debug_backtrace(), 2);
 		switch($nCode) {
 			case E_ERROR :
 			case E_USER_ERROR :
 			case E_CORE_ERROR :
 			case E_COMPILE_ERROR :
 			case E_RECOVERABLE_ERROR :
-				$oLogger->log(self::ERROR, 3, $sMessage);
+				$oLogger->log(self::ERROR, $sFile, $nLine, $sMessage, array(), $aTrace);
 				break;
 			case E_WARNING :
 			case E_USER_WARNING :
 			case E_CORE_WARNING :
 			case E_COMPILE_WARNING :
-				$oLogger->log(self::WARNING, 3, $sMessage);
+				$oLogger->log(self::WARNING, $sFile, $nLine, $sMessage, array(), $aTrace);
 				break;
 			case E_NOTICE :
 			case E_USER_NOTICE :
 			case E_STRICT :
 			case E_DEPRECATED :
 			case E_USER_DEPRECATED :
-				$oLogger->log(self::INFO, 3, $sMessage);
+				$oLogger->log(self::INFO, $sFile, $nLine, $sMessage, array(), $aTrace);
 				break;
 		}
-		throw new ErrorException($sMessage, 0, $nCode, $errfile, $errline);
+		throw new ErrorException($sMessage, 0, $nCode, $sFile, $nLine);
 	}
 	
 	public static final function processException(Exception $oException) {
@@ -129,7 +118,7 @@ class Logger {
 		}
 		
 		if($oLogger != null) {
-			$oLogger->log(self::TERMINATE, 0, 'An unhandled exception or error occured.', array(), $oException);
+			$oLogger->log(self::TERMINATE, $oException->getFile(), $oException->getLine(), $oException->getMessage(), array(), $oException->getTrace());
 		}
 		exit; // explicit call this (but shoudn't be needed)
 	}
