@@ -141,6 +141,28 @@ class Logger {
 	public static final function getGenericInstance() {
 		return self::getInstance(self::GENERIC_IDENTIFIER);
 	}
+	
+	public static final function getFileLineTraceLogger($nSteps) {
+		// TODO: test this
+		++$nSteps;
+		$aTrace = array_slice(debug_backtrace(true), $nSteps);
+		$aPart = array_shift();
+		$sFile = isset($aPart['file']) ? $aPart['file'] : '';
+		$nLine = isset($aPart['line']) ? $aPart['line'] : '';
+		$oObject = isset($aPart['object']) ? $aPart['object'] : null;
+		$sClass = isset($aPart['class']) ? $aPart['class'] : '';
+		if(is_a($oObject, 'Object')) {
+			$oObject = $oObject->getLogger();
+		}
+		else if(Encoding::length($sClass) > 0) {
+			$oObject = self::getInstance($sClass);
+		}
+		else {
+			$oObject = self::getGenericInstance();
+		}
+		
+		return array($sFile, $nLine, $aTrace, $oObject);
+	}
 }
 
 ?>
