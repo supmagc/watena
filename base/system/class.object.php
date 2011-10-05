@@ -30,7 +30,7 @@ class Object {
 	 * @return Logger
 	 */
 	public final function getLogger() {
-		$this->m_oLogger;
+		return $this->m_oLogger;
 	}
 	
 	public function toString() {
