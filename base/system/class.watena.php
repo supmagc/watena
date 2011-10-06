@@ -22,6 +22,7 @@ class Watena extends Configurable {
 			Logger::registerProcessor($this->m_oContext->getPlugin($sProcessor, 'ILogProcessor'));
 		}
 		Logger::init();
+		$this->getLogger()->info('sdliuvh {name} sdfk<br />bvhyu', array('name' =>'Jelle Voet'));
 		$b = $a == true;
 		trigger_error('pomoijh', E_USER_ERROR);
 		$sCachePlugin = self::getConfig('CACHE_ENGINE', null);
