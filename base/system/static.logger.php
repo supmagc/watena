@@ -37,7 +37,13 @@ class Logger {
 		return $this->m_sIdentifier;
 	}
 	
-	public final function log($nLevel, $sFile, $nLine, $sMessage, array $aData = array(), array $aTrace = array()) {
+	private final function logCall($nLevel, $sMessage, array $aData = array()) {
+		$aTrace = array_slice(debug_backtrace(false), 1);
+		$aPart = array_shift($aTrace);
+		$this->logFull($nLevel, $aPart['file'], $aPart['line'], $sMessage, $aData, $aTrace);
+	}
+	
+	private final function logFull($nLevel, $sFile, $nLine, $sMessage, array $aData = array(), array $aTrace = array()) {
 		if($nLevel >= $this->getFilterLevel()) {
 			foreach(self::$s_aProcessors as $oProcessor) {
 				$oProcessor->process($this->getIdentifier(), $nLevel, $sFile, $nLine, $sMessage, $aData, $aTrace);
@@ -45,32 +51,30 @@ class Logger {
 		}
 	}
 	
-	/*
 	public final function debug($sMessage, $aData = array()) {
-		$this->log(self::DEBUG, 1, $sMessage, $aData);
+		$this->logCall(self::DEBUG, $sMessage, $aData);
 	}
 	
 	public final function info($sMessage, $aData = array()) {
-		$this->log(self::INFO, 1, $sMessage, $aData);
+		$this->logCall(self::INFO, $sMessage, $aData);
 	}
 	
 	public final function warning($sMessage, $aData = array()) {
-		$this->log(self::WARNING, 1, $sMessage, $aData);
+		$this->logCall(self::WARNING, $sMessage, $aData);
 	}
 	
 	public final function error($sMessage, $aData = array()) {
-		$this->log(self::ERROR, 1, $sMessage, $aData);
+		$this->logCall(self::ERROR, $sMessage, $aData);
 	}
 	
 	public final function exception(Exception $oException) {
-		$this->log(self::EXCEPTION, 0, 'An handled exception occured', array(), $oException);
+		//$this->log(self::EXCEPTION, 'An handled exception occured', array(), $oException);
 	}
 	
 	public final function terminate($sMessage, $aData = array()) {
-		$this->log(self::TERMINATE, $sMessage, $aData);
+		$this->logCall(self::TERMINATE, $sMessage, $aData);
 		exit;
 	}
-	*/
 	
 	public static final function getInstance($sIdentifier) {
 		if(!isset(self::$s_aInstances[$sIdentifier])) {
@@ -96,20 +100,20 @@ class Logger {
 			case E_CORE_ERROR :
 			case E_COMPILE_ERROR :
 			case E_RECOVERABLE_ERROR :
-				$oLogger->log(self::ERROR, $sFile, $nLine, $sMessage, array(), $aTrace);
+				$oLogger->logFull(self::ERROR, $sFile, $nLine, $sMessage, array(), $aTrace);
 				break;
 			case E_WARNING :
 			case E_USER_WARNING :
 			case E_CORE_WARNING :
 			case E_COMPILE_WARNING :
-				$oLogger->log(self::WARNING, $sFile, $nLine, $sMessage, array(), $aTrace);
+				$oLogger->logFull(self::WARNING, $sFile, $nLine, $sMessage, array(), $aTrace);
 				break;
 			case E_NOTICE :
 			case E_USER_NOTICE :
 			case E_STRICT :
 			case E_DEPRECATED :
 			case E_USER_DEPRECATED :
-				$oLogger->log(self::INFO, $sFile, $nLine, $sMessage, array(), $aTrace);
+				$oLogger->logFull(self::INFO, $sFile, $nLine, $sMessage, array(), $aTrace);
 				break;
 		}
 		throw new ErrorException($sMessage, 0, $nCode, $sFile, $nLine);
@@ -134,7 +138,7 @@ class Logger {
 			$oLogger = self::getGenericInstance();
 		}
 		
-		$oLogger->log(self::TERMINATE, $oException->getFile(), $oException->getLine(), $oException->getMessage(), array(), $aTrace);
+		$oLogger->logFull(self::TERMINATE, $oException->getFile(), $oException->getLine(), $oException->getMessage(), array(), $aTrace);
 	}
 	
 	public static final function init() {
