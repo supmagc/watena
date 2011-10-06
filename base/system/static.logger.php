@@ -10,7 +10,7 @@ class Logger {
 	const ERROR = 5;
 	const TERMINATE = 6;
 	
-	const GENERIC_IDENTIFIER = '__GENERIC__';
+	const GENERIC_IDENTIFIER = 'GLOBAL';
 	
 	private $m_sIdentifier;
 	private $m_nFilterLevel;
@@ -80,10 +80,15 @@ class Logger {
 	}
 	
 	public static final function processError($nCode, $sMessage, $sFile, $nLine) {
+		$aTrace = debug_backtrace(false);
 		if(in_array($nCode, array(E_USER_NOTICE, E_USER_WARNING, E_USER_ERROR, E_USER_DEPRECATED)))
-			list($aTrace, $oLogger) = self::getTraceAndLogger(1);
+			array_shift($aTrace);
+		$aPart = array_shift($aTrace);
+		$sClass = (isset($aTrace[0]) && isset($aTrace[0]['class'])) ? $aTrace[0]['class'] : false;
+		if($sClass)
+			$oLogger = self::getInstance($sClass);
 		else
-			list($aTrace, $oLogger) = self::getTraceAndLogger(0);
+			$oLogger = self::getGenericInstance();
 		
 		switch($nCode) {
 			case E_ERROR :
@@ -111,18 +116,24 @@ class Logger {
 	}
 	
 	public static final function processException(Exception $oException) {
-		$oLogger = self::getGenericInstance();
-		if(is_a($oException, 'WatCeption')) {
-			if($oException->getInnerException() !== null) {
-				self::processException($oException->getInnerException());
-			}
-			if(is_a($oException->getContext(), 'Object')) {
-				$oLogger = $oException->getContext()->getLogger();
-			}
+		if(is_a($oException, 'WatCeption') && $oException->getInnerException() !== null) {
+			self::processException($oException->getInnerException());
 		}
+		
 		$aTrace = $oException->getTrace();
 		if(is_a($oException, 'ErrorException'))
-			$aTrace = array_slice($aTrace, 1);
+			 array_shift($aTrace);
+		
+		if(is_a($oException, 'WatCeption') && is_a($oException->getContext(), 'Object')) {
+			$oLogger = $oException->getContext()->getLogger();
+		}
+		else if(isset($aTrace[0]) && isset($aTrace[0]['class'])) {
+			$oLogger = self::getInstance($aTrace[0]['class']);
+		}
+		else {
+			$oLogger = self::getGenericInstance();
+		}
+		
 		$oLogger->log(self::TERMINATE, $oException->getFile(), $oException->getLine(), $oException->getMessage(), array(), $aTrace);
 	}
 	
@@ -139,21 +150,17 @@ class Logger {
 		return self::getInstance(self::GENERIC_IDENTIFIER);
 	}
 	
-	public static final function getTraceAndLogger($nSteps) {
-		$aTrace = array_slice(debug_backtrace(true), $nSteps + 1);
-		$aPart = array_shift($aTrace);
-		$oObject = isset($aTrace[0]['object']) ? $aTrace[0]['object'] : null;
-		$sClass = isset($aTrace[0]['class']) ? $aTrace[0]['class'] : '';
-		if(is_a($oObject, 'Object')) {
-			$oObject = $oObject->getLogger();
+	public static final function getLevelName($nLevel) {
+		switch($nLevel) {
+			case self::ALWAYS : return 'ALWAYS';
+			case self::DEBUG : return 'DEBUG';
+			case self::EXCEPTION : return 'EXCEPTION';
+			case self::INFO : return 'INFO';
+			case self::WARNING : return 'WARNING';
+			case self::ERROR : return 'ERROR';
+			case self::TERMINATE : return 'TERMINATE';
+			default : return 'UNKNOWN';
 		}
-		else if(Encoding::length($sClass) > 0) {
-			$oObject = self::getInstance($sClass);
-		}
-		else {
-			$oObject = self::getGenericInstance();
-		}
-		return array($aTrace, $oObject);
 	}
 }
 

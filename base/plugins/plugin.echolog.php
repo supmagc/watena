@@ -3,10 +3,30 @@
 class EchoLog extends Plugin implements ILogProcessor {
 	
 	public function process($sIdentifier, $nLevel, $sFile, $nLine, $sMessage, array $aData = array(), array $aTrace = array()) {
-		$args = func_get_args();
-		echo '<pre>';
-		print_r($args);
-		echo '</pre>';
+		$sLevel = ucfirst(Logger::getLevelName($nLevel));
+		echo <<<EOT
+			<fieldset style="font: 14px arial; letter-spacing: 1; margin: 10px; color: #000; background: #FFF;">
+				<legend style="font-variant: small-caps;">Logger: $sLevel ($sIdentifier)</legend>
+			<table cellspacing="0" cellpadding="0" style="font-size: 10px; color: #666;">
+				<tr>
+					<td>Message: </td>
+					<td><strong>$sMessage</strong></td>
+				</tr>
+				<tr>
+					<td>Origin: </td>
+					<td><strong>$sFile</strong> (<i>line: $nLine</i>)</td>
+				</tr>
+				<tr>
+					<td>Data: </td>
+					<td><strong>Show/Hide</strong></td>
+				</tr>
+				<tr>
+					<td>Trace: </td>
+					<td><strong>Show/Hide</strong></td>
+				</tr>
+			</table>
+			</fieldset>
+EOT;
 	}
 	
 	/**

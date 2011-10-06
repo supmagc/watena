@@ -14,7 +14,6 @@ class Object {
 	
 	protected function __construct() {
 		if(get_class($this) == "Watena") self::$s_oSingleton = $this;
-		$this->m_oLogger = Logger::getInstance(get_class($this));
 	}
 	
 	/**
@@ -30,6 +29,9 @@ class Object {
 	 * @return Logger
 	 */
 	public final function getLogger() {
+		if($this->m_oLogger === null) {
+			$this->m_oLogger = Logger::getInstance(get_class($this));
+		}
 		return $this->m_oLogger;
 	}
 	
