@@ -42,6 +42,7 @@ EOT;
 					else if(is_array($sValue)) $s = 'Array';
 					else if(is_bool($sValue)) $s = $sValue ? "true" : "false";
 					else if(is_null($sValue)) $s = 'null';
+					else if(is_string($sValue)) $s = var_export($sValue, true);
 					else $s = '' . $sValue;
 					if(Encoding::length($s) > 128) $s = Encoding::substring($s, 0, 125) . '...';
 					$sReturn .= $s;
@@ -50,6 +51,9 @@ EOT;
 			}
 			$sReturn .= " - $aPart[file] (line: $aPart[line])</li>";
 		}
+		// TODO: http or https ?
+		// TODO: make this easier by adding a static getCurrent to Mapping
+		$sReturn .= '<li>http://' . $_SERVER['HTTP_HOST'] . ':' . $_SERVER['SERVER_PORT'] . $_SERVER['REQUEST_URI'] . ' [' . $_SERVER['REQUEST_METHOD'] . ']</li>';
 		return $sReturn . '</ul>';
 	}
 	
