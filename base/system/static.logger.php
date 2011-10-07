@@ -128,6 +128,10 @@ class Logger {
 		if(is_a($oException, 'ErrorException'))
 			 array_shift($aTrace);
 		
+		$aData = array();
+		if(is_a($oException, 'WatCeption'))
+			$aData = $oException->getData();
+		
 		if(is_a($oException, 'WatCeption') && is_a($oException->getContext(), 'Object')) {
 			$oLogger = $oException->getContext()->getLogger();
 		}
@@ -138,7 +142,7 @@ class Logger {
 			$oLogger = self::getGenericInstance();
 		}
 		
-		$oLogger->logFull(self::TERMINATE, $oException->getFile(), $oException->getLine(), $oException->getMessage(), array(), $aTrace);
+		$oLogger->logFull(self::TERMINATE, $oException->getFile(), $oException->getLine(), $oException->getMessage(), $aData, $aTrace);
 	}
 	
 	public static final function init() {
