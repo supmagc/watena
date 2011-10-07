@@ -8,10 +8,12 @@ class EchoLog extends Plugin implements ILogProcessor {
 		$sMessage = htmlentities(str_replace(array_map(create_function('$a', 'return \'{\'.$a.\'}\';'), array_keys($aData)), array_values($aData), $sMessage));
 		$sLevel = ucfirst(Logger::getLevelName($nLevel));
 		$nFieldID = ++self::$s_nFieldCount;
+		$sData = $this->getOpenableBox('<pre>' . htmlentities(var_export($aData, true)) . '</pre>');
+		$sTrace = $this->getOpenableBox($this->getTrace($aTrace));
 		echo <<<EOT
 <fieldset style="font: 14px arial; letter-spacing: 1; margin: 10px; color: #000; background: #FFF;">
 	<legend style="font-variant: small-caps;">Logger: $sLevel ($sIdentifier)</legend>
-<table cellspacing="0" cellpadding="0" style="font-size: 10px; color: #666; width: 100%;">
+<table cellspacing="1" cellpadding="1" style="font-size: 10px; color: #666; width: 100%;">
 	<tr>
 		<td valign="top" width="75">Message: </td>
 		<td><strong>$sMessage</strong></td>
@@ -22,40 +24,44 @@ class EchoLog extends Plugin implements ILogProcessor {
 	</tr>
 EOT;
 		if(count($aData) > 0) {
-			$sData = '<pre>' . htmlentities(var_export($aData, true)) . '</pre>';
 			echo <<<EOT
 	<tr>
 		<td valign="top">Data: </td>
-		<td>
-			<div id="DATA_SHOW_$nFieldID"><strong>
-				<a onclick="document.getElementById('DATA_SHOW_$nFieldID').style.display='none';document.getElementById('DATA_HIDE_$nFieldID').style.display='block';">Show</a>
-			</strong></div>
-			<div id="DATA_HIDE_$nFieldID" style="display:none; background: #EEE; border: 1px dotted #CCC; padding: 5px; margin: 5px;"><strong>
-				<a onclick="document.getElementById('DATA_SHOW_$nFieldID').style.display='block';document.getElementById('DATA_HIDE_$nFieldID').style.display='none';"><u>Hide</u></a>
-			</strong>
-			$sData</div>
-		</td>
+		<td>$sData</td>
 	</tr>
 EOT;
 		}
 		echo <<<EOT
 	<tr>
 		<td valign="top">Trace: </td>
-		<td>
-			<div id="TRACE_SHOW_$nFieldID"><strong>
-				<a onclick="document.getElementById('TRACE_SHOW_$nFieldID').style.display='none';document.getElementById('TRACE_HIDE_$nFieldID').style.display='block';">Show</a>
-			</strong></div>
-			<div id="TRACE_HIDE_$nFieldID" style="display:none; background: #EEE; border: 1px dotted #CCC; padding: 5px; margin: 5px;">
-				<div style="float:right;"><strong>
-					<a onclick="document.getElementById('TRACE_SHOW_$nFieldID').style.display='block';document.getElementById('TRACE_HIDE_$nFieldID').style.display='none';"><u>Hide</u></a>
-				</strong></div>
-				<div style:"float:left;">{$this->getTrace($aTrace)}</div>
-			</div>
-		</td>
+		<td>$sTrace</td>
 	</tr>
 </table>
 </fieldset>
 EOT;
+	}
+	
+	public function getOpenableBox($sData) {
+		$sID = 'ECHOLOGPART_' . ++self::$s_nFieldCount;
+		$sReturn  = '<div id="'.$sID.'_SHOW"><strong style="cursor:pointer;">';
+		$sReturn .= '<a onclick="document.getElementById(\'';
+		$sReturn .= $sID . '_SHOW';
+		$sReturn .= '\').style.display=\'none\';document.getElementById(\'';
+		$sReturn .= $sID . '_HIDE';
+		$sReturn .= '\').style.display=\'block\';">Show (currently hidden)</a>';
+		$sReturn .= '</strong></div>';
+		$sReturn .= '<div id="'.$sID.'_HIDE" style="display:none; background: #EEE; border: 1px dotted #CCC; padding: 5px; margin: 0px;">';
+		$sReturn .= '<div style="float:right;"><strong style="cursor:pointer;">';
+		$sReturn .= '<a onclick="document.getElementById(\'';
+		$sReturn .= $sID . '_SHOW';
+		$sReturn .= '\').style.display=\'block\';document.getElementById(\'';
+		$sReturn .= $sID . '_HIDE';
+		$sReturn .= '\').style.display=\'none\';"><u>Hide</u></a>';
+		$sReturn .= '</strong></div>';
+		$sReturn .= '<div style:"float:left;">';
+		$sReturn .= $sData;
+		$sReturn .= '</div>';
+		return $sReturn;
 	}
 	
 	public function getTrace(array $aTrace = array()) {
