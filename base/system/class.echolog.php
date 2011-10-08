@@ -72,7 +72,10 @@ EOT;
 			if(isset($aPart['function'])) {
 				$sReturn .= $aPart['function'];
 				$sReturn .= '(';
+				$bFirst = true;
 				foreach($aPart['args'] as $sName => $sValue) {
+					if($bFirst) $bFirst = false;
+					else $sReturn .= ', ';
 					if(is_object($sValue)) $s = get_class($sValue) . '(' . $sValue->__toString() . ')';
 					else if(is_array($sValue)) $s = 'Array';
 					else if(is_bool($sValue)) $s = $sValue ? "true" : "false";

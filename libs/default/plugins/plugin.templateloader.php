@@ -1,20 +1,19 @@
 <?php
 require_once dirname(__FILE__) . '/../ipco/ipco.php';
 
-class TemplateFile extends CacheableFile {
+class TemplateFile extends CacheableFile implements IPCO_ICallbacks {
 
 	private $m_sDataPath;
 	private $m_sClassName;
 	private $m_sExtends = null;
 	
 	public function init() {
-		$oIpco = new IPCO(array($this, '_getTemplatePath'));
-		$this->m_sClassName = $oIpco->getClassName(parent::getFilePath());
+		$oIpco = new IPCO($this->_getContentParser(), $this);
+		$this->m_sClassName = $oIpco->getTemplateClassName(parent::getFilePath());
 		$this->m_sDataPath = 'IPCO/' . $this->m_sClassName . '.inc';
 		$oFile = parent::getWatena()->getContext()->getDataFile($this->m_sDataPath);		
 		$oParser = $oIpco->createParserFromFile(parent::getFilePath());
-		$oParser->setContentParser($this->_getContentParser());
-		$oParser->setRemoveWhitespaces(true);
+		//$oParser->setRemoveWhitespaces(true);
 		$oFile->writeContent('<?php' . $oParser->parse() . '?>');
 		$this->m_sExtends = $oParser->getExtendsFilePath();
 	}
@@ -29,14 +28,18 @@ class TemplateFile extends CacheableFile {
 		$oDataFile->includeFileOnce();
 	}
 	
-	public function createTemplateClass() {
-		$oIpco = new IPCO(array($this, '_getTemplatePath'));
-		$sClass = $this->m_sClassName;
-		return new $sClass($oIpco, $this->_getContentParser());
+	public function getFilePathForTemplate($sTemplate) {
+		return parent::getWatena()->getContext()->getLibraryFilePath('templates', $sTemplate);
 	}
 	
-	public function _getTemplatePath($sTemplate) {
-		return parent::getWatena()->getContext()->getLibraryFilePath('templates', $sTemplate);
+	public function getTemplateContent($sFilePath) {
+		return TemplateFile::create($sFilePath, array(), array('contentparser' => $this->_getContentParser()))->createTemplateClass()->getContent(true);
+	}
+	
+	public function createTemplateClass() {
+		$oIpco = new IPCO($this->_getContentParser(), $this);
+		$sClass = $this->m_sClassName;
+		return new $sClass($oIpco, $this->_getContentParser());
 	}
 	
 	private function _getContentParser() {

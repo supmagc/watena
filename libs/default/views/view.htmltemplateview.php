@@ -1,7 +1,7 @@
 <?php
 include_once dirname(__FILE__) . '/../ipco/ipco.php';
 
-class HtmlTemplateView extends View implements IPCO_ICallbacks {
+class HtmlTemplateView extends View implements IPCO_IContentParser {
 
 	const CHAR_ELEMENT_BEGIN = '<';
 	const CHAR_ELEMENT_END = '>';
