@@ -27,7 +27,7 @@ class IPCO_Parser extends IPCO_Base {
 	public function __construct($sIdentifier, &$sContent, IPCO $ipco) {
 		parent::__construct($ipco);
 		$this->m_sIdentifier = $sIdentifier;
-		$this->m_sClassName = parent::getIpco()->getClassName($sIdentifier);
+		$this->m_sClassName = parent::getIpco()->getTemplateClassName($sIdentifier);
 		$this->m_sContent = $sContent;
 	}
 	
@@ -126,7 +126,7 @@ class IPCO_Parser extends IPCO_Base {
 		$this->interpretContent(Encoding::substring($this->m_sContent, $nMark, $nLength-$nMark));
 		
 		$aBuffer = array();
-		$aBuffer []= IPCO_ParserSettings::getPageHeader($this->m_sClassName, $this->m_sExtendsFilePath ? parent::getIpco()->getClassName($this->m_sExtendsFilePath) : 'IPCO_Processor');
+		$aBuffer []= IPCO_ParserSettings::getPageHeader($this->m_sClassName, $this->m_sExtendsFilePath ? parent::getIpco()->getTemplateClassName($this->m_sExtendsFilePath) : 'IPCO_Processor');
 		if($this->m_oRegion->hasContent())
 			$aBuffer []= IPCO_ParserSettings::getPageGenerator(self::REGION_MAIN);
 		foreach($this->m_aRegions as $oRegion) {
@@ -141,7 +141,7 @@ class IPCO_Parser extends IPCO_Base {
 	private function interpretContent($sContent) {
 		if(Encoding::length($sContent) > 0) {
 			$aReturn = array();
-			$aContentParserParts = $this->m_oContentParser->parseContent($sContent);
+			$aContentParserParts = $this->getIpco()->getContentParser()->parseContent($sContent);
 			$nOffset = 0;
 			if(is_array($aContentParserParts)) {
 				foreach($aContentParserParts as $oContentParserPart) {
@@ -221,13 +221,14 @@ class IPCO_Parser extends IPCO_Base {
 	public function interpretExtends($sName = null) {
 		$sName = Encoding::trim($sName);
 		$this->m_sExtendsTemplate = Encoding::length($sName) > 0 ? $sName : null;
-		$this->m_sExtendsFilePath = parent::getIpco()->getFileFromTemplate($this->m_sExtendsTemplate);
+		$this->m_sExtendsFilePath = $this->getIpco()->getFilePathForTemplate($this->m_sExtendsTemplate);
 		if(!file_exists($this->m_sExtendsFilePath) || !is_readable($this->m_sExtendsFilePath))
 			throw new IPCO_Exception(IPCO_Exception::FILTER_EXTENDS_INVALID_FILE);
 	}
 	
 	public function interpretInclude($sName = null) {
-		$this->m_oRegion->addLine(IPCO_ParserSettings::getCallInclude($sName));
+		$sIncludeFilePath = $this->getIpco()->getFilePathForTemplate($sName);
+		$this->m_oRegion->addLine(IPCO_ParserSettings::getCallInclude($sIncludeFilePath));
 	}
 	
 	public function interpretRegion(array $aParts) {

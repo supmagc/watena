@@ -33,7 +33,7 @@ abstract class IPCO_Processor extends IPCO_Base {
 		array_pop($this->m_aComponents);
 	}
 	
-	protected function callContentParser($sMethod, array $aParams) {
+	protected final function callContentParser($sMethod, array $aParams) {
 		if($this->m_oContentParser !== null) {
 			if(!method_exists($this->m_oContentParser, $sMethod))
 				return null;
@@ -41,6 +41,10 @@ abstract class IPCO_Processor extends IPCO_Base {
 				return call_user_func_array(array($this->m_oContentParser, $sMethod), $aParams);
 		}
 		return '';
+	}
+	
+	protected final function callInclude($sFilePath) {
+		return $this->getIpco()->getTemplateForFilePath($sFilePath);
 	}
 	
 	protected final function processMethod($sName, array $aParams, $mBase = null) {

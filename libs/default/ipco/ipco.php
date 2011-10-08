@@ -24,92 +24,50 @@ class IPCO {
 	private $m_oCallbacks;
 	
 	public function __construct(IPCO_IContentParser $oContentParser = null, IPCO_ICallbacks $oCallbacks = null) {
-		$this->setTemplateToFileCallback($cbTemplateToFile);
+		$this->setContentParser($oContentParser);
+		$this->setCallbacks($oCallbacks);
 	}
 	
 	public function getFilePathForTemplate($sTemplate) {
-		
+		return $this->m_oCallbacks->getFilePathForTemplate($sTemplate);
 	}
 	
-	public function loadProcessorFromTemplate($sTemplate) {
-		
-	}
-	
-	public function loadProcessorFromFilePath($sFilePath) {
-		
-	}
-	
-	public function loadParserFromTemplate($sTemplate) {
-		
-	}
-	
-	public function loadParserFromFilePath($sFilePath) {
-		
-	}
-	
-	/**
-	 * Set the template-to-file callback.
-	 * This is used when a template-name is provided to detect the valid system-file
-	 * When the provided callback is not callable, an exception is triggered.
-	 * 
-	 * @param callback $cbTemplateToFile
-	 * @throws IPCO_Exception
-	 */
-	public function setTemplateToFileCallback($cbTemplateToFile) {
-		if(is_callable($cbTemplateToFile))
-			$this->m_cbTemplateToFile = $cbTemplateToFile;
-		else
-			throw new IPCO_Exception(IPCO_Exception::TEMPLATETOFILE_UNCALLABLE);
-	}
-
-	/**
-	 * Retrieve the current template-to-file callback
-	 * 
-	 * @return callback
-	 */
-	public function getTemplateToFileCallback() {
-		return $this->m_cbTemplateToFile;
-	}
-	
-	/**
-	 * Create an IPCO parser from the given content.
-	 * You also need to provide an identifier that'll be used as generated class-name.
-	 * 
-	 * @param string $sIdentifier
-	 * @param string $sContent
-	 * 
-	 * @return IPCO_Parser
-	 */
 	public function createParserFromContent($sIdentifier, &$sContent) {
 		return new IPCO_Parser($sIdentifier, $sContent, $this);
 	}
-
-	/**
-	 * Create an IPCO parser based on the content of the given filepath.
-	 * As Identifier the filename will be used.
-	 * 
-	 * @param string $sFilePath
-	 * 
-	 * @return IPCO_Parser
-	 */
+	
+	public function createParserFromTemplate($sTemplate) {
+		$sFilePath = $this->getFilePathForTemplate($sTemplate);
+		if(!$sFilePath || !is_readable($sFilePath))
+			throw new IPCO_Exception(IPCO_Exception::TEMPLATETOFILE_INVALID_FILE);
+		return $this->createParserFromFile($sFilePath);
+	}
+	
 	public function createParserFromFile($sFilePath) {
 		if(!file_exists($sFilePath) || !is_readable($sFilePath))
 			throw new IPCO_Exception(IPCO_Exception::INVALID_FILE);
 		$sContent = file_get_contents($sFilePath);
 		return $this->createParserFromContent($sFilePath, $sContent, $this);
 	}
-
-	/**
-	 * Create an IPCO parser based on the template as specified.
-	 * The provided Template-To_File callback will be used to determine the exact file.
-	 * 
-	 * @param string $sTemplate
-	 */
-	public function createParserFromTemplate($sTemplate) {
-		$sFilePath = $this->getFileFromTemplate($sTemplate);
-		if(!$sFilePath || !is_readable($sFilePath))
-			throw new IPCO_Exception(IPCO_Exception::TEMPLATETOFILE_INVALID_FILE);
-		return $this->createParserFromFile($sFilePath);
+	
+	public function getTemplateForTemplate($sTemplate) {
+		return $this->getTemplateForFilePath($this->getFilePathForTemplate($sTemplate));
+	}
+	
+	public function getTemplateForFilePath($sFilePath) {
+		return $this->m_oCallbacks->getTemplateContent($sFilePath);
+	}
+	
+	public function getContentParser() {
+		return $this->m_oContentParser;
+	}
+	
+	public function setContentParser(IPCO_IContentParser $oContentParser = null) {
+		$this->m_oContentParser = $oContentParser;
+	}
+	
+	public function setCallbacks(IPCO_ICallbacks $oCallbacks = null) {
+		$this->m_oCallbacks = $oCallbacks;
 	}
 	
 	/**
@@ -119,21 +77,9 @@ class IPCO {
 	 * 
 	 * @return string
 	 */
-	public function getClassName($sIdentifier) {
+	public function getTemplateClassName($sIdentifier) {
 		$sIdentifier = Encoding::toLower($sIdentifier);
 		return 'IPCO_Compiled_' . Encoding::regReplace('[-/\\\\.: ]', '_', $sIdentifier);
-	}
-	
-	/**
-	 * Retrieve the filename for the given template.
-	 * This will be processed by using the template-to-file callback.
-	 * When no file was found, false will be returned.
-	 * 
-	 * @param string $sTemplate
-	 * @return string
-	 */
-	public function getFileFromTemplate($sTemplate) {
-		return realpath('' . call_user_func($this->m_cbTemplateToFile, $sTemplate));
 	}
 }
 
