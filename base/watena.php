@@ -40,14 +40,24 @@ if(!defined('NGLOBAL')) {
 	require_once PATH_BASE . '/system/global.common.php';
 }
 
+if(!defined('NLOGGER')) {
+	define('LOGGER', true);
+	require_once PATH_BASE . '/system/interface.ilogprocessor.php';
+	require_once PATH_BASE . '/system/static.logger.php';
+	require_once PATH_BASE . '/system/class.echolog.php';
+	Logger::registerProcessor(new EchoLog());
+	Logger::init();
+}
+
 if(!defined('NWATENA')) {
+	if(defined('NLOGGER')) die('Watena depend on Logger, remove the NLOGGER-constant');
+	if(defined('NGLOBAL')) die('Watena depend on Global, remove the NGLOBAL-constant');
+	
 	define('WATENA', true);
+	
 	// ############################################################
 	// Base inclusions needed for all Watena classes
 	// ############################################################
-	require_once PATH_BASE . '/system/static.encoding.php';
-	require_once PATH_BASE . '/system/static.logger.php';
-	require_once PATH_BASE . '/system/interface.ilogprocessor.php';
 	require_once PATH_BASE . '/system/interface.icache.php';
 	require_once PATH_BASE . '/system/exception.watception.php';
 	require_once PATH_BASE . '/system/class.object.php';

@@ -7,7 +7,7 @@ class Context extends Object {
 	private $m_aLibraryPaths = array();
 	private $m_aFilterGroups = null;
 	
-	public function init() {
+	public function __construct() {
 		$aProjects = explode(',', parent::getWatena()->getConfig('LIBRARIES', ''));
 		foreach($aProjects as $sProject) {
 			$sProject = Encoding::trim($sProject);
@@ -15,7 +15,6 @@ class Context extends Object {
 			if($sPath === null) throw new WatCeption($sMessage);
 			else $this->m_aLibraryPaths []= $sPath;
 		}
-		$this->loadPlugins(array_map('trim', explode(',', parent::getWatena()->getConfig('PLUGINS', ''))));		
 	}
 	
 	/**

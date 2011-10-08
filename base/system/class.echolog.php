@@ -1,6 +1,6 @@
 <?php
 
-class EchoLog extends Plugin implements ILogProcessor {
+class EchoLog implements ILogProcessor {
 	
 	private static $s_nFieldCount;
 	
@@ -91,18 +91,5 @@ EOT;
 		$sReturn .= '<li>http://' . $_SERVER['HTTP_HOST'] . ':' . $_SERVER['SERVER_PORT'] . $_SERVER['REQUEST_URI'] . ' [' . $_SERVER['REQUEST_METHOD'] . ']</li>';
 		return $sReturn . '</ul>';
 	}
-	
-	/**
-	* Retrieve version information of this plugin.
-	* The format is an associative array as follows:
-	* 'major' => Major version (int)
-	* 'minor' => Minor version (int)
-	* 'build' => Build version (int)
-	* 'state' => Naming of the production state
-	*/
-	public function getVersion() {
-		return array('major' => 0, 'minor' => 1, 'build' => 1, 'state' => 'dev');
-	}
 }
-
 ?>

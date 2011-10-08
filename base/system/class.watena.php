@@ -9,30 +9,47 @@ class Watena extends Configurable {
 	private $m_oView = null;
 	private $m_oController = null;
 	
-	public function __construct($aConfig) {		
+	public function __construct($aConfig) {	
+		$nTime = microtime(true);	
 		parent::__construct($aConfig);
 		$this->assureEnvironment();
 		
-		// Create a new Context and load all required plugins
+		// Create a default context and default cache
 		$this->m_oCache = new CacheEmpty();
 		$this->m_oContext = new Context();
-		$aLogProcessors = explode(',', self::getConfig('LOGGER_PROCESSORS', 'EchoLog'));
-		foreach($aLogProcessors as $sProcessor) {
-			$this->m_oContext->loadPlugin($sProcessor);
-			Logger::registerProcessor($this->m_oContext->getPlugin($sProcessor, 'ILogProcessor'));
+		$this->m_oMapping = new Mapping();
+		
+		// Load all default plugins
+		$this->m_oContext->loadPlugins(array_map('trim', explode(',', self::getConfig('PLUGINS', ''))));
+		
+		// Load all specified logProcessors
+		$aLoadedLogProcessors = array();
+		$sLoggers = self::getConfig('LOGGER_PROCESSORS', null);
+		if($sLoggers) {
+			$aLogProcessors = explode(',', $sLoggers);
+			foreach($aLogProcessors as $sProcessor) {
+				$this->m_oContext->loadPlugin($sProcessor);
+				$aLoadedLogProcessors []= $this->m_oContext->getPlugin($sProcessor, 'ILogProcessor');
+			}
 		}
-		Logger::init();
+		
+		// Load the specified cachingengine
 		$sCachePlugin = self::getConfig('CACHE_ENGINE', null);
 		if($sCachePlugin) {
 			$this->m_oContext->loadPlugin($sCachePlugin);
 			$this->m_oCache = $this->m_oContext->GetPlugin($sCachePlugin, 'ICache');
 		}
-		$this->m_oContext->init();
+		
+		// Register all log-processors and logsettings
+		Logger::setDefaultFilterLevel(self::getConfig('LOGGER_FILTERLEVEL', 'ALWAYS'));
+		foreach($aLoadedLogProcessors as $oLogProcessor) {
+			Logger::registerProcessor($oProcessor);
+		}
+		
+		$this->getLogger()->debug('Watena was succesfully initialised in {time} sec.', array('time' => round(microtime(true) - $nTime, 5)));
 		
 		// Load the mapping and retrieve the appropriate controller
-		$this->m_oMapping = new Mapping();
-		list($this->m_oModel, $this->m_oView, $this->m_oController) = $this->m_oContext->getMVC($this->m_oMapping);
-		
+		list($this->m_oModel, $this->m_oView, $this->m_oController) = $this->m_oContext->getMVC($this->m_oMapping);		
 		$this->m_oController->process($this->m_oModel, $this->m_oView);
 		$this->m_oView->render($this->m_oModel);
 	}
@@ -98,7 +115,7 @@ class Watena extends Configurable {
 		Encoding::init(self::getConfig('CHARSET', 'UTF-8'));
 		ini_set('date.timezone', self::getConfig('TIMEZONE', 'UTC'));
 		ini_set('error_reporting', E_ALL);
-		if(!is_writable(PATH_DATA)) throw new Exception('Data path is not writeable.');
+		if(!is_writable(PATH_DATA)) die('Data path is not writeable.');
 	}
 	
 	/**

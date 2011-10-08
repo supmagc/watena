@@ -2,13 +2,15 @@
 
 class Logger {
 	
+	const INHERIT = -1;
 	const ALWAYS = 0;
 	const DEBUG = 1;
-	const EXCEPTION = 2;
-	const INFO = 3;
+	const INFO = 2;
+	const EXCEPTION = 3;
 	const WARNING = 4;
 	const ERROR = 5;
 	const TERMINATE = 6;
+	const NONE = 7;
 	
 	const GENERIC_IDENTIFIER = 'GLOBAL';
 	
@@ -17,12 +19,12 @@ class Logger {
 	
 	private static $s_aInstances = array();
 	private static $s_aProcessors = array();
-	private static $s_oGenericLogger;
-	private static $s_nDefaultFilterLevel = self::ERROR;
+	private static $s_oGenericLogger = self::GENERIC_IDENTIFIER;
+	private static $s_nDefaultFilterLevel = self::ALWAYS;
 	
 	private final function __construct($sIdentifier) {
 		$this->m_sIdentifier = $sIdentifier;
-		$this->m_nFilterLevel = 0; //self::$s_nDefaultFilterLevel;
+		$this->m_nFilterLevel = self::INHERIT;
 	}
 
 	public final function setFilterLevel($nLevel) {
@@ -35,20 +37,6 @@ class Logger {
 	
 	public final function getIdentifier() {
 		return $this->m_sIdentifier;
-	}
-	
-	private final function logCall($nLevel, $sMessage, array $aData = array()) {
-		$aTrace = array_slice(debug_backtrace(false), 1);
-		$aPart = array_shift($aTrace);
-		$this->logFull($nLevel, $aPart['file'], $aPart['line'], $sMessage, $aData, $aTrace);
-	}
-	
-	private final function logFull($nLevel, $sFile, $nLine, $sMessage, array $aData = array(), array $aTrace = array()) {
-		if($nLevel >= $this->getFilterLevel()) {
-			foreach(self::$s_aProcessors as $oProcessor) {
-				$oProcessor->process($this->getIdentifier(), $nLevel, $sFile, $nLine, $sMessage, $aData, $aTrace);
-			}
-		}
 	}
 	
 	public final function debug($sMessage, $aData = array()) {
@@ -68,12 +56,33 @@ class Logger {
 	}
 	
 	public final function exception(Exception $oException) {
-		//$this->log(self::EXCEPTION, 'An handled exception occured', array(), $oException);
+		if(method_exists($oException, 'getInnerException') && is_a($oException->getInnerException(), 'Exception'))
+			$this->exception($oException->getInnerException());
+		
+		$aData = array();
+		if(method_exists($oException, 'getData') && is_array($oException->getData()))
+			$aData = $oException->getData();
+		
+		$this->logFull(self::EXCEPTION, $oException->getFile(), $oException->getLine(), $oException->getMessage(), $aData, $oException->getTrace());
 	}
 	
 	public final function terminate($sMessage, $aData = array()) {
 		$this->logCall(self::TERMINATE, $sMessage, $aData);
 		exit;
+	}
+	
+	private final function logCall($nLevel, $sMessage, array $aData = array()) {
+		$aTrace = array_slice(debug_backtrace(false), 1);
+		$aPart = array_shift($aTrace);
+		$this->logFull($nLevel, $aPart['file'], $aPart['line'], $sMessage, $aData, $aTrace);
+	}
+	
+	private final function logFull($nLevel, $sFile, $nLine, $sMessage, array $aData = array(), array $aTrace = array()) {
+		if($nLevel >= ($this->getFilterLevel() < 0 ? self::getDefaultFilterLevel() : $this->getFilterLevel())) {
+			foreach(self::$s_aProcessors as $oProcessor) {
+				$oProcessor->process($this->getIdentifier(), $nLevel, $sFile, $nLine, $sMessage, $aData, $aTrace);
+			}
+		}
 	}
 	
 	public static final function getInstance($sIdentifier) {
@@ -120,7 +129,7 @@ class Logger {
 	}
 	
 	public static final function processException(Exception $oException) {
-		if(is_a($oException, 'WatCeption') && $oException->getInnerException() !== null) {
+		if(method_exists($oException, 'getInnerException') && is_a($oException->getInnerException(), 'Exception')) {
 			self::processException($oException->getInnerException());
 		}
 		
@@ -129,10 +138,10 @@ class Logger {
 			 array_shift($aTrace);
 		
 		$aData = array();
-		if(is_a($oException, 'WatCeption'))
+		if(method_exists($oException, 'getData') && is_array($oException->getData()))
 			$aData = $oException->getData();
 		
-		if(is_a($oException, 'WatCeption') && is_a($oException->getContext(), 'Object')) {
+		if(method_exists($oException, 'getContext') && method_exists($oException->getContext(), 'getLogger') && is_a($oException->getContext()->getLogger(), 'Logger')) {
 			$oLogger = $oException->getContext()->getLogger();
 		}
 		else if(isset($aTrace[0]) && isset($aTrace[0]['class'])) {
@@ -150,6 +159,14 @@ class Logger {
 		set_exception_handler('Logger::processException');
 	}
 	
+	public static final function getDefaultFilterLevel() {
+		return self::$s_nDefaultFilterLevel;
+	}
+	
+	public static final function setDefaultFilterLevel($mLevel) {
+		self::$s_nDefaultFilterLevel = is_numeric($mLevel) ? (int)$mLevel : self::getLevelConstant($mLevel);
+	}
+	
 	public static final function registerProcessor($oProcessor) {
 		self::$s_aProcessors []= $oProcessor;
 	}
@@ -160,6 +177,7 @@ class Logger {
 	
 	public static final function getLevelName($nLevel) {
 		switch($nLevel) {
+			case self::INHERIT : return 'INHERIT';
 			case self::ALWAYS : return 'ALWAYS';
 			case self::DEBUG : return 'DEBUG';
 			case self::EXCEPTION : return 'EXCEPTION';
@@ -167,7 +185,22 @@ class Logger {
 			case self::WARNING : return 'WARNING';
 			case self::ERROR : return 'ERROR';
 			case self::TERMINATE : return 'TERMINATE';
+			case self::NONE : return 'NONE';
 			default : return 'UNKNOWN';
+		}
+	}
+	
+	public static final function getLevelConstant($sLevel) {
+		switch($sLevel) {
+			case 'INHERIT' : return self::INHERIT;
+			case 'ALWAYS' : return self::ALWAYS;
+			case 'DEBUG' : return self::DEBUG;
+			case 'EXCEPTION' : return self::EXCEPTION;
+			case 'INFO' : return self::INFO;
+			case 'WARNING' : return self::WARNING;
+			case 'ERROR' : return self::ERROR;
+			case 'TERMINATE' : return self::TERMINATE;
+			default : return self::NONE;
 		}
 	}
 }
