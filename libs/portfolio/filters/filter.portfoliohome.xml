@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <filter name="PortfolioHome filter" order="1">
-	<model name="HelloWorldModel">
+	<model name="PortfolioListModel">
 	</model>
 	<view first="1" last="1" name="HtmlTemplateView">
 		<param name="template">index.tpl</param>
