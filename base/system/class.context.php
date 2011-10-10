@@ -131,7 +131,7 @@ class Context extends Object {
 	 * @param string $sExtends
 	 * @param string $sImplements
 	 */
-	public function loadObjectAndRequirements($sObjectName, array $aParams = array(), $sIncludeFile = null, $sExtends = null, $sImplements = null) {
+	public function loadObjectAndRequirements($sObjectName, array $aParams = array(), $sIncludeFile = null, $sExtends = null, array $aImplements = array()) {
 		// Include main file
 		if($sIncludeFile) {
 			if(file_exists($sIncludeFile)) include_once($sIncludeFile);
@@ -140,17 +140,18 @@ class Context extends Object {
 		
 		if(!class_exists($sObjectName, false)) throw new WatCeption('The class of the object to be loaded could not be found.', array('object' => $sObjectName), $this);		
 		
-		$aExtends = class_parents($sObjectName);
-		$aImplements = class_implements($sObjectName);
+		$aExtendsFound = class_parents($sObjectName);
+		$aImplementsFound = class_implements($sObjectName);
 		
-		if(!in_array("Object", $aExtends)) throw new WatCeption('The object top be loaded does not extend \'Object\'.', array('object' => $sObjectName), $this);
-		if($sExtends && !in_array($sExtends, $aExtends)) throw new WatCeption('The object to be loaded does not extend the required class.', array('object' => $sObjectName, 'class' => $sExtends), $this);
-		if($sImplements && !in_array($sImplements, $aImplements)) throw new WatCeption('The object to be loaded does not implement the required interface.', array('object' => $sObjectName, 'interface' => $sImplements), $this);
+		if(!in_array("Object", $aExtendsFound)) throw new WatCeption('The object top be loaded does not extend \'Object\'.', array('object' => $sObjectName), $this);
+		if($sExtends && !in_array($sExtends, $aExtendsFound)) throw new WatCeption('The object to be loaded does not extend the required class.', array('object' => $sObjectName, 'class' => $sExtends), $this);
+		foreach($aImplements as $sImplements)
+			if($sImplements && !in_array($sImplements, $aImplements)) throw new WatCeption('The object to be loaded does not implement the required interface.', array('object' => $sObjectName, 'interface' => $sImplements), $this);
 		
 		// Check requirements if possible/required
 		$oRequirement = method_exists($sObjectName, 'getRequirements') ? new RequirementBuffer(call_user_func(array($sObjectName, 'getRequirements'))) : new RequirementBuffer();
 		if($sIncludeFile) $oRequirement->addInclude($sIncludeFile);
-		foreach($aExtends as $sParent) {
+		foreach($aExtendsFound as $sParent) {
 			if(method_exists($sParent, 'getRequirements')) {
 				$oRequirement->addRequirements(call_user_func(array($sObjectName, 'getRequirements')));
 			}
