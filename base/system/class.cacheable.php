@@ -29,8 +29,8 @@ abstract class Cacheable extends Configurable {
 		return $this->m_aInstances;
 	}
 	
-	protected static function _create($sObject, $aParams, $aInstances, $sIncludeFile, $sExtends, $sImplements, $sIdentifier, $nExpiration) {
-		$sIdentifier = $sIdentifier . '_' . md5(serialize($aParams));
+	protected static function _create($sObject, array $aParams = array(), array $aInstances = array(), $sIncludeFile = null, $sExtends = null, array $aImplements = array(), $sIdentifier = null, $nExpiration = 0, $bUseDependencyCallback = false) {
+		$sIdentifier = '' . $sIdentifier . '_' . md5(serialize($aParams));
 		$oCache = parent::getWatena()->getCache();
 		$nCacheExp = $oCache->get("W_CACHE_{$sIdentifier}_EXPIRATION", 0);
 		$oRequirements = $oCache->get("W_CACHE_{$sIdentifier}_REQUIREMENTS", null);
@@ -39,7 +39,7 @@ abstract class Cacheable extends Configurable {
 		
 		if($nExpiration > $nCacheExp || !$oRequirements || !$oObject) {
 			try {
-				list($oObject, $oRequirements) = parent::getWatena()->getContext()->loadObjectAndRequirements($sObject, $aParams, $sIncludeFile, $sExtends, $sImplements);
+				list($oObject, $oRequirements) = parent::getWatena()->getContext()->loadObjectAndRequirements($sObject, $aParams, $sIncludeFile, $sExtends, $aImplements, $bUseDependencyCallback);
 				if($oRequirements->IsSucces()) {
 					$oObject->m_aInstances = $aInstances;
 					$oObject->init();
@@ -61,7 +61,7 @@ abstract class Cacheable extends Configurable {
 					'params' => $aParams,
 					'includeFile' => $sIncludeFile,
 					'extends' => $sExtends,
-					'implements' => $sImplements,
+					'implements' => $aImplements,
 					'identifier' => $sIdentifier), parent::getWatena(), $e);
             }
 		}
