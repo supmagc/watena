@@ -6,7 +6,10 @@ class Context extends Object {
 	private $m_aDataFiles = array(); 
 	private $m_aLibraryPaths = array();
 	private $m_aFilterGroups = null;
+
+	private static $s_oGlobalRequirementBufferInstance;
 	
+
 	public function __construct() {
 		$aProjects = explode(',', parent::getWatena()->getConfig('LIBRARIES', ''));
 		foreach($aProjects as $sProject) {
@@ -132,6 +135,8 @@ class Context extends Object {
 	 * @param string $sImplements
 	 */
 	public function loadObjectAndRequirements($sObjectName, array $aParams = array(), $sIncludeFile = null, $sExtends = null, array $aImplements = array()) {
+		self::$s_oGlobalRequirementBufferInstance = new RequirementBuffer();
+		
 		// Include main file
 		if($sIncludeFile) {
 			if(file_exists($sIncludeFile)) include_once($sIncludeFile);
@@ -150,10 +155,10 @@ class Context extends Object {
 		
 		// Check requirements if possible/required
 		$oRequirement = method_exists($sObjectName, 'getRequirements') ? new RequirementBuffer(call_user_func(array($sObjectName, 'getRequirements'))) : new RequirementBuffer();
-		if($sIncludeFile) $oRequirement->addInclude($sIncludeFile);
+		if($sIncludeFile) self::$s_oGlobalRequirementBufferInstance->addInclude($sIncludeFile);
 		foreach($aExtendsFound as $sParent) {
 			if(method_exists($sParent, 'getRequirements')) {
-				$oRequirement->addRequirements(call_user_func(array($sObjectName, 'getRequirements')));
+				self::$s_oGlobalRequirementBufferInstance->addRequirements(call_user_func(array($sObjectName, 'getRequirements')));
 			}
 		}
 		
@@ -161,7 +166,7 @@ class Context extends Object {
 		if($oRequirement->isSucces()) {
 			$oClass = new ReflectionClass($sObjectName);
 			$oTmp = $oClass->newInstanceArgs($aParams);			
-			return array($oTmp, $oRequirement);
+			return array($oTmp, self::$s_oGlobalRequirementBufferInstance);
 		}
 		else {
 			throw new WatCeption('The object you are loading has some requirements that couldn\'t be met.', array('object' => $sObjectName, 'errors' => $oRequirement->getErrors(), 'requirements' => $oRequirement), $this);
