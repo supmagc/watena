@@ -8,6 +8,10 @@ function require_clear() {
 	unset($GLOBALS['REQUIREMENTBUFFERINSTANCE']);
 }
 
+function require_include($mFile) {
+	if(is_array($mFiles)) array_walk($mFile, $funcname)
+}
+
 function require_file($mFiles) {
 	RequirementBuffer::getInstance();
 }

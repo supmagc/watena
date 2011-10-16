@@ -233,6 +233,78 @@ class RequirementBuffer extends Object {
 		foreach($aParents as $sParent) if(method_exists($sParent, 'getRequirements')) $oRB->addRequirements(call_user_func(array($sClassName, 'getRequirements')));
 		return $oRB;
 	}
+	
+	public static final function extension($sName) {
+		
+	}
+	
+	public static final function extensions(array $aNames) {
+
+	}
+	
+	public static final function plugin($sName) {
+		
+	}
+	
+	public static final function plugins(array $aNames) {
+		
+	}
+	
+	public static final function pear($sName) {
+		
+	}
+	
+	public static final function pears(array $aNames) {
+		
+	}
+	
+	public static final function including($sName) {
+		
+	}
+	
+	public static final function includings(array $aNames) {
+		
+	}
+	
+	public static final function including($sName) {
+	
+	}
+	
+	public static final function includings(array $aNames) {
+	
+	}
+	
+	public static final function constant($sName) {
+		
+	}
+	
+	public static final function constants(array $aNames) {
+		
+	}
+	
+	public static final function model($sName) {
+		
+	}
+	
+	public static final function models(array $aNames) {
+		
+	}
+	
+	public static final function view($sName) {
+		
+	}
+	
+	public static final function views(array $aNames) {
+		
+	}
+	
+	public static final function controller($sName) {
+		
+	}
+	
+	public static final function controllers(array $aNames) {
+		
+	}
 }
 
 ?>

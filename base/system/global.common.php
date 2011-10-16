@@ -88,6 +88,19 @@ function array_value(&$arr, array $aKeys, $mDefault = null) {
 	return $aHelper;
 }
 
+/**
+ * Traverse the given array and check if the prvided callback yields true for all values
+ * 
+ * @param callback $mCallback
+ * @param array $aData
+ * @return boolean
+ */
+function array_all($mCallback, array &$aData) {
+	$bResult = true;
+	foreach($aData as $mKey => $mValue) $bResult = $bResult && call_user_func($mCallback, $mValue);
+	return $bResult;
+}
+
 function is_alphabetical($var) {
 	return ctype_alpha($var);
 }
