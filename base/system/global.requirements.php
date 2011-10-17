@@ -11,6 +11,10 @@ function require_error($nCode, $sName) {
 	throw new WatCeption($sMessage, array('code' => $nCode, 'name' => $sName));
 }
 
+function require_logger() {
+	return Logger::getInstance('Requirement');
+}
+
 function require_extension($mName) {
 	if(is_array($mName)) return array_all('require_extension', $mName);
 	else {
