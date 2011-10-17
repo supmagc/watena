@@ -35,8 +35,8 @@ if(!defined('NERRORTOEXCEPTION')) {
 	set_error_handler('error_handler');
 }
 
-if(!defined('NGLOBAL')) {
-	define('GLOBAL', true);
+if(!defined('NCOMMON')) {
+	define('COMMON', true);
 	require_once PATH_BASE . '/system/global.common.php';
 }
 
@@ -51,13 +51,14 @@ if(!defined('NLOGGER')) {
 
 if(!defined('NWATENA')) {
 	if(defined('NLOGGER')) die('Watena depend on Logger, remove the NLOGGER-constant');
-	if(defined('NGLOBAL')) die('Watena depend on Global, remove the NGLOBAL-constant');
+	if(defined('NCOMMON')) die('Watena depend on Global, remove the NCOMMON-constant');
 	
 	define('WATENA', true);
 	
 	// ############################################################
 	// Base inclusions needed for all Watena classes
 	// ############################################################
+	require_once PATH_BASE . '/system/global.requirements.php';
 	require_once PATH_BASE . '/system/interface.icache.php';
 	require_once PATH_BASE . '/system/exception.watception.php';
 	require_once PATH_BASE . '/system/class.object.php';
@@ -82,6 +83,10 @@ if(!defined('NWATENA')) {
 	// ############################################################
 	// Load the application framework
 	// ############################################################
+	function watena() {
+		return Watena::getWatena();
+	}
+	
 	$aConfig = parse_ini_file(PATH_BASE . '/watena.ini', true);
 	if(!$aConfig) die('No readable Watena config file could be found.');
 	new Watena($aConfig);
