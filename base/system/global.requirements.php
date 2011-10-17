@@ -1,8 +1,24 @@
 <?php
+define('REQERROR_EXTENSIONNOTFOUND', 1);
+define('REQERROR_EXTENSIONUNLOADABLE', 2);
+
+function require_error($nCode, $sName) {
+	$oInstance = Logger::getInstance('Requirements');
+	$sMessage = 'Requirement error occured';
+	switch($nCode) {
+		
+	}
+	throw new WatCeption($sMessage, array('code' => $nCode, 'name' => $sName));
+}
+
 function require_extension($mName) {
 	if(is_array($mName)) return array_all('require_extension', $mName);
 	else {
-		return extension_loaded($mName) || (function_exists('dl') && @dl($mName));
+		if(!extension_loaded($mName)) {
+			if(function_exists('dl')) if(!@dl($mName)) require_error(REQERROR_EXTENSIONUNLOADABLE, $mName);
+			else require_error(REQERROR_EXTENSIONNOTFOUND, $mName);
+		}
+		return true;
 	}
 }
 
