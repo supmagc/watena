@@ -16,6 +16,7 @@ class Logger {
 	
 	private $m_sIdentifier;
 	private $m_nFilterLevel;
+	private $m_oFilter;
 	
 	private static $s_aInstances = array();
 	private static $s_aProcessors = array();
@@ -25,6 +26,14 @@ class Logger {
 	private final function __construct($sIdentifier) {
 		$this->m_sIdentifier = $sIdentifier;
 		$this->m_nFilterLevel = self::INHERIT;
+	}
+	
+	public final function setFilter(ILogFilter $oFilter) {
+		$this->m_oFilter = $oFilter;
+	}
+	
+	public final function getFilter() {
+		return $this->m_oFilter;
 	}
 
 	public final function setFilterLevel($nLevel) {
@@ -78,9 +87,14 @@ class Logger {
 	}
 	
 	private final function logFull($nLevel, $sFile, $nLine, $sMessage, array $aData = array(), array $aTrace = array()) {
-		if($nLevel >= ($this->getFilterLevel() < 0 ? self::getDefaultFilterLevel() : $this->getFilterLevel())) {
+		if($nLevel >= ($this->getFilterLevel() < self::INHERIT ? self::getDefaultFilterLevel() : $this->getFilterLevel())) {
 			foreach(self::$s_aProcessors as $oProcessor) {
-				$oProcessor->process($this->getIdentifier(), $nLevel, $sFile, $nLine, $sMessage, $aData, $aTrace);
+				if(is_callable($this->m_cbFilter)) {
+					// TODO: change this entirly
+				}
+				else {
+					$oProcessor->process($this->getIdentifier(), $nLevel, $sFile, $nLine, $sMessage, $aData, $aTrace);
+				}
 			}
 		}
 	}
