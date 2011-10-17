@@ -85,6 +85,13 @@ class Logger {
 		}
 	}
 	
+	/**
+	 * Retrieve the specified logger-instance.
+	 * If none exists, create one.
+	 * 
+	 * @param string $sIdentifier
+	 * @return Logger
+	 */
 	public static final function getInstance($sIdentifier) {
 		if(!isset(self::$s_aInstances[$sIdentifier])) {
 			self::$s_aInstances[$sIdentifier] = new Logger($sIdentifier);
