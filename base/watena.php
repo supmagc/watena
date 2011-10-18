@@ -43,6 +43,7 @@ if(!defined('NCOMMON')) {
 if(!defined('NLOGGER')) {
 	define('LOGGER', true);
 	require_once PATH_BASE . '/system/interface.ilogprocessor.php';
+	require_once PATH_BASE . '/system/interface.ilogfilter.php';
 	require_once PATH_BASE . '/system/static.logger.php';
 	require_once PATH_BASE . '/system/class.echolog.php';
 	Logger::registerProcessor(new EchoLog());
@@ -68,6 +69,7 @@ if(!defined('NWATENA')) {
 	require_once PATH_BASE . '/system/class.cacheablefile.php';
 	require_once PATH_BASE . '/system/class.cacheabledirectory.php';
 	require_once PATH_BASE . '/system/class.context.php';
+	require_once PATH_BASE . '/system/class.contextlogfilter.php';
 	require_once PATH_BASE . '/system/class.requirementbuffer.php';
 	require_once PATH_BASE . '/system/class.filter.php';
 	require_once PATH_BASE . '/system/class.filtergroup.php';

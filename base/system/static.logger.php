@@ -44,6 +44,10 @@ class Logger {
 		return $this->m_nFilterLevel;
 	}
 	
+	public final function approveFilterLevel($nLevel) {
+		return $nLevel >= ($this->getFilterLevel() < self::ALWAYS ? self::getDefaultFilterLevel() : $this->getFilterLevel());
+	}
+	
 	public final function getIdentifier() {
 		return $this->m_sIdentifier;
 	}
@@ -77,23 +81,34 @@ class Logger {
 	
 	public final function terminate($sMessage, $aData = array()) {
 		$this->logCall(self::TERMINATE, $sMessage, $aData);
-		exit;
 	}
 	
-	private final function logCall($nLevel, $sMessage, array $aData = array()) {
+	private final function logCall($nLevel, $sMessage, array $aData) {
 		$aTrace = array_slice(debug_backtrace(false), 1);
 		$aPart = array_shift($aTrace);
 		$this->logFull($nLevel, $aPart['file'], $aPart['line'], $sMessage, $aData, $aTrace);
 	}
 	
-	private final function logFull($nLevel, $sFile, $nLine, $sMessage, array $aData = array(), array $aTrace = array()) {
-		if($nLevel >= ($this->getFilterLevel() < self::INHERIT ? self::getDefaultFilterLevel() : $this->getFilterLevel())) {
-			foreach(self::$s_aProcessors as $oProcessor) {
-				if(is_callable($this->m_cbFilter)) {
-					// TODO: change this entirly
+	private final function logFull($nLevel, $sFile, $nLine, $sMessage, array $aData, array $aTrace) {
+		if($this->approveFilterLevel($nLevel)) {
+			$bLoggable = true;
+			if(is_a($this->getFilter(), 'ILogFilter')) {
+				$sCpyIdentifier = $this->getIdentifier();
+				$nCpyLevel = $nLevel;
+				$bLoggable = $this->getFilter()->loggerFilter($sCpyIdentifier, $nCpyLevel, $sFile, $nLine, $sMessage, $aData, $aTrace);
+				if($bLoggable) {
+					if($sCpyIdentifier != $this->getIdentifier()) {
+						return self::getInstance($sCpyIdentifier)->logFull($nCpyLevel, $sFile, $nLine, $sMessage, $aData, $aTrace);
+					}
+					if($nCpyLevel != $nLevel) {
+						$bLoggable = $bLoggable && $this->approveFilterLevel($nCpyLevel);
+						$nLevel = $nCpyLevel;
+					}
 				}
-				else {
-					$oProcessor->process($this->getIdentifier(), $nLevel, $sFile, $nLine, $sMessage, $aData, $aTrace);
+			}
+			if($bLoggable) {				
+				foreach(self::$s_aProcessors as $oProcessor) {
+					$oProcessor->loggerProcess($this->getIdentifier(), $nLevel, $sFile, $nLine, $sMessage, $aData, $aTrace);
 				}
 			}
 		}

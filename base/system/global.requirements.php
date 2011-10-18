@@ -1,6 +1,7 @@
 <?php
 define('REQERROR_EXTENSIONNOTFOUND', 1);
 define('REQERROR_EXTENSIONUNLOADABLE', 2);
+define('REQERROR_FILENOTFOUND', 3);
 
 function require_error($nCode, $sName) {
 	$oInstance = Logger::getInstance('Requirements');
@@ -8,7 +9,7 @@ function require_error($nCode, $sName) {
 	switch($nCode) {
 		
 	}
-	throw new WatCeption($sMessage, array('code' => $nCode, 'name' => $sName));
+	require_logger()->warning($sMessage, array('code' => $nCode, 'name' => $sName));
 }
 
 function require_logger() {
@@ -56,7 +57,11 @@ function require_include($mName) {
 function require_file($mName) {
 	if(is_array($mName)) return array_all('require_file', $mName);	
 	else {
-		return is_file($mName);
+		if(is_file($mName)) return true;
+		else {
+			require_error(REQERROR_FILENOTFOUND, $mName);
+			return false;
+		}
 	}
 }
 
