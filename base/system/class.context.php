@@ -6,11 +6,14 @@ class Context extends Object {
 	private $m_aDataFiles = array(); 
 	private $m_aLibraryPaths = array();
 	private $m_aFilterGroups = null;
+	private $m_oContextLogFilter = null;
 
 	private static $s_oGlobalRequirementBufferInstance;
 	
-
 	public function __construct() {
+		$this->m_oContextLogFilter = new ContextLogFilter();
+		require_logger()->setFilter($this->m_oContextLogFilter);
+		
 		$aProjects = explode(',', parent::getWatena()->getConfig('LIBRARIES', ''));
 		foreach($aProjects as $sProject) {
 			$sProject = Encoding::trim($sProject);
