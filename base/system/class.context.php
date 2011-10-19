@@ -1,12 +1,13 @@
 <?php
 
-class Context extends Object {
+class Context extends Object implements ILogFilter {
 	
 	private $m_aPlugins = array();
 	private $m_aDataFiles = array(); 
 	private $m_aLibraryPaths = array();
 	private $m_aFilterGroups = null;
 	private $m_oContextLogFilter = null;
+	private $m_bRequirementWatchdog = false;
 
 	private static $s_oGlobalRequirementBufferInstance;
 	
@@ -138,7 +139,7 @@ class Context extends Object {
 	 * @param string $sImplements
 	 */
 	public function loadObjectAndRequirements($sObjectName, array $aParams = array(), $sIncludeFile = null, $sExtends = null, array $aImplements = array()) {
-		self::$s_oGlobalRequirementBufferInstance = new RequirementBuffer();
+		$this->m_bRequirementWatchdog = true;
 		
 		// Include main file
 		if($sIncludeFile) {
@@ -164,6 +165,9 @@ class Context extends Object {
 				self::$s_oGlobalRequirementBufferInstance->addRequirements(call_user_func(array($sObjectName, 'getRequirements')));
 			}
 		}
+		
+		$this->m_bRequirementWatchdog = false;
+		
 		
 		// Create instance
 		if($oRequirement->isSucces()) {
@@ -211,6 +215,14 @@ class Context extends Object {
 			$this->m_aDataFiles[$sPath] = new DataFile($sPath);
 		}
 		return $this->m_aDataFiles[$sPath];
+	}
+	
+	public function loggerFilter(&$sIdentifier, &$nLevel, $sFile, $nLine, $sMessage, array $aData, array $aTrace) {
+		if($sIdentifier == require_logger()->getIdentifier()) {
+			$sMessage = Encoding::replace('{name}', $aData['name'], $sMessage);
+			echo $sMessage;
+			return false;
+		}
 	}
 }
 
