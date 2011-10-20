@@ -72,18 +72,20 @@ EOT;
 			if(isset($aPart['function'])) {
 				$sReturn .= $aPart['function'];
 				$sReturn .= '(';
-				$bFirst = true;
-				foreach($aPart['args'] as $sName => $sValue) {
-					if($bFirst) $bFirst = false;
-					else $sReturn .= ', ';
-					if(is_object($sValue)) $s = get_class($sValue) . '(' . $sValue->__toString() . ')';
-					else if(is_array($sValue)) $s = 'Array';
-					else if(is_bool($sValue)) $s = $sValue ? "true" : "false";
-					else if(is_null($sValue)) $s = 'null';
-					else if(is_string($sValue)) $s = var_export($sValue, true);
-					else $s = '' . $sValue;
-					if(Encoding::length($s) > 128) $s = Encoding::substring($s, 0, 125) . '...';
-					$sReturn .= $s;
+				if(isset($aPart['args'])) {
+					$bFirst = true;
+					foreach($aPart['args'] as $sName => $sValue) {
+						if($bFirst) $bFirst = false;
+						else $sReturn .= ', ';
+						if(is_object($sValue)) $s = get_class($sValue) . '(' . $sValue->__toString() . ')';
+						else if(is_array($sValue)) $s = 'Array';
+						else if(is_bool($sValue)) $s = $sValue ? "true" : "false";
+						else if(is_null($sValue)) $s = 'null';
+						else if(is_string($sValue)) $s = var_export($sValue, true);
+						else $s = '' . $sValue;
+						if(Encoding::length($s) > 128) $s = Encoding::substring($s, 0, 125) . '...';
+						$sReturn .= $s;
+					}
 				}
 				$sReturn .= ')';
 			}

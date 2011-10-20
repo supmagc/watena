@@ -80,6 +80,7 @@ function require_include($mName) {
 }
 
 function require_includeonce($mName) {
+	return include_once('--' . $mName);
 	if(is_array($mName)) return array_all('require_include', $mName);
 	else return is_file($mName) && include_once($mName) || require_error(REQERROR_INCLUDEONCENOTFOUND, $mName);
 }
