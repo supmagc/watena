@@ -6,14 +6,12 @@ class Context extends Object implements ILogFilter {
 	private $m_aDataFiles = array(); 
 	private $m_aLibraryPaths = array();
 	private $m_aFilterGroups = null;
-	private $m_oContextLogFilter = null;
 	private $m_bRequirementWatchdog = false;
 
 	private static $s_oGlobalRequirementBufferInstance;
 	
 	public function __construct() {
-		$this->m_oContextLogFilter = new ContextLogFilter();
-		require_logger()->setFilter($this->m_oContextLogFilter);
+		require_logger()->setFilter($this);
 		
 		$aProjects = explode(',', parent::getWatena()->getConfig('LIBRARIES', ''));
 		foreach($aProjects as $sProject) {
@@ -143,8 +141,7 @@ class Context extends Object implements ILogFilter {
 		
 		// Include main file
 		if($sIncludeFile) {
-			if(file_exists($sIncludeFile)) include_once($sIncludeFile);
-			else throw new WatCeption('The object to be loaded needs to include an unexisting file.', array('object' => $sObjectName, 'file' => $sIncludeFile), $this);
+			require_includeonce($sIncludeFile);
 		}
 		
 		if(!class_exists($sObjectName, false)) throw new WatCeption('The class of the object to be loaded could not be found.', array('object' => $sObjectName), $this);		
