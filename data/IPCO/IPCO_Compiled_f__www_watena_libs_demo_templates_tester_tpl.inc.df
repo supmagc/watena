@@ -1,0 +1,61 @@
+<?php
+class IPCO_Compiled_f__www_watena_libs_demo_templates_tester_tpl extends IPCO_Compiled_f__www_watena_libs_demo_templates_base_tpl {
+	public function generate() {
+		return self::callRegion____MainRegion__();
+	}
+	protected function callRegion____MainRegion__() {
+		try {
+			$_ob = array();
+			$_ob []= '' . '
+';
+			$_ob []= '' . method_exists($this, 'callRegion__Extendable') ? $this->callRegion__Extendable() : '';
+			$_ob []= '' . '
+';
+			$_ob []= '' . '
+';
+			if(parent::processMember('continue', null)) {
+				$_ob []= '' . '
+	If succeeded !!!
+';
+			}
+			$_ob []= '' . '
+';
+			if(parent::processMember('continue', null)) {
+				$_ob []= '' . '
+	count:
+	';
+				while(parent::processMember('next', null)) {
+					$_ob []= '' . '
+		';
+					$_ob []= '' . parent::processMember('count', null);
+					$_ob []= '' . ',
+	';
+				}
+				$_ob []= '' . '
+	go !!
+';
+			} else {
+				$_ob []= '' . '
+	no
+';
+			}
+			$_ob []= '' . '
+';
+			$_ob []= '' . method_exists($this, 'callRegion__MyTestRegion') ? $this->callRegion__MyTestRegion() : '';
+			$_ob []= '' . '
+';
+$_ob []= '' . parent::callInclude('F:\WWW\watena\libs\demo\templates\extra.tpl');
+			return implode('', $_ob);
+		} catch(Exception $e) { throw new WatCeption('Unable to create template-output.', array(), null, $e); }
+	}
+	protected function callRegion__Extendable() {
+		try {
+			$_ob = array();
+			$_ob []= '' . '
+Extendableness is proven !!<br />
+';
+			return implode('', $_ob);
+		} catch(Exception $e) { throw new WatCeption('Unable to create template-output.', array(), null, $e); }
+	}
+}
+?>
