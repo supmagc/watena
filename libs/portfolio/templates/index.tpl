@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<meta charset="UTF-8" />
-	<title>Portfolio main template </title>
+	<meta http-equiv="Content-Type" content="{[ getContentType() ]}; charset={[ getCharset() ]}" />
+	<meta charset="{[ getCharset() ]}" />
+	<title>{[ getTitle() ]}</title>
 	<link href="/theme/portfolio/zoom.css" rel="stylesheet" type="text/css" />
 	<link href="/theme/portfolio/style.css" rel="stylesheet" type="text/css" />
 	<script type="text/javascript">
@@ -139,10 +139,7 @@
 											<div class="menuItemHeader"><img src="/theme/portfolio/menu_neighbours.png" /></div>
 											<div class="menuItemContent"><ul><li>link<Li></ul></div>
 										</div>
-										<div class="menuItem">
-											<div class="menuItemHeader"><img src="/theme/portfolio/menu_quote.png" /></div>
-											<div class="menuItemContent" tpl:component="Quotes">&ldquo;${quote}&rdquo;<br />~<em>${author}</em></div>
-										</div>
+										{% region use Quote %}
 										<div class="menuSpacer"></div></td>
 								</tr>
 							</table>
@@ -168,3 +165,13 @@
 </div>
 </body>
 </html>
+
+
+{% region begin Quote %}
+{% if getQuote() %}
+<div class="menuItem">
+	<div class="menuItemHeader"><img src="/theme/portfolio/menu_quote.png" /></div>
+	<div class="menuItemContent">&ldquo;{[ getQuote().text ]}&rdquo;<br />~<em>{[ getQuote().author ]}</em></div>
+</div>
+{% end %}
+{% region end %}

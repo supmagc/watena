@@ -1,5 +1,5 @@
 <?php
-class IPCO_Compiled_f__www_watena_libs_portfolio_templates_index_tpl extends IPCO_Processor {
+class IPCO_Compiled__home_t6343tom_public_html_watena_libs_portfolio_templates_index_tpl extends IPCO_Processor {
 	public function generate() {
 		return self::callRegion____MainRegion__();
 	}

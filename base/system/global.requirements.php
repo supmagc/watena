@@ -76,13 +76,14 @@ function require_pear($mName) {
 
 function require_include($mName) {
 	if(is_array($mName)) return array_all('require_include', $mName);
-	else return is_file($mName) && include($mName) || require_error(REQERROR_INCLUDENOTFOUND, $mName);
+	else return (is_file($mName) && include($mName)) || require_error(REQERROR_INCLUDENOTFOUND, $mName);
 }
 
 function require_includeonce($mName) {
-	return include_once('--' . $mName);
 	if(is_array($mName)) return array_all('require_include', $mName);
-	else return is_file($mName) && include_once($mName) || require_error(REQERROR_INCLUDEONCENOTFOUND, $mName);
+	else {
+		return (is_file($mName) && include_once($mName)) || require_error(REQERROR_INCLUDEONCENOTFOUND, $mName);
+	}
 }
 
 function require_file($mName) {

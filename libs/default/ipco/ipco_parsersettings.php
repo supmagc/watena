@@ -25,7 +25,7 @@ class IPCO_ParserSettings extends IPCO_Base {
 	const CALL_INCLUDE			= "\$_ob []= '' . parent::callInclude('%s');\n";
 	
 	const CONTENT				= "\$_ob []= '' . %s;\n";
-	const CONTENTPARSERPART		= "\$_ob []= '' . parent::callContentParser('%s', %s);\n";
+	const CONTENTPARSERPART		= "\$_ob []= '' . parent::callContentParser(%s, %s);\n";
 	
 	const VARIABLE				= "\$_ob []= '' . %s;\n";
 	
@@ -110,8 +110,7 @@ class IPCO_ParserSettings extends IPCO_Base {
 	}
 	
 	public static function getContentParserPart($sMethod, $aParams) {
-		$sParams = 'unserialize(\'' . addcslashes(serialize($aParams), '\'') . '\')';
-		return sprintf(self::CONTENTPARSERPART, addcslashes($sMethod, '\''), $sParams);
+		return sprintf(self::CONTENTPARSERPART, var_export($sMethod, true), var_export($aParams, true));
 	}
 }
 

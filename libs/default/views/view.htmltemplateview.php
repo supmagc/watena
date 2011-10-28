@@ -1,5 +1,6 @@
 <?php
-include_once dirname(__FILE__) . '/../ipco/ipco.php';
+require_plugin('TemplateLoader');
+require_includeonce(dirname(__FILE__) . '/../ipco/ipco.php');
 
 class HtmlTemplateView extends View implements IPCO_IContentParser {
 
@@ -39,10 +40,6 @@ class HtmlTemplateView extends View implements IPCO_IContentParser {
 		// = $oTemplate->createTemplateClass();
 		$oGenerator->componentPush($oModel);
 		echo $oGenerator->getContent(true);
-	}
-	
-	public static function getRequirements() {
-		return array('plugins' => 'TemplateLoader');
 	}
 	
 	public function addMappingMain($sElement, $sAttribute, $sValue) {

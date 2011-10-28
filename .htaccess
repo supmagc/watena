@@ -31,11 +31,11 @@ ErrorDocument 503 /index.php?w_error=503
   RewriteRule ^index.php - [QSA,L]
   
   # Url's pointing to raw theme/files are allowed
-  RewriteRule ^(files|theme)/([^/]+)/(.*) libs/$2/$1/$3 [QSA,DPI]
+  RewriteRule ^(files|theme)/([^/]+)/(.*) libs/$2/$1/$3 [QSA]
   RewriteCond %{REQUEST_FILENAME} -f
-  RewriteRule ^libs/([^/]+)/(files|theme)/ - [QSA,DPI,L,NS]
+  RewriteRule ^libs/([^/]+)/(files|theme)/ - [QSA,L,NS]
   RewriteCond %{REQUEST_FILENAME} !-f
-  RewriteRule ^libs/([^/]+)/(files|theme)/ - [QSA,DPI,R=404]
+  RewriteRule ^libs/([^/]+)/(files|theme)/ - [QSA,L,R]
 
   # When a url can qualify as a requests/-page, redirect it  
   RewriteRule ^([^/]+\.(php|xml|txt|ico)) requests/$1 [QSA,L]
@@ -52,5 +52,6 @@ ErrorDocument 503 /index.php?w_error=503
   <FilesMatch .*>
     Order Deny,Allow
     Deny from all
+	ErrorDocument 403 "<h2>System Lockdown</h2>Entrance to the system is blocked. Make sure you enabled mod_rewrite!"
   </FilesMatch>
 </IfModule>

@@ -153,7 +153,8 @@ class Context extends Object implements ILogFilter {
 		if($sExtends && !in_array($sExtends, $aExtendsFound)) throw new WatCeption('The object to be loaded does not extend the required class.', array('object' => $sObjectName, 'class' => $sExtends), $this);
 		foreach($aImplements as $sImplements)
 			if($sImplements && !in_array($sImplements, $aImplements)) throw new WatCeption('The object to be loaded does not implement the required interface.', array('object' => $sObjectName, 'interface' => $sImplements), $this);
-		
+
+		/*
 		// Check requirements if possible/required
 		$oRequirement = method_exists($sObjectName, 'getRequirements') ? new RequirementBuffer(call_user_func(array($sObjectName, 'getRequirements'))) : new RequirementBuffer();
 		if($sIncludeFile) self::$s_oGlobalRequirementBufferInstance->addInclude($sIncludeFile);
@@ -162,10 +163,19 @@ class Context extends Object implements ILogFilter {
 				self::$s_oGlobalRequirementBufferInstance->addRequirements(call_user_func(array($sObjectName, 'getRequirements')));
 			}
 		}
+		*/
 		
 		$this->m_bRequirementWatchdog = false;
+		if(true) {
+			$oClass = new ReflectionClass($sObjectName);
+			$oTmp = $oClass->newInstanceArgs($aParams);			
+			return $oTmp;
+		}
+		else {
+			throw new WatCeption('The object you are loading has some requirements that couldn\'t be met.', array('object' => $sObjectName, 'errors' => $oRequirement->getErrors(), 'requirements' => $oRequirement), $this);
+		}
 		
-		
+		/*
 		// Create instance
 		if($oRequirement->isSucces()) {
 			$oClass = new ReflectionClass($sObjectName);
@@ -173,8 +183,8 @@ class Context extends Object implements ILogFilter {
 			return array($oTmp, self::$s_oGlobalRequirementBufferInstance);
 		}
 		else {
-			throw new WatCeption('The object you are loading has some requirements that couldn\'t be met.', array('object' => $sObjectName, 'errors' => $oRequirement->getErrors(), 'requirements' => $oRequirement), $this);
 		}
+		*/
 	}
 	
 	/**
