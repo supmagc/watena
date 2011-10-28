@@ -9,14 +9,30 @@ class IPCO_Compiled_d__www_watena_libs_portfolio_templates_index_tpl extends IPC
 			$_ob []= '' . '<!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<meta charset="UTF-8" />
-	<title>Portfolio main template </title>
+	<meta http-equiv="Content-Type" content="';
+			$_ob []= '' . parent::processMember('getContentType', null);
+			$_ob []= '' . '; charset=';
+			$_ob []= '' . parent::processMember('getCharset', null);
+			$_ob []= '' . '" />
+	<meta charset="';
+			$_ob []= '' . parent::processMember('getCharset', null);
+			$_ob []= '' . '" />
+	<title>';
+			$_ob []= '' . parent::processMember('getTitle', null);
+			$_ob []= '' . '</title>
 	<link href="';
-			$_ob []= '' . parent::callContentParser('addMappingMain', unserialize('a:3:{i:0;s:4:"link";i:1;s:4:"href";i:2;s:25:"/theme/portfolio/zoom.css";}'));
+			$_ob []= '' . parent::callContentParser('addMappingMain', array (
+  0 => 'link',
+  1 => 'href',
+  2 => '/theme/portfolio/zoom.css',
+));
 			$_ob []= '' . '" rel="stylesheet" type="text/css" />
 	<link href="';
-			$_ob []= '' . parent::callContentParser('addMappingMain', unserialize('a:3:{i:0;s:4:"link";i:1;s:4:"href";i:2;s:26:"/theme/portfolio/style.css";}'));
+			$_ob []= '' . parent::callContentParser('addMappingMain', array (
+  0 => 'link',
+  1 => 'href',
+  2 => '/theme/portfolio/style.css',
+));
 			$_ob []= '' . '" rel="stylesheet" type="text/css" />
 	<script type="text/javascript">
 	<!--
@@ -88,18 +104,38 @@ class IPCO_Compiled_d__www_watena_libs_portfolio_templates_index_tpl extends IPC
 					<td class="llt"></td>
 					<td class="center" size-ref="top" size-min="42" colspan="3" rowspan="3"><div id="top">
 							<div id="btn_archive"><a href="';
-			$_ob []= '' . parent::callContentParser('addMappingMain', unserialize('a:3:{i:0;s:1:"a";i:1;s:4:"href";i:2;s:5:"/test";}'));
+			$_ob []= '' . parent::callContentParser('addMappingMain', array (
+  0 => 'a',
+  1 => 'href',
+  2 => '/test',
+));
 			$_ob []= '' . '"><img src="';
-			$_ob []= '' . parent::callContentParser('addMappingMain', unserialize('a:3:{i:0;s:3:"img";i:1;s:3:"src";i:2;s:32:"/theme/portfolio/btn_archive.png";}'));
+			$_ob []= '' . parent::callContentParser('addMappingMain', array (
+  0 => 'img',
+  1 => 'src',
+  2 => '/theme/portfolio/btn_archive.png',
+));
 			$_ob []= '' . '" onMouseOver="this.src=\'<[LAF]>/btn_archive_over.png\';" onMouseOut="this.src=\'<[LAF]>/btn_archive.png\';" /></a></div>
 							<div id="btn_contact"><a href=""><img src="';
-			$_ob []= '' . parent::callContentParser('addMappingMain', unserialize('a:3:{i:0;s:3:"img";i:1;s:3:"src";i:2;s:32:"/theme/portfolio/btn_contact.png";}'));
+			$_ob []= '' . parent::callContentParser('addMappingMain', array (
+  0 => 'img',
+  1 => 'src',
+  2 => '/theme/portfolio/btn_contact.png',
+));
 			$_ob []= '' . '" onMouseOver="this.src=\'<[LAF]>/btn_contact_over.png\';" onMouseOut="this.src=\'<[LAF]>/btn_contact.png\';" /></a></div>
 							<div id="btn_profile"><a href=""><img src="';
-			$_ob []= '' . parent::callContentParser('addMappingMain', unserialize('a:3:{i:0;s:3:"img";i:1;s:3:"src";i:2;s:32:"/theme/portfolio/btn_profile.png";}'));
+			$_ob []= '' . parent::callContentParser('addMappingMain', array (
+  0 => 'img',
+  1 => 'src',
+  2 => '/theme/portfolio/btn_profile.png',
+));
 			$_ob []= '' . '" onMouseOver="this.src=\'<[LAF]>/btn_profile_over.png\';" onMouseOut="this.src=\'<[LAF]>/btn_profile.png\';" /></a></div>
 							<div id="btn_search"><a href=""><img src="';
-			$_ob []= '' . parent::callContentParser('addMappingMain', unserialize('a:3:{i:0;s:3:"img";i:1;s:3:"src";i:2;s:31:"/theme/portfolio/btn_search.png";}'));
+			$_ob []= '' . parent::callContentParser('addMappingMain', array (
+  0 => 'img',
+  1 => 'src',
+  2 => '/theme/portfolio/btn_search.png',
+));
 			$_ob []= '' . '" onMouseOver="this.src=\'<[LAF]>/btn_search_over.png\';" onMouseOut="this.src=\'<[LAF]>/btn_search.png\';" /></a></div>
 						</div></td>
 					<td class="rrt"></td>
@@ -121,7 +157,11 @@ class IPCO_Compiled_d__www_watena_libs_portfolio_templates_index_tpl extends IPC
 				</tr>
 			</table>
 			<div style="width:842px; height:264px;"><img src="';
-			$_ob []= '' . parent::callContentParser('addMappingMain', unserialize('a:3:{i:0;s:3:"img";i:1;s:3:"src";i:2;s:27:"/theme/portfolio/header.png";}'));
+			$_ob []= '' . parent::callContentParser('addMappingMain', array (
+  0 => 'img',
+  1 => 'src',
+  2 => '/theme/portfolio/header.png',
+));
 			$_ob []= '' . '" /></div>
 			<table class="zoomed" width="100%" cellpadding="0" cellspacing="0">
 				<tr>
@@ -145,40 +185,57 @@ class IPCO_Compiled_d__www_watena_libs_portfolio_templates_index_tpl extends IPC
 										</div></td>
 									<td class="r"><div class="menuItem">
 											<div class="menuItemHeader"><img src="';
-			$_ob []= '' . parent::callContentParser('addMappingMain', unserialize('a:3:{i:0;s:3:"img";i:1;s:3:"src";i:2;s:34:"/theme/portfolio/menu_hotlinks.png";}'));
+			$_ob []= '' . parent::callContentParser('addMappingMain', array (
+  0 => 'img',
+  1 => 'src',
+  2 => '/theme/portfolio/menu_hotlinks.png',
+));
 			$_ob []= '' . '" /></div>
 											<div class="menuItemContent">bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla</div>
 										</div>
 										<div class="menuItem">
 											<div class="menuItemHeader"><img src="';
-			$_ob []= '' . parent::callContentParser('addMappingMain', unserialize('a:3:{i:0;s:3:"img";i:1;s:3:"src";i:2;s:32:"/theme/portfolio/menu_newest.png";}'));
+			$_ob []= '' . parent::callContentParser('addMappingMain', array (
+  0 => 'img',
+  1 => 'src',
+  2 => '/theme/portfolio/menu_newest.png',
+));
 			$_ob []= '' . '" /></div>
 											<div class="menuItemContent">bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla</div>
 										</div>
 										<div class="menuItem">
 											<div class="menuItemHeader"><img src="';
-			$_ob []= '' . parent::callContentParser('addMappingMain', unserialize('a:3:{i:0;s:3:"img";i:1;s:3:"src";i:2;s:36:"/theme/portfolio/menu_categories.png";}'));
+			$_ob []= '' . parent::callContentParser('addMappingMain', array (
+  0 => 'img',
+  1 => 'src',
+  2 => '/theme/portfolio/menu_categories.png',
+));
 			$_ob []= '' . '" /></div>
 											<div class="menuItemContent">bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla</div>
 										</div>
 										<div class="menuItem">
 											<div class="menuItemHeader"><img src="';
-			$_ob []= '' . parent::callContentParser('addMappingMain', unserialize('a:3:{i:0;s:3:"img";i:1;s:3:"src";i:2;s:33:"/theme/portfolio/menu_connect.png";}'));
+			$_ob []= '' . parent::callContentParser('addMappingMain', array (
+  0 => 'img',
+  1 => 'src',
+  2 => '/theme/portfolio/menu_connect.png',
+));
 			$_ob []= '' . '" /></div>
 											<div class="menuItemContent">Waiting for a stable connection!</div>
 										</div>
 										<div class="menuItem">
 											<div class="menuItemHeader"><img src="';
-			$_ob []= '' . parent::callContentParser('addMappingMain', unserialize('a:3:{i:0;s:3:"img";i:1;s:3:"src";i:2;s:36:"/theme/portfolio/menu_neighbours.png";}'));
+			$_ob []= '' . parent::callContentParser('addMappingMain', array (
+  0 => 'img',
+  1 => 'src',
+  2 => '/theme/portfolio/menu_neighbours.png',
+));
 			$_ob []= '' . '" /></div>
 											<div class="menuItemContent"><ul><li>link<Li></ul></div>
 										</div>
-										<div class="menuItem">
-											<div class="menuItemHeader"><img src="';
-			$_ob []= '' . parent::callContentParser('addMappingMain', unserialize('a:3:{i:0;s:3:"img";i:1;s:3:"src";i:2;s:31:"/theme/portfolio/menu_quote.png";}'));
-			$_ob []= '' . '" /></div>
-											<div class="menuItemContent" tpl:component="Quotes">&ldquo;${quote}&rdquo;<br />~<em>${author}</em></div>
-										</div>
+										';
+			$_ob []= '' . method_exists($this, 'callRegion__Quote') ? $this->callRegion__Quote() : '';
+			$_ob []= '' . '
 										<div class="menuSpacer"></div></td>
 								</tr>
 							</table>
@@ -203,7 +260,38 @@ class IPCO_Compiled_d__www_watena_libs_portfolio_templates_index_tpl extends IPC
 	</div>
 </div>
 </body>
-</html>';
+</html>
+
+
+';
+			return implode('', $_ob);
+		} catch(Exception $e) { throw new WatCeption('Unable to create template-output.', array(), null, $e); }
+	}
+	protected function callRegion__Quote() {
+		try {
+			$_ob = array();
+			$_ob []= '' . '
+';
+			if(parent::processMember('getQuote', null)) {
+				$_ob []= '' . '
+<div class="menuItem">
+	<div class="menuItemHeader"><img src="';
+				$_ob []= '' . parent::callContentParser('addMappingMain', array (
+  0 => 'img',
+  1 => 'src',
+  2 => '/theme/portfolio/menu_quote.png',
+));
+				$_ob []= '' . '" /></div>
+	<div class="menuItemContent">&ldquo;';
+				$_ob []= '' . parent::processMember('text', parent::processMember('getQuote', null));
+				$_ob []= '' . '&rdquo;<br />~<em>';
+				$_ob []= '' . parent::processMember('author', parent::processMember('getQuote', null));
+				$_ob []= '' . '</em></div>
+</div>
+';
+			}
+			$_ob []= '' . '
+';
 			return implode('', $_ob);
 		} catch(Exception $e) { throw new WatCeption('Unable to create template-output.', array(), null, $e); }
 	}

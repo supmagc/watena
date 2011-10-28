@@ -1,9 +1,16 @@
 <?php
 require_model('HtmlBaseModel');
-require_file('C:/test.txt');
 
 class PortfolioListModel extends HtmlBaseModel {
 	
+	public function init() {
+		$this->setCharset('UTF-8');
+		$this->setTitle('ToMo-design - powered by Watena');
+	}
+	
+	public function getQuote() {
+		return array('text' => 'This is my world !!', 'author' => 'Voet Jelle');
+	}
 }
 
 ?>
