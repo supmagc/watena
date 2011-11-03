@@ -1,5 +1,5 @@
 <?php
-require_once dirname(__FILE__) . '/../ipco/ipco.php';
+require_includeonce(dirname(__FILE__) . '/../ipco/ipco.php');
 
 class TemplateFile extends CacheableFile implements IPCO_ICallbacks {
 

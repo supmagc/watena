@@ -15,10 +15,6 @@ abstract class Cacheable extends Configurable {
 	
 	private $m_aInstances = null;
 	
-	public function __construct(array $aConfig) {
-		parent::__construct($aConfig);
-	}
-	
 	public function getInstance($sKey, $mDefault = null) {
 		$sKey = strtoupper($sKey); // Don't use Encoding, since it might not be inited yet
 		return isset($this->m_aInstances[$sKey]) ? $this->m_aInstances[$sKey] : $mDefault;
