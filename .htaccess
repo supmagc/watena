@@ -31,11 +31,11 @@ ErrorDocument 503 /index.php?w_error=503
   RewriteRule ^index.php - [QSA,L]
   
   # Url's pointing to raw theme/files are allowed
-  RewriteRule ^(files|theme)/([^/]+)/(.*) libs/$2/$1/$3 [QSA]
+  RewriteRule ^(files|theme)/([^/]+)/(.*) libs/$2/$1/$3 [QSA,DPI]
   RewriteCond %{REQUEST_FILENAME} -f
-  RewriteRule ^libs/([^/]+)/(files|theme)/ - [QSA,L,NS]
+  RewriteRule ^libs/([^/]+)/(files|theme)/ - [QSA,L]
   RewriteCond %{REQUEST_FILENAME} !-f
-  RewriteRule ^libs/([^/]+)/(files|theme)/ - [QSA,L,R]
+  RewriteRule ^libs/([^/]+)/(files|theme)/ - [QSA,R=404]
 
   # When a url can qualify as a requests/-page, redirect it  
   RewriteRule ^([^/]+\.(php|xml|txt|ico)) requests/$1 [QSA,L]
@@ -44,7 +44,7 @@ ErrorDocument 503 /index.php?w_error=503
   # This is the fallthrough for most requests.
   # This rule will only be triggered on original requests
   RewriteCond %{ENV:REDIRECT_STATUS} ^$
-  RewriteRule ^(.*)$ index.php?w_page=$1 [QSA,L]
+  RewriteRule ^(.*)$ index.php?w_page=$1 [QSA]
 </IfModule>
 
 ############ Fallback ##############
