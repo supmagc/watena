@@ -13,6 +13,7 @@ class Configurable extends Object {
 	}
 
 	public final function getConfig($sKey, $mDefault = null) {
+		// TODO: can this be fixed ?
 		$sKey = strtoupper($sKey); // Don't use Encoding, since it might not be inited yet
 		return isset($this->m_aConfig[$sKey]) ? $this->m_aConfig[$sKey] : $mDefault;
 	}
