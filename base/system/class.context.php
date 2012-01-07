@@ -97,7 +97,8 @@ class Context extends Object implements ILogFilter {
 	public function loadPlugins(array $aPlugins, $bTerminate = true) {
 		$bSucces = true;
 		foreach($aPlugins as $sPlugin) {
-			$bSucces = $bSucces && $this->LoadPlugin($sPlugin, $bTerminate);
+			if(Encoding::length(Encoding::trim($sPlugin)) > 0)
+				$bSucces = $bSucces && $this->LoadPlugin($sPlugin, $bTerminate);
 		}
 		return $bSucces;
 	}
@@ -112,7 +113,7 @@ class Context extends Object implements ILogFilter {
 		$sKey = Encoding::toLower($sPlugin);
 		$sFilePHP = $this->getLibraryFilePath('plugins', "plugin.$sKey.php");
 		$sFileINI = $this->getLibraryFilePath('plugins', "config.$sKey.ini");
-		if($sFilePHP === false) throw new WatCeption('Unable to find a library that contains the plugin.', array('plugin' => $sPlugin));
+		if($sFilePHP === false) throw new WatCeption('Unable to find a library that contains the plugin: \'{plugin}\'', array('plugin' => $sPlugin));
 		if(!isset($this->m_aPlugins[$sKey])) {
 			$aConfig = parent::getWatena()->getCache()->retrieve(
 				"W_PLUGININI_$sPlugin", 
