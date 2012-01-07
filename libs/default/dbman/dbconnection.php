@@ -19,7 +19,7 @@ class DbConnection {
 		return array('m_sHost', 'm_sUser', 'm_sPass', 'm_sName', 'm_nPort', 'm_sType');
 	}
 	
-	public function __wakeup() {
+	public function __load() {
 		
 	}
 }

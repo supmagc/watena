@@ -9,7 +9,7 @@ class FilterGroup extends CacheableDirectory {
 		$this->m_aFiles = parent::getFiles('xml', true, 'filter\\.(a-z0-9_)*');
 	}
 	
-	public function wakeup() {
+	public function load() {
 		foreach($this->m_aFiles as $sFile) {
 			$oFilter = Filter::create($sFile);
 			if(isset($this->m_aFilters[$oFilter->getOrder()])) throw new WatCeption('A filter with this order-number allready exists within this filtergoup.', array(

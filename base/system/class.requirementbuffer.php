@@ -20,7 +20,7 @@ class RequirementBuffer extends Object {
 	 * 
 	 * You only need to check if isSucces() returns true
 	 */
-	public final function __wakeup() {
+	public final function __load() {
 		$this->load();
 	}
 	
