@@ -18,7 +18,7 @@ class TemplateFile extends CacheableFile implements IPCO_ICallbacks {
 		$this->m_sExtends = $oParser->getExtendsFilePath();
 	}
 	
-	public function wakeup() {
+	public function load() {
 		if($this->m_sExtends !== null) {
 			TemplateFile::create($this->m_sExtends, parent::getConfiguration(), parent::getInstances());
 		}

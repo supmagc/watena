@@ -13,7 +13,7 @@ class CachePEAR extends Plugin implements ICache {
 		if(isset($this->m_aOptions['cache_dir'])) $this->m_aOptions['cache_dir'] = parent::getWatena()->getPath($this->m_aOptions['cache_dir']);
 	}
 	
-	public function wakeup() {
+	public function load() {
 		$this->m_oCache = new Cache($this->m_sContainer, $this->m_aOptions);
 	}
 	

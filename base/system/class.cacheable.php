@@ -11,7 +11,7 @@ abstract class Cacheable extends Configurable {
 	 * This method is called when waking the obhect when loading it back from the cache.
 	 * For example: creating a database connection should be done at this time.
 	 */
-	public function wakeup() {}
+	public function load() {}
 	
 	private $m_aInstances = null;
 	
@@ -40,7 +40,7 @@ abstract class Cacheable extends Configurable {
 				$oCache->set("W_CACHE_{$sIdentifier}_EXPIRATION", $nExpiration);
 				$oCache->set("W_CACHE_{$sIdentifier}_OBJECT", serialize($oObject));
 				$oObject->m_aInstances = $aInstances;
-				$oObject->wakeup();
+				$oObject->load();
 				return $oObject;
 			}
             catch(WatCeption $e) {
@@ -60,7 +60,7 @@ abstract class Cacheable extends Configurable {
 				}
 				$oObject = unserialize($oObject);
 				$oObject->m_aInstances = $aInstances;
-				$oObject->wakeup();
+				$oObject->load();
 				return $oObject;
 			}
 			catch(Exception $e) {
