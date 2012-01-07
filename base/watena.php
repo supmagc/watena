@@ -51,8 +51,8 @@ if(!defined('NLOGGER')) {
 }
 
 if(!defined('NWATENA')) {
-	if(defined('NLOGGER')) die('Watena depend on Logger, remove the NLOGGER-constant');
-	if(defined('NCOMMON')) die('Watena depend on Global, remove the NCOMMON-constant');
+	if(defined('NLOGGER')) die('Watena depends on Logger, remove the NLOGGER-constant');
+	if(defined('NCOMMON')) die('Watena depends on Global, remove the NCOMMON-constant');
 	
 	define('WATENA', true);
 	
