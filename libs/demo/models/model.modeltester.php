@@ -6,8 +6,7 @@ class ModelTester extends Model {
 	var $count = 10;
 	
 	function init() {
-		echo "test: ";
-		print_r(parent::getWatena()->getContext()->getPlugin('DatabaseManager'));
+		parent::getWatena()->getContext()->getPlugin('DatabaseManager');
 	}
 	
 	function next() {

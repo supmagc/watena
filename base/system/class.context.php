@@ -17,7 +17,7 @@ class Context extends Object implements ILogFilter {
 		foreach($aProjects as $sProject) {
 			$sProject = Encoding::trim($sProject);
 			$sPath = realpath(PATH_LIBS . "/$sProject");
-			if($sPath === null) throw new WatCeption($sMessage);
+			if($sPath === null) throw new WatCeption("One of the specified library-paths could not be mapped, and seems to not exist: {library}", array('library' => $sProject), $this);
 			else $this->m_aLibraryPaths []= $sPath;
 		}
 	}
@@ -60,7 +60,7 @@ class Context extends Object implements ILogFilter {
 	public function getLibraryFilePath($sDirectory, $sFile, $sPreferredLibrary = null) {
 		$sSearch = "/$sDirectory/$sFile";
 		if(($sTemp = realpath(PATH_BASE . $sSearch)) !== false) return $sTemp;
-		if(($nIndex = Encoding::indexOf($sFile, '$')) !== false && ($sTemp = realpath(PATH_LIBS . '/' . Encoding::substring($sFile, 0, $nIndex) . "/$sDirectory/" . Encoding::substring($sFile, $nIndex + 1))) !== false) return $sTemp;
+		if(($nIndex = strpos($sFile, '$')) !== false && ($sTemp = realpath(PATH_LIBS . '/' . substr($sFile, 0, $nIndex) . "/$sDirectory/" . substr($sFile, $nIndex + 1))) !== false) return $sTemp;
 		if($sPreferredLibrary != null && ($sTemp = realpath(PATH_LIBS . "/$sPreferredLibrary" . $sSearch)) !== false) return $sTemp;
 		foreach($this->m_aLibraryPaths as $sPath) {
 			if(($sTemp = realpath($sPath . $sSearch)) !== false) return $sTemp;
@@ -79,7 +79,7 @@ class Context extends Object implements ILogFilter {
 	 */
 	public function getPlugin($sPlugin, $sImplements = null) {
 		$sKey = strtolower($sPlugin);
-		$oPlugin = isset($this->m_aPlugins[$sKey]) ? $this->m_aPlugins[$sKey] : null;
+		$oPlugin = (isset($this->m_aPlugins[$sKey]) || $this->loadPlugin($sPlugin)) ? $this->m_aPlugins[$sKey] : null;
 		if($oPlugin) {
 			if($sImplements && !in_array($sImplements, class_implements($oPlugin, false)))
 				parent::terminate("The plugin you requested is loaded, but doesn implement the required interface: $sPlugin::$sImplements");
@@ -97,7 +97,7 @@ class Context extends Object implements ILogFilter {
 	public function loadPlugins(array $aPlugins, $bTerminate = true) {
 		$bSucces = true;
 		foreach($aPlugins as $sPlugin) {
-			if(Encoding::length(Encoding::trim($sPlugin)) > 0)
+			if(strlen(trim($sPlugin)) > 0)
 				$bSucces = $bSucces && $this->LoadPlugin($sPlugin, $bTerminate);
 		}
 		return $bSucces;
@@ -110,10 +110,10 @@ class Context extends Object implements ILogFilter {
 	 * @return boolean Indicator if the plugin was loaded
 	 */
 	public function loadPlugin($sPlugin) {
-		$sKey = Encoding::toLower($sPlugin);
+		$sKey = strtolower($sPlugin);
 		$sFilePHP = $this->getLibraryFilePath('plugins', "plugin.$sKey.php");
 		$sFileINI = $this->getLibraryFilePath('plugins', "config.$sKey.ini");
-		if($sFilePHP === false) throw new WatCeption('Unable to find a library that contains the plugin: \'{plugin}\'', array('plugin' => $sPlugin));
+		if($sFilePHP === false) throw new WatCeption('Unable to find a library that contains the required plugin: {plugin}', array('plugin' => $sPlugin));
 		if(!isset($this->m_aPlugins[$sKey])) {
 			$aConfig = parent::getWatena()->getCache()->retrieve(
 				"W_PLUGININI_$sPlugin", 
@@ -154,17 +154,6 @@ class Context extends Object implements ILogFilter {
 		if($sExtends && !in_array($sExtends, $aExtendsFound)) throw new WatCeption('The object to be loaded does not extend the required class.', array('object' => $sObjectName, 'class' => $sExtends), $this);
 		foreach($aImplements as $sImplements)
 			if($sImplements && !in_array($sImplements, $aImplements)) throw new WatCeption('The object to be loaded does not implement the required interface.', array('object' => $sObjectName, 'interface' => $sImplements), $this);
-
-		/*
-		// Check requirements if possible/required
-		$oRequirement = method_exists($sObjectName, 'getRequirements') ? new RequirementBuffer(call_user_func(array($sObjectName, 'getRequirements'))) : new RequirementBuffer();
-		if($sIncludeFile) self::$s_oGlobalRequirementBufferInstance->addInclude($sIncludeFile);
-		foreach($aExtendsFound as $sParent) {
-			if(method_exists($sParent, 'getRequirements')) {
-				self::$s_oGlobalRequirementBufferInstance->addRequirements(call_user_func(array($sObjectName, 'getRequirements')));
-			}
-		}
-		*/
 		
 		$this->m_bRequirementWatchdog = false;
 		if(true) {
@@ -175,17 +164,6 @@ class Context extends Object implements ILogFilter {
 		else {
 			throw new WatCeption('The object you are loading has some requirements that couldn\'t be met.', array('object' => $sObjectName, 'errors' => $oRequirement->getErrors(), 'requirements' => $oRequirement), $this);
 		}
-		
-		/*
-		// Create instance
-		if($oRequirement->isSucces()) {
-			$oClass = new ReflectionClass($sObjectName);
-			$oTmp = $oClass->newInstanceArgs($aParams);			
-			return array($oTmp, self::$s_oGlobalRequirementBufferInstance);
-		}
-		else {
-		}
-		*/
 	}
 	
 	/**
@@ -227,7 +205,7 @@ class Context extends Object implements ILogFilter {
 	
 	public function loggerFilter(&$sIdentifier, &$nLevel, $sFile, $nLine, $sMessage, array $aData, array $aTrace) {
 		if($sIdentifier == require_logger()->getIdentifier()) {
-			$sMessage = Encoding::replace('{name}', $aData['name'], $sMessage);
+			$sMessage = str_replace('{name}', $aData['name'], $sMessage);
 			echo $sMessage;
 			return false;
 		}

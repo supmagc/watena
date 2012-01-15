@@ -63,7 +63,7 @@ class Filter extends CacheableFile {
 	private $m_nOrder = 0;
 	private $m_aRules = array();
 	
-	public function init() {
+	public function make() {
 		$oXml = new XMLReader();
 		$oLast = null;
 		if($oXml->open(parent::getFilepath())) {
@@ -102,6 +102,11 @@ class Filter extends CacheableFile {
 				}
 			}
 			if(count($this->m_aRules) == 0) throw new WatCeption('You need at least one rule in each filter.', array('filter' => parent::getFilePath()), $this);
+			$this->getLogger()->debug('Succesfully parsed filter: {filter}', array(
+				'filter' => parent::getFilePath(), 
+				'model' => $this->m_oModel != null ? $this->m_oModel->getName() : 'unknown', 
+				'view' => $this->m_oView != null ? $this->m_oView->getName() : 'unknown', 
+				'controller' => $this->m_oController != null ? $this->m_oController->getName() : 'unknown'));
 		}
 		else {
 			throw new WatCeption('Unable to Parse XML-filter definition.', array('data' => $sData), $this);

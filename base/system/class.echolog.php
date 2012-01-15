@@ -89,7 +89,8 @@ EOT;
 				}
 				$sReturn .= ')';
 			}
-			$sReturn .= " - $aPart[file] (line: $aPart[line])</li>";
+			if(isset($aPart['file']) && isset($aPart['line']))
+				$sReturn .= " - $aPart[file] (line: $aPart[line])</li>";
 		}
 		// TODO: http or https ?
 		// TODO: make this easier by adding a static getCurrent to Mapping

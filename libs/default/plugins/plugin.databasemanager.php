@@ -6,7 +6,6 @@ class DatabaseManager extends Plugin {
 	private $m_aConnections = array();
 	
 	public function init() {
-		die('DBMan loaded');
 		$aConnections = array_map('trim', explode(';', parent::getConfig('CONNECTIONS', '')));
 		parent::getLogger()->info('Database connections found: ' . implode(', ', $aConnections));
 	}
