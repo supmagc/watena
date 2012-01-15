@@ -5,13 +5,13 @@ abstract class Cacheable extends Configurable {
 	/**
 	 * This method is called when initting the object and should leave the object in a cacheable/serializeable state.
 	 */
-	public function init() {}
+	public function make() {}
 	
 	/**
 	 * This method is called when waking the obhect when loading it back from the cache.
 	 * For example: creating a database connection should be done at this time.
 	 */
-	public function load() {}
+	public function init() {}
 	
 	private $m_aInstances = null;
 	
@@ -35,12 +35,12 @@ abstract class Cacheable extends Configurable {
 			try {
 				$oObject = parent::getWatena()->getContext()->loadObjectAndRequirements($sObject, $aParams, $sIncludeFile, $sExtends, $aImplements);
 				$oObject->m_aInstances = $aInstances;
-				$oObject->init();
+				$oObject->make();
 				$oObject->m_aInstances = null;
 				$oCache->set("W_CACHE_{$sIdentifier}_EXPIRATION", $nExpiration);
 				$oCache->set("W_CACHE_{$sIdentifier}_OBJECT", serialize($oObject));
 				$oObject->m_aInstances = $aInstances;
-				$oObject->load();
+				$oObject->init();
 				return $oObject;
 			}
             catch(WatCeption $e) {
@@ -60,7 +60,7 @@ abstract class Cacheable extends Configurable {
 				}
 				$oObject = unserialize($oObject);
 				$oObject->m_aInstances = $aInstances;
-				$oObject->load();
+				$oObject->init();
 				return $oObject;
 			}
 			catch(Exception $e) {

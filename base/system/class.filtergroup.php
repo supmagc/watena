@@ -5,11 +5,11 @@ class FilterGroup extends CacheableDirectory {
 	private $m_aFiles;
 	private $m_aFilters = array();
 	
-	public function init() {
+	public function make() {
 		$this->m_aFiles = parent::getFiles('xml', true, 'filter\\.(a-z0-9_)*');
 	}
 	
-	public function load() {
+	public function init() {
 		foreach($this->m_aFiles as $sFile) {
 			$oFilter = Filter::create($sFile);
 			if(isset($this->m_aFilters[$oFilter->getOrder()])) throw new WatCeption('A filter with this order-number allready exists within this filtergoup.', array(
