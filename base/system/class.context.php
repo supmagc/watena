@@ -15,7 +15,7 @@ class Context extends Object implements ILogFilter {
 		
 		$aProjects = explode(',', parent::getWatena()->getConfig('LIBRARIES', ''));
 		foreach($aProjects as $sProject) {
-			$sProject = Encoding::trim($sProject);
+			$sProject = trim($sProject);
 			$sPath = realpath(PATH_LIBS . "/$sProject");
 			if($sPath === null) throw new WatCeption("One of the specified library-paths could not be mapped, and seems to not exist: {library}", array('library' => $sProject), $this);
 			else $this->m_aLibraryPaths []= $sPath;
