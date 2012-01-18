@@ -5,8 +5,14 @@ class DatabaseManager extends Plugin {
 
 	private $m_aConnections = array();
 	
-	public function init() {
+	public function make() {
 		$aConnections = array_map('trim', explode(';', parent::getConfig('CONNECTIONS', '')));
+		foreach($aConnections as $sConnection) {
+			$sConnection = strtoupper($sConnection);
+			$oConnection = new DbConnection(parent::getConfig($sConnection.'_DSN', null), parent::getConfig($sConnection.'_USER', null), parent::getConfig($sConnection.'_PASS', null));
+			$this->m_aConnections[strtoupper($sConnection)] = $oConnection;
+		}
+		
 		parent::getLogger()->info('Database connections found: ' . implode(', ', $aConnections));
 	}
 	
