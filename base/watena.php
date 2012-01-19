@@ -8,6 +8,7 @@ if(function_exists('__autoload')) {
 	die('You are not allowed to define __autoload(); since a part of the framework depends on it.');
 }
 
+/* This should be deprecated ?
 if(!defined('NEXCEPTIONCATCH')) {
 	define('EXCEPTIONCATCH', true);
 	function exception_handler(Exception $e) {
@@ -34,6 +35,7 @@ if(!defined('NERRORTOEXCEPTION')) {
 	}
 	set_error_handler('error_handler');
 }
+*/
 
 if(!defined('NCOMMON')) {
 	define('COMMON', true);

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<filter name="Admin Main" order="1000">
+	<model name="AdminModel">
+	</model>
+	<view name="HtmlTemplateView">
+		<param name="template">admin-main.tpl</param>
+	</view>
+	<controller name="AdminController">
+	</controller>
+	<rules>
+		<rule variable="mapping">^/admin((/|\?).*)?$</rule>
+	</rules>
+</filter>

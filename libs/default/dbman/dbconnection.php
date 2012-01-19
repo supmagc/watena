@@ -68,10 +68,12 @@ class DbConnection {
 	}
 	
 	public function insert($sTable, array $aValues) {
-		$sQuery = 'INSERT INTO `' . $sTable . '` () VALUES ()';
+		$aFields = array_keys($aValues);
+		$sFields = implode(', ', array_map(create_function('$a', 'return "`$a`";'), $aFields));
+		$aValues = implode(', ', array_map(create_function('$a', 'return ":$a";'), $aFields));
+		$sQuery = "INSERT INTO `$sTable` ($sFields) VALUES ($sValues)";
 		$oStatement = $this->getPdo()->prepare($sQuery);
-		$oStatement->execute(array(
-		));
+		$oStatement->execute($aValues);
 	}
 	
 	public function update($sTable, array $aValues, $sWhere) {
