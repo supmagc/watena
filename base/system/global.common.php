@@ -113,6 +113,21 @@ function is_whitespace($var) {
 	return ctype_space($var);
 }
 
+function explodeTrim($sSplitter, $sData) {
+	$aData = explode($sSplitter, $sData);
+	$aResult = array();
+	foreach($aData as $sKey => $sValue) {
+		$sValue = trim($sValue);
+		if(strlen($sValue) > 0)
+			$aResult[$sKey] = $sValue;
+	}
+	return $aResult;
+}
+
+function implodeTrim($sGlue, array $aData) {
+	
+}
+
 /**
  * Add Backslashes to string you want to use in ereg-expressions
  *
