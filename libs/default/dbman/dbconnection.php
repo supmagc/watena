@@ -56,32 +56,53 @@ class DbConnection {
 	}
 	
 	public function query() {
-		
 	}
 	
-	public function call() {
-		
+	public function call($sName, array $aParams, array $aReturns) {
+		$sPartA = implode(', ', array_fill(0, count($aParams), '?'));
+		$sPartB = implode(', ', array_map(create_function('$a', 'return "@$a";'), $aReturns));
+		$sPartC = implode(', ', array_map(create_function('$a', 'return "@$a AS `$a`";'), $aReturns));
+		$sQuery = "CALL `$sName`(".$sPartA.(Encoding::Length($sPartA) > 0 && Encoding::Length($sPartB) > 0 ? ', ' : '').$sPartB.")";
+		$oStatement = System::PDO()->prepare($sQuery);
+		$oStatement->execute($aParams);
+		return $this->getPdo()->query("SELECT $sPartC");
 	}
 	
 	public function select() {
 		
 	}
 	
-	public function insert($sTable, array $aValues) {
+	public function insert($sTable, array $aValues, $bTransaction = true) {
 		$aFields = array_keys($aValues);
 		$sFields = implode(', ', array_map(create_function('$a', 'return "`$a`";'), $aFields));
-		$aValues = implode(', ', array_map(create_function('$a', 'return ":$a";'), $aFields));
-		$sQuery = "INSERT INTO `$sTable` ($sFields) VALUES ($sValues)";
+		$sValues = implode(', ', array_map(create_function('$a', 'return ":$a";'), $aFields));
+		$sQuery = 'INSERT INTO `'.$sTable.'` ('.$sFields.') VALUES ('.$sValues.')';
+		if($bTransaction) $this->getPdo()->beginTransaction();
+		try {
+			$oStatement = $this->getPdo()->prepare($sQuery);
+			$oStatement->execute($aData);
+			$mId = $this->getPdo()->lastInsertId();
+		}
+		catch(PDOException $e) {
+			if($bTransaction) $this->getPdo()->rollBack();
+			throw $e;
+		}
+		if($bTransaction) $this->getPdo()->commit();
+		return $mId;
+	}
+	
+	public function update($sTable, $mId, $aData, $sIdField = 'Id') {
+		$aFields = array_keys($aValues);
+		$sUpdates = implode(', ', array_map(create_function('$a', 'return "`$a` = :$a";'), $aFields));
+		$sQuery = "UPDATE `$sTable` SET ".$sUpdates." WHERE `$sIdField` = :$sIdField";
 		$oStatement = $this->getPdo()->prepare($sQuery);
-		$oStatement->execute($aValues);
+		return $oStatement->execute(array_merge($aData, array($sIdField => $mId)));
 	}
 	
-	public function update($sTable, array $aValues, $sWhere) {
-		
-	}
-	
-	public function delete($sTable, $sWhere) {
-		
+	public function delete($sTable, $mId, $sIdField = 'Id') {
+		$sQuery = "DELETE FROM `$sTable` WHERE `$sIdField` = :$sIdField";
+		$oStatement = $this->getPdo()->prepare($sQuery);
+		return $oStatement->execute(array($sIdField => $mId));
 	}	
 }
 
