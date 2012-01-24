@@ -115,17 +115,25 @@ function is_whitespace($var) {
 
 function explodeTrim($sSplitter, $sData) {
 	$aData = explode($sSplitter, $sData);
-	$aResult = array();
+	$aReturn = array();
 	foreach($aData as $sKey => $sValue) {
 		$sValue = trim($sValue);
 		if(strlen($sValue) > 0)
-			$aResult[$sKey] = $sValue;
+			$aReturn[$sKey] = $sValue;
 	}
-	return $aResult;
+	return $aReturn;
 }
 
 function implodeTrim($sGlue, array $aData) {
-	
+	$sReturn = '';
+	foreach($aData as $sValue) {
+		$sValue = trim($sValue);
+		if(strlen($sValue) > 0) {
+			if(strlen($sReturn) > 0) $sReturn .= $sGlue;
+			$sReturn .= $sValue;
+		}
+	}
+	return $sReturn;
 }
 
 /**

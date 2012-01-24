@@ -20,13 +20,13 @@ class Watena extends Configurable {
 		$this->m_oMapping = new Mapping();
 		
 		// Load all default plugins
-		$this->m_oContext->loadPlugins(array_map('trim', explode(',', self::getConfig('PLUGINS', ''))));
+		$this->m_oContext->loadPlugins(explodeTrim(',', self::getConfig('PLUGINS', '')));
 		
 		// Load all specified logProcessors
 		$aLoadedLogProcessors = array();
 		$sLoggers = self::getConfig('LOGGER_PROCESSORS', null);
 		if($sLoggers) {
-			$aLogProcessors = explode(',', $sLoggers);
+			$aLogProcessors = explodeTrim(',', $sLoggers);
 			foreach($aLogProcessors as $sProcessor) {
 				$this->m_oContext->loadPlugin($sProcessor);
 				$aLoadedLogProcessors []= $this->m_oContext->getPlugin($sProcessor, 'ILogProcessor');
@@ -113,7 +113,7 @@ class Watena extends Configurable {
 	public final function assureEnvironment() {
 		set_include_path(get_include_path() . PATH_SEPARATOR . str_replace(',', PATH_SEPARATOR, self::getConfig('INCLUDE', '')));
 		Encoding::init(self::getConfig('CHARSET', 'UTF-8'));
-		ini_set('date.timezone', self::getConfig('TIMEZONE', 'UTC'));
+		Time::init(self::getConfig('TIMEZONE', 'UTC'));
 		ini_set('error_reporting', E_ALL);
 		if(!is_writable(PATH_DATA)) die('Data path is not writeable.');
 	}

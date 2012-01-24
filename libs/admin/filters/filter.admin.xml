@@ -5,8 +5,6 @@
 	<view name="HtmlTemplateView">
 		<param name="template">admin-main.tpl</param>
 	</view>
-	<controller name="AdminController">
-	</controller>
 	<rules>
 		<rule variable="mapping">^/admin((/|\?).*)?$</rule>
 	</rules>
