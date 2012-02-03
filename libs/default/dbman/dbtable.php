@@ -1,7 +1,8 @@
 <?php
 
 class DbTable {
-	
+
+	private $m_sConnection;
 	private $m_oConnection;
 	private $m_sTable;
 	private $m_sIdField;
@@ -10,6 +11,15 @@ class DbTable {
 		$this->m_oConnection = $oConnection;
 		$this->m_sTable = $sTable;
 		$this->m_sIdField = $sIdField;
+	}
+
+	public function __sleep() {
+		return array('m_sConnection', 'm_sTable', 'm_sIdField');
+	}
+	
+	public function __wakeup() {
+		require_plugin('DatabaseManager');
+		$this->m_oConnection = DatabaseManager::getConnection($this->m_sConnection);
 	}
 	
 	/**

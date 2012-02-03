@@ -46,8 +46,12 @@ class DbConnection {
 	}
 	
 	public function connect() {
-		if($this->m_oConnection === null)
-			$this->m_oConnection = new PDO($this->getDsn(), $this->getUser(), $this->getPass());
+		if($this->m_oConnection === null) {
+			$this->m_oConnection = new PDO($this->getDsn(), $this->getUser(), $this->getPass(), array(PDO::ATTR_PERSISTENT => true));
+			$this->m_oConnection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
+			$this->m_oConnection->query('SET time_zone = \'+00:00\';'); // Set to UTC
+			$this->m_oConnection->query('SET wait_timeout = 120;');
+		}
 	}
 	
 	public function disconnect() {

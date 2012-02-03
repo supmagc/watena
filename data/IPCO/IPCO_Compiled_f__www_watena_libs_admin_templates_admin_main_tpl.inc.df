@@ -1,0 +1,29 @@
+<?php
+class IPCO_Compiled_f__www_watena_libs_admin_templates_admin_main_tpl extends IPCO_Processor {
+	public function generate() {
+		return self::callRegion____MainRegion__();
+	}
+	protected function callRegion____MainRegion__() {
+		try {
+			$_ob = array();
+			$_ob []= '' . '<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="';
+			$_ob []= '' . parent::processMember('getContentType', null);
+			$_ob []= '' . '; charset=';
+			$_ob []= '' . parent::processMember('getCharset', null);
+			$_ob []= '' . '">
+<title>Watena - Admin - ';
+			$_ob []= '' . parent::processMember('getTitle', null);
+			$_ob []= '' . '</title>
+</head>
+<body>
+
+</body>
+</html>';
+			return implode('', $_ob);
+		} catch(Exception $e) { throw new WatCeption('Unable to create template-output.', array(), null, $e); }
+	}
+}
+?>

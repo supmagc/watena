@@ -191,6 +191,7 @@ class Logger {
 	}
 	
 	public static final function init() {
+		ini_set('error_reporting', E_ALL);
 		set_error_handler('Logger::processError');
 		set_exception_handler('Logger::processException');
 	}
