@@ -28,14 +28,6 @@ class _FilterData extends Object {
 		$this->m_aParams[$sName] = $sValue;
 	}
 	
-	public function setFirst($bFirst) {
-		$this->m_bFirst = $bFirst;
-	}
-	
-	public function setLast($bLast) {
-		$this->m_bLast = $bLast;
-	}
-	
 	public function getFile() {
 		return $this->m_sFile;
 	}
@@ -79,18 +71,12 @@ class Filter extends CacheableFile {
 				}
 				else if(($sName = $this->_matchesGetName($oXml, 'model')) !== false) {
 					$oLast = ($this->m_oModel = new _FilterData($sName, 'Model', 'models'));
-					$oLast->setFirst((bool)($oXml->moveToAttribute('first') && $oXml->value));
-					$oLast->setLast((bool)($oXml->moveToAttribute('last') && $oXml->value));
 				}
 				else if(($sName = $this->_matchesGetName($oXml, 'view')) !== false) {
 					$oLast = ($this->m_oView = new _FilterData($sName, 'View', 'views'));
-					$oLast->setFirst((bool)($oXml->moveToAttribute('first') && $oXml->value));
-					$oLast->setLast((bool)($oXml->moveToAttribute('last') && $oXml->value));
 				}
 				else if(($sName = $this->_matchesGetName($oXml, 'controller')) !== false) {
 					$oLast = ($this->m_oController = new _FilterData($sName, 'Controller', 'controllers'));
-					$oLast->setFirst((bool)($oXml->moveToAttribute('first') && $oXml->value));
-					$oLast->setLast((bool)($oXml->moveToAttribute('last') && $oXml->value));
 				}
 				else if(($sName = $this->_matchesGetName($oXml, 'param')) !== false) {
 					$oXml->read();
