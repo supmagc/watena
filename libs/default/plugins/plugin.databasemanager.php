@@ -23,8 +23,8 @@ class DatabaseManager extends Plugin {
 	 * 
 	 * @returen bool
 	 */
-	public function hasConnection($sConnection) {
-		return in_array(strtoupper($sConnection), $this->m_aConnections); 
+	public static function hasConnection($sConnection) {
+		return in_array(strtoupper($sConnection), self::$s_aConnections); 
 	}
 	
 	/**
