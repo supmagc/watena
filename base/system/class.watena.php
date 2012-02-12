@@ -10,6 +10,7 @@ class Watena extends Configurable {
 	private $m_oController = null;
 	
 	public function __construct($aConfig) {	
+		ob_start();
 		$nTime = microtime(true);	
 		parent::__construct($aConfig);
 		$this->assureEnvironment();
@@ -50,7 +51,6 @@ class Watena extends Configurable {
 		
 		// Load the mapping and retrieve the appropriate controller
 		list($this->m_oModel, $this->m_oView, $this->m_oController) = $this->m_oContext->getMVC($this->m_oMapping);		
-		ob_start();
 		$this->m_oController->process($this->m_oModel, $this->m_oView);
 		ob_end_flush();
 		$this->m_oView->render($this->m_oModel);
