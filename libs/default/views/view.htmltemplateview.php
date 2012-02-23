@@ -42,8 +42,8 @@ class HtmlTemplateView extends View implements IPCO_IContentParser {
 		echo $oGenerator->getContent(true);
 	}
 	
-	public function addMappingMain($sElement, $sAttribute, $sValue) {
-		return parent::getWatena()->getMapping()->getMain() . $sValue;
+	public function addMappingRoot($sElement, $sAttribute, $sValue) {
+		return parent::getWatena()->getMapping()->getRoot() . $sValue;
 	}
 	
 	public function parseContent(&$sContent) {
@@ -129,7 +129,7 @@ class HtmlTemplateView extends View implements IPCO_IContentParser {
 						$nState = self::STATE_ELEMENT_ATTRIBUTES;
 						$sValue = Encoding::substring($sContent, $nMarker, $i - $nMarker);
 						if(isset($this->m_aLinkFilters[$sElement]) && $this->m_aLinkFilters[$sElement] == $sAttribute && Encoding::beginsWith($sValue, '/')) {
-							$aParts []= new IPCO_ContentParserPart($nMarker, $i - $nMarker, 'addMappingMain', array($sElement, $sAttribute, $sValue));
+							$aParts []= new IPCO_ContentParserPart($nMarker, $i - $nMarker, 'addMappingRoot', array($sElement, $sAttribute, $sValue));
 						}
 					}
 					break;

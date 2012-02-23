@@ -48,12 +48,15 @@ class Watena extends Configurable {
 		}
 		
 		$this->getLogger()->debug('Watena was succesfully initialised in {time} sec.', array('time' => round(microtime(true) - $nTime, 5)));
+		$nTime = microtime(true);
 		
 		// Load the mapping and retrieve the appropriate controller
 		list($this->m_oModel, $this->m_oView, $this->m_oController) = $this->m_oContext->getMVC($this->m_oMapping);		
 		$this->m_oController->process($this->m_oModel, $this->m_oView);
 		ob_end_flush();
 		$this->m_oView->render($this->m_oModel);
+		
+		$this->getLogger()->debug('Watena loaded and rendered the page in {time} sec.', array('time' => round(microtime(true) - $nTime, 5)));
 	}
 
 	/**
