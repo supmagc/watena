@@ -20,7 +20,7 @@ class Time extends Object {
 	}
 	
 	public function isTimeZoneSystem() {
-		return $this->getTimezone() == self::getTimezoneSystem();
+		return $this->getTimezone() == self::getSystemTimezone();
 	}
 	
 	public function getTimezone() {
@@ -39,8 +39,12 @@ class Time extends Object {
 		return $this->isTimezoneUtc() ? $this->getTimestampLocal() : 0;
 	}
 	
-	public static function getTimezoneSystem() {
+	public static function getSystemTimezone() {
 		return self::$s_sTimezoneSystem;
+	}
+	
+	public static function createSystemTime() {
+		return new Time(time(), self::getSystemTimezone());
 	}
 	
 	public static function init($sTimezone) {

@@ -6,6 +6,6 @@
 		<param name="template">admin-main.tpl</param>
 	</view>
 	<rules>
-		<rule variable="mapping">^/admin((/|\?).*)?$</rule>
+		<rule type="mapping" variable="local">^/admin((/|\?).*)?$</rule>
 	</rules>
 </filter>

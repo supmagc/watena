@@ -82,9 +82,9 @@ class Filter extends CacheableFile {
 					$oXml->read();
 					$oLast->addParam($sName, $oXml->readString());
 				}
-				else if(($sName = $this->_matchesGetName($oXml, 'rule', 'variable')) !== false) {
+				else if((list($sType, $sVariable) = $this->_matchesGetName($oXml, 'rule', array('type', 'variable'))) !== false) {
 					$oXml->read();
-					$this->m_aRules[$sName] = $oXml->readString();
+					$this->m_aRules []= array('type' => $sType, 'variable' => $sVariable, 'pattern' => $oXml->readString());
 				}
 			}
 			if(count($this->m_aRules) == 0) throw new WatCeption('You need at least one rule in each filter.', array('filter' => parent::getFilePath()), $this);
@@ -125,14 +125,35 @@ class Filter extends CacheableFile {
 	
 	public function match(Mapping $oMapping) {
 		$bSucces = true;
-		foreach($this->m_aRules as $sVariable => $sRegex) {
-			if(!($bSucces = $bSucces && Encoding::regMatch($sRegex, $oMapping->getVariable($sVariable)))) break;
+		foreach($this->m_aRules as $aRuleData) {
+			
+			$sType = Encoding::toLower($aRuleData['type']);
+			$sVariable = $aRuleData['variable'];
+			$sRegex = $aRuleData['pattern'];
+			$sTarget = false;
+			
+			if($sType == 'get' && isset($_GET[$sVarieble])) $sTarget = $_GET[$sVariable];
+			else if($sType == 'post' && isset($_POST[$sVarieble])) $sTarget = $_POST[$sVariable];
+			else if($sType == 'session' && isset($_SESSION[$sVarieble])) $sTarget = $_SESSION[$sVariable];
+			else if($sType == 'mapping') $sTarget = $oMapping->getVariable($sVariable); // returns false when not found
+			
+			if($sTarget !== false && !($bSucces = $bSucces && Encoding::regMatch($sRegex, $sTarget))) break;
 		}
 		return $bSucces;
 	}
 	
-	private function _matchesGetName(XMLReader $oXml, $sMatch, $sNameTag = 'name') {
-		return $oXml->nodeType == XMLReader::ELEMENT && $oXml->name == $sMatch && $oXml->moveToAttribute($sNameTag) ? $oXml->value : false;
+	private function _matchesGetName(XMLReader $oXml, $sMatch, $aNameTags = array('name')) {
+		if(!is_array($aNameTags)) $aNameTags = array($aNameTags);
+		if($oXml->nodeType == XMLReader::ELEMENT && $oXml->name == $sMatch) {
+			$aReturn = array();
+			foreach($aNameTags as $sNameTag) {
+				if($oXml->moveToAttribute($sNameTag)) $aReturn []= $oXml->value;
+				else return false;
+			}
+			return count($aNameTags) > 1 ? $aReturn : $aReturn[0];
+		}
+		return false;
+//		return $oXml->nodeType == XMLReader::ELEMENT && $oXml->name == $sMatch && $oXml->moveToAttribute($sNameTag) ? $oXml->value : false;
 	}
 }
 

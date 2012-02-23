@@ -21,14 +21,14 @@ class IPCO_Compiled_d__www_watena_libs_portfolio_templates_index_tpl extends IPC
 			$_ob []= '' . parent::processMember('getTitle', null);
 			$_ob []= '' . '</title>
 	<link href="';
-			$_ob []= '' . parent::callContentParser('addMappingMain', array (
+			$_ob []= '' . parent::callContentParser('addMappingRoot', array (
   0 => 'link',
   1 => 'href',
   2 => '/theme/portfolio/zoom.css',
 ));
 			$_ob []= '' . '" rel="stylesheet" type="text/css" />
 	<link href="';
-			$_ob []= '' . parent::callContentParser('addMappingMain', array (
+			$_ob []= '' . parent::callContentParser('addMappingRoot', array (
   0 => 'link',
   1 => 'href',
   2 => '/theme/portfolio/style.css',
@@ -104,34 +104,34 @@ class IPCO_Compiled_d__www_watena_libs_portfolio_templates_index_tpl extends IPC
 					<td class="llt"></td>
 					<td class="center" size-ref="top" size-min="42" colspan="3" rowspan="3"><div id="top">
 							<div id="btn_archive"><a href="';
-			$_ob []= '' . parent::callContentParser('addMappingMain', array (
+			$_ob []= '' . parent::callContentParser('addMappingRoot', array (
   0 => 'a',
   1 => 'href',
   2 => '/test',
 ));
 			$_ob []= '' . '"><img src="';
-			$_ob []= '' . parent::callContentParser('addMappingMain', array (
+			$_ob []= '' . parent::callContentParser('addMappingRoot', array (
   0 => 'img',
   1 => 'src',
   2 => '/theme/portfolio/btn_archive.png',
 ));
 			$_ob []= '' . '" onMouseOver="this.src=\'<[LAF]>/btn_archive_over.png\';" onMouseOut="this.src=\'<[LAF]>/btn_archive.png\';" /></a></div>
 							<div id="btn_contact"><a href=""><img src="';
-			$_ob []= '' . parent::callContentParser('addMappingMain', array (
+			$_ob []= '' . parent::callContentParser('addMappingRoot', array (
   0 => 'img',
   1 => 'src',
   2 => '/theme/portfolio/btn_contact.png',
 ));
 			$_ob []= '' . '" onMouseOver="this.src=\'<[LAF]>/btn_contact_over.png\';" onMouseOut="this.src=\'<[LAF]>/btn_contact.png\';" /></a></div>
 							<div id="btn_profile"><a href=""><img src="';
-			$_ob []= '' . parent::callContentParser('addMappingMain', array (
+			$_ob []= '' . parent::callContentParser('addMappingRoot', array (
   0 => 'img',
   1 => 'src',
   2 => '/theme/portfolio/btn_profile.png',
 ));
 			$_ob []= '' . '" onMouseOver="this.src=\'<[LAF]>/btn_profile_over.png\';" onMouseOut="this.src=\'<[LAF]>/btn_profile.png\';" /></a></div>
 							<div id="btn_search"><a href=""><img src="';
-			$_ob []= '' . parent::callContentParser('addMappingMain', array (
+			$_ob []= '' . parent::callContentParser('addMappingRoot', array (
   0 => 'img',
   1 => 'src',
   2 => '/theme/portfolio/btn_search.png',
@@ -157,7 +157,7 @@ class IPCO_Compiled_d__www_watena_libs_portfolio_templates_index_tpl extends IPC
 				</tr>
 			</table>
 			<div style="width:842px; height:264px;"><img src="';
-			$_ob []= '' . parent::callContentParser('addMappingMain', array (
+			$_ob []= '' . parent::callContentParser('addMappingRoot', array (
   0 => 'img',
   1 => 'src',
   2 => '/theme/portfolio/header.png',
@@ -185,7 +185,7 @@ class IPCO_Compiled_d__www_watena_libs_portfolio_templates_index_tpl extends IPC
 										</div></td>
 									<td class="r"><div class="menuItem">
 											<div class="menuItemHeader"><img src="';
-			$_ob []= '' . parent::callContentParser('addMappingMain', array (
+			$_ob []= '' . parent::callContentParser('addMappingRoot', array (
   0 => 'img',
   1 => 'src',
   2 => '/theme/portfolio/menu_hotlinks.png',
@@ -195,7 +195,7 @@ class IPCO_Compiled_d__www_watena_libs_portfolio_templates_index_tpl extends IPC
 										</div>
 										<div class="menuItem">
 											<div class="menuItemHeader"><img src="';
-			$_ob []= '' . parent::callContentParser('addMappingMain', array (
+			$_ob []= '' . parent::callContentParser('addMappingRoot', array (
   0 => 'img',
   1 => 'src',
   2 => '/theme/portfolio/menu_newest.png',
@@ -205,7 +205,7 @@ class IPCO_Compiled_d__www_watena_libs_portfolio_templates_index_tpl extends IPC
 										</div>
 										<div class="menuItem">
 											<div class="menuItemHeader"><img src="';
-			$_ob []= '' . parent::callContentParser('addMappingMain', array (
+			$_ob []= '' . parent::callContentParser('addMappingRoot', array (
   0 => 'img',
   1 => 'src',
   2 => '/theme/portfolio/menu_categories.png',
@@ -215,7 +215,7 @@ class IPCO_Compiled_d__www_watena_libs_portfolio_templates_index_tpl extends IPC
 										</div>
 										<div class="menuItem">
 											<div class="menuItemHeader"><img src="';
-			$_ob []= '' . parent::callContentParser('addMappingMain', array (
+			$_ob []= '' . parent::callContentParser('addMappingRoot', array (
   0 => 'img',
   1 => 'src',
   2 => '/theme/portfolio/menu_connect.png',
@@ -225,7 +225,7 @@ class IPCO_Compiled_d__www_watena_libs_portfolio_templates_index_tpl extends IPC
 										</div>
 										<div class="menuItem">
 											<div class="menuItemHeader"><img src="';
-			$_ob []= '' . parent::callContentParser('addMappingMain', array (
+			$_ob []= '' . parent::callContentParser('addMappingRoot', array (
   0 => 'img',
   1 => 'src',
   2 => '/theme/portfolio/menu_neighbours.png',
@@ -276,7 +276,7 @@ class IPCO_Compiled_d__www_watena_libs_portfolio_templates_index_tpl extends IPC
 				$_ob []= '' . '
 <div class="menuItem">
 	<div class="menuItemHeader"><img src="';
-				$_ob []= '' . parent::callContentParser('addMappingMain', array (
+				$_ob []= '' . parent::callContentParser('addMappingRoot', array (
   0 => 'img',
   1 => 'src',
   2 => '/theme/portfolio/menu_quote.png',
