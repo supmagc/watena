@@ -127,6 +127,47 @@ class Context extends Object implements ILogFilter {
 		}
 		return $this->m_aPlugins[$sKey] !== null;
 	}
+
+	/**
+	 * Load and retrieve the specified model.
+	 * 
+	 * @param string $sName
+	 * @param array $aParams
+	 * 
+	 * @return Model
+	 */
+	public function loadModel($sName, array $aParams = array()) {
+		$this->m_sType = $sType;
+		$this->m_sName = $sName;
+		$this->m_sFileName = Encoding::toLower($sType) . '.' . Encoding::toLower($sName) . '.php';
+		$this->m_sFilePath = parent::getWatena()->getContext()->getLibraryFilePath($sDirectory, $this->m_sFileName);
+		
+		return CacheableData::create();
+	}
+	
+	/**
+	 * Load and retrieve the specified view.
+	 * 
+	 * @param string $sName
+	 * @param array $aParams
+	 * 
+	 * @return View
+	 */
+	public function loadView($sName, array $aParams = array()) {
+	
+	}
+	
+	/**
+	 * Load and retrieve the specified controller.
+	 * 
+	 * @param string $sName
+	 * @param array $aParams
+	 * 
+	 * @return Controller
+	 */
+	public function loadController($sName, array $aParams = array()) {
+	
+	}
 	
 	/**
 	 * Try to load a specified class and retrieve an instance of it

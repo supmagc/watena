@@ -51,10 +51,18 @@ class Watena extends Configurable {
 		$nTime = microtime(true);
 		
 		// Load the mapping and retrieve the appropriate controller
-		list($this->m_oModel, $this->m_oView, $this->m_oController) = $this->m_oContext->getMVC($this->m_oMapping);		
-		$this->m_oController->process($this->m_oModel, $this->m_oView);
-		ob_end_flush();
-		$this->m_oView->render($this->m_oModel);
+		do {
+			list($this->m_oModel, $this->m_oView, $this->m_oController) = $this->m_oContext->getMVC($this->m_oMapping);		
+			$this->m_oController->process($this->m_oModel, $this->m_oView);
+			if($this->m_oController->hasRemapping()) {
+				$this->m_oMapping = $this->m_oController->getRemapping();
+			}
+			else {
+				ob_end_flush();
+				$this->m_oView->render($this->m_oModel);
+			}
+		}
+		while($this->m_oController->hasRemapping());
 		
 		$this->getLogger()->debug('Watena loaded and rendered the page in {time} sec.', array('time' => round(microtime(true) - $nTime, 5)));
 	}

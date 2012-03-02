@@ -5,13 +5,16 @@ class Mapping extends Object {
 	private $m_aVariables = array();
 	private $m_sTotal;
 	
-	public final function __construct() {
+	public final function __construct($sLocal = null) {
 		$this->m_aVariables['host'] = $_SERVER['HTTP_HOST'];
 		//$this->m_aVariables['root'] = $_SERVER['DOCUMENT_ROOT'];
 		$this->m_aVariables['port'] = $_SERVER['SERVER_PORT'];
 		$this->m_aVariables['offset'] = Encoding::substring($_SERVER['SCRIPT_NAME'], 0, Encoding::length($_SERVER['SCRIPT_NAME']) - 10);
 		$this->m_aVariables['useragent'] = $_SERVER['HTTP_USER_AGENT'];
-		if(isset($_SERVER['REDIRECT_URL'])) {
+		if($sLocal !== null) {
+			$this->m_aVariables['local'] = $sLocal;		
+		}
+		else if(isset($_SERVER['REDIRECT_URL'])) {
 			$this->m_aVariables['local'] = Encoding::substring($_SERVER['REDIRECT_URL'], Encoding::length($this->m_aVariables['offset']));
 		}
 		else {
