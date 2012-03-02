@@ -2,7 +2,19 @@
 require_plugin('DatabaseManager');
 
 class UserManager extends Plugin {
-
+	
+	public static function create() {
+	
+	}
+	
+	public static function login($sUsername, $sPassword) {
+	
+	}
+	
+	public static function authenticate($mIdentifier/* ?? SYSTEM ?? */) {
+	
+	}
+	
 	/**
 	* Retrieve version information of this plugin.
 	* The format is an associative array as follows:

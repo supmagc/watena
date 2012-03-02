@@ -1,4 +1,5 @@
 <?php
+require_plugin('DatabaseManager');
 
 class DbTable {
 
@@ -18,7 +19,6 @@ class DbTable {
 	}
 	
 	public function __wakeup() {
-		require_plugin('DatabaseManager');
 		$this->m_oConnection = DatabaseManager::getConnection($this->m_sConnection);
 	}
 	
