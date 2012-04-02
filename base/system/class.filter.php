@@ -2,6 +2,11 @@
 
 class _FilterData extends Object {
 	
+	const TYPE_UNKNOWN = 0;
+	const TYPE_MODEL = 1;
+	const TYPE_VIEW = 2;
+	const TYPE_CONTROLLER = 3;
+	
 	private $m_sType;
 	private $m_sName;
 	private $m_sFileName;
@@ -12,24 +17,19 @@ class _FilterData extends Object {
 	 * Create a new FilterGroup (Model/View/Controller)
 	 * 
 	 * @param string $sName The name of the class we require
-	 * @param string $sType Typename (Model/View/Controller)
+	 * @param string $nType The type of class to load/create
 	 */
-	public function __construct($sName, $sType, $sDirectory) {
-		$this->m_sType = $sType;
+	public function __construct($sName, $nType) {
 		$this->m_sName = $sName;
-		$this->m_sFileName = Encoding::toLower($sType) . '.' . Encoding::toLower($sName) . '.php';
-		$this->m_sFilePath = parent::getWatena()->getContext()->getLibraryFilePath($sDirectory, $this->m_sFileName);
-		//$this->m_sFile = PATH_BASE . '/' . Encoding::toLower($sType) . 's/' . Encoding::toLower($sType) . '.' . Encoding::toLower($sName) . '.php';
-
-		if($this->m_sFilePath === false) throw new WatCeption('The specified '.$sType.'-file could not be found.', array('name' => $this->m_sName, 'filename' => $this->m_sFileName), $this);
+		$this->m_nType = $nType;
 	}
 	
 	public function addParam($sName, $sValue) {
 		$this->m_aParams[$sName] = $sValue;
 	}
 	
-	public function getFile() {
-		return $this->m_sFile;
+	public function getType() {
+		return $this->m_nType;
 	}
 	
 	public function getName() {
@@ -41,7 +41,12 @@ class _FilterData extends Object {
 	}
 	
 	public function create() {
-		return CacheableData::createObject($this->m_sName, $this->m_aParams, array(), null, $this->m_sFilePath, $this->m_sType);
+		switch($this->getType()) {
+			case self::TYPE_MODEL: return Watena::getWatena()->getContext()->loadModel($this->getName(), $this->getParams());
+			case self::TYPE_VIEW: return Watena::getWatena()->getContext()->loadView($this->getName(), $this->getParams());
+			case self::TYPE_CONTROLLER:return Watena::getWatena()->getContext()->loadController($this->getName(), $this->getParams());
+			default: return null;
+		}
 	}
 }
 
@@ -70,13 +75,13 @@ class Filter extends CacheableFile {
 					}
 				}
 				else if(($sName = $this->_matchesGetName($oXml, 'model')) !== false) {
-					$oLast = ($this->m_oModel = new _FilterData($sName, 'Model', 'models'));
+					$oLast = ($this->m_oModel = new _FilterData($sName, _FilterData::TYPE_MODEL));
 				}
 				else if(($sName = $this->_matchesGetName($oXml, 'view')) !== false) {
-					$oLast = ($this->m_oView = new _FilterData($sName, 'View', 'views'));
+					$oLast = ($this->m_oView = new _FilterData($sName, _FilterData::TYPE_VIEW));
 				}
 				else if(($sName = $this->_matchesGetName($oXml, 'controller')) !== false) {
-					$oLast = ($this->m_oController = new _FilterData($sName, 'Controller', 'controllers'));
+					$oLast = ($this->m_oController = new _FilterData($sName, _FilterData::TYPE_CONTROLLER));
 				}
 				else if(($sName = $this->_matchesGetName($oXml, 'param')) !== false) {
 					$oXml->read();
@@ -153,7 +158,6 @@ class Filter extends CacheableFile {
 			return count($aNameTags) > 1 ? $aReturn : $aReturn[0];
 		}
 		return false;
-//		return $oXml->nodeType == XMLReader::ELEMENT && $oXml->name == $sMatch && $oXml->moveToAttribute($sNameTag) ? $oXml->value : false;
 	}
 }
 
