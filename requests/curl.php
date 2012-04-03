@@ -5,11 +5,12 @@ class WebRequest {
 	private $m_sMethod;
 	private $m_oCurl = null;
 	private $m_aOptions = array();
+	private $m_aFields = array();
 	
 	public static $OPTIONS_DEFAULT = array(
 		CURLOPT_HEADER => true,
 		CURLOPT_RETURNTRANSFER => true,
-		CURLOPT_USERAGENT => 'watena-curl-0.1.1',
+		CURLOPT_USERAGENT => 'watena-curl',
 		CURLOPT_USERPWD => '', // user:pass
 	);
 
@@ -31,8 +32,15 @@ class WebRequest {
 		$this->m_aOptions[CURLOPT_USERPWD] = urlencode($sUser) . ':' . urlencode($sPass);
 	}
 	
+	public function addField($sKey, $mValue) {
+		$this->m_aFields[$sKey] = $mValue;
+	}
+	
 	public function send() {
 		curl_setopt_array($this->m_oCurl, $this->m_aOptions);
+		
+		// Add fields and method !!
+		
 		$mData = curl_exec($this->m_oCurl);
 		return $mData === false ? false : new WebResponse($this->m_oCurl, $mData);
 	}
@@ -76,9 +84,49 @@ class WebResponse {
 			if(count($aHeader) > 1) $this->m_aHeaders[$aHeader[0]] = trim($aHeader[1]);
 		}
 	}
+	
+	public function getHeader() {
+		return $this->m_sHeader;
+	}
+	
+	public function getContent() {
+		return $this->m_sContent;
+	}
+	
+	public function getHeaderSize() {
+		return $this->m_nHeaderSize;
+	}
+	
+	public function getContentSize() {
+		return $this->m_nContentSize();
+	}
+	
+	public function getHttpCode() {
+		return $this->m_nHttpCode;
+	}
+	
+	public function getDuration() {
+		return $this->m_nDuration;
+	}
+	
+	public function getRedirects() {
+		return $this->m_nRedirects;
+	}
+	
+	public function getContentType() {
+		return $this->m_sContentType;
+	}
+	
+	public function getCharset() {
+		return $this->m_sCharset;
+	}
+	
+	public function getHeader($sKey) {
+		return isset($this->m_aHeaders[$sKey]) ? $this->m_aHeaders[$sKey] : false;
+	}
 }
 
-$oRequest = new WebRequest('http://flandersisafestival.dev/tester.php?dfg=12', 'GET');
+$oRequest = new WebRequest('http://localhost/watena/tester.php?dfg=12', 'GET');
 
 echo '<pre>';
 print_r($oRequest->send());
