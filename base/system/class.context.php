@@ -137,9 +137,9 @@ class Context extends Object implements ILogFilter {
 	 * @return Model
 	 */
 	public function loadModel($sName, array $aParams = array()) {
-		$sFileName = Encoding::toLower($sType) . '.' . Encoding::toLower($sName) . '.php';
+		$sFileName = 'model.' . Encoding::toLower($sName) . '.php';
 		$sFilePath = parent::getWatena()->getContext()->getLibraryFilePath('models', $sFileName);		
-		return CacheableData::create($sName, $aParams, array(), null, $sFilePath, 'Model');
+		return CacheableData::createObject($sName, $aParams, array(), null, $sFilePath, 'Model');
 	}
 	
 	/**
@@ -151,9 +151,9 @@ class Context extends Object implements ILogFilter {
 	 * @return View
 	 */
 	public function loadView($sName, array $aParams = array()) {
-		$sFileName = Encoding::toLower($sType) . '.' . Encoding::toLower($sName) . '.php';
+		$sFileName = 'view.' . Encoding::toLower($sName) . '.php';
 		$sFilePath = parent::getWatena()->getContext()->getLibraryFilePath('views', $sFileName);
-		return CacheableData::create($sName, $aParams, array(), null, $sFilePath, "View");
+		return CacheableData::createObject($sName, $aParams, array(), null, $sFilePath, "View");
 	}
 	
 	/**
@@ -165,9 +165,9 @@ class Context extends Object implements ILogFilter {
 	 * @return Controller
 	 */
 	public function loadController($sName, array $aParams = array()) {
-		$sFileName = Encoding::toLower($sType) . '.' . Encoding::toLower($sName) . '.php';
+		$sFileName = 'controller.' . Encoding::toLower($sName) . '.php';
 		$sFilePath = parent::getWatena()->getContext()->getLibraryFilePath('controllers', $sFileName);
-		return CacheableData::create($sName, $aParams, array(), null, $sFilePath, "Controller");
+		return CacheableData::createObject($sName, $aParams, array(), null, $sFilePath, "Controller");
 	}
 	
 	/**

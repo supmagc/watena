@@ -59,6 +59,10 @@ class DbConnection {
 			$this->m_oConnection = null;
 	}
 	
+	public function getTable($sTable, $mIdField = "ID") {
+		return new DbTable($this, $sTable, $sIdField);
+	}
+	
 	public function query() {
 	}
 	
@@ -95,7 +99,7 @@ class DbConnection {
 		return $mId;
 	}
 	
-	public function update($sTable, $mId, $aData, $sIdField = 'Id') {
+	public function update($sTable, $mId, $aData, $sIdField = 'ID') {
 		$aFields = array_keys($aValues);
 		$sUpdates = implode(', ', array_map(create_function('$a', 'return "`$a` = :$a";'), $aFields));
 		$sQuery = "UPDATE `$sTable` SET ".$sUpdates." WHERE `$sIdField` = :$sIdField";
@@ -103,7 +107,7 @@ class DbConnection {
 		return $oStatement->execute(array_merge($aData, array($sIdField => $mId)));
 	}
 	
-	public function delete($sTable, $mId, $sIdField = 'Id') {
+	public function delete($sTable, $mId, $sIdField = 'ID') {
 		$sQuery = "DELETE FROM `$sTable` WHERE `$sIdField` = :$sIdField";
 		$oStatement = $this->getPdo()->prepare($sQuery);
 		return $oStatement->execute(array($sIdField => $mId));

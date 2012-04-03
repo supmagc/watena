@@ -1,6 +1,6 @@
 <?php
 
-class HtmlBaseModel extends Model {
+class HtmlModel extends Model {
 	
 	private $m_sTitle = '';
 	private $m_sDescription = '';

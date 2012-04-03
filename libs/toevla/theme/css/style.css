@@ -1,0 +1,44 @@
+@CHARSET "UTF-8";
+
+html, body, #centerTable {
+	width:100%;
+	height:100%;
+	padding:0px;
+	margin:0px;
+}
+#centerTable {
+	background:#f4f3ee url(../bg.jpg) center no-repeat;
+}
+#centerCell {
+	width:728px;
+	height:450px;
+}
+#centerDiv {
+	background-color:#900;
+	position:relative;
+	width:728px;
+	height:450px;
+	top:0px;
+	left:0px;
+}
+#unityPlayer {
+	z-index:0;
+	position:absolute;
+	background-color:#FFF;
+	width:728px;
+	height:450px;
+	top:0px;
+	left:0px;
+}
+#youtubePlayer {
+	z-index:1;
+	position:absolute;
+	background-color:#009;
+	width:150;
+	height:120;
+	top:10px;
+/*
+	bottom:10px;
+*/
+	left:10px;
+}

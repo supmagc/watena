@@ -8,7 +8,7 @@ class TemplateView extends View implements IPCO_IContentParser {
 		$oGenerator = $oTemplate->createTemplateClass();
 		$oGenerator->componentPush($oModel);
 		echo $oGenerator->getContent(true);
-		}
+	}
 	
 	public static function getRequirements() {
 		return array('plugins' => 'TemplateLoader');

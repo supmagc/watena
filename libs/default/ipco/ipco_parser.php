@@ -78,12 +78,12 @@ class IPCO_Parser extends IPCO_Base {
 			
 			switch($nState) {
 				case self::STATE_DEFAULT : 
-					if($char2 === '{%') {
+					if($char2 === IPCO_ParserSettings::TAG_IPCO_OPEN) {
 						$this->interpretContent(Encoding::substring($this->m_sContent, $nMark, $i-$nMark));
 						$nMark = 1 + (++$i);
 						$nState = self::STATE_IPCO;
 					}
-					else if($char2 === '{[') {
+					else if($char2 === IPCO_ParserSettings::TAG_IPCO_VAR_OPEN) {
 						$this->interpretContent(Encoding::substring($this->m_sContent, $nMark, $i-$nMark));
 						$nMark = 1 + (++$i);
 						$nState = self::STATE_IPCO_VAR;
@@ -91,7 +91,7 @@ class IPCO_Parser extends IPCO_Base {
 					break;
 					
 				case self::STATE_IPCO : 
-					if($char2 === '%}') {
+					if($char2 === IPCO_ParserSettings::TAG_IPCO_CLOSE) {
 						$this->interpretFilter(Encoding::substring($this->m_sContent, $nMark, $i-$nMark));
 						$nMark = 1 + (++$i);
 						$nState = self::STATE_DEFAULT;
@@ -111,7 +111,7 @@ class IPCO_Parser extends IPCO_Base {
 					break;
 					
 				case self::STATE_IPCO_VAR : 
-					if($char2 === ']}') {
+					if($char2 === IPCO_ParserSettings::TAG_IPCO_VAR_CLOSE) {
 						$this->interpretVariable(Encoding::substring($this->m_sContent, $nMark, $i-$nMark));
 						$nMark = 1 + (++$i);
 						$nState = self::STATE_DEFAULT;

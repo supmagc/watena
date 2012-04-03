@@ -2,6 +2,11 @@
 
 class IPCO_ParserSettings extends IPCO_Base {
 	
+	const TAG_IPCO_OPEN			= '{{';
+	const TAG_IPCO_CLOSE		= '}}';
+	const TAG_IPCO_VAR_OPEN		= '{[';
+	const TAG_IPCO_VAR_CLOSE	= ']}';
+	
 	const PAGE_HEADER			= "\nclass %s extends %s {\n";
 	const PAGE_FOOTER			= "}\n";
 	const PAGE_GENERATOR		= "\tpublic function generate() {\n\t\treturn self::callRegion__%s();\n\t}\n";
