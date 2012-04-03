@@ -8,7 +8,7 @@ abstract class Cacheable extends Configurable {
 	public function make() {}
 	
 	/**
-	 * This method is called when waking the obhect when loading it back from the cache.
+	 * This method is called when waking the object when loading it back from the cache.
 	 * For example: creating a database connection should be done at this time.
 	 */
 	public function init() {}
@@ -31,7 +31,7 @@ abstract class Cacheable extends Configurable {
 		$oObject = $oCache->get("W_CACHE_{$sIdentifier}_OBJECT", null);
 		$aInstances = array_change_key_case($aInstances, CASE_UPPER);
 		
-		if($nExpiration > $nCacheExp || !$oRequirements || !$oObject) {
+		if($nExpiration > $nCacheExp || !$oObject) {
 			try {
 				$oObject = parent::getWatena()->getContext()->loadObjectAndRequirements($sObject, $aParams, $sIncludeFile, $sExtends, $aImplements);
 				$oObject->m_aInstances = $aInstances;

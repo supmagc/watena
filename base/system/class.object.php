@@ -22,7 +22,7 @@ class Object {
 	public static final function getWatena() {
 		return self::$s_oSingleton;
 	}
-
+	
 	/**
 	 * Retrurn the logger-instance linked to this class
 	 * 
