@@ -1,9 +1,11 @@
 <?php
-reQUIRE_once(dirname(__FILE__) . '/../socializer/index.php');
+require_plugin('OAuth');
+require_includeonce(dirname(__FILE__) . '/../socializer/index.php');
 
 class Socializer extends Plugin {
 	
 	private static $s_oFacebook;
+	private static $s_oTwitter; 
 	
 	public function init() {
 		if($this->getConfig('FACEBOOK_ENABLED', false)) {
@@ -12,11 +14,22 @@ class Socializer extends Plugin {
 				'secret' => $this->getConfig('FACEBOOK_SECRET', '')
 			));
 		}
+		if($this->getConfig('TWITTER_ENABLED', false)) {
+			self::$s_oTwitter = new Twitter(array(
+				'consumer_key' => $this->getConfig('TWITTER_ID', ''),
+				'consumer_secret' => $this->getConfig('TWITTER_SECRET', ''),
+				'callback' => $this->getConfig('TWITTER_CALLBACK', '')
+			));
+		}
 	}
 	
 	public static function facebook() {
 		return self::$s_oFacebook;
 	}
+	
+	public static function twitter() {
+		return self::$s_oTwitter;
+	} 
 	
 	/**
 	* Retrieve version information of this plugin.

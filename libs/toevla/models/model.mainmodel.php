@@ -1,5 +1,6 @@
 <?php
 require_model('HtmlModel');
+require_plugin('Socializer');
 
 class MainModel extends HtmlModel {
 	
@@ -15,6 +16,10 @@ class MainModel extends HtmlModel {
 	
 	public function getHash() {
 		return $this->m_sHash;
+	}
+
+	public function getTwitterLoginUrl() {
+		return Socializer::twitter()->getLoginUrl();
 	}
 }
 

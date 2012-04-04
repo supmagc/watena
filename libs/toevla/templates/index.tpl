@@ -24,6 +24,12 @@
 		d.getElementsByTagName('head')[0].appendChild(js);
 	}(document));
 </script>
+<script src="http://platform.twitter.com/anywhere.js?id=VfipE4kEsDwA6ljKWzKG5A&v=1" type="text/javascript"></script>
+<script type="text/javascript">
+	twttr.anywhere(function (T) {
+		T("#login").connectButton();
+	});
+</script>
 {{if hasHash()}}
 	<script type="text/javascript" src="http://webplayer.unity3d.com/download_webplayer-3.x/3.0/uo/UnityObject.js"></script>
 	<script type="text/javascript">
@@ -73,8 +79,8 @@
 				</div>
 			{{else}}
 				<div class="fb-login-button" scope="email">Login with Facebook</div>
-				<a href="">Login by Twitter</a><br />
-				<a href="">Login by Google</a><br />
+				<span id="login"></span><br />
+				<a href="{{getTwitterLoginUrl()}}">Login by Google</a><br />
 				<a href="">Login by Mail</a>
 			{{end}}
 		</div></td>
