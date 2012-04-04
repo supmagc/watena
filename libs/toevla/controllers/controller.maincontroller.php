@@ -6,6 +6,8 @@ class MainController extends Controller {
 
 	public function process(Model $oModel, View $oView) {
 		
+		$this->display(Socializer::twitter()->getLoginUrl());
+		
 		$oFacebookUser = Socializer::facebook()->getUser();
 		if($oFacebookUser) {
 			try {

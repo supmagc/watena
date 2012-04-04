@@ -21,13 +21,13 @@ class Watena extends Configurable {
 		$this->m_oMapping = new Mapping();
 		
 		// Load all default plugins
-		$this->m_oContext->loadPlugins(explodeTrim(',', self::getConfig('PLUGINS', '')));
+		$this->m_oContext->loadPlugins(explode_trim(',', self::getConfig('PLUGINS', '')));
 		
 		// Load all specified logProcessors
 		$aLoadedLogProcessors = array();
 		$sLoggers = self::getConfig('LOGGER_PROCESSORS', null);
 		if($sLoggers) {
-			$aLogProcessors = explodeTrim(',', $sLoggers);
+			$aLogProcessors = explode_trim(',', $sLoggers);
 			foreach($aLogProcessors as $sProcessor) {
 				$this->m_oContext->loadPlugin($sProcessor);
 				$aLoadedLogProcessors []= $this->m_oContext->getPlugin($sProcessor, 'ILogProcessor');

@@ -2,6 +2,10 @@
 
 require_once PATH_BASE . '/system/static.encoding.php';
 require_once PATH_BASE . '/system/static.logger.php';
+require_once PATH_BASE . '/system/class.object.php';
+require_once PATH_BASE . '/system/class.webrequest.php';
+require_once PATH_BASE . '/system/class.webresponse.php';
+require_once PATH_BASE . '/system/exception.webexception.php';
 
 function terminate($sMessage) {
 	die($sMessage);
@@ -113,7 +117,7 @@ function is_whitespace($var) {
 	return ctype_space($var);
 }
 
-function explodeTrim($sSplitter, $sData) {
+function explode_trim($sSplitter, $sData) {
 	$aData = explode($sSplitter, $sData);
 	$aReturn = array();
 	foreach($aData as $sKey => $sValue) {
@@ -124,7 +128,7 @@ function explodeTrim($sSplitter, $sData) {
 	return $aReturn;
 }
 
-function implodeTrim($sGlue, array $aData) {
+function implode_trim($sGlue, array $aData) {
 	$sReturn = '';
 	foreach($aData as $sValue) {
 		$sValue = trim($sValue);
@@ -132,6 +136,15 @@ function implodeTrim($sGlue, array $aData) {
 			if(strlen($sReturn) > 0) $sReturn .= $sGlue;
 			$sReturn .= $sValue;
 		}
+	}
+	return $sReturn;
+}
+
+function implode_assoc($sGlueEle, $sGlueAssoc, array $aData) {
+	$sReturn = '';
+	foreach($aData as $mKey => $mValue) {
+		if(strlen($sReturn) > 0) $sReturn .= $sGlueEle;
+		$sReturn .= $mKey . $sGlueAssoc . $mValue;
 	}
 	return $sReturn;
 }

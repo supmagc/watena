@@ -26,7 +26,7 @@ abstract class Controller extends CacheableData {
 		return $this->m_oRemapping !== null;
 	}
 	
-	public final function operationalMessage($sMessage) {
+	public final function display($sMessage) {
 		echo '<div style="background: #CCC; text-align:center; border:1px solid #000; padding:5px; font-weight:bold;">'.$sMessage.'</div>';
 	}
 }
