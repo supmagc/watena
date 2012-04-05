@@ -28,9 +28,10 @@ class IPCO_ParserSettings extends IPCO_Base {
 	const CALL_SLICE			= "parent::processMember(%s, %s)";
 	const CALL_REGION			= "\$_ob []= '' . method_exists(\$this, 'callRegion__%s') ? \$this->callRegion__%s() : '';\n";
 	const CALL_INCLUDE			= "\$_ob []= '' . parent::callInclude('%s');\n";
-	
+
 	const CONTENT				= "\$_ob []= '' . %s;\n";
 	const CONTENTPARSERPART		= "\$_ob []= '' . parent::callContentParser(%s, %s);\n";
+	const CONTENT_EMPTY_PATERN	= '\$_ob \[\]= \'\' \. \'[ \n\r\t]*\';';
 	
 	const VARIABLE				= "\$_ob []= '' . %s;\n";
 	

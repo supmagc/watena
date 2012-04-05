@@ -18,8 +18,16 @@ class MainModel extends HtmlModel {
 		return $this->m_sHash;
 	}
 
+		
 	public function getTwitterLoginUrl() {
 		return Socializer::twitter()->getLoginUrl();
+	}
+		
+	public function getFacebookLoginUrl() {
+		return Socializer::facebook()->getLoginUrl(array(
+			'scope' => 'email',
+			'redirect_uri' => 'http://flandersisafestival.dev/facebook/callback'
+		));
 	}
 }
 

@@ -4,6 +4,7 @@ class IPCO_ParserRegion extends IPCO_Base {
 	
 	private $m_sName;
 	private $m_aLines = array();
+	private $m_bHasContent = false;
 	
 	public function __construct($sName, IPCO $ipco) {
 		parent::__construct($ipco);
@@ -15,7 +16,7 @@ class IPCO_ParserRegion extends IPCO_Base {
 	}
 	
 	public function hasContent() {
-		return Encoding::length(Encoding::trim(implode('', $this->m_aLines))) > 0;
+		return $this->m_bHasContent;
 	}
 	
 	public function build() {
@@ -26,6 +27,9 @@ class IPCO_ParserRegion extends IPCO_Base {
 	}
 	
 	public function addLine($sLine) {
+		if(!$this->m_bHasContent && !Encoding::regMatch(IPCO_ParserSettings::CONTENT_EMPTY_PATERN, $sLine)) {
+			$this->m_bHasContent = true;
+		}
 		$this->m_aLines []= $sLine;
 	}
 	

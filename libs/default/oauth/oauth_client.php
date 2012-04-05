@@ -2,42 +2,93 @@
 
 class OAuthClient {
 
-	private $m_oToken;
 	private $m_oConsumer;
 	private $m_oProvider;
-	
-	public function __construct(OAuthProvider $oProvider, OAuthConsumer $oConsumer, OAuthToken $oToken = null) {
+	private $m_oAccessToken;
+	private $m_oRequestToken;
+
+	public function __construct(OAuthProvider $oProvider, OAuthConsumer $oConsumer, OAuthToken $oRequestToken = null, OAuthToken $oAccessToken = null) {
 		$this->m_oProvider = $oProvider;
 		$this->m_oConsumer = $oConsumer;
-		$this->m_oToken = $oToken;
+		$this->m_oAccessToken = $oAccessToken;
+		$this->m_oRequestToken = $oRequestToken;
+	}
+
+	public function getAccessToken() {
+		return $this->m_oAccessToken;
 	}
 	
-	public function getToken() {
-		return $this->m_oToken;
+	public function getRequestToken() {
+		return $this->m_oRequestToken;
 	}
 	
 	public function getConsumer() {
 		return $this->m_oConsumer;
 	}
-	
+
 	public function getProvider() {
 		return $this->m_oProvider;
 	}
-	
-	public function createRequest($nType) {
+
+	public function isAuthorized() {
+		return $this->getAccessToken() !== null;
+	}
+
+	public function requestAuthorization(array $aParams = array()) {
+		$oRequest = $this->createRequest(OAuth::PROVIDER_REQUEST_TOKEN);
+		$oRequest->setParameters($aParams);
+		$aOAuth = OAuthUtil::parse_parameters($this->send($oRequest));
+		if(isset($aOAuth['oauth_token']) && isset($aOAuth['oauth_token_secret']) && isset($aOAuth['oauth_callback_confirmed']) && $aOAuth['oauth_callback_confirmed']) {
+			$this->m_oRequestToken = new OAuthToken($aOAuth['oauth_token'], $aOAuth['oauth_token_secret']);
+		}
+	}
+
+	public function getAuthorizationUrl(array $aParams = array()) {
+		if($this->getRequestToken() === null) {
+			$this->requestAuthorization($aParams);
+		}
+		return $this->getProvider()->getUrl(OAuth::PROVIDER_AUTHENTICATE) . '?oauth_token=' . $this->getRequestToken()->getKey();
+	}
+
+	public function authorize(array $aParams = array()) {
+		if($this->m_oRequestToken &&
+			isset($_GET['oauth_token']) &&
+			isset($_GET['oauth_verifier']) &&
+			$_GET['oauth_token'] === $this->m_oRequestToken->getKey()
+		) {
+			$oRequest = $this->createRequest(OAuth::PROVIDER_ACCESS_TOKEN, null, null, $this->getRequestToken());
+			$oRequest->setParameter('oauth_verifier', $_GET['oauth_verifier']);
+			$oRequest->setParameters($aParams);
+			$aOAuth = OAuthUtil::parse_parameters($this->send($oRequest, null, null, $this->getRequestToken()));
+			if(isset($aOAuth['oauth_token']) && isset($aOAuth['oauth_token_secret'])) {
+				$this->m_oAccessToken = new OAuthToken($aOAuth['oauth_token'], $aOAuth['oauth_token_secret']);
+				$this->m_oRequestToken = null;
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public function api($sUrl, $sMethod = 'GET', array $aParams = array()) {
+		$oRequest = $this->createRequest(OAuth::PROVIDER_API, $sUrl, $sMethod, $this->getAccessToken());
+		$oRequest->setParameters($aParams);
+		return $this->send($oRequest, $this->getAccessToken());
+	}
+
+	private function createRequest($nType, $sUrlAppend = null, $sMethodOverwrite = null, OAuthToken $oToken = null) {
 		$aParams = array(
 			'oauth_version' 		=> OAuthUtil::getVersion(),
 		    'oauth_nonce' 			=> OAuthUtil::generateNonce(),
 		    'oauth_timestamp' 		=> OAuthUtil::generateTimestamp(),
 		    'oauth_consumer_key' 	=> $this->getConsumer()->getKey()
 		);
-		if($this->getToken())
-			$aParams['oauth_token'] = $this->getToken()->getKey();
-		
-		return new OAuthRequest($this->getProvider()->getUrl($nType), $this->getProvider()->getMethod($nType), $aParams);
+		if($oToken)
+			$aParams['oauth_token'] = $oToken->getKey();
+
+		return new OAuthRequest($this->getProvider()->getUrl($nType) . $sUrlAppend, $sMethodOverwrite === null ? $this->getProvider()->getMethod($nType) : $sMethodOverwrite, $aParams);
 	}
-	
-	public function send(OAuthRequest $oRequest) {
+
+	private function send(OAuthRequest $oRequest, OAuthToken $oToken = null) {
 		$oSignatureMethod = null;
 		if($this->getProvider()->getSignatureMethod() === 'HMAC-SHA1')
 			$oSignatureMethod = new OAuthSignatureMethod_HMAC_SHA1();
@@ -45,14 +96,14 @@ class OAuthClient {
 			$oSignatureMethod = new OAuthSignatureMethod_PLAINTEXT();
 		if($this->getProvider()->getSignatureMethod() === 'PLAINTEXT')
 			$oSignatureMethod = new OAuthSignatureMethod_RSA_SHA1();
-		$oRequest->signRequest($oSignatureMethod, $this->m_oConsumer, $this->m_oToken);
+		$oRequest->signRequest($oSignatureMethod, $this->m_oConsumer, $oToken);
 		$oWebRequest = new WebRequest($oRequest->getNormalizedUrl(), $oRequest->getNormalizedMethod());
 		$oWebRequest->addHeaders($oRequest->getHeaders());
 		$oWebRequest->addFields($oRequest->getFields());
 		$oWebResponse = $oWebRequest->send();
-		return OAuthUtil::parse_parameters($oWebResponse->getContent());
+		return $oWebResponse->getContent();
 	}
-	
+
 	private function tryLoadTokensFromGet() {
 		if(isset($_GET['oauth_token']) && isset($_GET['oauth_verifier'])) {
 			$this->m_oToken = new OAuthToken($_GET['oauth_token'], $_GET['oauth_verifier']);

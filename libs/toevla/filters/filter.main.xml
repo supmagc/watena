@@ -3,7 +3,7 @@
 	<model name="MainModel">
 	</model>
 	<view name="HtmlTemplateView">
-		<param name="template">index.tpl</param>
+		<param name="template">front.main.tpl</param>
 	</view>
 	<controller name="MainController">
 	</controller>

@@ -1,25 +1,35 @@
 <?php
-//require_controller('SessionController');
+require_controller('UserSessionController');
 require_plugin('Socializer');
 
-class MainController extends Controller {
+class MainController extends UserSessionController {
 
 	public function process(Model $oModel, View $oView) {
 		
-		$this->display(Socializer::twitter()->getLoginUrl());
+		$bIsLoggedIn = false;
+		
+		if(Socializer::twitter()->isLoggedIn()) {
+			$bIsLoggedIn = true;
+		}
 		
 		$oFacebookUser = Socializer::facebook()->getUser();
 		if($oFacebookUser) {
 			try {
 				$aFacebookUserProfile = Socializer::facebook()->api('/me');
-				$oModel->setHash('MyTestHash');
+				$bIsLoggedIn = true;
 			}
 			catch(FacebookApiException $e) {
 				$this->getLogger()->exception($e);
 			}
 		}
 		
-		$oModel->setTitle('TestTitle');
+		if(false && $bIsLoggedIn) {
+			$oModel->setHash('MyTestHash');
+			$oModel->setTitle('Start to play');
+		}
+		else {
+			$oModel->setTitle('Login first');
+		}
 	}
 }
 
