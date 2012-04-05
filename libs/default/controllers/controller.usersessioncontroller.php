@@ -1,6 +1,7 @@
 <?php
+require_plugin('User');
 
-class SessionController extends Controller {
+abstract class UserSessionController extends Controller {
 
 	public final function setSession($sKey, $mData) {
 		if(!isset($_SESSION['DATA'])) $_SESSION['DATA'] = array();
@@ -14,6 +15,10 @@ class SessionController extends Controller {
 	public final function hasSession($sKey) {
 		return isset($_SESSION['DATA']) && isset($_SESSION['DATA'][$sKey]);
 	}
+
+	public final function getUser() {
+		
+	}	
 }
 
 ?>

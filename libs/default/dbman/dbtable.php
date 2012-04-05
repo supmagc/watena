@@ -48,6 +48,10 @@ class DbTable {
 	public function getIdField() {
 		return $this->m_sIdField;
 	}
+
+	public function select($mId) {
+		return $this->getConnection()->select($this->getTable(), $mId, $this->getIdField());
+	}
 	
 	public function insert(array $aValues) {
 		return $this->getConnection()->insert($this->getTable(), $aValues);

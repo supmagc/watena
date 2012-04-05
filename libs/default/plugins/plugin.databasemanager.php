@@ -34,8 +34,11 @@ class DatabaseManager extends Plugin {
 	 * 
 	 * @return DbConnection
 	 */
-	public static function getConnection($sConnection) {
-		return self::hasConnection($sConnection) ? self::$s_aConnections[strtoupper($sConnection)] : false;
+	public static function getConnection($sConnection = null) {
+		if($sConnection)
+			return self::hasConnection($sConnection) ? self::$s_aConnections[strtoupper($sConnection)] : false;
+		else
+			return array_first(self::$s_aConnections);
 	}
 	
 	public function getVersion() {

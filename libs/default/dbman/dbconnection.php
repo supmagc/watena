@@ -36,8 +36,7 @@ class DbConnection {
 	}
 	
 	/**
-	 * 
-	 * Enter description here ...
+	 * Retrieve the underlying PDO-Object
 	 * 
 	 * @return PDO
 	 */
@@ -63,7 +62,10 @@ class DbConnection {
 		return new DbTable($this, $sTable, $sIdField);
 	}
 	
-	public function query() {
+	public function query($sQuery, array $aParams = array()) {
+		$oStatement = $this->getPdo()->prepare($sQuery);
+		$oStatement->execute($aParams);
+		return $oStatement;
 	}
 	
 	public function call($sName, array $aParams, array $aReturns) {
@@ -76,12 +78,16 @@ class DbConnection {
 		return $this->getPdo()->query("SELECT $sPartC");
 	}
 	
-	public function select() {
-		
+	public function select($sTable, $mId, $sIdField) {
+		$sQuery = "SELECT * FROM `$sTable` WHERE `$sIdField` = :$sIdField";
+		$oStatement = $this->getPdo()->prepare($sQuery);
+		$oStatement->execute(array($sIdField => $mId));
+		return $oStatement;
 	}
 	
-	public function insert($sTable, array $aValues, $bTransaction = true) {
-		$aFields = array_keys($aValues);
+	public function insert($sTable, array $aData, $bTransaction = true) {
+		$mId = false;
+		$aFields = array_keys($aData);
 		$sFields = implode(', ', array_map(create_function('$a', 'return "`$a`";'), $aFields));
 		$sValues = implode(', ', array_map(create_function('$a', 'return ":$a";'), $aFields));
 		$sQuery = 'INSERT INTO `'.$sTable.'` ('.$sFields.') VALUES ('.$sValues.')';
@@ -100,7 +106,7 @@ class DbConnection {
 	}
 	
 	public function update($sTable, $mId, $aData, $sIdField = 'ID') {
-		$aFields = array_keys($aValues);
+		$aFields = array_keys($aData);
 		$sUpdates = implode(', ', array_map(create_function('$a', 'return "`$a` = :$a";'), $aFields));
 		$sQuery = "UPDATE `$sTable` SET ".$sUpdates." WHERE `$sIdField` = :$sIdField";
 		$oStatement = $this->getPdo()->prepare($sQuery);

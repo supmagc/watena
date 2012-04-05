@@ -1,0 +1,58 @@
+<?php
+class IPCO_Compiled_f__www_watena_libs_toevla_templates_front_base_tpl extends IPCO_Processor {
+	public function generate() {
+		return self::callRegion____MainRegion__();
+	}
+	protected function callRegion____MainRegion__() {
+		try {
+			$_ob = array();
+			$_ob []= '' . '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="';
+			$_ob []= '' . parent::processMember('getContentType', null);
+			$_ob []= '' . '; charset=';
+			$_ob []= '' . parent::processMember('getCharset', null);
+			$_ob []= '' . '" />
+<title>';
+			$_ob []= '' . parent::processMember('getTitle', null);
+			$_ob []= '' . '</title>
+<link href="';
+			$_ob []= '' . parent::callContentParser('addMappingRoot', array (
+  0 => 'link',
+  1 => 'href',
+  2 => '/theme/toevla/css/style.css',
+));
+			$_ob []= '' . '" rel="stylesheet" type="text/css" />
+';
+			$_ob []= '' . method_exists($this, 'callRegion__header') ? $this->callRegion__header() : '';
+			$_ob []= '' . '
+</head>
+
+<body bgcolor="f4f3ee">
+<div id="fb-root"></div>
+<table id="centerTable">
+	<tr>
+		<td colspan="3"></td>
+	</tr>
+	<tr>
+		<td></td>
+		<td id="centerCell"><div id="centerDiv">
+			';
+			$_ob []= '' . method_exists($this, 'callRegion__content') ? $this->callRegion__content() : '';
+			$_ob []= '' . '
+		</div></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td colspan="3"></td>
+	</tr>
+</table>
+</body>
+</html>
+';
+			return implode('', $_ob);
+		} catch(Exception $e) { throw new WatCeption('Unable to create template-output.', array(), null, $e); }
+	}
+}
+?>

@@ -5,7 +5,6 @@ class EchoLog implements ILogProcessor {
 	private static $s_nFieldCount;
 	
 	public function loggerProcess($sIdentifier, $nLevel, $sFile, $nLine, $sMessage, array $aData, array $aTrace) {
-		print_r($aData);
 		$sMessage = htmlentities(str_replace(array_map(create_function('$a', 'return \'{\'.$a.\'}\';'), array_keys($aData)), array_values($aData), $sMessage));
 		$sLevel = ucfirst(Logger::getLevelName($nLevel));
 		$nFieldID = ++self::$s_nFieldCount;
@@ -78,7 +77,7 @@ EOT;
 					foreach($aPart['args'] as $sName => $sValue) {
 						if($bFirst) $bFirst = false;
 						else $sReturn .= ', ';
-						if(is_object($sValue)) $s = get_class($sValue) . '(' . $sValue->__toString() . ')';
+						if(is_object($sValue)) $s = get_class($sValue) . '(' . (method_exists($sValue, '__toString') ? $sValue->__toString() : get_class($sValue)) . ')';
 						else if(is_array($sValue)) $s = 'Array';
 						else if(is_bool($sValue)) $s = $sValue ? "true" : "false";
 						else if(is_null($sValue)) $s = 'null';

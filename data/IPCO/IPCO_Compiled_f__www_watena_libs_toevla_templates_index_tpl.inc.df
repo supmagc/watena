@@ -44,12 +44,6 @@ class IPCO_Compiled_f__www_watena_libs_toevla_templates_index_tpl extends IPCO_P
 		d.getElementsByTagName(\'head\')[0].appendChild(js);
 	}(document));
 </script>
-<script src="http://platform.twitter.com/anywhere.js?id=VfipE4kEsDwA6ljKWzKG5A&v=1" type="text/javascript"></script>
-<script type="text/javascript">
-	twttr.anywhere(function (T) {
-		T("#login").connectButton();
-	});
-</script>
 ';
 			if(parent::processMember('hasHash', null)) {
 				$_ob []= '' . '
@@ -107,9 +101,15 @@ class IPCO_Compiled_f__www_watena_libs_toevla_templates_index_tpl extends IPCO_P
 			} else {
 				$_ob []= '' . '
 				<div class="fb-login-button" scope="email">Login with Facebook</div>
-				<span id="login"></span><br />
-				<a href="';
-				$_ob []= '' . '">Login by Google</a><br />
+				';
+				if(!parent::processMember('isTwitterLoggedIn', null)) {
+					$_ob []= '' . '
+					<a href="';
+					$_ob []= '' . parent::processMember('getTwitterLoginUrl', null);
+					$_ob []= '' . '">Login by Twitter</a><br />
+				';
+				}
+				$_ob []= '' . '
 				<a href="">Login by Mail</a>
 			';
 			}

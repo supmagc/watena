@@ -1,0 +1,1 @@
+{{extends front.main.tpl}}

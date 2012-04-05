@@ -105,6 +105,18 @@ function array_all($mCallback, array &$aData) {
 	return $bResult;
 }
 
+function array_first(&$arr) {
+	if(count($arr) == 0) return false;
+	$aKeys = array_keys($arr);
+	return $arr[$aKeys[0]];
+}
+
+function array_last(&$arr) {
+	if(count($arr) == 0) return false;
+	$aKeys = array_keys($arr);
+	return $arr[$aKeys[count($aKeys) - 1]];
+}
+
 function is_alphabetical($var) {
 	return ctype_alpha($var);
 }

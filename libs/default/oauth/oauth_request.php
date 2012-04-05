@@ -25,21 +25,14 @@ class OAuthRequest {
 		return $this->m_sMethod;
 	}
 
-	public function setParameter($sName, $sValue, $bAllowDuplicates = true) {
-		if($bAllowDuplicates && isset($this->m_aParameters[$sName])) {
-			// We have already added parameter(s) with this name, so add to the list
-			if (is_scalar($this->m_aParameters[$sName])) {
-				// This is the first duplicate, so transform scalar (string)
-				// into an array so we can add the duplicates
-				$this->m_aParameters[$sName] = array($this->m_aParameters[$sName]);
-			}
-			$this->m_aParameters[$sName][] = $sValue;
-		}
-		else {
-			$this->m_aParameters[$sName] = $sValue;
-		}
+	public function setParameter($sName, $sValue) {
+		$this->m_aParameters[$sName] = $sValue;
 	}
 
+	public function setParameters(array $aParams) {
+		$this->m_aParameters = array_merge($this->m_aParameters, $aParams);
+	}
+	
 	public function getParameter($sName) {
 		return isset($this->m_aParameters[$sName]) ? $this->m_aParameters[$sName] : null;
 	}
