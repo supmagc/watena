@@ -101,6 +101,11 @@ class OAuthClient {
 		$oWebRequest->addHeaders($oRequest->getHeaders());
 		$oWebRequest->addFields($oRequest->getFields());
 		$oWebResponse = $oWebRequest->send();
+		
+		if($oWebResponse->getHttpCode() !== 200) {
+			// TODO: throw something !
+		}
+		
 		return $oWebResponse->getContent();
 	}
 
