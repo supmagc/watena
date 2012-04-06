@@ -1,5 +1,5 @@
 <?php
-require_plugin('User');
+//require_plugin('User');
 
 abstract class UserSessionController extends Controller {
 
