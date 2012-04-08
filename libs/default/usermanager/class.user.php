@@ -4,6 +4,19 @@ class User {
 	
 	private $m_aData;
 	private $m_aConnections = null;
+	private $m_aEmails = null;
+	
+	public function __construct($mData) {
+		if(is_array($mData)) {
+			$this->m_aData = $mData;
+		}
+		else if(is_numeric($mData)) {
+			// TODO: request by ID
+		}
+		else {
+			// TODO: throw an exception
+		}
+	}
 	
 	public function getId() {
 		return $this->m_aData['ID'];
@@ -53,12 +66,43 @@ class User {
 		}
 	}
 	
-	public function addEmail($sEmail) {
-		
+	public function getEmails() {
+		if($this->m_aEmails === null) {
+			$this->m_aEmails = array();
+			$oStatement = UserManager::getDatabaseConnection()->select('user_email', $this->getId(), 'userId');
+			foreach($oStatement as $aData) {
+				$this->m_aEmails[$aData['email']] = new UserEmail($aData);
+			}
+		}
+		return $this->m_aEmails;
+	}
+	
+	public function addEmail($sEmail, $bVerified = false) {
+		if(!UserManager::isEmailAvailable($sEmail) && !$this->getEmail($sEmail) === null) {
+			throw new UserDuplicateEmailException();
+		}
+		$nId = UserManager::getDatabaseConnection()->insert('user_email', array(
+			'userId' => $this->getId(),
+			'email' => $sEmail,
+			'verified' => $bVerified ? 1 : 0,
+			'hash' => md5($this->getId() . $sEmail . microtime(true) . mt_rand())
+		));
+		$oEmail = new UserMail($nId);
+		$this->m_aEmails[$sEmail] = $oEmail;
+		return $oEmail;
+	}
+	
+	public function getEmail($sEmail) {
+		$aEmails = $this->getEmails();
+		return isset($aEmails[$sEmail]) ? $aEmails[$sEmail] : null;
 	}
 	
 	public function removeEmail(UserEmail $oEmail) {
-		
+		$nIndex = array_search($oEmail, $this->getEmails());
+		if($nIndex !== false) {
+			UserManager::getDatabaseConnection()->delete('user_email', $oEmail->getId());
+			unset($this->m_aEmails[$nIndex]);
+		}
 	}
 }
 

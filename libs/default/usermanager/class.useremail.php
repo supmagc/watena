@@ -6,7 +6,15 @@ class UserEmail {
 		
 	}
 	
+	public function getId() {
+		
+	}
+	
 	public function getEmail() {
+		
+	}
+	
+	public function getHash() {
 		
 	}
 	
