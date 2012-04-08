@@ -9,24 +9,55 @@ class UserManager extends Plugin {
 	const TYPE_ADMIN = 3;
 	const TYPE_TLA = 4;
 	
-	private static $s_oDatabaseConnection;
-	private static $s_oLoggedInUser;
-	
-	public function init() {
-	}
+	private static $s_aConnectionProviders = null;
+	private static $s_oDatabaseConnection = null;
+	private static $s_oLoggedInUser = false;
 	
 	public function make() {
 		self::$s_oDatabaseConnection = DatabaseManager::getConnection($this->getConfig('DATABASECONNECTION', 'default'));
-		if(isset($_SESSION['USERID'])) {
-			self::$s_oLoggedInUser = $_SESSION['USERID'] ? new User($_SESSION['USERID']) : null;
-		}
-		else {
-			$aProviders = array(new ProviderTwitter(), new ProviderFacebook());
-		}
 	}
 	
 	public static function getDatabaseConnection() {
 		return self::$s_oDatabaseConnection;
+	}
+	
+	public static function getConnectionProviders() {
+		if(!is_array(self::$s_aConnectionProviders)) {
+			self::$s_aConnectionProviders =  array('TWITTER' => new ProviderTwitter(), 'FACEBOOK' => new ProviderFacebook());
+		}
+		return self::$s_aConnectionProviders;
+	}
+	
+	public static function getConnectionProvider($sName) {
+		$aProviders = self::getConnectionProviders();
+		return isset($aProviders[strtoupper($sName)]) ? $aProviders[strtoupper($sName)] : null;
+	}
+	
+	public static function getLoggedInUser() {
+		if(self::$s_oLoggedInUser === false) {
+			if(isset($_SESSION['USERID'])) {
+				self::$s_oLoggedInUser = $_SESSION['USERID'] ? new User($_SESSION['USERID']) : null;
+			}
+			else {
+				$aProviders = self::getConnectionProviders();
+				foreach($aProviders as $oProvider) {
+					if($oProvider->isConnected()) {
+						self::connectToProvider($oProvider);
+						break;
+					}
+				}
+			}			
+		}
+		return self::$s_oLoggedInUser;
+	}
+	
+	public static function setLoggedInUser(User $oUser) {
+		self::$s_oLoggedInUser = $oUser ? $oUser : null;
+		$_SESSION['USERID'] = self::$s_oLoggedInUser->getId();
+	}
+	
+	public static function isLoggedIn() {
+		return self::getLoggedInUser() !== null;
 	}
 	
 	public static function isNameAvailable($sName) {
@@ -34,7 +65,13 @@ class UserManager extends Plugin {
 		return $oStatement->rowCount() === 0;
 	}
 	
+	public static function isEmailAvailable($sEmail) {
+		$oStatement = self::getDatabaseConnection()->select('user_email', $sEmail, 'email');
+		return $oStatement->rowCount() === 0;
+	}
+	
 	public static function create($sName, $nType) {
+		// Shouldn't this be updated ?
 		if(self::isNameAvailable($sName)) {
 			$nId = self::getDatabaseConnection()->insert('user', array(
 				'type' => $nType,
@@ -45,22 +82,19 @@ class UserManager extends Plugin {
 		return false;
 	}
 	
-	public static function loginByCredentials($sUsername, $sPassword) {
-	
+	public static function login($sUsername, $sPassword) {
+		// NYI
 	}
 	
-	public static function loginByProvider(UserConnectionProvider $oConnectionProvider) {
-		
-	}
-	
-	public function isLoggedIn() {
-		return self::$s_oLoggedInUser !== null;
-	}
-	
-	public static function registerByProvider($sName, UserConnectionProvider $oConnectionProvider) {
-		$oUser = self::create($sName, self::TYPE_MEMBER_LOOSE);
-		$oUser->addConnection($oConnectionProvider);
-		return $oUser;
+	public static function connectToProvider(UserConnectionProvider $oConnectionProvider) {
+		if($oConnectionProvider->connect() && $oConnectionProvider->isConnected() && $oConnectionProvider->canBeConnectedTo(self::getLoggedInUser())) {
+			$oUser = self::isLoggedIn() ? self::getLoggedInUser() : self::create($oConnectionProvider->getConnectionName(), self::TYPE_MEMBER_LOOSE);
+			$oUser->addConnection($oConnectionProvider);
+			$oConnectionProvider->update($oUser);
+			self::setLoggedInUser($oUser);
+			return $oUser;
+		}
+		return false;
 	}
 	
 	/**

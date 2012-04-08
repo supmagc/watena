@@ -18,34 +18,6 @@ USE `watena`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `user_mail`
---
-
-DROP TABLE IF EXISTS `user_mail`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `user_mail` (
-  `ID` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `userId` int(10) unsigned NOT NULL,
-  `mail` varchar(256) NOT NULL,
-  `verified` tinyint(4) NOT NULL DEFAULT '0',
-  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `hash` varchar(32) NOT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `user_mail.userId__user.ID` (`userId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `user_mail`
---
-
-LOCK TABLES `user_mail` WRITE;
-/*!40000 ALTER TABLE `user_mail` DISABLE KEYS */;
-/*!40000 ALTER TABLE `user_mail` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `user_login`
 --
 
@@ -63,15 +35,6 @@ CREATE TABLE `user_login` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `user_login`
---
-
-LOCK TABLES `user_login` WRITE;
-/*!40000 ALTER TABLE `user_login` DISABLE KEYS */;
-/*!40000 ALTER TABLE `user_login` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `user_connection`
 --
 
@@ -82,23 +45,15 @@ CREATE TABLE `user_connection` (
   `ID` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `userId` int(10) unsigned NOT NULL DEFAULT '0',
   `connectionId` bigint(20) unsigned NOT NULL DEFAULT '0',
+  `provider` varchar(32) NOT NULL,
   `data` blob,
   `tokens` blob,
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`ID`),
-  UNIQUE KEY `connectionId_UNIQUE` (`connectionId`),
+  UNIQUE KEY `connectionId_provider_UNIQUE` (`connectionId`,`provider`),
   KEY `user_connection.userId__user.ID` (`userId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `user_connection`
---
-
-LOCK TABLES `user_connection` WRITE;
-/*!40000 ALTER TABLE `user_connection` DISABLE KEYS */;
-/*!40000 ALTER TABLE `user_connection` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `user`
@@ -124,13 +79,23 @@ CREATE TABLE `user` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `user`
+-- Table structure for table `user_email`
 --
 
-LOCK TABLES `user` WRITE;
-/*!40000 ALTER TABLE `user` DISABLE KEYS */;
-/*!40000 ALTER TABLE `user` ENABLE KEYS */;
-UNLOCK TABLES;
+DROP TABLE IF EXISTS `user_email`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `user_email` (
+  `ID` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `userId` int(10) unsigned NOT NULL,
+  `email` varchar(256) NOT NULL,
+  `verified` tinyint(4) NOT NULL DEFAULT '0',
+  `hash` varchar(32) NOT NULL,
+  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`ID`),
+  KEY `user_mail.userId__user.ID` (`userId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -141,4 +106,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-04-06 13:36:13
+-- Dump completed on 2012-04-08 12:41:46
