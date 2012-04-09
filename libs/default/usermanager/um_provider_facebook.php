@@ -10,12 +10,11 @@ class ProviderFacebook extends UserConnectionProvider {
 		if(is_array($aData)) {
 			$oConnection = UserManager::getDatabaseConnection();
 			$oStatement = $oConnection->select('user_email', $aData['email'], 'email');
-			if($oStatement->rowCount() > 0) {
-				if($oStatement->fetchObject()->userId != $oUser->getId())
-					throw new UserConnectionException(UserConnectionException::DUPLICATE_EMAIL);
-			}
-			else {
+			if(UserManager::isEmailAvailable($aData['email'])) {
 				$oUser->addEmail($aData['email']);
+			}
+			else if(!$oUser->hasEmail($aData['email'])) {
+					throw new UserDuplicateEmailException();
 			}
 			if(!$oUser->getTimezone() || $bForceOverwrite)
 				$oUser->setTimezone($aData['timezone']);
@@ -29,13 +28,11 @@ class ProviderFacebook extends UserConnectionProvider {
 	public function canBeConnectedTo(User $oUser = null) {
 		if($this->isConnected()) {
 			$aData = $this->getConnectionData();
-			$oConnection = UserManager::getDatabaseConnection();
-			$oStatement = $oConnection->select('user_email', $aData['email'], 'email');
-			if($oStatement->rowCount() > 0 && $oUser !== null && $oStatement->fetchObject()->userId != $oUser->getId())
-				throw new UserConnectionException(UserConnectionException::DUPLICATE_EMAIL);
+			if(!UserManager::isEmailAvailable($aData['email']) && (!$oUser || $oUser->hasEmail($aData['email'])))
+				throw new UserDuplicateEmailException();
 			$oStatement = $oConnection->select('user', $aData['username'], 'name');
-			if($oStatement->rowCount() > 0 && $oUser !== null && $oStatement->fetchObject()->ID != $oUser->getId())
-				throw new UserConnectionException(UserConnectionException::DUPLICATE_NAME);
+			if(!UserManager::isNameAvailable($aData['username']) && (!$oUser || $oUser->getName() != $aData['username']))
+				throw new UserDuplicateNameException();
 			return true;
 		}
 		return false;
@@ -44,6 +41,14 @@ class ProviderFacebook extends UserConnectionProvider {
 	public function getConnectionId() {
 		$nId = Socializer::facebook()->getUser();
 		return $nId > 0 ? $nId : false;
+	}
+	
+	public function getConnectionName() {
+		if($this->isConnected()) {
+			$aData = $this->getConnectionData();
+			return $aData['username'];
+		}
+		return false;
 	}
 	
 	public function getConnectionData() {

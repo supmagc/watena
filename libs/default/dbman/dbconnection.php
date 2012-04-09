@@ -78,7 +78,7 @@ class DbConnection {
 		return $this->getPdo()->query("SELECT $sPartC");
 	}
 	
-	public function select($sTable, $mId, $sIdField) {
+	public function select($sTable, $mId, $sIdField = 'ID') {
 		$sQuery = "SELECT * FROM `$sTable` WHERE `$sIdField` = :$sIdField";
 		$oStatement = $this->getPdo()->prepare($sQuery);
 		$oStatement->execute(array($sIdField => $mId));

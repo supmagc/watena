@@ -1,5 +1,7 @@
 <?php
+require_includeonce(dirname(__FILE__) . '/../usermanager/index.php');
 require_plugin('DatabaseManager');
+require_plugin('Socializer');
 
 class UserManager extends Plugin {
 	
@@ -23,7 +25,7 @@ class UserManager extends Plugin {
 	
 	public static function getConnectionProviders() {
 		if(!is_array(self::$s_aConnectionProviders)) {
-			self::$s_aConnectionProviders =  array('TWITTER' => new ProviderTwitter(), 'FACEBOOK' => new ProviderFacebook());
+			self::$s_aConnectionProviders =  array('FACEBOOK' => new ProviderFacebook());
 		}
 		return self::$s_aConnectionProviders;
 	}
@@ -33,31 +35,28 @@ class UserManager extends Plugin {
 		return isset($aProviders[strtoupper($sName)]) ? $aProviders[strtoupper($sName)] : null;
 	}
 	
+	public static function getTwitterProvider() {
+		return self::getConnectionProvider('TWITTER');
+	}
+	
+	public static function getFacebookProvider() {
+		return self::getConnectionProvider('FACEBOOK');
+	}
+	
 	public static function getLoggedInUser() {
 		if(self::$s_oLoggedInUser === false) {
-			if(isset($_SESSION['USERID'])) {
-				self::$s_oLoggedInUser = $_SESSION['USERID'] ? new User($_SESSION['USERID']) : null;
-			}
-			else {
-				$aProviders = self::getConnectionProviders();
-				foreach($aProviders as $oProvider) {
-					if($oProvider->isConnected()) {
-						self::connectToProvider($oProvider);
-						break;
-					}
-				}
-			}			
+			self::setLoggedInUser((isset($_SESSION['USERID']) && $_SESSION['USERID']) ? new User($_SESSION['USERID']) : null);
 		}
 		return self::$s_oLoggedInUser;
 	}
 	
-	public static function setLoggedInUser(User $oUser) {
+	public static function setLoggedInUser(User $oUser = null) {
 		self::$s_oLoggedInUser = $oUser ? $oUser : null;
-		$_SESSION['USERID'] = self::$s_oLoggedInUser->getId();
+		$_SESSION['USERID'] = $oUser ? $oUser->getId() : 0;
 	}
 	
 	public static function isLoggedIn() {
-		return self::getLoggedInUser() !== null;
+		return (bool)self::getLoggedInUser();
 	}
 	
 	public static function isNameAvailable($sName) {
@@ -70,8 +69,7 @@ class UserManager extends Plugin {
 		return $oStatement->rowCount() === 0;
 	}
 	
-	public static function create($sName, $nType) {
-		// Shouldn't this be updated ?
+	public static function createUser($sName, $nType) {
 		if(self::isNameAvailable($sName)) {
 			$nId = self::getDatabaseConnection()->insert('user', array(
 				'type' => $nType,
@@ -79,7 +77,9 @@ class UserManager extends Plugin {
 			));
 			return new User($nId);
 		}
-		return false;
+		else {
+			throw new UserDuplicateNameException();
+		}
 	}
 	
 	public static function login($sUsername, $sPassword) {
@@ -88,7 +88,7 @@ class UserManager extends Plugin {
 	
 	public static function connectToProvider(UserConnectionProvider $oConnectionProvider) {
 		if($oConnectionProvider->connect() && $oConnectionProvider->isConnected() && $oConnectionProvider->canBeConnectedTo(self::getLoggedInUser())) {
-			$oUser = self::isLoggedIn() ? self::getLoggedInUser() : self::create($oConnectionProvider->getConnectionName(), self::TYPE_MEMBER_LOOSE);
+			$oUser = self::isLoggedIn() ? self::getLoggedInUser() : self::createUser($oConnectionProvider->getConnectionName(), self::TYPE_MEMBER_LOOSE);
 			$oUser->addConnection($oConnectionProvider);
 			$oConnectionProvider->update($oUser);
 			self::setLoggedInUser($oUser);

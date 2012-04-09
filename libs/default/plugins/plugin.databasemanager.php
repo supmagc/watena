@@ -13,7 +13,7 @@ class DatabaseManager extends Plugin {
 			self::$s_aConnections[strtoupper($sConnection)] = $oConnection;
 		}
 		
-		parent::getLogger()->info('Database connections found: ' . implode(', ', $aConnections));
+		parent::getLogger()->debug('Database connections found: ' . implode(', ', $aConnections));
 	}
 	
 	/**
@@ -24,7 +24,7 @@ class DatabaseManager extends Plugin {
 	 * @returen bool
 	 */
 	public static function hasConnection($sConnection) {
-		return in_array(strtoupper($sConnection), self::$s_aConnections); 
+		return isset(self::$s_aConnections[strtoupper($sConnection)]); 
 	}
 	
 	/**
