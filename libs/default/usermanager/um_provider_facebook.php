@@ -8,14 +8,8 @@ class ProviderFacebook extends UserConnectionProvider {
 	public function update(User $oUser, $bForceOverwrite = false) {
 		$aData = $this->getConnectionData();
 		if(is_array($aData)) {
-			$oConnection = UserManager::getDatabaseConnection();
-			$oStatement = $oConnection->select('user_email', $aData['email'], 'email');
-			if(UserManager::isEmailAvailable($aData['email'])) {
-				$oUser->addEmail($aData['email']);
-			}
-			else if(!$oUser->hasEmail($aData['email'])) {
-					throw new UserDuplicateEmailException();
-			}
+			if(!UserManager::getUserIdByEmail($aData['email']))
+				$oUser->addEmail($aData['email'], true);
 			if(!$oUser->getTimezone() || $bForceOverwrite)
 				$oUser->setTimezone($aData['timezone']);
 			if(!$oUser->getLocale() || $bForceOverwrite)
@@ -28,11 +22,12 @@ class ProviderFacebook extends UserConnectionProvider {
 	public function canBeConnectedTo(User $oUser = null) {
 		if($this->isConnected()) {
 			$aData = $this->getConnectionData();
-			if(!UserManager::isEmailAvailable($aData['email']) && (!$oUser || $oUser->hasEmail($aData['email'])))
+			if(($nId = UserManager::getUserIdByEmail($aData['email'])) !== false && (!$oUser || $oUser->getId() != $nId))
 				throw new UserDuplicateEmailException();
-			$oStatement = $oConnection->select('user', $aData['username'], 'name');
-			if(!UserManager::isNameAvailable($aData['username']) && (!$oUser || $oUser->getName() != $aData['username']))
+			if(($nId = UserManager::getUserIdByName($aData['username'])) !== false && (!$oUser || $oUser->getId() != $nId))
 				throw new UserDuplicateNameException();
+			if(($nId = UserManager::getUserIdByConnection($this)) !== false && (!$oUser || $oUser->getId() != $nId))
+				throw new UserDuplicateConnectionException();
 			return true;
 		}
 		return false;

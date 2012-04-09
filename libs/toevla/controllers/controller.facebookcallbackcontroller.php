@@ -7,7 +7,7 @@ class FacebookCallbackController extends UserSessionController {
 
 	public function process(Model $oModel, View $oView) {
 		try {
-			if(UserManager::getFacebookProvider()->connect() && UserManager::connectToProvider(UserManager::getFacebookProvider())) {
+			if(UserManager::connectToProvider(UserManager::getFacebookProvider())) {
 				$this->redirect('/');
 			}
 			else {
@@ -19,9 +19,6 @@ class FacebookCallbackController extends UserSessionController {
 		}
 		catch(UserDuplicateNameException $e){
 			$this->display('Duplicate name found!');
-		}
-		catch(Exception $e) {
-			$this->display('Some error occured!');
 		}
 	}
 }

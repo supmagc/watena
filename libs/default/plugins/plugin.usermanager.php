@@ -1,13 +1,13 @@
 <?php
-require_includeonce(dirname(__FILE__) . '/../usermanager/index.php');
-require_plugin('DatabaseManager');
 require_plugin('Socializer');
+require_plugin('DatabaseManager');
+require_includeonce(dirname(__FILE__) . '/../usermanager/index.php');
 
 class UserManager extends Plugin {
 	
 	const TYPE_GUEST = 0;
-	const TYPE_MEMBER_LOOSE = 1;
-	const TYPE_MEMBER_VERIFIED = 2;
+	const TYPE_CONNECTION = 1;
+	const TYPE_MEMBER = 2;
 	const TYPE_ADMIN = 3;
 	const TYPE_TLA = 4;
 	
@@ -15,8 +15,13 @@ class UserManager extends Plugin {
 	private static $s_oDatabaseConnection = null;
 	private static $s_oLoggedInUser = false;
 	
-	public function make() {
+	public function init() {
 		self::$s_oDatabaseConnection = DatabaseManager::getConnection($this->getConfig('DATABASECONNECTION', 'default'));
+		self::$s_aConnectionProviders = array();
+		if($this->getConfig('PROVIDERFACEBOOK_ENABLED', false))
+			self::$s_aConnectionProviders['ProviderFacebook'] = new ProviderFacebook();
+		if($this->getConfig('PROVIDERTWITTER_ENABLED', false))
+			self::$s_aConnectionProviders['ProviderTwitter'] = new ProviderTwitter();
 	}
 	
 	public static function getDatabaseConnection() {
@@ -24,9 +29,6 @@ class UserManager extends Plugin {
 	}
 	
 	public static function getConnectionProviders() {
-		if(!is_array(self::$s_aConnectionProviders)) {
-			self::$s_aConnectionProviders =  array('FACEBOOK' => new ProviderFacebook());
-		}
 		return self::$s_aConnectionProviders;
 	}
 	
@@ -36,16 +38,16 @@ class UserManager extends Plugin {
 	}
 	
 	public static function getTwitterProvider() {
-		return self::getConnectionProvider('TWITTER');
+		return self::getConnectionProvider('ProviderTwitter');
 	}
 	
 	public static function getFacebookProvider() {
-		return self::getConnectionProvider('FACEBOOK');
+		return self::getConnectionProvider('ProviderFacebook');
 	}
 	
 	public static function getLoggedInUser() {
 		if(self::$s_oLoggedInUser === false) {
-			self::setLoggedInUser((isset($_SESSION['USERID']) && $_SESSION['USERID']) ? new User($_SESSION['USERID']) : null);
+			self::setLoggedInUser((isset($_SESSION['USERID']) && $_SESSION['USERID']) ? User::load($_SESSION['USERID']) : null);
 		}
 		return self::$s_oLoggedInUser;
 	}
@@ -59,40 +61,43 @@ class UserManager extends Plugin {
 		return (bool)self::getLoggedInUser();
 	}
 	
-	public static function isNameAvailable($sName) {
+	public static function getUserIdByName($sName) {
 		$oStatement = self::getDatabaseConnection()->select('user', $sName, 'name');
-		return $oStatement->rowCount() === 0;
+		return $oStatement->rowCount() > 0 ? $oStatement->fetchObject()->ID : false;
 	}
 	
-	public static function isEmailAvailable($sEmail) {
+	public static function getUserIdByEmail($sEmail) {
 		$oStatement = self::getDatabaseConnection()->select('user_email', $sEmail, 'email');
-		return $oStatement->rowCount() === 0;
+		return $oStatement->rowCount() > 0 ? $oStatement->fetchObject()->userId : false;
 	}
 	
-	public static function createUser($sName, $nType) {
-		if(self::isNameAvailable($sName)) {
-			$nId = self::getDatabaseConnection()->insert('user', array(
-				'type' => $nType,
-				'name' => $sName
-			));
-			return new User($nId);
-		}
-		else {
-			throw new UserDuplicateNameException();
-		}
+	public static function getUserIdByConnection(UserConnectionProvider $oConnectionProvider) {
+		$oStatement = self::getDatabaseConnection()->select('user_connection', array($oConnectionProvider->getConnectionId(), $oConnectionProvider->getName()), array('connectionId', 'provider'), 'AND');
+		return $oStatement->rowCount() > 0 ? $oStatement->fetchObject()->userId : false;
 	}
-	
-	public static function login($sUsername, $sPassword) {
-		// NYI
-	}
-	
+		
 	public static function connectToProvider(UserConnectionProvider $oConnectionProvider) {
-		if($oConnectionProvider->connect() && $oConnectionProvider->isConnected() && $oConnectionProvider->canBeConnectedTo(self::getLoggedInUser())) {
-			$oUser = self::isLoggedIn() ? self::getLoggedInUser() : self::createUser($oConnectionProvider->getConnectionName(), self::TYPE_MEMBER_LOOSE);
-			$oUser->addConnection($oConnectionProvider);
-			$oConnectionProvider->update($oUser);
-			self::setLoggedInUser($oUser);
-			return $oUser;
+		if($oConnectionProvider->connect()) {
+			$nConnectionUserId = self::getUserIdByConnection($oConnectionProvider);
+			$oConnectionUser = $nConnectionUserId !== false ? User::load($nConnectionUserId) : null;
+			$oCurrentUser = self::getLoggedInUser() ? self::getLoggedInUser() : null;
+			if($oConnectionUser && $oCurrentUser && $oConnectionProvider->canBeConnectedTo($oCurrentUser)) {
+				if($oConnectionUser != $oCurrentUser)
+					throw new UserDuplicateLoginException();
+			}
+			else if($oConnectionUser && $oConnectionProvider->canBeConnectedTo($oConnectionUser)) {
+				$oCurrentUser = $oConnectionUser;
+			}
+			else if($oCurrentUser && $oConnectionProvider->canBeConnectedTo($oCurrentUser)) {
+				$oCurrentUser->addConnection($oConnectionProvider);
+			}
+			else {
+				$oCurrentUser = User::create($oConnectionProvider->getConnectionName(), self::TYPE_CONNECTION);
+				$oCurrentUser->addConnection($oConnectionProvider);
+			}
+			self::setLoggedInUser($oCurrentUser);
+			$oConnectionProvider->update($oCurrentUser);
+			return self::getLoggedInUser();
 		}
 		return false;
 	}

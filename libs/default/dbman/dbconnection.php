@@ -46,8 +46,7 @@ class DbConnection {
 	
 	public function connect() {
 		if($this->m_oConnection === null) {
-			$this->m_oConnection = new PDO($this->getDsn(), $this->getUser(), $this->getPass(), array(PDO::ATTR_PERSISTENT => true));
-			$this->m_oConnection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
+			$this->m_oConnection = new PDO($this->getDsn(), $this->getUser(), $this->getPass(), array(PDO::ATTR_PERSISTENT => false, PDO::ATTR_ERRMODE => PDO::ERRMODE_WARNING));
 			$this->m_oConnection->query('SET time_zone = \'+00:00\';'); // Set to UTC
 			$this->m_oConnection->query('SET wait_timeout = 120;');
 		}
@@ -59,7 +58,7 @@ class DbConnection {
 	}
 	
 	public function getTable($sTable, $mIdField = "ID") {
-		return new DbTable($this, $sTable, $sIdField);
+		return new DbTable($this, $sTable, $mIdField);
 	}
 	
 	public function query($sQuery, array $aParams = array()) {
@@ -78,10 +77,11 @@ class DbConnection {
 		return $this->getPdo()->query("SELECT $sPartC");
 	}
 	
-	public function select($sTable, $mId, $sIdField = 'ID') {
-		$sQuery = "SELECT * FROM `$sTable` WHERE `$sIdField` = :$sIdField";
+	public function select($sTable, $mId, $mIdField = 'ID', $sConcatenation = 'AND') {
+		list($sWhere, $aWheres) = $this->buildWhere($mId, $mIdField);
+		$sQuery = "SELECT * FROM `$sTable` WHERE $sWhere";
 		$oStatement = $this->getPdo()->prepare($sQuery);
-		$oStatement->execute(array($sIdField => $mId));
+		$oStatement->execute($aWheres);
 		return $oStatement;
 	}
 	
@@ -105,19 +105,27 @@ class DbConnection {
 		return $mId;
 	}
 	
-	public function update($sTable, $mId, $aData, $sIdField = 'ID') {
-		$aFields = array_keys($aData);
-		$sUpdates = implode(', ', array_map(create_function('$a', 'return "`$a` = :$a";'), $aFields));
-		$sQuery = "UPDATE `$sTable` SET ".$sUpdates." WHERE `$sIdField` = :$sIdField";
+	public function update($sTable, array $aData, $mId, $mIdField = 'ID', $sConcatenation = 'AND') {
+		list($sWhere, $aWheres) = $this->buildWhere($mId, $mIdField);
+		$sUpdates = implode(', ', array_map(create_function('$a', 'return "`$a` = :$a";'), array_keys($aData)));
+		$sQuery = "UPDATE `$sTable` SET ".$sUpdates." WHERE $sWhere";
 		$oStatement = $this->getPdo()->prepare($sQuery);
-		return $oStatement->execute(array_merge($aData, array($sIdField => $mId)));
+		return $oStatement->execute(array_merge($aData, $aWheres));
 	}
 	
-	public function delete($sTable, $mId, $sIdField = 'ID') {
-		$sQuery = "DELETE FROM `$sTable` WHERE `$sIdField` = :$sIdField";
+	public function delete($sTable, $mId, $mIdField = 'ID', $sConcatenation = 'AND') {
+		list($sWhere, $aWheres) = $this->buildWhere($mId, $mIdField);
+		$sQuery = "DELETE FROM `$sTable` WHERE $sWhere";
 		$oStatement = $this->getPdo()->prepare($sQuery);
-		return $oStatement->execute(array($sIdField => $mId));
-	}	
+		return $oStatement->execute($aWheres);
+	}
+
+	public function buildWhere($mId, $mIdField, $sConcatenation = 'AND') {
+		if(!is_array($mId)) $mId = array($mId);
+		if(!is_array($mIdField)) $mIdField = array($mIdField);
+		$aWheres = array_map(create_function('$a', 'return "`$a` = :$a";'), $mIdField);
+		return array(implode(" $sConcatenation ", $aWheres), array_combine($mIdField, $mId));
+	}
 }
 
 ?>

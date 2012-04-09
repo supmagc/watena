@@ -3,6 +3,15 @@
 abstract class UserConnectionProvider {
 	
 	/**
+	 * Helper method to identify the connectionprovider.
+	 * 
+	 * @return string The name of the connection-provider-class.
+	 */
+	public function getName() {
+		return get_class($this);
+	}
+	
+	/**
 	 * Update the userdata according to the current connection.
 	 * This method is meant to update the userdata such:
 	 * - locale (if not set)
@@ -35,10 +44,18 @@ abstract class UserConnectionProvider {
 	 * Retrieve the user-id linked to the connection.
 	 * If no connection is found this method returns false.
 	 * 
-	 * @return int The internal connection's user-id, or false when not connected.
+	 * @return mixed The internal connection's user-id, or false when not connected.
 	 */
 	abstract public function getConnectionId();
-
+	
+	/**
+	* Retrieve the username linked to the connection.
+	* If no connection is found this method returns false.
+	*
+	* @return mixed The internal connection's username, or false when not connected.
+	*/
+	abstract public function getConnectionName();
+	
 	/**
 	 * Retrieve any userdata linked to the connection.
 	 * This might also include the user-id.
