@@ -11,10 +11,10 @@ class User {
 			$this->m_aData = $mData;
 		}
 		else if(is_numeric($mData)) {
-			// TODO: request by ID
+			$this->m_aData = UserManager::getDatabaseConnection()->select('user', (int)$mData)->fetch(PDO::FETCH_ASSOC);
 		}
 		else {
-			// TODO: throw an exception
+			throw new UserInvalidIdException();
 		}
 	}
 	
@@ -50,8 +50,8 @@ class User {
 			'userId' => $this->getId(),
 			'provider' => get_class($oConnectionProvider),
 			'connectionId' => $oConnectionProvider->getConnectionId(),
-			'data' => $oConnectionProvider->getConnectionData(),
-			'tokens' => $oConnectionProvider->getConnectionTokens()
+			'data' => json_encode($oConnectionProvider->getConnectionData()),
+			'tokens' => json_encode($oConnectionProvider->getConnectionTokens())
 		));
 		$oConnection = new UserConnection($this, $nId);
 		$this->m_aConnections []= $oConnection;
@@ -87,7 +87,7 @@ class User {
 			'verified' => $bVerified ? 1 : 0,
 			'hash' => md5($this->getId() . $sEmail . microtime(true) . mt_rand())
 		));
-		$oEmail = new UserMail($nId);
+		$oEmail = new UserEmail($nId);
 		$this->m_aEmails[$sEmail] = $oEmail;
 		return $oEmail;
 	}

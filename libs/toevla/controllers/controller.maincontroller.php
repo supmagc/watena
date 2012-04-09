@@ -1,33 +1,23 @@
 <?php
 require_controller('UserSessionController');
+require_plugin('UserManager');
 require_plugin('Socializer');
 
 class MainController extends UserSessionController {
 
 	public function process(Model $oModel, View $oView) {
+
+		echo '<pre>';
+		print_r($_SESSION);
+		print_r($_COOKIE);
+		echo '</pre>';
 		
-		$bIsLoggedIn = false;
-		
-		if(Socializer::twitter()->isLoggedIn()) {
-			$bIsLoggedIn = true;
-		}
-		
-		$oFacebookUser = Socializer::facebook()->getUser();
-		if($oFacebookUser) {
-			try {
-				$aFacebookUserProfile = Socializer::facebook()->api('/me');
-				$bIsLoggedIn = true;
-			}
-			catch(FacebookApiException $e) {
-				$this->getLogger()->exception($e);
-			}
-		}
-		
-		if(false && $bIsLoggedIn) {
+		if(UserManager::isLoggedIn()) {
 			$oModel->setHash('MyTestHash');
 			$oModel->setTitle('Start to play');
 		}
 		else {
+			$this->display(UserManager::getFacebookProvider()->getConnectUrl('http://flandersisafestival.dev/facebook/callback'));
 			$oModel->setTitle('Login first');
 		}
 	}
