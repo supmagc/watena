@@ -48,20 +48,20 @@ class DbTable {
 		return $this->m_sIdField;
 	}
 
-	public function select($mId) {
-		return $this->getConnection()->select($this->getTable(), $mId, $this->getIdField());
+	public function select($mId, $sConcatenation = 'AND') {
+		return $this->getConnection()->select($this->getTable(), $mId, $this->getIdField(), $sConcatenation);
 	}
 	
 	public function insert(array $aValues) {
 		return $this->getConnection()->insert($this->getTable(), $aValues);
 	}
 	
-	public function update($mId, array $aValues) {
-		return $this->getConnection()->update($this->getTable(), $mId, $aValues, $this->getIdField());
+	public function update(array $aValues, $mId, $sConcatenation = 'AND') {
+		return $this->getConnection()->update($this->getTable(), $aValues, $mId, $this->getIdField(), $sConcatenation);
 	}
 	
-	public function delete($mId) {
-		return $this->getConnection()->delete($this->getTable(), $mId, $this->getIdField());
+	public function delete($mId, $sConcatenation = 'AND') {
+		return $this->getConnection()->delete($this->getTable(), $mId, $this->getIdField(), $sConcatenation);
 	}
 }
 

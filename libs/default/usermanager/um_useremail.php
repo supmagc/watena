@@ -1,39 +1,38 @@
 <?php
 
-class UserEmail {
+class UserEmail extends DbObject {
 	
-	private $m_aData;
-
-	public function __construct($mData) {
-		if(is_array($mData)) {
-			$this->m_aData = $mData;
-		}
-		else if(is_numeric($mData)) {
-			$this->m_aData = UserManager::getDatabaseConnection()->select('user', (int)$mData)->fetch(PDO::FETCH_ASSOC);
-		}
-		else {
-			throw new UserInvalidIdException();
-		}
-	}
-	
-	public function getId() {
-		return $this->m_aData['ID'];
+	public function getUserId() {
+		return $this->getDataValue('userId');
 	}
 	
 	public function getEmail() {
-		return $this->m_aData['email'];
+		return $this->getDataValue('email');
 	}
 	
 	public function getHash() {
-		return $this->m_aData['hash'];
+		return $this->getDataValue('hash');
 	}
 	
 	public function getTimestamp() {
-		return $this->m_aData['timestamp'];
+		return $this->getDataValue('timestamp');
 	}
 	
 	public function isVerified() {
-		return (bool)$this->m_aData['verified'];
+		return (bool)$this->getDataValue('verified');
+	}
+	
+	public static function load($mData) {
+		return DbObject::loadObject('UserEmail', UserManager::getDatabaseConnection()->getTable('user_email'), $mData);
+	}
+	
+	public static function create(User $oUser, $sEmail, $bVerified) {
+		return !UserManager::getUserIdByEmail($sEmail) ? DbObject::createObject('UserEmail', UserManager::getDatabaseConnection()->getTable('user_email'), array(
+			'userId' => $oUser->getId(),
+			'email' => $sEmail,
+			'verified' => $bVerified ? 1 : 0,
+			'hash' => md5($oUser->getId() . $sEmail . microtime(true) . mt_rand())
+		)) : false;
 	}
 }
 

@@ -14,6 +14,20 @@ class UserDuplicateNameException extends Exception {
 	}
 }
 
+class UserDuplicateConnectionException extends Exception {
+	
+	public function __construct() {
+		parent::__construct('A user-connection-record for the same connection allready exists.');
+	}
+}
+
+class UserDuplicateLoginException extends Exception {
+	
+	public function __construct() {
+		parent::__construct('A user with a different login is allready logged in.');
+	}
+}
+
 class UserInvalidIdException extends Exception {
 	
 	public function __construct() {
