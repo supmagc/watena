@@ -1,9 +1,15 @@
 <?php
-require_plugin('Socializer');
 
 class ProviderFacebook extends UserConnectionProvider {
 	
 	private $m_aData = null;
+	private $m_oFacebook;
+	
+	public function __construct() {
+		$this->m_oFacebook = watena()->getContext()->getPlugin('Socializer')->getFacebook();
+		if(!$this->m_oFacebook)
+			throw new UserConnectionProviderFailed();
+	}
 	
 	public function update(User $oUser, $bForceOverwrite = false) {
 		$aData = $this->getConnectionData();
@@ -34,7 +40,7 @@ class ProviderFacebook extends UserConnectionProvider {
 	}
 	
 	public function getConnectionId() {
-		$nId = Socializer::facebook()->getUser();
+		$nId = $this->m_oFacebook->getUser();
 		return $nId > 0 ? $nId : false;
 	}
 	
@@ -50,7 +56,7 @@ class ProviderFacebook extends UserConnectionProvider {
 		if($this->getConnectionId()) {
 			if($this->m_aData === null) {
 				try {
-					$this->m_aData = Socializer::facebook()->api('/me');
+					$this->m_aData = $this->m_oFacebook->api('/me');
 				}
 				catch(FacebookApiException $e) {
 					$this->m_aData = false;
@@ -62,15 +68,15 @@ class ProviderFacebook extends UserConnectionProvider {
 	}
 	
 	public function getConnectionTokens() {
-		return $this->getConnectionId() ? Socializer::facebook()->getAccessToken() : false;
+		return $this->getConnectionId() ? $this->m_oFacebook->getAccessToken() : false;
 	}
 	
 	public function getConnectUrl($sRedirect) {
-		return Socializer::facebook()->getLoginUrl(array('scope' => 'email', 'redirect_uri' => $sRedirect));
+		return $this->m_oFacebook->getLoginUrl(array('scope' => 'email', 'redirect_uri' => '' . $sRedirect));
 	}
 	
 	public function getDisconnectUrl($sRedirect) {
-		return Socializer::facebook()->getLogoutUrl(array('next' => $sRedirect));
+		return $this->m_oFacebook->getLogoutUrl(array('next' => $sRedirect));
 	}
 	
 	public function isConnected() {

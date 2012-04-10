@@ -1,6 +1,6 @@
 <?php
 require_model('HtmlModel');
-require_plugin('Socializer');
+require_plugin('UserManager');
 
 class MainModel extends HtmlModel {
 	
@@ -18,16 +18,24 @@ class MainModel extends HtmlModel {
 		return $this->m_sHash;
 	}
 
-		
-	public function getTwitterLoginUrl() {
-		return Socializer::twitter()->getLoginUrl();
+	public function getUnityUrl() {
+		return new Mapping('/files/toevla/unity/WebPlayer.unity3d');
+	}
+	
+	public function hasTwitterLogin() {
+		return (bool)UserManager::getProviderTwitter(); 
 	}
 		
+	public function getTwitterLoginUrl() {
+		return UserManager::getProviderTwitter()->getConnectUrl(new Mapping('/twitter/callback'));
+	}
+	
+	public function hasFacebookLogin() {
+		return (bool)UserManager::getProviderFacebook();
+	}
+	
 	public function getFacebookLoginUrl() {
-		return Socializer::facebook()->getLoginUrl(array(
-			'scope' => 'email',
-			'redirect_uri' => 'http://flandersisafestival.dev/facebook/callback'
-		));
+		return UserManager::getProviderFacebook()->getConnectUrl(new Mapping('/facebook/callback'));
 	}
 }
 

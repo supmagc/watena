@@ -8,8 +8,8 @@ class Configurable extends Object {
 		parent::__construct();
 		$this->m_aConfig = $aConfig;
 		$sHostKey = Encoding::toUpper($_SERVER['HTTP_HOST']);
-		if(isset($this->m_aConfig[$sHostKey])) $this->m_aConfig = array_merge($this->m_aConfig, $this->m_aConfig[$sHostKey]);
 		$this->m_aConfig = array_change_key_case($this->m_aConfig, CASE_UPPER);
+		if(isset($this->m_aConfig[$sHostKey])) $this->m_aConfig = array_merge($this->m_aConfig, array_change_key_case($this->m_aConfig[$sHostKey], CASE_UPPER));
 	}
 
 	public final function getConfig($sKey, $mDefault = null) {

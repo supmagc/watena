@@ -59,6 +59,10 @@ class Mapping extends Object {
 	public final function getUseragent() {
 		return $this->getVariable('useragent');
 	}
+	
+	public final function toString() {
+		return $this->getFull();
+	}
 }
 
 ?>

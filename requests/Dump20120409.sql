@@ -1,5 +1,5 @@
-CREATE DATABASE  IF NOT EXISTS `watena` /*!40100 DEFAULT CHARACTER SET utf8 */;
-USE `watena`;
+CREATE DATABASE  IF NOT EXISTS `toevla` /*!40100 DEFAULT CHARACTER SET utf8 */;
+USE `toevla`;
 -- MySQL dump 10.13  Distrib 5.5.16, for Win32 (x86)
 --
 -- Host: localhost    Database: watena

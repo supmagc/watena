@@ -8,8 +8,10 @@ class IPCO_Compiled_f__www_watena_libs_toevla_templates_front_main_tpl extends I
 			if(parent::processMember('getHash', null)) {
 				$_ob []= '' . '
 	<script type="text/javascript" src="http://webplayer.unity3d.com/download_webplayer-3.x/3.0/uo/UnityObject.js"></script>
-	<script type="text/javascript">
-	<!--
+	<script type="text/javascript"><!--
+	window.tvHash = \'';
+				$_ob []= '' . parent::processMember('getHash', null);
+				$_ob []= '' . '\';
 	function GetUnity() {
 		if (typeof unityObject != "undefined") {
 			return unityObject.getObjectById("unityPlayer");
@@ -24,15 +26,16 @@ class IPCO_Compiled_f__www_watena_libs_toevla_templates_front_main_tpl extends I
 				textcolor: "000000",
 				logoimage: "loadfestival.png"
 		};
-		unityObject.embedUnity("unityPlayer", "WebPlayer.unity3d", 728, 450, params);
+		unityObject.embedUnity("unityPlayer", "';
+				$_ob []= '' . parent::processMember('getUnityUrl', null);
+				$_ob []= '' . '", 728, 450, params);
 		
 	}
-	-->
-	</script>
+	--></script>
 ';
 			} else {
 				$_ob []= '' . '
-	<script>
+	<script><!--
 		window.fbAsyncInit = function() {
 			FB.init({
 				appId      : \'121283004662650\',
@@ -51,7 +54,7 @@ class IPCO_Compiled_f__www_watena_libs_toevla_templates_front_main_tpl extends I
 			js.src = "//connect.facebook.net/en_US/all.js";
 			d.getElementsByTagName(\'head\')[0].appendChild(js);
 		}(document));
-	</script>
+	--></script>
 ';
 			}
 			$_ob []= '' . '
@@ -80,12 +83,24 @@ class IPCO_Compiled_f__www_watena_libs_toevla_templates_front_main_tpl extends I
 ';
 			} else {
 				$_ob []= '' . '
-	<a href="';
-				$_ob []= '' . parent::processMember('getFacebookLoginUrl', null);
-				$_ob []= '' . '">Login by Facebook</a><br />	
-	<a href="';
-				$_ob []= '' . parent::processMember('getTwitterLoginUrl', null);
-				$_ob []= '' . '">Login by Twitter</a><br />
+	';
+				if(parent::processMember('hasFacebookLogin', null)) {
+					$_ob []= '' . '
+		<a href="';
+					$_ob []= '' . parent::processMember('getFacebookLoginUrl', null);
+					$_ob []= '' . '">Login by Facebook</a><br />	
+	';
+				}
+				$_ob []= '' . '
+	';
+				if(parent::processMember('hastwitterLogin', null)) {
+					$_ob []= '' . '
+		<a href="';
+					$_ob []= '' . parent::processMember('getTwitterLoginUrl', null);
+					$_ob []= '' . '">Login by Twitter</a><br />
+	';
+				}
+				$_ob []= '' . '
 	<a href="">Login by Mail</a>
 ';
 			}

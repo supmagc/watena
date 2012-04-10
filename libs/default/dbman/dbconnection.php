@@ -77,12 +77,20 @@ class DbConnection {
 		return $this->getPdo()->query("SELECT $sPartC");
 	}
 	
-	public function select($sTable, $mId, $mIdField = 'ID', $sConcatenation = 'AND') {
-		list($sWhere, $aWheres) = $this->buildWhere($mId, $mIdField);
-		$sQuery = "SELECT * FROM `$sTable` WHERE $sWhere";
-		$oStatement = $this->getPdo()->prepare($sQuery);
-		$oStatement->execute($aWheres);
-		return $oStatement;
+	public function select($sTable, $mId = null, $mIdField = 'ID', $sConcatenation = 'AND') {
+		if($mId !== null) {
+			list($sWhere, $aWheres) = $this->buildWhere($mId, $mIdField);
+			$sQuery = "SELECT * FROM `$sTable` WHERE $sWhere";
+			$oStatement = $this->getPdo()->prepare($sQuery);
+			$oStatement->execute($aWheres);
+			return $oStatement;
+		}
+		else {
+			$sQuery = "SELECT * FROM `$sTable`";
+			$oStatement = $this->getPdo()->prepare($sQuery);
+			$oStatement->execute();
+			return $oStatement;
+		}
 	}
 	
 	public function insert($sTable, array $aData, $bTransaction = true) {

@@ -35,4 +35,10 @@ class UserInvalidIdException extends Exception {
 	}
 }
 
+class UserConnectionProviderFailed extends Exception {
+	
+	public function __construct() {
+		parent::__construct('Unable to initialize the ConnectionProvider-object.');
+	}
+}
 ?>
