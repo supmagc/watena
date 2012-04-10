@@ -3,17 +3,22 @@ require_includeonce(dirname(__FILE__) . '/../dbman/dbman.php');
 
 class DatabaseManager extends Plugin {
 
-	private static $s_aConnections = array();
+	private $m_aConnections = array();
+	private static $s_oSingleton;
 	
-	public function make() {
+	public function init() {
 		$aConnections = explode_trim(',', parent::getConfig('CONNECTIONS', ''));
 		foreach($aConnections as $sConnection) {
 			$sConnection = strtoupper($sConnection);
 			$oConnection = new DbConnection(parent::getConfig($sConnection.'_DSN', null), parent::getConfig($sConnection.'_USER', null), parent::getConfig($sConnection.'_PASS', null));
-			self::$s_aConnections[strtoupper($sConnection)] = $oConnection;
+			$this->m_aConnections[strtoupper($sConnection)] = $oConnection;
 		}
 		
 		parent::getLogger()->debug('Database connections found: ' . implode(', ', $aConnections));
+	}
+	
+	public function make() {
+		self::$s_oSingleton = $this;
 	}
 	
 	/**
@@ -24,7 +29,7 @@ class DatabaseManager extends Plugin {
 	 * @returen bool
 	 */
 	public static function hasConnection($sConnection) {
-		return isset(self::$s_aConnections[strtoupper($sConnection)]); 
+		return isset(self::$s_oSingleton->m_aConnections[strtoupper($sConnection)]); 
 	}
 	
 	/**
@@ -36,9 +41,9 @@ class DatabaseManager extends Plugin {
 	 */
 	public static function getConnection($sConnection = null) {
 		if($sConnection)
-			return self::hasConnection($sConnection) ? self::$s_aConnections[strtoupper($sConnection)] : false;
+			return self::hasConnection($sConnection) ? self::$s_oSingleton->m_aConnections[strtoupper($sConnection)] : false;
 		else
-			return array_first(self::$s_aConnections);
+			return array_first(self::$s_oSingleton->m_aConnections);
 	}
 	
 	public function getVersion() {

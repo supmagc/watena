@@ -32,7 +32,7 @@ class DbObject extends Object {
 	}
 	
 	protected function setDataValue($sColumn, $mValue) {
-		if($this->getTable()->update($this->getId(), array($sColumn => $mValue))) {
+		if($this->getTable()->update(array($sColumn => $mValue), $this->getId())) {
 			$this->m_aData[$sColumn] = $mValue;
 		}
 	}

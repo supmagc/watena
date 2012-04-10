@@ -19,9 +19,9 @@ class UserManager extends Plugin {
 		self::$s_oDatabaseConnection = DatabaseManager::getConnection($this->getConfig('DATABASECONNECTION', 'default'));
 		self::$s_aConnectionProviders = array();
 		if($this->getConfig('PROVIDERFACEBOOK_ENABLED', false))
-			self::$s_aConnectionProviders['ProviderFacebook'] = new ProviderFacebook();
+			self::$s_aConnectionProviders['PROVIDERFACEBOOK'] = new ProviderFacebook();
 		if($this->getConfig('PROVIDERTWITTER_ENABLED', false))
-			self::$s_aConnectionProviders['ProviderTwitter'] = new ProviderTwitter();
+			self::$s_aConnectionProviders['PROVIDERTWITTER'] = new ProviderTwitter();
 	}
 	
 	public static function getDatabaseConnection() {
@@ -36,12 +36,18 @@ class UserManager extends Plugin {
 		$aProviders = self::getConnectionProviders();
 		return isset($aProviders[strtoupper($sName)]) ? $aProviders[strtoupper($sName)] : null;
 	}
-	
-	public static function getTwitterProvider() {
+
+	/**
+	 * @return ProviderTwitter
+	 */
+	public static function getProviderTwitter() {
 		return self::getConnectionProvider('ProviderTwitter');
 	}
 	
-	public static function getFacebookProvider() {
+	/**
+	 * @return ProviderFacebook
+	 */
+	public static function getProviderFacebook() {
 		return self::getConnectionProvider('ProviderFacebook');
 	}
 	

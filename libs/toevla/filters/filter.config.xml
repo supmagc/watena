@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<filter name="ToeVla main filter" order="5">
+	<model name="ConfigModel">
+	</model>
+	<view name="JsonView">
+		<param name="method">getConfigData</param>
+	</view>
+	<rules>
+		<rule type="mapping" variable="local">^/config</rule>
+	</rules>
+</filter>

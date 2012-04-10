@@ -1,5 +1,5 @@
 <?php
-//require_plugin('User');
+require_plugin('UserManager');
 
 abstract class UserSessionController extends Controller {
 
@@ -17,8 +17,16 @@ abstract class UserSessionController extends Controller {
 	}
 
 	public final function getUser() {
+		return UserManager::getLoggedInUser();
+	}
+	
+	public final function login($sName, $sPass) {
 		
-	}	
+	}
+	
+	public final function logout() {
+		
+	}
 }
 
 ?>

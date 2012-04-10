@@ -4,31 +4,35 @@ require_includeonce(dirname(__FILE__) . '/../socializer/index.php');
 
 class Socializer extends Plugin {
 	
-	private static $s_oFacebook;
-	private static $s_oTwitter; 
+	private $m_oFacebook;
+	private $m_oTwitter; 
 	
 	public function init() {
-		if($this->getConfig('FACEBOOK_ENABLED', false)) {
-			self::$s_oFacebook = new Facebook(array(
-				'appId' => $this->getConfig('FACEBOOK_ID', ''),
-				'secret' => $this->getConfig('FACEBOOK_SECRET', '')
-			));
-		}
-		if($this->getConfig('TWITTER_ENABLED', false)) {
-			self::$s_oTwitter = new Twitter(array(
-				'consumer_key' => $this->getConfig('TWITTER_ID', ''),
-				'consumer_secret' => $this->getConfig('TWITTER_SECRET', ''),
-				'callback' => $this->getConfig('TWITTER_CALLBACK', '')
-			));
-		}
+		$this->m_oTwitter = $this->getConfig('TWITTER_ENABLED', false) ? new Twitter(array(
+			'consumer_key' => $this->getConfig('TWITTER_ID', ''),
+			'consumer_secret' => $this->getConfig('TWITTER_SECRET', ''),
+			'callback' => $this->getConfig('TWITTER_CALLBACK', '')
+		)) : false;
+		$this->m_oFacebook = $this->getConfig('FACEBOOK_ENABLED', false) ? new Facebook(array(
+					'appId' => $this->getConfig('FACEBOOK_ID', ''),
+					'secret' => $this->getConfig('FACEBOOK_SECRET', '')
+		)) : false;
 	}
 	
-	public static function facebook() {
-		return self::$s_oFacebook;
+	public function hasFacebook() {
+		return (bool)$this->m_oFacebook;
 	}
 	
-	public static function twitter() {
-		return self::$s_oTwitter;
+	public function getFacebook() {
+		return $this->m_oFacebook;
+	}
+	
+	public function hasTwitter() {
+		return (bool)$this->m_oTwitter;
+	}
+	
+	public function getTwitter() {
+		return $this->m_oTwitter;
 	} 
 	
 	/**

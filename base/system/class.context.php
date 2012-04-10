@@ -139,7 +139,9 @@ class Context extends Object implements ILogFilter {
 	public function loadModel($sName, array $aParams = array()) {
 		$sFileName = 'model.' . Encoding::toLower($sName) . '.php';
 		$sFilePath = parent::getWatena()->getContext()->getLibraryFilePath('models', $sFileName);		
-		return CacheableData::createObject($sName, $aParams, array(), null, $sFilePath, 'Model');
+		$oModel = CacheableData::createObject($sName, $aParams, array(), null, $sFilePath, 'Model');
+		$oModel->setCharset(Encoding::charset());
+		return $oModel;
 	}
 	
 	/**
@@ -227,6 +229,7 @@ class Context extends Object implements ILogFilter {
 					if(!$oModel) $oModel = $oFilter->createModel();
 					if(!$oView) $oView = $oFilter->createView();
 					if(!$oController) $oController = $oFilter->createController();
+					break;
 				}
 			}
 		}

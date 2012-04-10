@@ -7,7 +7,7 @@ class FacebookCallbackController extends UserSessionController {
 
 	public function process(Model $oModel, View $oView) {
 		try {
-			if(UserManager::connectToProvider(UserManager::getFacebookProvider())) {
+			if(UserManager::connectToProvider(UserManager::getProviderFacebook())) {
 				$this->redirect('/');
 			}
 			else {

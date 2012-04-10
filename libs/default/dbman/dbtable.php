@@ -48,7 +48,7 @@ class DbTable {
 		return $this->m_sIdField;
 	}
 
-	public function select($mId, $sConcatenation = 'AND') {
+	public function select($mId = null, $sConcatenation = 'AND') {
 		return $this->getConnection()->select($this->getTable(), $mId, $this->getIdField(), $sConcatenation);
 	}
 	

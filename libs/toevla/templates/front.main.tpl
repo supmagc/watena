@@ -3,8 +3,8 @@
 {{region begin header}}
 {{if getHash()}}
 	<script type="text/javascript" src="http://webplayer.unity3d.com/download_webplayer-3.x/3.0/uo/UnityObject.js"></script>
-	<script type="text/javascript">
-	<!--
+	<script type="text/javascript"><!--
+	window.tvHash = '{[getHash()]}';
 	function GetUnity() {
 		if (typeof unityObject != "undefined") {
 			return unityObject.getObjectById("unityPlayer");
@@ -19,13 +19,12 @@
 				textcolor: "000000",
 				logoimage: "loadfestival.png"
 		};
-		unityObject.embedUnity("unityPlayer", "WebPlayer.unity3d", 728, 450, params);
+		unityObject.embedUnity("unityPlayer", "{[getUnityUrl()]}", 728, 450, params);
 		
 	}
-	-->
-	</script>
+	--></script>
 {{else}}
-	<script>
+	<script><!--
 		window.fbAsyncInit = function() {
 			FB.init({
 				appId      : '121283004662650',
@@ -44,7 +43,7 @@
 			js.src = "//connect.facebook.net/en_US/all.js";
 			d.getElementsByTagName('head')[0].appendChild(js);
 		}(document));
-	</script>
+	--></script>
 {{end}}
 {{region end}}
 
@@ -62,8 +61,12 @@
 		-->
 	</div>
 {{else}}
-	<a href="{[getFacebookLoginUrl()]}">Login by Facebook</a><br />	
-	<a href="{[getTwitterLoginUrl()]}">Login by Twitter</a><br />
+	{{if hasFacebookLogin()}}
+		<a href="{[getFacebookLoginUrl()]}">Login by Facebook</a><br />	
+	{{end}}
+	{{if hastwitterLogin()}}
+		<a href="{[getTwitterLoginUrl()]}">Login by Twitter</a><br />
+	{{end}}
 	<a href="">Login by Mail</a>
 {{end}}
 {{region end}}
