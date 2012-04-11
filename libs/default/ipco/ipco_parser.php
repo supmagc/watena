@@ -221,13 +221,13 @@ class IPCO_Parser extends IPCO_Base {
 	public function interpretExtends($sName = null) {
 		$sName = Encoding::trim($sName);
 		$this->m_sExtendsTemplate = Encoding::length($sName) > 0 ? $sName : null;
-		$this->m_sExtendsFilePath = $this->getIpco()->getFilePathForTemplate($this->m_sExtendsTemplate);
+		$this->m_sExtendsFilePath = $this->getIpco()->getCallbacks()->getFilePathForTemplate($this->m_sExtendsTemplate);
 		if(!file_exists($this->m_sExtendsFilePath) || !is_readable($this->m_sExtendsFilePath))
 			throw new IPCO_Exception(IPCO_Exception::FILTER_EXTENDS_INVALID_FILE);
 	}
 	
 	public function interpretInclude($sName = null) {
-		$sIncludeFilePath = $this->getIpco()->getFilePathForTemplate($sName);
+		$sIncludeFilePath = $this->getIpco()->getCallbacks()->getFilePathForTemplate($sName);
 		$this->m_oRegion->addLine(IPCO_ParserSettings::getCallInclude($sIncludeFilePath));
 	}
 	

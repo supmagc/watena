@@ -13,7 +13,6 @@ class TemplateFile extends CacheableFile implements IPCO_ICallbacks {
 		$this->m_sDataPath = 'IPCO/' . $this->m_sClassName . '.inc';
 		$oFile = parent::getWatena()->getContext()->getDataFile($this->m_sDataPath);		
 		$oParser = $oIpco->createParserFromFile(parent::getFilePath());
-		//$oParser->setRemoveWhitespaces(true);
 		$oFile->writeContent('<?php' . $oParser->parse() . '?>');
 		$this->m_sExtends = $oParser->getExtendsFilePath();
 	}
@@ -32,8 +31,8 @@ class TemplateFile extends CacheableFile implements IPCO_ICallbacks {
 		return parent::getWatena()->getContext()->getLibraryFilePath('templates', $sTemplate);
 	}
 	
-	public function getTemplateContent($sFilePath) {
-		return TemplateFile::create($sFilePath, array(), array('contentparser' => $this->_getContentParser()))->createTemplateClass()->getContent(true);
+	public function getTemplateForFilePath($sFilePath) {
+		return TemplateFile::create($sFilePath, array(), array('contentparser' => $this->_getContentParser()))->createTemplateClass(); //->getContent(true);
 	}
 	
 	public function createTemplateClass() {

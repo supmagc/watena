@@ -44,7 +44,9 @@ abstract class IPCO_Processor extends IPCO_Base {
 	}
 	
 	protected final function callInclude($sFilePath) {
-		return $this->getIpco()->getTemplateForFilePath($sFilePath);
+		$oTemplate = $this->getIpco()->getCallbacks()->getTemplateForFilePath($sFilePath);
+		$oTemplate->m_aComponents = $this->m_aComponents;
+		return $oTemplate->getContent(true);
 	}
 	
 	protected final function processMethod($sName, array $aParams, $mBase = null) {
@@ -64,17 +66,13 @@ abstract class IPCO_Processor extends IPCO_Base {
 		$this->tryProcessSlices($mReturn, $aSliced, $mBase);
 		return $mReturn;
 	}
-
-	protected final function processInclude($sFilePath) {
-		$oParser = parent::getIpco()->createParserFromFile($sFilePath);
-	}
 	
 	protected final function tryProcessMethod(&$mReturn, $sName, array $aParams, $mBase = null) {
 		if(!empty($mBase)) {
 			
 			if(!is_subclass_of($mBase, 'IPCO_ComponentWrapper')) 
 				$mBase = IPCO_ComponentWrapper::createComponentWrapper($mBase, parent::getIpco());
-			
+				
 			return $mBase->tryGetMethod($mReturn, $sName, $aParams);
 		}
 		else {

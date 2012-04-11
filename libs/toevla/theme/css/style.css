@@ -42,6 +42,17 @@ html, body, #centerTable {
 */
 	left:10px;
 }
+#loginLayer {
+	z-index:2;
+	position:absolute;
+	background-color:#f4f3ee;
+	border: #060711 6px solid;
+	padding: 50px;
+	width:250px;
+	height:100px;
+	top:125px;
+	left:189px;	
+}
 #spacerBox {
 	height:120px;
 }
