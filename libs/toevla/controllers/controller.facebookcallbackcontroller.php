@@ -2,13 +2,14 @@
 require_controller('UserSessionController');
 require_plugin('DatabaseManager');
 require_plugin('UserManager');
+require_plugin('ToeVla');
 
 class FacebookCallbackController extends UserSessionController {
 
 	public function process(Model $oModel = null, View $oView = null) {
 		try {
 			if(UserManager::connectToProvider(UserManager::getProviderFacebook())) {
-				$this->redirect('/');
+				$oModel->setHash(ToeVla::getNewHash());
 			}
 			else {
 				$this->display('No facebookuser found!');

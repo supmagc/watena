@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <filter name="ToeVla main filter" order="12">
+	<model name="CallbackModel">
+	</model>
+	<view name="HtmlTemplateView">
+		<param name="template">popup.callback.tpl</param>
+	</view>
 	<controller name="FacebookCallbackController">
 	</controller>
 	<rules>

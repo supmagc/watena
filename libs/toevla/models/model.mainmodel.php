@@ -23,7 +23,7 @@ class MainModel extends HtmlModel {
 	}
 
 	public function hasTwitterLogin() {
-		return (bool)UserManager::getProviderTwitter(); 
+		return UserManager::getProviderTwitter(); 
 	}
 		
 	public function getTwitterLoginUrl() {
@@ -31,7 +31,7 @@ class MainModel extends HtmlModel {
 	}
 	
 	public function hasFacebookLogin() {
-		return (bool)UserManager::getProviderFacebook();
+		return UserManager::getProviderFacebook();
 	}
 	
 	public function getFacebookLoginUrl() {

@@ -1,0 +1,22 @@
+<?php
+class IPCO_Compiled_d__www_watena_libs_toevla_templates_popup_callback_tpl extends IPCO_Processor {
+	public function generate() {
+		return self::callRegion____MainRegion__();
+	}
+	protected function callRegion____MainRegion__() {
+		try {
+			$_ob = array();
+			if(parent::processMember('getHash', null)) {
+				$_ob []= '' . '
+<script>
+window.opener.loginPopupCallback(\'';
+				$_ob []= '' . parent::processMember('getHash', null);
+				$_ob []= '' . '\');
+</script>
+';
+			}
+			return implode('', $_ob);
+		} catch(Exception $e) { throw new WatCeption('Unable to create template-output.', array(), null, $e); }
+	}
+}
+?>

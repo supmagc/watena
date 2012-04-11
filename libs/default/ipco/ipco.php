@@ -28,10 +28,6 @@ class IPCO {
 		$this->setCallbacks($oCallbacks);
 	}
 	
-	public function getFilePathForTemplate($sTemplate) {
-		return $this->m_oCallbacks->getFilePathForTemplate($sTemplate);
-	}
-	
 	public function createParserFromContent($sIdentifier, &$sContent) {
 		return new IPCO_Parser($sIdentifier, $sContent, $this);
 	}
@@ -54,16 +50,16 @@ class IPCO {
 		return $this->getTemplateForFilePath($this->getFilePathForTemplate($sTemplate));
 	}
 	
-	public function getTemplateForFilePath($sFilePath) {
-		return $this->m_oCallbacks->getTemplateContent($sFilePath);
-	}
-	
 	public function getContentParser() {
 		return $this->m_oContentParser;
 	}
 	
 	public function setContentParser(IPCO_IContentParser $oContentParser = null) {
 		$this->m_oContentParser = $oContentParser;
+	}
+	
+	public function getCallbacks() {
+		return $this->m_oCallbacks;
 	}
 	
 	public function setCallbacks(IPCO_ICallbacks $oCallbacks = null) {
