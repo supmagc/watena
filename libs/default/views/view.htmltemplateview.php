@@ -32,7 +32,9 @@ class HtmlTemplateView extends View implements IPCO_IContentParser {
 		'a' => 'href', 
 		'link' => 'href',
 		'img' => 'src',
-		'form' => 'action');
+		'form' => 'action',
+		'iframe' => 'src'
+	);
 	
 	public function render(Model $oModel) {
 		$oPlugin = parent::getWatena()->getContext()->getPlugin('TemplateLoader');

@@ -11,25 +11,30 @@ class UserManager extends Plugin {
 	const TYPE_ADMIN = 3;
 	const TYPE_TLA = 4;
 	
-	private static $s_aConnectionProviders = null;
-	private static $s_oDatabaseConnection = null;
+	private $m_aConnectionProviders = null;
+	private $m_oDatabaseConnection = null;
 	private static $s_oLoggedInUser = false;
+	private static $s_oSingleton;
+	
+	public function make() {
+		$this->m_oDatabaseConnection = DatabaseManager::getConnection($this->getConfig('DATABASECONNECTION', 'default'));
+		$this->m_aConnectionProviders = array();
+		if($this->getConfig('PROVIDERFACEBOOK_ENABLED', false))
+			$this->m_aConnectionProviders['PROVIDERFACEBOOK'] = new ProviderFacebook();
+		if($this->getConfig('PROVIDERTWITTER_ENABLED', false))
+			$this->m_aConnectionProviders['PROVIDERTWITTER'] = new ProviderTwitter();
+	}
 	
 	public function init() {
-		self::$s_oDatabaseConnection = DatabaseManager::getConnection($this->getConfig('DATABASECONNECTION', 'default'));
-		self::$s_aConnectionProviders = array();
-		if($this->getConfig('PROVIDERFACEBOOK_ENABLED', false))
-			self::$s_aConnectionProviders['PROVIDERFACEBOOK'] = new ProviderFacebook();
-		if($this->getConfig('PROVIDERTWITTER_ENABLED', false))
-			self::$s_aConnectionProviders['PROVIDERTWITTER'] = new ProviderTwitter();
+		self::$s_oSingleton = $this;
 	}
 	
 	public static function getDatabaseConnection() {
-		return self::$s_oDatabaseConnection;
+		return self::$s_oSingleton->m_oDatabaseConnection;
 	}
 	
 	public static function getConnectionProviders() {
-		return self::$s_aConnectionProviders;
+		return self::$s_oSingleton->m_aConnectionProviders;
 	}
 	
 	public static function getConnectionProvider($sName) {

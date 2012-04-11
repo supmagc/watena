@@ -47,7 +47,7 @@ class ProviderFacebook extends UserConnectionProvider {
 	public function getConnectionName() {
 		if($this->isConnected()) {
 			$aData = $this->getConnectionData();
-			return $aData['username'];
+			return isset($aData['username']) ? $aData['username'] : $aData['name'];
 		}
 		return false;
 	}

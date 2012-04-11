@@ -5,7 +5,7 @@ require_plugin('UserManager');
 
 class FacebookCallbackController extends UserSessionController {
 
-	public function process(Model $oModel, View $oView) {
+	public function process(Model $oModel = null, View $oView = null) {
 		try {
 			if(UserManager::connectToProvider(UserManager::getProviderFacebook())) {
 				$this->redirect('/');

@@ -1,0 +1,85 @@
+<?php
+class IPCO_Compiled_f__www_watena_libs_toevla_templates_front_unity_tpl extends IPCO_Processor {
+	public function generate() {
+		return self::callRegion____MainRegion__();
+	}
+	protected function callRegion____MainRegion__() {
+		try {
+			$_ob = array();
+			$_ob []= '' . '<script type="text/javascript" src="http://webplayer.unity3d.com/download_webplayer-3.x/3.0/uo/UnityObject.js"></script>
+<script type="text/javascript"><!--
+window.tvHash = \'';
+			$_ob []= '' . parent::processMember('getHash', null);
+			$_ob []= '' . '\';
+function GetUnity() {
+	if (typeof unityObject != "undefined") {
+		return unityObject.getObjectById("unityPlayer");
+	}
+	return null;
+}
+if (typeof unityObject != "undefined") {
+	var params = {
+			disableContextMenu: true,
+			backgroundcolor: "FFFFFF",
+			bordercolor: "FFFFFF",
+			textcolor: "000000",
+			logoimage: "';
+			$_ob []= '' . parent::processMember('getUrl', null);
+			$_ob []= '' . '/theme/toevla/loadunity.png"
+	};
+	unityObject.embedUnity("unityPlayer", "';
+			$_ob []= '' . parent::processMember('getUrl', null);
+			$_ob []= '' . '/files/toevla/unity/WebPlayer.unity3d", 728, 450, params);
+	
+}
+function Hide() {
+	video.location=\'';
+			$_ob []= '' . parent::processMember('getUrl', null);
+			$_ob []= '' . '/files/toevla/video/blank.html\';
+	document.getElementById("youtubePlayer").style.display = \'none\';
+}
+function Video(URL){
+	document.getElementById("youtubePlayer").style.display = \'block\';
+	video.location=URL;
+}
+function login(sName) {
+}
+--></script>
+<div id="unityPlayer"></div>
+
+<div id="youtubePlayer" style="display: none;">
+	<iframe width="150" height="120" src="';
+			$_ob []= '' . parent::callContentParser('addMappingRoot', array (
+  0 => 'iframe',
+  1 => 'src',
+  2 => '/files/toevla/video/blank.html',
+));
+			$_ob []= '' . '" frameborder="0" allowfullscreen></iframe>
+</div>
+
+<div id="loginLayer" style="display: none;">
+';
+			if(parent::processMember('hasFacebookLogin', null)) {
+				$_ob []= '' . '
+	<a href="';
+				$_ob []= '' . parent::processMember('getFacebookLoginUrl', null);
+				$_ob []= '' . '">Login by Facebook</a><br />	
+';
+			}
+			$_ob []= '' . '
+';
+			if(parent::processMember('hastwitterLogin', null)) {
+				$_ob []= '' . '
+	<a href="';
+				$_ob []= '' . parent::processMember('getTwitterLoginUrl', null);
+				$_ob []= '' . '">Login by Twitter</a><br />
+';
+			}
+			$_ob []= '' . '
+</div>
+';
+			return implode('', $_ob);
+		} catch(Exception $e) { throw new WatCeption('Unable to create template-output.', array(), null, $e); }
+	}
+}
+?>
