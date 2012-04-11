@@ -18,10 +18,10 @@ class MainModel extends HtmlModel {
 		return $this->m_sHash;
 	}
 
-	public function getUnityUrl() {
-		return new Mapping('/files/toevla/unity/WebPlayer.unity3d');
+	public function getUrl() {
+		return $this->getWatena()->getMapping()->getRoot();
 	}
-	
+
 	public function hasTwitterLogin() {
 		return (bool)UserManager::getProviderTwitter(); 
 	}

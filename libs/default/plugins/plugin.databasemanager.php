@@ -6,7 +6,7 @@ class DatabaseManager extends Plugin {
 	private $m_aConnections = array();
 	private static $s_oSingleton;
 	
-	public function init() {
+	public function make() {
 		$aConnections = explode_trim(',', parent::getConfig('CONNECTIONS', ''));
 		foreach($aConnections as $sConnection) {
 			$sConnection = strtoupper($sConnection);
@@ -17,7 +17,7 @@ class DatabaseManager extends Plugin {
 		parent::getLogger()->debug('Database connections found: ' . implode(', ', $aConnections));
 	}
 	
-	public function make() {
+	public function init() {
 		self::$s_oSingleton = $this;
 	}
 	

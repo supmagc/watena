@@ -2,7 +2,7 @@
 
 abstract class Controller extends CacheableData {
 	
-	abstract public function process(Model $oModel, View $oView);
+	abstract public function process(Model $oModel = null, View $oView = null);
 	
 	private $m_oRemapping;
 	

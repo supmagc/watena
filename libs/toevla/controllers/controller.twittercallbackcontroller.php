@@ -3,7 +3,7 @@ require_plugin('Socializer');
 
 class TwitterCallbackController extends Controller {
 
-	public function process(Model $oModel, View $oView) {
+	public function process(Model $oModel = null, View $oView = null) {
 		if(Socializer::twitter()->login()) {	
 			$this->redirect('/twitter/mail');
 		

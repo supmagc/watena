@@ -232,6 +232,7 @@ class Context extends Object implements ILogFilter {
 					break;
 				}
 			}
+			if($oModel || $oView || $oController) break;
 		}
 		return array($oModel, $oView, $oController);
 	}

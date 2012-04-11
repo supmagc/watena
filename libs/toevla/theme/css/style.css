@@ -42,3 +42,11 @@ html, body, #centerTable {
 */
 	left:10px;
 }
+#spacerBox {
+	height:120px;
+}
+#logo {
+	position:fixed;
+	right: 20px;
+	top: 20px;
+}

@@ -4,20 +4,20 @@
 <meta http-equiv="Content-Type" content="{[getContentType()]}; charset={[getCharset()]}" />
 <title>{[getTitle()]}</title>
 <link href="/theme/toevla/css/style.css" rel="stylesheet" type="text/css" />
-{{region use header}}
 </head>
 
 <body bgcolor="f4f3ee">
-<div id="fb-root"></div>
+<img src="/theme/toevla/logo.gif" id="logo" />
 <table id="centerTable">
 	<tr>
 		<td colspan="3"></td>
 	</tr>
 	<tr>
 		<td></td>
-		<td id="centerCell"><div id="centerDiv">
+		<td id="centerCell"><div id="spacerBox"></div>
+		<div id="centerDiv">
 			{{region use content}}
-		</div></td>
+		</div><div id="spacerBox"></div></td>
 		<td></td>
 	</tr>
 	<tr>
