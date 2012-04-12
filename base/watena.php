@@ -37,6 +37,11 @@ if(!defined('NERRORTOEXCEPTION')) {
 }
 */
 
+if(!defined('NSESSION')) {
+	session_start();
+	// TODO: use the session-guard
+}
+
 if(!defined('NCOMMON')) {
 	define('COMMON', true);
 	require_once PATH_BASE . '/system/global.common.php';

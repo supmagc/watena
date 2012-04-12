@@ -5,7 +5,8 @@
 	<view name="HtmlTemplateView">
 		<param name="template">popup.callback.tpl</param>
 	</view>
-	<controller name="FacebookCallbackController">
+	<controller name="CallbackController">
+		<param name="provider">ProviderFacebook</param>
 	</controller>
 	<rules>
 		<rule type="mapping" variable="local">^/facebook/callback</rule>

@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <filter name="ToeVla main filter" order="11">
-	<controller name="TwitterCallbackController">
+	<model name="CallbackModel">
+	</model>
+	<view name="HtmlTemplateView">
+		<param name="template">popup.callback.tpl</param>
+	</view>
+	<controller name="CallbackController">
+		<param name="provider">ProviderTwitter</param>
 	</controller>
 	<rules>
 		<rule type="mapping" variable="local">^/twitter/callback</rule>

@@ -7,9 +7,10 @@ class Twitter {
 	private $m_oConsumer;
 	private $m_oProvider;
 	
-	private $m_oRequestToken;
-	private $m_oAccessToken;
 	private $m_oOAuthClient;
+	private $m_sUserName = false;
+	private $m_nUserId = false;
+	private $m_nLoginUrls = 0;
 	
 	public function __construct(array $aConfig) {
 		$this->m_aConfig = $aConfig;
@@ -27,8 +28,8 @@ class Twitter {
 		$this->m_oProvider->setUrl(OAuth::PROVIDER_API, 'https://api.twitter.com/1');
 		$this->m_oProvider->setMethod(OAuth::PROVIDER_API, 'GET');
 		
-		$this->loadFromSession();
-		$this->m_oOAuthClient = new OAuthClient($this->m_oProvider, $this->m_oConsumer, $this->m_oRequestToken, $this->m_oAccessToken);
+		list($oRequestToken, $oAccessToken) = $this->loadFromSession();
+		$this->m_oOAuthClient = new OAuthClient($this->m_oProvider, $this->m_oConsumer, $oRequestToken, $oAccessToken);
 	}
 	
 	public function __sleep() {
@@ -36,17 +37,19 @@ class Twitter {
 	}
 	
 	public function __wakeup() {
-		$this->loadFromSession();
-		$this->m_oOAuthClient = new OAuthClient($oProvider, $oConsumer, $oRequestToken, $oAccessToken);
+		list($oRequestToken, $oAccessToken) = $this->loadFromSession();
+		$this->m_oOAuthClient = new OAuthClient($this->m_oProvider, $this->m_oConsumer, $oRequestToken, $oAccessToken);
 	}
 	
 	public function __destruct() {
-		$_SESSION[$this->getSessionName('requesttoken')] = serialize($this->m_oOAuthClient->getRequestToken());
 		$_SESSION[$this->getSessionName('accesstoken')] = serialize($this->m_oOAuthClient->getAccessToken());
+		$_SESSION[$this->getSessionName('requesttoken')] = serialize($this->m_oOAuthClient->getRequestToken());
+		$_SESSION[$this->getSessionName('userId')] = $this->m_nUserId;
+		$_SESSION[$this->getSessionName('userName')] = $this->m_sUserName;
 	}
 	
-	public function getLoginUrl() {
-		return $this->m_oOAuthClient->getAuthorizationUrl(array('oauth_callback' => $this->m_aConfig['callback']));
+	public function getLoginUrl($sRedirect) {
+		return $this->m_oOAuthClient->getAuthorizationUrl(array('oauth_callback' => $this->m_aConfig['callback']), $this->m_nLoginUrls++ == 0);
 	}
 	
 	public function isLoggedIn() {
@@ -54,20 +57,57 @@ class Twitter {
 	}
 	
 	public function login() {
-		return $this->m_oOAuthClient->authorize();
+		if($this->m_oOAuthClient->authorize()) {
+			$this->m_nUserId = $this->m_oOAuthClient->getAuthParams('user_id');
+			$this->m_sUserName = $this->m_oOAuthClient->getAuthParams('screen_name');				
+			return true;
+		}
+		return false;
+	}
+	
+	public function logout() {
+		$this->m_nUserId = false;
+		$this->m_sUserName = false;				
+		return true;
+	}
+	
+	public function getUserId() {
+		return $this->m_nUserId;
+	}
+	
+	public function getUserName() {
+		return $this->m_sUserName;
 	}
 	
 	public function api($sUrl = null, $sMethod = null, array $aParams = array()) {
 		return json_decode($this->m_oOAuthClient->api($sUrl, $sMethod, $aParams), true);
 	}
 	
+	public function apiWithToken(OAuthToken $oAccessToken, $sUrl = null, $sMethod = null, array $aParams = array()) {
+		$oOAuthClient = new OAuthClient($this->m_oProvider, $this->m_oConsumer, null, $oAccessToken);
+		return json_decode($oOAuthClient->api($sUrl, $sMethod, $aParams), true);
+	}
+	
+	public function getAccessToken() {
+		return $this->m_oOAuthClient->getAccessToken();
+	}
+	
 	private function loadFromSession() {
+		$oRequestToken = null;
+		$oAccessToken = null;
 		if(isset($_SESSION[$this->getSessionName('accesstoken')])) {
-			$this->m_oAccessToken = unserialize($_SESSION[$this->getSessionName('accesstoken')]);
+			$oAccessToken = unserialize($_SESSION[$this->getSessionName('accesstoken')]);
 		}
 		if(isset($_SESSION[$this->getSessionName('requesttoken')])) {
-			$this->m_oRequestToken = unserialize($_SESSION[$this->getSessionName('requesttoken')]);
+			$oRequestToken = unserialize($_SESSION[$this->getSessionName('requesttoken')]);
 		}
+		if(isset($_SESSION[$this->getSessionName('userId')])) {
+			$this->m_nUserId = $_SESSION[$this->getSessionName('userId')];
+		}
+		if(isset($_SESSION[$this->getSessionName('userName')])) {
+			$this->m_sUserName = $_SESSION[$this->getSessionName('userName')];
+		}
+		return array($oRequestToken, $oAccessToken);
 	}
 	
 	private function getSessionName($sKey) {

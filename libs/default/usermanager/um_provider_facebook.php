@@ -14,11 +14,26 @@ class ProviderFacebook extends UserConnectionProvider {
 	public function update(User $oUser, $bForceOverwrite = false) {
 		$aData = $this->getConnectionData();
 		if(is_array($aData)) {
-			if(!UserManager::getUserIdByEmail($aData['email']))
+			
+			if(isset($aData['email']))
 				$oUser->addEmail($aData['email'], true);
-			if(!$oUser->getTimezone() || $bForceOverwrite)
+			
+			if((!$oUser->getGender() || $bForceOverwrite) && isset($aData['gender']))
+				$oUser->setGender($aData['gender']);
+			
+			if((!$oUser->getBirthday() || $bForceOverwrite) && isset($aData['birthday']))
+				$oUser->setBirthday($aData['birthday']);
+			
+			if((!$oUser->getFirstname() || $bForceOverwrite) && isset($aData['first_name']))
+				$oUser->setFirstname($aData['first_name']);
+			
+			if((!$oUser->getLastname() || $bForceOverwrite) && isset($aData['last_name']))
+				$oUser->setLastname($aData['last_name']);
+			
+			if((!$oUser->getTimezone() || $bForceOverwrite) && isset($aData['timezone']))
 				$oUser->setTimezone($aData['timezone']);
-			if(!$oUser->getLocale() || $bForceOverwrite)
+			
+			if((!$oUser->getLocale() || $bForceOverwrite) && isset($aData['locale']))
 				$oUser->setLocale($aData['locale']);
 			return true;
 		}
@@ -30,7 +45,7 @@ class ProviderFacebook extends UserConnectionProvider {
 			$aData = $this->getConnectionData();
 			if(($nId = UserManager::getUserIdByEmail($aData['email'])) !== false && (!$oUser || $oUser->getId() != $nId))
 				throw new UserDuplicateEmailException();
-			if(($nId = UserManager::getUserIdByName($aData['username'])) !== false && (!$oUser || $oUser->getId() != $nId))
+			if(($nId = UserManager::getUserIdByName($this->getConnectionName())) !== false && (!$oUser || $oUser->getId() != $nId))
 				throw new UserDuplicateNameException();
 			if(($nId = UserManager::getUserIdByConnection($this)) !== false && (!$oUser || $oUser->getId() != $nId))
 				throw new UserDuplicateConnectionException();
@@ -80,7 +95,7 @@ class ProviderFacebook extends UserConnectionProvider {
 	}
 	
 	public function isConnected() {
-		return $this->getConnectionId() && $this->getConnectionData() !== false;
+		return $this->getConnectionId() && (bool)$this->getConnectionData();
 	}
 	
 	public function disconnect() {

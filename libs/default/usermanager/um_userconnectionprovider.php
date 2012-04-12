@@ -44,7 +44,7 @@ abstract class UserConnectionProvider {
 	 * Retrieve the user-id linked to the connection.
 	 * If no connection is found this method returns false.
 	 * 
-	 * @return mixed The internal connection's user-id, or false when not connected.
+	 * @return int|false The internal connection's user-id, or false when not connected.
 	 */
 	abstract public function getConnectionId();
 	
@@ -52,7 +52,7 @@ abstract class UserConnectionProvider {
 	* Retrieve the username linked to the connection.
 	* If no connection is found this method returns false.
 	*
-	* @return mixed The internal connection's username, or false when not connected.
+	* @return string|false The internal connection's username, or false when not connected.
 	*/
 	abstract public function getConnectionName();
 	
@@ -63,7 +63,7 @@ abstract class UserConnectionProvider {
 	 * be relied upon outside of the connectionprovider.
 	 * If no connection is found this method returns false.
 	 * 
-	 * @return mixed The internal connection's user-data, or false when not connected.
+	 * @return array|false The internal connection's user-data, or false when not connected.
 	 */
 	abstract public function getConnectionData();
 	
@@ -74,7 +74,7 @@ abstract class UserConnectionProvider {
 	 * or to stay valid outside the user's session.
 	 * If no connection is found this method returns false.
 	 * 
-	 * @return mixed The internal connection's user-tokens, or false when not connected.
+	 * @return mixed|false The internal connection's user-tokens, or false when not connected.
 	 */
 	abstract public function getConnectionTokens();
 
@@ -87,7 +87,7 @@ abstract class UserConnectionProvider {
 	 * this method returns null;
 	 * 
 	 * @param string $sRedirect A Fully qualified url to which the user will be redirected at the end of the procedure.
-	 * @return mixed A string with the correct url on succes, false on failure, null if the operation is not possible.
+	 * @return string|false A string with the correct url on succes, false on failure, null if the operation is not possible.
 	 */
 	abstract public function getDisconnectUrl($sRedirect);
 	
@@ -97,7 +97,7 @@ abstract class UserConnectionProvider {
 	 * This method returns the url to create the connection.
 	 * 
 	 * @param string $sRedirect A Fully qualified url to which the user will be redirected at the end of the procedure.
-	 * @return mixed A string with the correct url on succes, false on failure.
+	 * @return string|false A string with the correct url on succes, false on failure.
 	 */
 	abstract public function getConnectUrl($sRedirect);
 	

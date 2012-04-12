@@ -87,8 +87,8 @@ class UserManager extends Plugin {
 		return $oStatement->rowCount() > 0 ? $oStatement->fetchObject()->userId : false;
 	}
 		
-	public static function connectToProvider(UserConnectionProvider $oConnectionProvider) {
-		if($oConnectionProvider->connect()) {
+	public static function connectToProvider(UserConnectionProvider $oConnectionProvider, $sName = null) {
+		if($oConnectionProvider->connect() || $oConnectionProvider->isConnected()) {
 			$nConnectionUserId = self::getUserIdByConnection($oConnectionProvider);
 			$oConnectionUser = $nConnectionUserId !== false ? User::load($nConnectionUserId) : null;
 			$oCurrentUser = self::getLoggedInUser() ? self::getLoggedInUser() : null;
@@ -102,8 +102,8 @@ class UserManager extends Plugin {
 			else if($oCurrentUser && $oConnectionProvider->canBeConnectedTo($oCurrentUser)) {
 				$oCurrentUser->addConnection($oConnectionProvider);
 			}
-			else {
-				$oCurrentUser = User::create($oConnectionProvider->getConnectionName(), self::TYPE_CONNECTION);
+			else if($oConnectionProvider->canBeConnectedTo()) {
+				$oCurrentUser = User::create($sName ? $sName : $oConnectionProvider->getConnectionName(), self::TYPE_CONNECTION);
 				$oCurrentUser->addConnection($oConnectionProvider);
 			}
 			self::setLoggedInUser($oCurrentUser);
