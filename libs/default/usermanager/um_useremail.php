@@ -18,8 +18,13 @@ class UserEmail extends DbObject {
 		return $this->getDataValue('timestamp');
 	}
 	
-	public function isVerified() {
+	public function getVerified() {
 		return (bool)$this->getDataValue('verified');
+	}
+	
+	public function setVerified($mValue) {
+		$this->setDataValue('verified', $mValue ? 1 : 0);
+		return true;
 	}
 	
 	public static function load($mData) {

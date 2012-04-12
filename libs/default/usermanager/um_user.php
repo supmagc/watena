@@ -8,6 +8,22 @@ class User extends DbObject {
 	public function getName() {
 		return $this->getDataValue('name');
 	}
+
+	public function getGender() {
+		return $this->getDataValue('gender');
+	}
+	
+	public function getBirthday() {
+		return $this->getDataValue('birthday');
+	}
+	
+	public function getFirstname() {
+		return $this->getDataValue('firstname');
+	}
+	
+	public function getLastname() {
+		return $this->getDataValue('lastname');		
+	}
 	
 	public function getTimezone() {
 		return $this->getDataValue('timezone');
@@ -17,12 +33,49 @@ class User extends DbObject {
 		return $this->getDataValue('locale');
 	}
 	
+	public function setGender($mValue) {
+		$mValue = Encoding::toLower($mValue);
+		if($mValue === 'm') $mValue = 'male';
+		if($mValue === 'f') $mValue = 'female';
+		if(in_array($mValue, array('male', 'female')))
+			$this->setDataValue('gender', $mValue);
+	}
+	
+	public function setName($mValue) {
+		$nUserId = UserManager::getUserIdByName($mValue);
+		if(!$nUserId || $nUserId == $this->getId()) {
+			$this->setDataValue('name', $mValue);
+			return true;
+		}
+		return false;
+	}
+	
+	public function setBirthday($mValue) {
+		if(Encoding::regMatch('[0-9]{1,2}/[0-9]{1,2}/[0-9]{4}', $sData)) {
+			$this->setDataValue('birthday', $mValue);
+			return true;
+		}
+		return false;
+	}
+	
+	public function setFirstname($mValue) {
+		$this->setDataValue('firstname', $mValue);
+		return true;
+	}
+		
+	public function setLastname($mValue) {
+		$this->setDataValue('lastname', $mValue);
+		return true;
+	}
+		
 	public function setTimezone($mValue) {
 		$this->setDataValue('timezone', $mValue);
+		return true;
 	}
 	
 	public function setLocale($mValue) {
 		$this->setDataValue('locale', $mValue);
+		return true;
 	}
 		
 	public function getConnections() {
@@ -38,14 +91,10 @@ class User extends DbObject {
 	}
 	
 	public function addConnection(UserConnectionProvider $oConnectionProvider) {
-		$oConnection = UserConnection::create($this, $oConnectionProvider);
-		if($oConnection) {
+		if($oConnection = UserConnection::create($this, $oConnectionProvider)) {
 			$this->m_aConnections []= $oConnection;
-			return $oConnection;
 		}
-		else {
-			return false;
-		}
+		return $this->getConnections($oConnectionProvider);
 	}
 	
 	public function removeConnection(UserConnection $oConnection) {
@@ -68,14 +117,14 @@ class User extends DbObject {
 	}
 	
 	public function addEmail($sEmail, $bVerified = false) {
-		$oEmail = UserEmail::create($this, $sEmail, $bVerified);
-		if($oEmail) {
+		if($oEmail = UserEmail::create($this, $sEmail, $bVerified)) {
 			$this->m_aEmails []= $oEmail;
-			return $oEmail;
 		}
-		else {
-			return false;
+		else if($oEmail = $this->getEmail($sEmail)) {
+			if(!$oEmail->getVerified() && $bVerified)
+				$oEmail->setVerified(true);
 		}
+		return $this->getEmail($sEmail);
 	}
 	
 	public function getEmail($sEmail) {

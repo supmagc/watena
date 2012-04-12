@@ -6,6 +6,7 @@ class OAuthClient {
 	private $m_oProvider;
 	private $m_oAccessToken;
 	private $m_oRequestToken;
+	private $m_aAuthParams;
 
 	public function __construct(OAuthProvider $oProvider, OAuthConsumer $oConsumer, OAuthToken $oRequestToken = null, OAuthToken $oAccessToken = null) {
 		$this->m_oProvider = $oProvider;
@@ -34,6 +35,10 @@ class OAuthClient {
 		return $this->getAccessToken() !== null;
 	}
 
+	public function getAuthParams($sKey) {
+		return isset($this->m_aAuthParams[$sKey]) ? $this->m_aAuthParams[$sKey] : false; 
+	}
+	
 	public function requestAuthorization(array $aParams = array()) {
 		$oRequest = $this->createRequest(OAuth::PROVIDER_REQUEST_TOKEN);
 		$oRequest->setParameters($aParams);
@@ -43,8 +48,8 @@ class OAuthClient {
 		}
 	}
 
-	public function getAuthorizationUrl(array $aParams = array()) {
-		if($this->getRequestToken() === null) {
+	public function getAuthorizationUrl(array $aParams = array(), $bForceTokenRefresh = false) {
+		if($this->getRequestToken() === null || $bForceTokenRefresh) {
 			$this->requestAuthorization($aParams);
 		}
 		return $this->getProvider()->getUrl(OAuth::PROVIDER_AUTHENTICATE) . '?oauth_token=' . $this->getRequestToken()->getKey();
@@ -60,6 +65,7 @@ class OAuthClient {
 			$oRequest->setParameter('oauth_verifier', $_GET['oauth_verifier']);
 			$oRequest->setParameters($aParams);
 			$aOAuth = OAuthUtil::parse_parameters($this->send($oRequest, null, null, $this->getRequestToken()));
+			$this->m_aAuthParams = $aOAuth;
 			if(isset($aOAuth['oauth_token']) && isset($aOAuth['oauth_token_secret'])) {
 				$this->m_oAccessToken = new OAuthToken($aOAuth['oauth_token'], $aOAuth['oauth_token_secret']);
 				$this->m_oRequestToken = null;
