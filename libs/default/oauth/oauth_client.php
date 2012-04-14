@@ -31,7 +31,7 @@ class OAuthClient {
 		return $this->m_oProvider;
 	}
 
-	public function isAuthorized() {
+	public function isAuthenticated() {
 		return $this->getAccessToken() !== null;
 	}
 
@@ -39,7 +39,7 @@ class OAuthClient {
 		return isset($this->m_aAuthParams[$sKey]) ? $this->m_aAuthParams[$sKey] : false; 
 	}
 	
-	public function requestAuthorization(array $aParams = array()) {
+	public function requestAuthentication(array $aParams = array()) {
 		$oRequest = $this->createRequest(OAuth::PROVIDER_REQUEST_TOKEN);
 		$oRequest->setParameters($aParams);
 		$aOAuth = OAuthUtil::parse_parameters($this->send($oRequest));
@@ -48,14 +48,14 @@ class OAuthClient {
 		}
 	}
 
-	public function getAuthorizationUrl(array $aParams = array(), $bForceTokenRefresh = false) {
+	public function getAuthenticationUrl(array $aParams = array(), $bForceTokenRefresh = false) {
 		if($this->getRequestToken() === null || $bForceTokenRefresh) {
-			$this->requestAuthorization($aParams);
+			$this->requestAuthentication($aParams);
 		}
 		return $this->getProvider()->getUrl(OAuth::PROVIDER_AUTHENTICATE) . '?oauth_token=' . $this->getRequestToken()->getKey();
 	}
 
-	public function authorize(array $aParams = array()) {
+	public function authenticate(array $aParams = array()) {
 		if($this->m_oRequestToken &&
 			isset($_GET['oauth_token']) &&
 			isset($_GET['oauth_verifier']) &&
@@ -73,6 +73,16 @@ class OAuthClient {
 			}
 		}
 		return false;
+	}
+	
+	public function deauthenticate(array $aParams = array()) {
+		if($this->m_oAccessToken) {
+			$oRequest = $this->createRequest(OAuth::PROVIDER_DEAUTHENTICATE, null, null, $this->m_oAccessToken);
+			$oRequest->setParameters($aParams);
+			$this->send($oRequest, $this->m_oAccessToken);
+			$this->m_oAccessToken = true;
+		}
+		return true;
 	}
 
 	public function api($sUrl, $sMethod = 'GET', array $aParams = array()) {

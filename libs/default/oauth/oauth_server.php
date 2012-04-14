@@ -50,7 +50,7 @@ class OAuthServer {
 
 		$consumer = $this->get_consumer($request);
 
-		// requires authorized request token
+		// requires authenticated request token
 		$token = $this->get_token($request, $consumer, "request");
 
 		$this->check_signature($request, $consumer, $token);

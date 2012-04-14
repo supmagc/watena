@@ -6,13 +6,13 @@ class Time extends Object {
 	
 	private static $s_sTimezoneSystem;
 	
-	private $m_nTimestamp;
-	private $m_sTimezone;
+	private $m_oTimestamp;
+	private $m_oTimezone;
 	
-	public function __construct($nTimestamp, $sTimeZone) {
+	public function __construct($nTimestamp, $sTimezone) {
 		parent::__construct();
-		$this->m_nTimestamp = $nTimestamp;
-		$this->m_sTimezone = $sTimeZone;
+		$this->m_oTimezone = new DateTimeZone($sTimezone);
+		$this->m_oTimestamp = new DateTime('@' . $nTimestamp, $this->m_oTimezone);
 	}
 	
 	public function isTimezoneUtc() {
@@ -24,26 +24,34 @@ class Time extends Object {
 	}
 	
 	public function getTimezone() {
-		return $this->m_sTimezone;
+		return $this->m_oTimestamp->getTimezone()->getName();
 	}
 	
 	public function getTimestamp() {
-		return $this->m_nTimestamp;
+		return $this->m_oTimestamp->getTimestamp();
 	}
 	
-	public function getTimestampSystem() {
-		return $this->isTimeZoneSystem() ? $this->getTimestampLocal() : 0;
+	public function setTimezone($sTimezone) {
+		$this->m_oTimestamp->setTimezone(new DateTimeZone($sTimezone));
 	}
 	
-	public function getTimestampUtc() {
-		return $this->isTimezoneUtc() ? $this->getTimestampLocal() : 0;
+	public function setTimestamp($nTimestamp) {
+		$this->m_oTimestamp->setTimestamp($nTimestamp);
+	}
+	
+	public function setDate($nYear, $nMonth, $nDay) {
+		$this->m_oTimestamp->setDate($nYear, $nMonth, $nDay);
+	}
+	
+	public function setTime($nHour, $nMinutes, $nSeconds = null) {
+		$this->m_oTimestamp->setTime($nHour, $nMinutes, $nSeconds);
 	}
 	
 	public static function getSystemTimezone() {
 		return self::$s_sTimezoneSystem;
 	}
 	
-	public static function createSystemTime() {
+	public static function create($mTime) {
 		return new Time(time(), self::getSystemTimezone());
 	}
 	

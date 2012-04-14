@@ -15,42 +15,49 @@ class ProviderTwitter extends UserConnectionProvider {
 	public function update(User $oUser, $bForceOverwrite = false) {
 		$aData = $this->getConnectionData();
 		if(is_array($aData)) {
-			return true;
-		}
-		return false;
-	}
-		
-	public function canBeConnectedTo(User $oUser = null) {
-		if($this->isConnected()) {
-			if(($nId = UserManager::getUserIdByName($this->getConnectionName())) !== false && (!$oUser || $oUser->getId() != $nId))
-				throw new UserDuplicateNameException();
-			if(($nId = UserManager::getUserIdByConnection($this)) !== false && (!$oUser || $oUser->getId() != $nId))
-				throw new UserDuplicateConnectionException();
+			if((!$oUser->getFirstname() || $bForceOverwrite) && isset($aData['name']))
+				$oUser->setFirstname(Encoding::substring($aData['name'], Encoding::indexOf($aData['name'], ' ') + 1));
+			
+			if((!$oUser->getLastname() || $bForceOverwrite) && isset($aData['name']))
+				$oUser->setFirstname(Encoding::substring($aData['name'], 0, Encoding::indexOf($aData['name'], ' ')));
+						
+			if((!$oUser->getTimezone() || $bForceOverwrite) && isset($aData['time_zone']))
+				$oUser->setTimezone($aData['time_zone']);
+			
+			if((!$oUser->getLocale() || $bForceOverwrite) && isset($aData['lang']))
+				$oUser->setLocale($aData['lang']);
 			return true;
 		}
 		return false;
 	}
 	
 	public function getConnectionId() {
-		return $this->m_oTwitter->getUserId();
+		return $this->isConnected() ? $this->m_oTwitter->getUserId() : false;
 	}
 	
 	public function getConnectionName() {
-		return $this->m_oTwitter->getUserName();
+		return $this->isConnected() ? $this->m_oTwitter->getUserName() : false;
+	}
+	
+	public function getConnectionEmail() {
+		return false;
 	}
 	
 	public function getConnectionData() {
-		if($this->m_aData === null) {
-			$this->m_aData = $this->m_oTwitter->api('/account/verify_credentials.json', 'GET', array('skip_status' => 1));
+		if($this->m_oTwitter->getUserId()) {
+			if($this->m_aData === null) {
+				$this->m_aData = $this->m_oTwitter->api('/account/verify_credentials.json', 'GET', array('skip_status' => 1));
+			}
+			return $this->m_aData;
 		}
-		return $this->m_aData;
+		return false;
 	}
 	
 	public function getConnectionTokens() {
 		return $this->m_oTwitter->getAccessToken();
 	}
 	
-	public function getConnectUrl($sRedirect) {
+	public function getConnectUrl($sRedirect, $sScope = null) {
 		return $this->m_oTwitter->getLoginUrl($sRedirect);
 	}
 	
@@ -59,7 +66,7 @@ class ProviderTwitter extends UserConnectionProvider {
 	}
 	
 	public function isConnected() {
-		return $this->m_oTwitter->isLoggedIn() && (bool)$this->getConnectionData();
+		return $this->m_oTwitter->getUserId() && is_array($this->getConnectionData());
 	}
 	
 	public function disconnect() {

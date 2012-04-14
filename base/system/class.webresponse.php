@@ -20,17 +20,19 @@ class WebResponse extends Object {
 		$this->m_nRedirects = curl_getinfo($oCurl, CURLINFO_REDIRECT_COUNT);
 
 		$aMatches = array();
+		$aPositions = array();
 		$sContentType = curl_getinfo($oCurl, CURLINFO_CONTENT_TYPE);
-		if(preg_match('%([-a-z]+/[-a-z]+)%i', $sContentType, $aMatches)) {
+		if(Encoding::regFind('([-a-zA-Z0-9]+/[-a-zA-Z0-9]+)', $sContentType, $aMatches, $aPositions)) {
 			$this->m_sContentType = $aMatches[1];
 		}
-		if(preg_match('%;charset=([-a-z0-8]+)%i', $sContentType, $aMatches)) {
+		if(Encoding::regFind(';charset=([-a-zA-Z0-9]+)', $sContentType, $aMatches, $aPositions)) {
 			$this->m_sCharset = $aMatches[1];
 		}
 
-		$this->m_sHeaders = substr($sData, 0, $this->m_nHeadersSize);
-		$this->m_sContent = substr($sData, strlen($this->m_sHeaders));
-		$this->m_nContentSize = strlen($this->m_sContent);
+		Encoding::convertByRef($sData);
+		$this->m_sHeaders = Encoding::substring($sData, 0, $this->m_nHeadersSize);
+		$this->m_sContent = Encoding::substring($sData, strlen($this->m_sHeaders));
+		$this->m_nContentSize = Encoding::length($this->m_sContent);
 
 		$aHeaders = explode("\r\n", $this->m_sHeaders);
 		foreach($aHeaders as $nIndex => $mValue) {

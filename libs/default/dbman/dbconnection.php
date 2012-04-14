@@ -57,8 +57,12 @@ class DbConnection {
 			$this->m_oConnection = null;
 	}
 	
-	public function getTable($sTable, $mIdField = "ID") {
+	public function getTable($sTable, $mIdField = 'ID') {
 		return new DbTable($this, $sTable, $mIdField);
+	}
+	
+	public function getMultiTable($sTable, array $aIdFields = array('ID'), $sConcatenation = 'AND') {
+		return new DbMultiTable($this, $sTable, $aIdFields, $sConcatenation);
 	}
 	
 	public function query($sQuery, array $aParams = array()) {
@@ -78,8 +82,8 @@ class DbConnection {
 	}
 	
 	public function select($sTable, $mId = null, $mIdField = 'ID', $sConcatenation = 'AND') {
-		if($mId !== null) {
-			list($sWhere, $aWheres) = $this->buildWhere($mId, $mIdField);
+		if($mId !== null || (is_array($mId) && count($mId) > 0)) {
+			list($sWhere, $aWheres) = $this->buildWhere($mId, $mIdField, $sConcatenation);
 			$sQuery = "SELECT * FROM `$sTable` WHERE $sWhere";
 			$oStatement = $this->getPdo()->prepare($sQuery);
 			$oStatement->execute($aWheres);
@@ -114,7 +118,7 @@ class DbConnection {
 	}
 	
 	public function update($sTable, array $aData, $mId, $mIdField = 'ID', $sConcatenation = 'AND') {
-		list($sWhere, $aWheres) = $this->buildWhere($mId, $mIdField);
+		list($sWhere, $aWheres) = $this->buildWhere($mId, $mIdField, $sConcatenation);
 		$sUpdates = implode(', ', array_map(create_function('$a', 'return "`$a` = :$a";'), array_keys($aData)));
 		$sQuery = "UPDATE `$sTable` SET ".$sUpdates." WHERE $sWhere";
 		$oStatement = $this->getPdo()->prepare($sQuery);
@@ -122,7 +126,7 @@ class DbConnection {
 	}
 	
 	public function delete($sTable, $mId, $mIdField = 'ID', $sConcatenation = 'AND') {
-		list($sWhere, $aWheres) = $this->buildWhere($mId, $mIdField);
+		list($sWhere, $aWheres) = $this->buildWhere($mId, $mIdField, $sConcatenation);
 		$sQuery = "DELETE FROM `$sTable` WHERE $sWhere";
 		$oStatement = $this->getPdo()->prepare($sQuery);
 		return $oStatement->execute($aWheres);
@@ -131,8 +135,9 @@ class DbConnection {
 	public function buildWhere($mId, $mIdField, $sConcatenation = 'AND') {
 		if(!is_array($mId)) $mId = array($mId);
 		if(!is_array($mIdField)) $mIdField = array($mIdField);
-		$aWheres = array_map(create_function('$a', 'return "`$a` = :$a";'), $mIdField);
-		return array(implode(" $sConcatenation ", $aWheres), array_combine($mIdField, $mId));
+		$bAssoc = array_assoc($mId);
+		$aWheres = array_map(create_function('$a', 'return "`$a` = :$a";'), $bAssoc ? array_keys($mId) : $mIdField);
+		return array(implode(" $sConcatenation ", $aWheres), $bAssoc ? $mId : array_combine($mIdField, $mId));
 	}
 }
 

@@ -117,6 +117,11 @@ function array_last(&$arr) {
 	return $arr[$aKeys[count($aKeys) - 1]];
 }
 
+function array_assoc(array $arr) {
+	for(reset($arr), $i=0 ; key($arr) === $i ; next($arr), ++$i);
+	return !is_null(key($arr));
+}
+
 function is_alphabetical($var) {
 	return ctype_alpha($var);
 }
@@ -127,6 +132,10 @@ function is_alphanumeric($var) {
 
 function is_whitespace($var) {
 	return ctype_space($var);
+}
+
+function is_email($var) {
+	return filter_var($var, FILTER_VALIDATE_EMAIL);
 }
 
 function explode_trim($sSplitter, $sData) {

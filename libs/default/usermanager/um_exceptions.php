@@ -1,5 +1,12 @@
 <?php
 
+class UserInvalidIdException extends Exception {
+
+	public function __construct() {
+		parent::__construct('No record could be retrieved for the given id.');
+	}
+}
+
 class UserDuplicateEmailException extends Exception {
 	
 	public function __construct() {
@@ -14,24 +21,10 @@ class UserDuplicateNameException extends Exception {
 	}
 }
 
-class UserDuplicateConnectionException extends Exception {
-	
-	public function __construct() {
-		parent::__construct('A user-connection-record for the same connection allready exists.');
-	}
-}
-
 class UserDuplicateLoginException extends Exception {
 	
 	public function __construct() {
 		parent::__construct('A user with a different login is allready logged in.');
-	}
-}
-
-class UserInvalidIdException extends Exception {
-	
-	public function __construct() {
-		parent::__construct('No record could be retrieved for the given id.');
 	}
 }
 
@@ -40,5 +33,17 @@ class UserConnectionProviderFailed extends Exception {
 	public function __construct() {
 		parent::__construct('Unable to initialize the ConnectionProvider-object.');
 	}
+}
+
+class UserInvalidNameException extends Exception {
+	
+}
+
+class UserInvalidEmailException extends Exception {
+
+}
+
+class UserUnverifiedEmailException extends Exception {
+	
 }
 ?>

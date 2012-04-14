@@ -5,16 +5,16 @@ class DbTable {
 	private $m_sConnection;
 	private $m_oConnection;
 	private $m_sTable;
-	private $m_sIdField;
+	private $m_mIdField;
 	
-	public function __construct(DbConnection $oConnection, $sTable, $sIdField) {
+	public function __construct(DbConnection $oConnection, $sTable, $mIdField) {
 		$this->m_oConnection = $oConnection;
 		$this->m_sTable = $sTable;
-		$this->m_sIdField = $sIdField;
+		$this->m_mIdField = $mIdField;
 	}
 
 	public function __sleep() {
-		return array('m_sConnection', 'm_sTable', 'm_sIdField');
+		return array('m_sConnection', 'm_sTable', 'm_mIdField');
 	}
 	
 	public function __wakeup() {
@@ -42,26 +42,27 @@ class DbTable {
 	/**
 	 * Retrieve the internal idField-name
 	 * 
-	 * @return string
+	 * @return string|array
 	 */
 	public function getIdField() {
-		return $this->m_sIdField;
+		return $this->m_mIdField;
 	}
 
-	public function select($mId = null, $sConcatenation = 'AND') {
-		return $this->getConnection()->select($this->getTable(), $mId, $this->getIdField(), $sConcatenation);
+	public function select($mId = null) {
+		return $this->getConnection()->select($this->getTable(), $mId, $this->getIdField());
 	}
 	
 	public function insert(array $aValues) {
-		return $this->getConnection()->insert($this->getTable(), $aValues);
+		$nReturn = $this->getConnection()->insert($this->getTable(), $aValues);
+		return isset($aValues[$this->getIdField()]) ? $aValues[$this->getIdField()] : $nReturn;
 	}
 	
-	public function update(array $aValues, $mId, $sConcatenation = 'AND') {
-		return $this->getConnection()->update($this->getTable(), $aValues, $mId, $this->getIdField(), $sConcatenation);
+	public function update(array $aValues, $mId) {
+		return $this->getConnection()->update($this->getTable(), $aValues, $mId, $this->getIdField());
 	}
 	
-	public function delete($mId, $sConcatenation = 'AND') {
-		return $this->getConnection()->delete($this->getTable(), $mId, $this->getIdField(), $sConcatenation);
+	public function delete($mId) {
+		return $this->getConnection()->delete($this->getTable(), $mId, $this->getIdField());
 	}
 }
 

@@ -57,8 +57,8 @@ class UserManager extends Plugin {
 	}
 	
 	public static function getLoggedInUser() {
-		if(self::$s_oLoggedInUser === false) {
-			self::setLoggedInUser((isset($_SESSION['USERID']) && $_SESSION['USERID']) ? User::load($_SESSION['USERID']) : null);
+		if(self::$s_oLoggedInUser === false && isset($_SESSION['USERID']) && $_SESSION['USERID']) {
+			self::$s_oLoggedInUser = User::load($_SESSION['USERID']);
 		}
 		return self::$s_oLoggedInUser;
 	}
@@ -86,28 +86,83 @@ class UserManager extends Plugin {
 		$oStatement = self::getDatabaseConnection()->select('user_connection', array($oConnectionProvider->getConnectionId(), $oConnectionProvider->getName()), array('connectionId', 'provider'), 'AND');
 		return $oStatement->rowCount() > 0 ? $oStatement->fetchObject()->userId : false;
 	}
+	
+	public static function isValidName($sName) {
+		return Encoding::regMatch('^[-a-zA-z0-9._ ]{3,64}$', $sName);
+	}
+	
+	public static function isValidEmail($sEmail) {
+		return is_email($sEmail);
+	}
 		
 	public static function connectToProvider(UserConnectionProvider $oConnectionProvider, $sName = null) {
+		// Make sure we are connected
 		if($oConnectionProvider->connect() || $oConnectionProvider->isConnected()) {
+			
+			// Retrieve a connection-user if available
 			$nConnectionUserId = self::getUserIdByConnection($oConnectionProvider);
 			$oConnectionUser = $nConnectionUserId !== false ? User::load($nConnectionUserId) : null;
+			
+			var_dump($nConnectionUserId);
+			
+			// Retrieve a current-user if available
 			$oCurrentUser = self::getLoggedInUser() ? self::getLoggedInUser() : null;
-			if($oConnectionUser && $oCurrentUser && $oConnectionProvider->canBeConnectedTo($oCurrentUser)) {
+			
+			// If we have a current user and a connection user
+			if($oConnectionUser && $oCurrentUser) {
+				// If both are the same, all is good
+				// If both are different, we don't know what to do
 				if($oConnectionUser != $oCurrentUser)
-					throw new UserDuplicateLoginException();
+					throw new UserDuplicateLoginException($oCurrentUser, $oConnectionUser);
 			}
-			else if($oConnectionUser && $oConnectionProvider->canBeConnectedTo($oConnectionUser)) {
+			
+			// If we only have a connection user
+			else if($oConnectionUser) {
+				// set this user to be the current user
 				$oCurrentUser = $oConnectionUser;
 			}
-			else if($oCurrentUser && $oConnectionProvider->canBeConnectedTo($oCurrentUser)) {
+			
+			// If we only have a current logged in user
+			else if($oCurrentUser) {
+				// Make sure not to mix up the email-adresses
+				$sConnectionEmail = $oConnectionProvider->getConnectionEmail();
+				if(self::isValidEmail($sConnectionEmail) && ($nId = self::getUserIdByEmail($sConnectionEmail)) !== false && $nId != $oCurrentUser->getId())
+					throw new UserDuplicateEmailException($sConnectionEmail);
+
+				// If all is good, add the connection
 				$oCurrentUser->addConnection($oConnectionProvider);
 			}
-			else if($oConnectionProvider->canBeConnectedTo()) {
-				$oCurrentUser = User::create($sName ? $sName : $oConnectionProvider->getConnectionName(), self::TYPE_CONNECTION);
+			
+			// If the connection is unknown and no logged in user
+			else {				
+				// If an email-adress is found that allready exists, join the connection on that user
+				$sConnectionEmail = $oConnectionProvider->getConnectionEmail();
+				if(self::isValidEmail($sConnectionEmail) && ($nId = self::getUserIdByEmail($sConnectionEmail)) !== false) {
+					$oCurrentUser = User::load($nId);
+					if(!$oCurrentUser->getEmail($sConnectionEmail)->getVerified())
+						throw new UserUnverifiedEmailException($sConnectionEmail);
+				}
+				else {
+					// Make sure we don't create users with false names
+					$sConnectionName = $sName ? $sName : $oConnectionProvider->getConnectionName();
+					if(!self::isValidName($sConnectionName))
+						throw new UserInvalidNameException($sConnectionName);
+	
+					// Make sure we don't create a user with a duplicate name
+					if(self::getUserIdByName($sConnectionName) !== false) 
+						throw new UserDuplicateNameException();
+					
+					$oCurrentUser = User::create($sConnectionName, self::TYPE_CONNECTION);
+				}
 				$oCurrentUser->addConnection($oConnectionProvider);
 			}
-			self::setLoggedInUser($oCurrentUser);
+			
+			// Update the userdata
 			$oConnectionProvider->update($oCurrentUser);
+			$oCurrentUser->addEmail($oConnectionProvider->getConnectionEmail(), true);
+			
+			// Set the user as logged in
+			self::setLoggedInUser($oCurrentUser);
 			return self::getLoggedInUser();
 		}
 		return false;

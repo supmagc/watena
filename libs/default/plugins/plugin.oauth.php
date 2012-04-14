@@ -7,6 +7,7 @@ class OAuth extends Plugin {
 	const PROVIDER_AUTHENTICATE = 2;
 	const PROVIDER_ACCESS_TOKEN = 3;
 	const PROVIDER_API = 4;
+	const PROVIDER_DEAUTHENTICATE = 5;
 	
 	/**
 	 * Retrieve version information of this plugin.

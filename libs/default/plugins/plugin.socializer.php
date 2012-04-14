@@ -6,17 +6,20 @@ class Socializer extends Plugin {
 	
 	private $m_oFacebook;
 	private $m_oTwitter; 
+	private $m_oGoogle;
 	
 	public function make() {
+		$this->m_oFacebook = $this->getConfig('FACEBOOK_ENABLED', false) ? new Facebook(array(
+			'appId' => $this->getConfig('FACEBOOK_ID', ''),
+			'secret' => $this->getConfig('FACEBOOK_SECRET', '')
+		)) : false;
 		$this->m_oTwitter = $this->getConfig('TWITTER_ENABLED', false) ? new Twitter(array(
 			'consumer_key' => $this->getConfig('TWITTER_ID', ''),
-			'consumer_secret' => $this->getConfig('TWITTER_SECRET', ''),
-			'callback' => $this->getConfig('TWITTER_CALLBACK', ''),
-			'cookies_lifetime' => $this->getConfig('COOKIES_LIFETIME', 24 * 60 * 60)
+			'consumer_secret' => $this->getConfig('TWITTER_SECRET', '')
 		)) : false;
-		$this->m_oFacebook = $this->getConfig('FACEBOOK_ENABLED', false) ? new Facebook(array(
-					'appId' => $this->getConfig('FACEBOOK_ID', ''),
-					'secret' => $this->getConfig('FACEBOOK_SECRET', '')
+		$this->m_oGoogle = $this->getConfig('GOOGLE_ENABLED', false) ? new Google(array(
+			'consumer_key' => $this->getConfig('GOOGLE_ID', ''),
+			'consumer_secret' => $this->getConfig('GOOGLE_SECRET', '')
 		)) : false;
 	}
 	
@@ -35,6 +38,14 @@ class Socializer extends Plugin {
 	public function getTwitter() {
 		return $this->m_oTwitter;
 	} 
+	
+	public function hasGoogle() {
+		return (bool)$this->m_oGoogle;
+	}
+	
+	public function getGoogle() {
+		return $this->m_oGoogle;
+	}
 	
 	/**
 	* Retrieve version information of this plugin.
