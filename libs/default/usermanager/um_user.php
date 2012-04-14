@@ -37,13 +37,16 @@ class User extends DbObject {
 		$mValue = Encoding::toLower($mValue);
 		if($mValue === 'm') $mValue = 'male';
 		if($mValue === 'f') $mValue = 'female';
-		if(in_array($mValue, array('male', 'female')))
+		if(in_array($mValue, array('male', 'female'))) {
 			$this->setDataValue('gender', $mValue);
+			return true;
+		}
+		return false;
 	}
 	
 	public function setName($mValue) {
 		$nUserId = UserManager::getUserIdByName($mValue);
-		if(!$nUserId || $nUserId == $this->getId()) {
+		if(UserManager::isValidName($mValue) && (!$nUserId || $nUserId == $this->getId())) {
 			$this->setDataValue('name', $mValue);
 			return true;
 		}

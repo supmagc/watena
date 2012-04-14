@@ -1,7 +1,7 @@
 <?php 
 
-var_dump(preg_match('/\$_ob \[\]= \'\' \. \'[ \n\r\t]*\';/', '			$_ob []= \'\' . \'
-
-\';'));
+echo '<pre>';
+print_r($_SERVER);
+echo '</pre>';
 
 ?>

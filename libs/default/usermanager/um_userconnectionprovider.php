@@ -29,18 +29,6 @@ abstract class UserConnectionProvider {
 	abstract public function update(User $oUser, $bForceOverwrite = false);
 
 	/**
-	 * Check if the given user can be connected to.
-	 * This method indicates if for example no email-conficts would happen.
-	 * 
-	 * This method is also called before creating a new user.
-	 * In this case the $oUser will be null
-	 * 
-	 * @param User $oUser The user to which a connection might be created or null
-	 * @return bool Returns true when it's possible to create the connection.
-	 */
-	abstract public function canBeConnectedTo(User $oUser = null);
-
-	/**
 	 * Retrieve the user-id linked to the connection.
 	 * If no connection is found this method returns false.
 	 * 
@@ -49,12 +37,21 @@ abstract class UserConnectionProvider {
 	abstract public function getConnectionId();
 	
 	/**
-	* Retrieve the username linked to the connection.
-	* If no connection is found this method returns false.
-	*
-	* @return string|false The internal connection's username, or false when not connected.
-	*/
+	 * Retrieve the username linked to the connection.
+	 * If no connection is found this method returns false.
+	 *
+	 * @return string|false The internal connection's username, or false when not connected.
+	 */
 	abstract public function getConnectionName();
+	
+	/**
+	 * Retrieve the email-adress linked to the connection.
+	 * If no connection is found this method returns false.
+	 * Some connections may not provide this (ex: Twitter)
+	 *
+	 * @return string|false The internal connection's username, or false when not connected, or not provided.
+	 */
+	abstract public function getConnectionEmail();
 	
 	/**
 	 * Retrieve any userdata linked to the connection.
@@ -68,7 +65,7 @@ abstract class UserConnectionProvider {
 	abstract public function getConnectionData();
 	
 	/**
-	 * Retrieve th tokens required to make requests to the 
+	 * Retrieve the tokens required to make requests to the 
 	 * connection-provider on the user's behalve.
 	 * This data is connection pecific and not guaranteed to exists
 	 * or to stay valid outside the user's session.
@@ -97,9 +94,10 @@ abstract class UserConnectionProvider {
 	 * This method returns the url to create the connection.
 	 * 
 	 * @param string $sRedirect A Fully qualified url to which the user will be redirected at the end of the procedure.
+	 * @param string $sScope An optional list to pass on during authentication, identifying the required permission scope.
 	 * @return string|false A string with the correct url on succes, false on failure.
 	 */
-	abstract public function getConnectUrl($sRedirect);
+	abstract public function getConnectUrl($sRedirect, $sScope = null);
 	
 	/**
 	 * Check if the underlying provider had a valid connection.

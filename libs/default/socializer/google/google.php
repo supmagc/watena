@@ -1,14 +1,12 @@
 <?php
 
-class Twitter {
+class Google {
 	
 	private $m_aConfig;
 	private $m_oConsumer;
 	private $m_oProvider;
 	
 	private $m_oOAuthClient;
-	private $m_sUserName = false;
-	private $m_nUserId = false;
 	private $m_nLoginUrls = 0;
 	
 	public function __construct(array $aConfig) {
@@ -16,7 +14,7 @@ class Twitter {
 				
 		$this->m_oConsumer = new OAuthConsumer($aConfig['consumer_key'], $aConfig['consumer_secret']);
 		
-		$this->m_oProvider = new OAuthProvider('Twitter');
+		$this->m_oProvider = new OAuthProvider('Google');
 		$this->m_oProvider->setSignatureMethod('HMAC-SHA1');
 		$this->m_oProvider->setUrl(OAuth::PROVIDER_REQUEST_TOKEN, 'https://api.twitter.com/oauth/request_token');
 		$this->m_oProvider->setMethod(OAuth::PROVIDER_REQUEST_TOKEN, 'POST');
@@ -45,36 +43,22 @@ class Twitter {
 	public function __destruct() {
 		$_SESSION[$this->getSessionName('accesstoken')] = serialize($this->m_oOAuthClient->getAccessToken());
 		$_SESSION[$this->getSessionName('requesttoken')] = serialize($this->m_oOAuthClient->getRequestToken());
-		$_SESSION[$this->getSessionName('userId')] = $this->m_nUserId;
-		$_SESSION[$this->getSessionName('userName')] = $this->m_sUserName;
 	}
 	
-	public function getLoginUrl($sRedirect) {
-		return $this->m_oOAuthClient->getAuthenticationUrl(array('oauth_callback' => $sRedirect), $this->m_nLoginUrls++ == 0);
+	public function getLoginUrl($sRedirect, $sScope) {
+		return $this->m_oOAuthClient->getAuthenticationUrl(array('oauth_callback' => $sRedirect, 'scope' => $sScope), $this->m_nLoginUrls++ == 0);
 	}
 	
 	public function login() {
 		if($this->m_oOAuthClient->authenticate()) {
-			$this->m_nUserId = $this->m_oOAuthClient->getAuthParams('user_id');
-			$this->m_sUserName = $this->m_oOAuthClient->getAuthParams('screen_name');				
 			return true;
 		}
 		return false;
 	}
 	
 	public function logout() {
-		$this->m_nUserId = false;
-		$this->m_sUserName = false;	
 		$this->m_oOAuthClient->deauthenticate();
 		return true;
-	}
-	
-	public function getUserId() {
-		return $this->m_nUserId;
-	}
-	
-	public function getUserName() {
-		return $this->m_sUserName;
 	}
 	
 	public function api($sUrl = null, $sMethod = null, array $aParams = array()) {
@@ -99,18 +83,12 @@ class Twitter {
 		if(isset($_SESSION[$this->getSessionName('requesttoken')])) {
 			$oRequestToken = unserialize($_SESSION[$this->getSessionName('requesttoken')]);
 		}
-		if(isset($_SESSION[$this->getSessionName('userId')])) {
-			$this->m_nUserId = $_SESSION[$this->getSessionName('userId')];
-		}
-		if(isset($_SESSION[$this->getSessionName('userName')])) {
-			$this->m_sUserName = $_SESSION[$this->getSessionName('userName')];
-		}
 		return array($oRequestToken, $oAccessToken);
 	}
 	
 	private function getSessionName($sKey) {
 		return implode('_', array(
-			'tw',
+			'gg',
 			$this->m_aConfig['consumer_key'],
 			$sKey
 		));

@@ -13,11 +13,7 @@ class ProviderFacebook extends UserConnectionProvider {
 	
 	public function update(User $oUser, $bForceOverwrite = false) {
 		$aData = $this->getConnectionData();
-		if(is_array($aData)) {
-			
-			if(isset($aData['email']))
-				$oUser->addEmail($aData['email'], true);
-			
+		if(is_array($aData)) {			
 			if((!$oUser->getGender() || $bForceOverwrite) && isset($aData['gender']))
 				$oUser->setGender($aData['gender']);
 			
@@ -40,36 +36,24 @@ class ProviderFacebook extends UserConnectionProvider {
 		return false;
 	}
 	
-	public function canBeConnectedTo(User $oUser = null) {
-		if($this->isConnected()) {
-			$aData = $this->getConnectionData();
-			if(($nId = UserManager::getUserIdByEmail($aData['email'])) !== false && (!$oUser || $oUser->getId() != $nId))
-				throw new UserDuplicateEmailException();
-			if(($nId = UserManager::getUserIdByName($this->getConnectionName())) !== false && (!$oUser || $oUser->getId() != $nId))
-				throw new UserDuplicateNameException();
-			if(($nId = UserManager::getUserIdByConnection($this)) !== false && (!$oUser || $oUser->getId() != $nId))
-				throw new UserDuplicateConnectionException();
-			return true;
-		}
-		return false;
-	}
-	
 	public function getConnectionId() {
-		$nId = $this->m_oFacebook->getUser();
-		return $nId > 0 ? $nId : false;
+		return ($this->isConnected() && ($nId = $this->m_oFacebook->getUser()) > 0) ? $nId : false;
 	}
 	
 	public function getConnectionName() {
-		if($this->isConnected()) {
-			$aData = $this->getConnectionData();
-			return isset($aData['username']) ? $aData['username'] : $aData['name'];
-		}
-		return false;
+		if($this->isConnected())
+			return isset($this->m_aData['username']) ? $this->m_aData['username'] : (isset($this->m_aData['name']) ? $this->m_aData['name'] : false);
+		else
+			return false;
 	}
 	
+	public function getConnectionEmail() {
+		return ($this->isConnected() && isset($this->m_aData['email'])) ? $this->m_aData['email'] : false;
+	}
+		
 	public function getConnectionData() {
-		if($this->getConnectionId()) {
-			if($this->m_aData === null) {
+		if($this->m_oFacebook->getUser()) {
+			if(!$this->m_aData) {
 				try {
 					$this->m_aData = $this->m_oFacebook->api('/me');
 				}
@@ -86,8 +70,8 @@ class ProviderFacebook extends UserConnectionProvider {
 		return $this->getConnectionId() ? $this->m_oFacebook->getAccessToken() : false;
 	}
 	
-	public function getConnectUrl($sRedirect) {
-		return $this->m_oFacebook->getLoginUrl(array('scope' => 'email', 'redirect_uri' => '' . $sRedirect));
+	public function getConnectUrl($sRedirect, $sScope = 'email') {
+		return $this->m_oFacebook->getLoginUrl(array('scope' => $sScope, 'redirect_uri' => '' . $sRedirect));
 	}
 	
 	public function getDisconnectUrl($sRedirect) {
@@ -95,7 +79,7 @@ class ProviderFacebook extends UserConnectionProvider {
 	}
 	
 	public function isConnected() {
-		return $this->getConnectionId() && (bool)$this->getConnectionData();
+		return $this->m_oFacebook->getUser() && is_array($this->getConnectionData());
 	}
 	
 	public function disconnect() {

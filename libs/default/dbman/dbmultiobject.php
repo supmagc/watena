@@ -1,6 +1,6 @@
 <?php
 
-class DbObject extends Object {
+class DbMultiObject extends Object {
 
 	private $m_aData;
 	private $m_oTable;
@@ -29,7 +29,7 @@ class DbObject extends Object {
 		return $this->m_oTable;
 	}
 	
-	public function getId() {
+	public function getIds() {
 		return $this->m_aData[$this->getTable()->getIdField()];
 	}
 	
@@ -43,18 +43,30 @@ class DbObject extends Object {
 		return (bool)$this->m_bDeleted;
 	}
 	
-	public static final function loadObject($sClass, DbTable $oTable, $mData) {
+	public static final function loadObject($sClass, DbMultiTable $oTable, array $mData) {
+		$nId = 0;
 		if($sClass == get_class() || !class_exists($sClass) || !is_a($sClass, get_class()))
 			return false;
 		if(!isset(self::$s_aObjectInstances[$sClass]))
 			self::$s_aObjectInstances[$sClass] = array();
-		if(is_array($mData) && isset($mData[$oTable->getIdField()])) {
-			$sKey = $mData[$oTable->getIdField()];
+		if(array_assoc($mData)) {
+			$aKeys = array();
+			foreach($oTable->getIdFields() as $sField) {
+				if(!isset($mData[$sField])) return false;
+				$aKeys []= $sField . '=' . $mData[$sField];
+			}
+			$sKey = implode('|', $aKeys);
 			return isset(self::$s_aObjectInstances[$sClass][$sKey]) ? self::$s_aObjectInstances[$sClass][$sKey] : new $sClass($oTable, $mData);
 		}
-		else if(!is_array($mData)) {
-			if(isset(self::$s_aObjectInstances[$sClass][$mData])) {
-				return self::$s_aObjectInstances[$sClass][$mData];
+		else if($oTable->isValidId($mData)) {			
+			$aKeys = array();
+			$aFields = $oTable->getIdFields();
+			for($i=0 ; $i<count($aFields) ; ++$i) {
+				$aKeys []= $aFields[$i] . '=' . $aIds[$i];
+			}
+			$sKey = implode('|', $aKeys);
+			if(isset(self::$s_aObjectInstances[$sClass][$sKey])) {
+				return self::$s_aObjectInstances[$sClass][$sKey];
 			}
 			else {
 				$oStatement = $oTable->select($mData);
@@ -67,8 +79,8 @@ class DbObject extends Object {
 	}
 	
 	public static final function createObject($sClass, DbTable $oTable, array $aData) {
-		$nId = $oTable->insert($aData);
-		return self::loadObject($sClass, $oTable, $nId);
+		$aIds = $oTable->insert($aData);
+		return self::loadObject($sClass, $oTable, $aIds);
 	}
 }
 

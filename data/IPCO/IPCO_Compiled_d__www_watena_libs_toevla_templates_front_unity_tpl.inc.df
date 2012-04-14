@@ -17,8 +17,9 @@ function GetUnity() {
 	}
 	return null;
 }
-if (typeof unityObject != "undefined") {
+if(typeof unityObject != "undefined") {
 	var params = {
+			wmode: "opaque",
 			disableContextMenu: true,
 			backgroundcolor: "FFFFFF",
 			bordercolor: "FFFFFF",
@@ -30,8 +31,8 @@ if (typeof unityObject != "undefined") {
 	unityObject.embedUnity("unityPlayer", "';
 			$_ob []= '' . parent::processMember('getUrl', null);
 			$_ob []= '' . '/files/toevla/unity/WebPlayer.unity3d", 728, 450, params);
-	
 }
+
 function Hide() {
 	video.location=\'';
 			$_ob []= '' . parent::processMember('getUrl', null);
@@ -42,28 +43,44 @@ function Video(URL){
 	document.getElementById("youtubePlayer").style.display = \'block\';
 	video.location=URL;
 }
-function login() {
+
+function showConnect() {
 	document.getElementById("loginLayer").style.display = \'block\';
 }
-function loginPopup(sUrl) {
+function removeHash() {
+	window.tvHash = \'\';
+}
+function connectCancel() {
+	connectPopupCallback(\'\');
+}
+function connectPopup(sUrl) {
 	if(window.tvLoginPopup) {
 		window.tvLoginPopup.close();
 	}
 	var nLeft = (screen.width - 950) / 2;
 	var nTop = (screen.height - 600) / 2;
-	window.tvLoginPopup = window.open(sUrl, \'Login\', \'toolbar=0,scrollbars=0,location=0,statusbar=0,menubar=0,resizable=1,width=800,height=600,left=\'+nLeft+\',top=\'+nTop);
+	window.tvLoginPopup = window.open(sUrl, \'Login\', \'toolbar=0,scrollbars=0,location=0,statusbar=0,menubar=0,resizable=1,width=950,height=600,left=\'+nLeft+\',top=\'+nTop);
 	window.tvLoginPopup.focus();
 }
-function loginPopupCallback(sHash) {
-	document.getElementById("loginLayer").style.display = \'none\';
+function connectPopupCallback(sHash) {
 	window.tvHash = sHash;
+	document.getElementById("loginLayer").style.display = \'none\';
+	if(sHash.length > 0)
+		GetUnity().SendMessage(\'Persistent\', \'InjectHash\', window.tvHash);
+	else
+		GetUnity().SendMessage(\'Persistent\', \'InjectNoHash\', \'\');
+	window.frames[\'loginFrame\'].location.reload();	
 	if(window.tvLoginPopup) {
 		window.tvLoginPopup.close();
 		window.tvLoginPopup = undefined;
 	}	
 }
 --></script>
-<div id="unityPlayer"></div>
+<div id="loginLayer" style="display: none;">
+	<iframe name="loginFrame" src="';
+			$_ob []= '' . parent::processMember('getUrl', null);
+			$_ob []= '' . '/login" frameborder="0" scrolling="0"></iframe>
+</div>
 
 <div id="youtubePlayer" style="display: none;">
 	<iframe width="150" height="120" name="video" src="';
@@ -75,32 +92,8 @@ function loginPopupCallback(sHash) {
 			$_ob []= '' . '" frameborder="0" allowfullscreen></iframe>
 </div>
 
-<div id="loginLayer" style="display: none;">
-';
-			if(parent::processMember('hasFacebookLogin', null)) {
-				$_ob []= '' . '
-	<a href="javascript:loginPopup(\'';
-				$_ob []= '' . parent::processMember('getFacebookLoginUrl', null);
-				$_ob []= '' . '\');"><img src="';
-				$_ob []= '' . parent::callContentParser('addMappingRoot', array (
-  0 => 'img',
-  1 => 'src',
-  2 => '/theme/toevla/fb.png',
-));
-				$_ob []= '' . '" /></a><br />	
-';
-			}
-			$_ob []= '' . '
-';
-			if(parent::processMember('hastwitterLogin', null)) {
-				$_ob []= '' . '
-	<a href="javascript:loginPopup(\'';
-				$_ob []= '' . parent::processMember('getTwitterLoginUrl', null);
-				$_ob []= '' . '\');">Login by Twitter</a><br />
-';
-			}
-			$_ob []= '' . '
-</div>
+<div id="unityPlayer"></div>
+
 ';
 			return implode('', $_ob);
 		} catch(Exception $e) { throw new WatCeption('Unable to create template-output.', array(), null, $e); }

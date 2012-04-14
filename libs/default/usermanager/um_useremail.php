@@ -32,7 +32,7 @@ class UserEmail extends DbObject {
 	}
 	
 	public static function create(User $oUser, $sEmail, $bVerified) {
-		return !UserManager::getUserIdByEmail($sEmail) ? DbObject::createObject('UserEmail', UserManager::getDatabaseConnection()->getTable('user_email'), array(
+		return (!UserManager::getUserIdByEmail($sEmail) && UserManager::isValidEmail($sEmail)) ? DbObject::createObject('UserEmail', UserManager::getDatabaseConnection()->getTable('user_email'), array(
 			'userId' => $oUser->getId(),
 			'email' => $sEmail,
 			'verified' => $bVerified ? 1 : 0,
