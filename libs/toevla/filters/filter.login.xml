@@ -3,7 +3,7 @@
 	<model name="MainModel">
 	</model>
 	<view name="HtmlTemplateView">
-		<param name="template">popup.connect.tpl</param>
+		<param name="template">popup.login.tpl</param>
 	</view>
 	<rules>
 		<rule type="mapping" variable="local">^/login</rule>

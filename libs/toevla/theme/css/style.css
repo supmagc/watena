@@ -46,12 +46,11 @@ html, body, #centerTable {
 	z-index:2;
 	position:absolute;
 	background-color:#f4f3ee;
-	border: #060711 6px solid;
-	padding: 50px;
-	width:250px;
-	height:100px;
-	top:125px;
-	left:189px;	
+	padding: 5px;
+	width:350px;
+	height:200px;
+	top:120px; /*125px;*/
+	left:184px; /*189px;*/	
 }
 #spacerBox {
 	height:120px;

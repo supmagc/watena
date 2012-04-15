@@ -1,6 +1,6 @@
 <?php
 
-class CallbackModel extends Model {
+class ConnectModel extends Model {
 	
 	private $m_sHash;
 	private $m_nType = 0;

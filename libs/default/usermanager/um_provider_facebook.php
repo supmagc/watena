@@ -8,7 +8,7 @@ class ProviderFacebook extends UserConnectionProvider {
 	public function __construct() {
 		$this->m_oFacebook = watena()->getContext()->getPlugin('Socializer')->getFacebook();
 		if(!$this->m_oFacebook)
-			throw new UserConnectionProviderFailed();
+			throw new UserConnectionProviderInitializeFailed();
 	}
 	
 	public function update(User $oUser, $bForceOverwrite = false) {

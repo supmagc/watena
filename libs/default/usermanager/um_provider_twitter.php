@@ -8,7 +8,7 @@ class ProviderTwitter extends UserConnectionProvider {
 	public function __construct() {
 		$this->m_oTwitter = watena()->getContext()->getPlugin('Socializer')->getTwitter();
 		if(!$this->m_oTwitter) {
-			throw new UserConnectionProviderFailed();
+			throw new UserConnectionProviderInitializeFailed();
 		}
 	}
 	
@@ -16,11 +16,11 @@ class ProviderTwitter extends UserConnectionProvider {
 		$aData = $this->getConnectionData();
 		if(is_array($aData)) {
 			if((!$oUser->getFirstname() || $bForceOverwrite) && isset($aData['name']))
-				$oUser->setFirstname(Encoding::substring($aData['name'], Encoding::indexOf($aData['name'], ' ') + 1));
+				$oUser->setFirstname(Encoding::substring($aData['name'], 0, Encoding::indexOf($aData['name'], ' ')));
 			
 			if((!$oUser->getLastname() || $bForceOverwrite) && isset($aData['name']))
-				$oUser->setFirstname(Encoding::substring($aData['name'], 0, Encoding::indexOf($aData['name'], ' ')));
-						
+				$oUser->setLastname(Encoding::substring($aData['name'], Encoding::indexOf($aData['name'], ' ') + 1));
+					
 			if((!$oUser->getTimezone() || $bForceOverwrite) && isset($aData['time_zone']))
 				$oUser->setTimezone($aData['time_zone']);
 			

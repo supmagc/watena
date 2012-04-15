@@ -35,7 +35,7 @@ function removeHash() {
 	window.tvHash = '';
 }
 function connectCancel() {
-	connectPopupCallback('');
+	connectCallback('');
 }
 function connectPopup(sUrl) {
 	if(window.tvLoginPopup) {
@@ -46,14 +46,22 @@ function connectPopup(sUrl) {
 	window.tvLoginPopup = window.open(sUrl, 'Login', 'toolbar=0,scrollbars=0,location=0,statusbar=0,menubar=0,resizable=1,width=950,height=600,left='+nLeft+',top='+nTop);
 	window.tvLoginPopup.focus();
 }
-function connectPopupCallback(sHash) {
+function connectIntoFrame() {
+	if(window.tvLoginPopup) {
+		document.getElementById("loginLayer").style.display = 'block';
+		window.frames['loginFrame'].location = window.tvLoginPopup.location;
+		window.tvLoginPopup.close();
+		window.tvLoginPopup = undefined;
+	}	
+}
+function connectCallback(sHash) {
 	window.tvHash = sHash;
 	document.getElementById("loginLayer").style.display = 'none';
 	if(sHash.length > 0)
 		GetUnity().SendMessage('Persistent', 'InjectHash', window.tvHash);
 	else
 		GetUnity().SendMessage('Persistent', 'InjectNoHash', '');
-	window.frames['loginFrame'].location.reload();	
+	window.frames['loginFrame'].location = '{[getUrl()]}/login';	
 	if(window.tvLoginPopup) {
 		window.tvLoginPopup.close();
 		window.tvLoginPopup = undefined;
