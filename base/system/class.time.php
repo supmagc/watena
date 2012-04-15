@@ -2,24 +2,22 @@
 
 class Time extends Object {
 	
-	const ZONE_UTC = 'UTC';
-	
 	private static $s_sTimezoneSystem;
+	private static $s_sDefaultFormat;
 	
 	private $m_oTimestamp;
-	private $m_oTimezone;
 	
-	public function __construct($nTimestamp, $sTimezone) {
+	public function __construct($mTimestamp, $mTimezone = null) {
 		parent::__construct();
-		$this->m_oTimezone = new DateTimeZone($sTimezone);
-		$this->m_oTimestamp = new DateTime('@' . $nTimestamp, $this->m_oTimezone);
+		var_dump(self::formatTimezone($mTimezone));
+		$this->m_oTimestamp = new DateTime(self::formatTimestamp($mTimestamp), new DateTimeZone(self::formatTimezone($mTimezone)));
 	}
 	
 	public function isTimezoneUtc() {
-		return $this->getTimezone() == Time::ZONE_UTC;
+		return $this->getTimezone() == 'UTC';
 	}
 	
-	public function isTimeZoneSystem() {
+	public function isTimezoneSystem() {
 		return $this->getTimezone() == self::getSystemTimezone();
 	}
 	
@@ -31,33 +29,134 @@ class Time extends Object {
 		return $this->m_oTimestamp->getTimestamp();
 	}
 	
-	public function setTimezone($sTimezone) {
-		$this->m_oTimestamp->setTimezone(new DateTimeZone($sTimezone));
+	public function format($sFormat) {
+		return $this->m_oTimestamp->format($sFormat);
 	}
 	
-	public function setTimestamp($nTimestamp) {
-		$this->m_oTimestamp->setTimestamp($nTimestamp);
+	public function formatDefault($sFormat) {
+		return $this->m_oTimestamp->format(self::getDefaultFormat());
 	}
 	
-	public function setDate($nYear, $nMonth, $nDay) {
-		$this->m_oTimestamp->setDate($nYear, $nMonth, $nDay);
+	public function formatSqlTimestamp($sFormat) {
+		return $this->format('Y-m-d H:i:s'); // Y-m-d H:i:s
 	}
 	
-	public function setTime($nHour, $nMinutes, $nSeconds = null) {
-		$this->m_oTimestamp->setTime($nHour, $nMinutes, $nSeconds);
+	public function formatSimple() {
+		return $this->format('Y-m-d H:i:s'); // Y-m-d H:i:s
+	}
+	
+	public function formatAtom() {
+		return $this->format(DateTime::ATOM); // Y-m-d\TH:i:sP
+	}
+	
+	public function formatCookie() {
+		return $this->format(DateTime::COOKIE); // l, d-M-y H:i:s T
+	}
+	
+	public function formatIso8601() {
+		return $this->format(DateTime::ISO8601); // Y-m-d\TH:i:sO
+	}
+	
+	public function formatRfc822() {
+		return $this->format(DateTime::RFC822); // D, d M y H:i:s O
+	}
+	
+	public function formatRfc850() {
+		return $this->format(DateTime::RFC850); // l, d-M-y H:i:s T
+	}
+	
+	public function formatRfc1036() {
+		return $this->format(DateTime::RFC1036); // D, d M y H:i:s O
+	}
+	
+	public function formatRfc1123() {
+		return $this->format(DateTime::RFC1123); // D, d M Y H:i:s O
+	}
+	
+	public function formatRfc2822() {
+		return $this->format(DateTime::RFC2822); // D, d M Y H:i:s O
+	}
+	
+	public function formatRfc3339() {
+		return $this->format(DateTime::RFC3339); // Y-m-d\TH:i:sP
+	}
+	
+	public function formatRss() {
+		return $this->format(DateTime::RSS); // D, d M Y H:i:s O
+	}
+	
+	public function formatW3c() {
+		return $this->format(DateTime::W3C); // Y-m-d\TH:i:sP
+	}
+	
+	public function convert($sTimezone) {
+		$oTime = new Time($this->formatSimple(), $this->getTimezone());
+		$oTime->m_oTimestamp->setTimezone(new DateTimeZone(self::formatTimezone($sTimezone)));
+		return $oTime;
+	}
+	
+	public function add(Interval $oInterval) {
+		$oTime = new Time($this->formatSimple(), $this->getTimezone());
+		$oTime->m_oTimestamp->add(new DateInterval(sprintf('P%dY%dM%dDT%dH%dM%dS', $oInterval->getYears(), $oInterval->getMonths(), $oInterval->getDays(), $oInterval->getHours(), $oInterval->getMinutes(), $oInterval->getSeconds())));
+		return $oTime;
+	}
+	
+	public function subtract(Interval $oInterval) {
+		$oTime = new Time($this->formatSimple(), $this->getTimezone());
+		$oTime->m_oTimestamp->sub(new DateInterval(sprintf('P%dY%dM%dDT%dH%dM%dS', $oInterval->getYears(), $oInterval->getMonths(), $oInterval->getDays(), $oInterval->getHours(), $oInterval->getMinutes(), $oInterval->getSeconds())));
+		return $oTime;
+	}
+	
+	public function difference(Time $oTime) {
+		$oTimeInterval = $this->m_oTimestamp->diff($oTime->m_oTimestamp);
 	}
 	
 	public static function getSystemTimezone() {
 		return self::$s_sTimezoneSystem;
 	}
 	
-	public static function create($mTime) {
-		return new Time(time(), self::getSystemTimezone());
+	public static function create($mTime = null, $sTimezone = null) {
+		return new Time($mTime ?: time(), $sTimezone ?: self::getSystemTimezone());
 	}
 	
-	public static function init($sTimezone) {
+	public static function init($sTimezone, $sDefaultFormat) {
 		self::$s_sTimezoneSystem = $sTimezone;
+		self::$s_sDefaultFormat = $sDefaultFormat;
 		ini_set('date.timezone', $sTimezone);
+	}
+	
+	public static function formatTimezone($mTimezone) {
+		$mTimezoneUppercase = Encoding::toUpper($mTimezone);
+		if(!$mTimezone) {
+			return self::getSystemTimezone();
+		}
+		else if($mTimezoneUppercase == 'UTC' || $mTimezoneUppercase == 'GMT') {
+			return 'UTC';
+		}
+		else if(is_numeric($mTimezone)) {
+			if($mTimezone > 24 || $mTimezone < -24)
+				$mTimezone /= 3600;
+			$mTimezone %= 12;
+			return $mTimezone ? 'Etc/GMT' . ($mTimezone < 0 ? '-' : '+') . abs($mTimezone) : 'UTC';
+		}
+		else if(Encoding::regMatch('^GMT[-+][0-9]*$', $mTimezoneUppercase)) {
+			return "Etc/$mTimezone";
+		}
+		else if(!Encoding::indexOf($mTimezone, '/')) {
+			$aZones = DateTimeZone::listIdentifiers();
+			foreach($aZones as $sZone) {
+				if(Encoding::indexOf($sZone, "/$mTimezone", 0, true))
+					return $sZone;
+			}
+		}
+		else {
+			return $mTimezone;
+		}
+	}
+	
+	public static function formatTimestamp($mTimestamp) {
+		if(is_numeric($mTimestamp)) return date('', $mTimestamp);
+		else return $mTimestamp;
 	}
 }
 

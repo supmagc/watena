@@ -6,19 +6,22 @@ class IPCO_Compiled_d__www_watena_libs_toevla_templates_popup_callback_tpl exten
 	protected function callRegion____MainRegion__() {
 		try {
 			$_ob = array();
+			$_ob []= '' . '<script><!--
+	if(window.opener && window.opener.connectIntoFrame) {
+		window.opener.connectIntoFrame();
+	}
+--></script>
+
+';
 			if(parent::processMember('isSucces', null)) {
 				$_ob []= '' . '
-	';
-				if(parent::processMember('getHash', null)) {
-					$_ob []= '' . '
-	<script>
-	window.opener.parent.connectPopupCallback(\'';
-					$_ob []= '' . parent::processMember('getHash', null);
-					$_ob []= '' . '\');
-	</script>
-	';
-				}
-				$_ob []= '' . '
+<script><!--
+	if(window.parent.connectCallback) {
+		window.parent.connectCallback(\'';
+				$_ob []= '' . parent::processMember('getHash', null);
+				$_ob []= '' . '\');
+	}
+--></script>
 ';
 			}
 			$_ob []= '' . '

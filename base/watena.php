@@ -88,6 +88,7 @@ if(!defined('NWATENA')) {
 	require_once PATH_BASE . '/system/class.watena.php';
 	require_once PATH_BASE . '/system/class.datafile.php';
 	require_once PATH_BASE . '/system/class.time.php';
+	require_once PATH_BASE . '/system/class.interval.php';
 	
 	// ############################################################
 	// Load the application framework

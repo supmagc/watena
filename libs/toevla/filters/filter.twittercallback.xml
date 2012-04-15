@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <filter name="ToeVla main filter" order="11">
-	<model name="CallbackModel">
+	<model name="ConnectModel">
 	</model>
 	<view name="HtmlTemplateView">
-		<param name="template">popup.callback.tpl</param>
+		<param name="template">popup.connect.tpl</param>
 	</view>
-	<controller name="CallbackController">
+	<controller name="ConnectController">
 		<param name="provider">ProviderTwitter</param>
 	</controller>
 	<rules>

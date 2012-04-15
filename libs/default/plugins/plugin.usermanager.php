@@ -94,7 +94,23 @@ class UserManager extends Plugin {
 	public static function isValidEmail($sEmail) {
 		return is_email($sEmail);
 	}
-		
+	
+	/**
+	 * Make sure the current connection is fully established and create/merge a user.
+	 * A lot of things can go wrong. If a connection is not established,
+	 * the method will return false.
+	 * If a connection is made but for some logical reason a user cannot be linked/created
+	 * an exception will be thrown containing  the relevant data.
+	 * 
+	 * @param UserConnectionProvider $oConnectionProvider
+	 * @param string $sName Possebility to overwrite the username.
+	 * @throws UserDuplicateLoginException The connection is known and there is a logged in user, but they don't match.
+	 * @throws UserDuplicateEmailException The email-adress is known and there is a logged in user, but they don't match.
+	 * @throws UserUnverifiedEmailException The connection can be linked to an email-adress, but the adress is not yet verified.
+	 * @throws UserInvalidNameException The name is invalid, and should be overwritten.
+	 * @throws UserDuplicateNameException A user with the same name allready exists, the name should be overwritten.
+	 * @return User|boolean
+	 */
 	public static function connectToProvider(UserConnectionProvider $oConnectionProvider, $sName = null) {
 		// Make sure we are connected
 		if($oConnectionProvider->connect() || $oConnectionProvider->isConnected()) {
@@ -102,8 +118,6 @@ class UserManager extends Plugin {
 			// Retrieve a connection-user if available
 			$nConnectionUserId = self::getUserIdByConnection($oConnectionProvider);
 			$oConnectionUser = $nConnectionUserId !== false ? User::load($nConnectionUserId) : null;
-			
-			var_dump($nConnectionUserId);
 			
 			// Retrieve a current-user if available
 			$oCurrentUser = self::getLoggedInUser() ? self::getLoggedInUser() : null;
@@ -144,13 +158,13 @@ class UserManager extends Plugin {
 				}
 				else {
 					// Make sure we don't create users with false names
-					$sConnectionName = $sName ? $sName : $oConnectionProvider->getConnectionName();
+					$sConnectionName = $sName ?: $oConnectionProvider->getConnectionName();
 					if(!self::isValidName($sConnectionName))
 						throw new UserInvalidNameException($sConnectionName);
 	
 					// Make sure we don't create a user with a duplicate name
 					if(self::getUserIdByName($sConnectionName) !== false) 
-						throw new UserDuplicateNameException();
+						throw new UserDuplicateNameException($sConnectionName);
 					
 					$oCurrentUser = User::create($sConnectionName, self::TYPE_CONNECTION);
 				}
@@ -160,7 +174,9 @@ class UserManager extends Plugin {
 			// Update the userdata
 			$oConnectionProvider->update($oCurrentUser);
 			$oCurrentUser->addEmail($oConnectionProvider->getConnectionEmail(), true);
-			
+			$oCurrentUser->getConnection($oConnectionProvider)->setConnectionData($oConnectionProvider->getConnectionData());
+			$oCurrentUser->getConnection($oConnectionProvider)->setConnectionTokens($oConnectionProvider->getConnectionTokens());
+				
 			// Set the user as logged in
 			self::setLoggedInUser($oCurrentUser);
 			return self::getLoggedInUser();

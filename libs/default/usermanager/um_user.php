@@ -72,7 +72,7 @@ class User extends DbObject {
 	}
 		
 	public function setTimezone($mValue) {
-		$this->setDataValue('timezone', $mValue);
+		$this->setDataValue('timezone', Time::formatTimezone($mValue));
 		return true;
 	}
 	
@@ -95,9 +95,14 @@ class User extends DbObject {
 	
 	public function addConnection(UserConnectionProvider $oConnectionProvider) {
 		if($oConnection = UserConnection::create($this, $oConnectionProvider)) {
-			$this->m_aConnections []= $oConnection;
+			$this->m_aConnections[$oConnection->getProvider()] = $oConnection;
 		}
-		return $this->getConnections($oConnectionProvider);
+		return $this->getConnection($oConnectionProvider);
+	}
+	
+	public function getConnection(UserConnectionProvider $oConnectionProvider) {
+		$aConnections = $this->getConnections();
+		return isset($aConnections[$oConnectionProvider->getName()]) ? $aConnections[$oConnectionProvider->getName()] : false;
 	}
 	
 	public function removeConnection(UserConnection $oConnection) {

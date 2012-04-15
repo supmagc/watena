@@ -18,8 +18,20 @@ class UserConnection extends DbObject {
 		return json_decode($this->getDataValue('connectionData'), true);
 	}
 	
-	public function getConnectionTimestamp() {
+	public function getConnectionTokens() {
 		return json_decode($this->getDataValue('connectionTokens'), true);
+	}
+	
+	public function getConnectionTimestamp() {
+		return $this->getDataValue('timestamp');
+	}
+	
+	public function setConnectionData($mValue) {
+		$this->setDataValue('connectionData', json_encode($mValue));
+	}
+	
+	public function setConnectionTokens($mValue) {
+		$this->setDataValue('connectionTokens', json_encode($mValue));
 	}
 	
 	public static function load($mData) {
