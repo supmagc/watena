@@ -4,6 +4,10 @@ if(!defined('PATH_DATA')) define('PATH_DATA', realpath(dirname(__FILE__) . '/../
 if(!defined('PATH_LIBS')) define('PATH_LIBS', realpath(dirname(__FILE__) . '/../libs'));
 if(!defined('PATH_ROOT')) define('PATH_ROOT', realpath(dirname(__FILE__) . '/..'));
 
+if(!PATH_BASE || !PATH_DATA || !PATH_LIBS || !PATH_ROOT) {
+	die('Not all path-constants are defined.');
+}
+
 if(function_exists('__autoload')) {
 	die('You are not allowed to define __autoload(); since a part of the framework depends on it.');
 }
@@ -89,6 +93,7 @@ if(!defined('NWATENA')) {
 	require_once PATH_BASE . '/system/class.datafile.php';
 	require_once PATH_BASE . '/system/class.time.php';
 	require_once PATH_BASE . '/system/class.interval.php';
+	require_once PATH_BASE . '/system/class.upload.php';
 	
 	// ############################################################
 	// Load the application framework

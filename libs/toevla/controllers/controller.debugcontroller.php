@@ -11,6 +11,11 @@ class DebugController extends Controller {
 			UserManager::setLoggedInUser($oUser);
 			echo ToeVla::getNewHash();
 		}
+		else if($this->getWatena()->getMapping()->getLocal() == '/debug/switch') {
+			$nExpiration = Time::create()->add(new Interval(0, 0, 1, 0, 0, 0))->getTimestamp();
+			setcookie('debug', 'enabled', $nExpiration, $this->getWatena()->getMapping()->getOffset() ?: '/');
+			$this->display('Debugging is enabled !');
+		}
 		else {
 			echo 'UNKNOWN';
 		}

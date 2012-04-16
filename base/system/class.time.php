@@ -9,7 +9,6 @@ class Time extends Object {
 	
 	public function __construct($mTimestamp, $mTimezone = null) {
 		parent::__construct();
-		var_dump(self::formatTimezone($mTimezone));
 		$this->m_oTimestamp = new DateTime(self::formatTimestamp($mTimestamp), new DateTimeZone(self::formatTimezone($mTimezone)));
 	}
 	
