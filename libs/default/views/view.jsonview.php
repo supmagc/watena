@@ -8,7 +8,7 @@ class JsonView extends View {
 		$this->m_sMethod = $this->getConfig('method', false);
 	}
 	
-	public function render(Model $oModel) {
+	public function render(Model $oModel = null) {
 		
 		if(!$this->m_sMethod)
 			$this->getLogger()->error('No method-parameter was given in the view-config.');

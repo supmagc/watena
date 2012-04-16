@@ -139,6 +139,15 @@ class Encoding {
 		return $sData;
 	}
 	
+	public static function regReplaceAll($sPatern, $sReplace, $sData, $sOptions = 'msr', $sEncoding = null) {
+		if($sEncoding !== null) mb_regex_encoding($sEncoding);
+		while(($sTemp = mb_ereg_replace($sPatern, $sReplace, $sData, $sOptions)) !== $sData) {
+			$sData = $sTemp;
+		}
+		if($sEncoding !== null) mb_regex_encoding(self::$s_sEncoding);
+		return $sData;
+	}
+	
 	public static function regEncode($sData, $sEncoding = null) {
 		$sList = '.\\+*?\[\^\]$(){}=!<>|:\-';
 		return self::regReplace("([$sList])", "\\\\1", $sData, 'msr', $sEncoding);

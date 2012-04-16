@@ -7,7 +7,8 @@ class ConfigModel extends Model {
 		$aData = array(
 			'developmentLogin' => '' . new Mapping('/debug/login'),
 			'logoutUrl' => '' . new Mapping('/logout'),
-			'smartFoxSettings' => Encoding::indexOf($this->getWatena()->getMapping()->getHost(), '.com') ? 'ONLINE_TESTING' : ($_SERVER['COMPUTERNAME'] == 'JELLE-MONSTER' ? 'LOCALHOST' : 'GRINTERNAL')
+			'smartFoxSettings' => Encoding::indexOf($this->getWatena()->getMapping()->getHost(), '.com') ? 'ONLINE_TESTING' : ($_SERVER['COMPUTERNAME'] == 'JELLE-MONSTER' ? 'LOCALHOST' : 'GRINTERNAL'),
+			'imageUrlPrefix' => new Mapping('/files/toevla')
 		);
 		$oStatement = DatabaseManager::getConnection('toevla')->select('game_config');
 		foreach($oStatement as $aRow) {

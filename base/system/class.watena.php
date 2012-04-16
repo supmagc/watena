@@ -91,20 +91,29 @@ class Watena extends Configurable {
 	 * @param string $sPath
 	 * @return string
 	 */
-	public final function getPath($sPath) {
+	public final function getPath($sPath, $bVerify = true) {
 		$aMatches = array();
 		$aPositions = array();
-		if(Encoding::regFind('^([brd]):(/?)(.*?)(/?)$', '' . $sPath, $aMatches, $aPositions)) {
+		if(Encoding::regFind('^([brdlBRDL]):(/?)(.*?)(/?)$', '' . $sPath, $aMatches, $aPositions)) {
 			switch($aMatches[1]) {
 				case 'b' :
-				case 'B' : return realpath(PATH_BASE . (Encoding::length($aMatches[3]) > 0 ? "/$aMatches[3]" : ''));
+				case 'B' : $sPath = PATH_BASE . (Encoding::length($aMatches[3]) > 0 ? "/$aMatches[3]" : ''); break;
 				case 'd' :
-				case 'D' : return realpath(PATH_DATA . (Encoding::length($aMatches[3]) > 0 ? "/$aMatches[3]" : ''));
+				case 'D' : $sPath = PATH_DATA . (Encoding::length($aMatches[3]) > 0 ? "/$aMatches[3]" : ''); break;
 				case 'r' :
-				case 'R' : return realpath(PATH_ROOT . (Encoding::length($aMatches[3]) > 0 ? "/$aMatches[3]" : ''));
+				case 'R' : $sPath = PATH_ROOT . (Encoding::length($aMatches[3]) > 0 ? "/$aMatches[3]" : ''); break;
+				case 'l' :
+				case 'L' : $sPath = PATH_LIBS . (Encoding::length($aMatches[3]) > 0 ? "/$aMatches[3]" : ''); break;
 			}
 		}
-		return realpath($sPath);
+		if($bVerify) {
+			return realpath($sPath);
+		}
+		else {
+			$sPath = Encoding::replace('\\', '/', $sPath);	
+			$sPath = Encoding::regReplaceAll('/[^/]+/\.\./', '/', $sPath);
+			return $sPath;
+		}
 	}
 	
 	/**

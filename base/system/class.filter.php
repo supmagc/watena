@@ -137,12 +137,13 @@ class Filter extends CacheableFile {
 			$sRegex = $aRuleData['pattern'];
 			$sTarget = false;
 			
-			if($sType == 'get' && isset($_GET[$sVarieble])) $sTarget = $_GET[$sVariable];
-			else if($sType == 'post' && isset($_POST[$sVarieble])) $sTarget = $_POST[$sVariable];
-			else if($sType == 'session' && isset($_SESSION[$sVarieble])) $sTarget = $_SESSION[$sVariable];
+			if($sType == 'get' && isset($_GET[$sVariable])) $sTarget = $_GET[$sVariable];
+			else if($sType == 'post' && isset($_POST[$sVariable])) $sTarget = $_POST[$sVariable];
+			else if($sType == 'cookie' && isset($_COOKIE[$sVariable])) $sTarget = $_COOKIE[$sVariable];
+			else if($sType == 'session' && isset($_SESSION[$sVariable])) $sTarget = $_SESSION[$sVariable];
 			else if($sType == 'mapping') $sTarget = $oMapping->getVariable($sVariable); // returns false when not found
 			
-			if($sTarget !== false && !($bSucces = $bSucces && Encoding::regMatch($sRegex, $sTarget))) break;
+			if(!($bSucces = $bSucces && $sTarget !== false && Encoding::regMatch($sRegex, $sTarget))) break;
 		}
 		return $bSucces;
 	}
