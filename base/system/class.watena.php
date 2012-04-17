@@ -20,20 +20,16 @@ class Watena extends Configurable {
 		$this->m_oContext = new Context();
 		$this->m_oMapping = new Mapping();
 		
-		// Load all default plugins
-		$this->m_oContext->loadPlugins(explode_trim(',', self::getConfig('PLUGINS', '')));
-		
 		// Load all specified logProcessors
-		$aLoadedLogProcessors = array();
-		$sLoggers = self::getConfig('LOGGER_PROCESSORS', null);
-		if($sLoggers) {
-			$aLogProcessors = explode_trim(',', $sLoggers);
-			foreach($aLogProcessors as $sProcessor) {
-				$this->m_oContext->loadPlugin($sProcessor);
-				$aLoadedLogProcessors []= $this->m_oContext->getPlugin($sProcessor, 'ILogProcessor');
+		Logger::setDefaultFilterLevel(self::getConfig('LOGGER_FILTERLEVEL', 'ALWAYS'));
+		$aLogProcessors = explode_trim(',', self::getConfig('LOGGER_PROCESSORS', ''));
+		foreach($aLogProcessors as $sProcessor) {
+			if($this->m_oContext->loadPlugin($sProcessor)) {
+				$oProcessor = $this->m_oContext->getPlugin($sProcessor, 'ILogProcessor');
+				Logger::registerProcessor($oProcessor);
 			}
 		}
-		
+				
 		// Load the specified cachingengine
 		$sCachePlugin = self::getConfig('CACHE_ENGINE', null);
 		if($sCachePlugin) {
@@ -41,12 +37,10 @@ class Watena extends Configurable {
 			$this->m_oCache = $this->m_oContext->GetPlugin($sCachePlugin, 'ICache');
 		}
 		
-		// Register all log-processors and logsettings
-		Logger::setDefaultFilterLevel(self::getConfig('LOGGER_FILTERLEVEL', 'ALWAYS'));
-		foreach($aLoadedLogProcessors as $oLogProcessor) {
-			Logger::registerProcessor($oProcessor);
-		}
-		
+		// Load all default plugins
+		$this->m_oContext->loadPlugins(explode_trim(',', self::getConfig('PLUGINS', '')));
+
+		// Log the end of the init
 		$this->getLogger()->debug('Watena was succesfully initialised in {time} sec.', array('time' => round(microtime(true) - $nTime, 5)));
 		$nTime = microtime(true);
 		
@@ -68,7 +62,7 @@ class Watena extends Configurable {
 		else
 			echo "\0";
 		
-		
+		// Log the end of Watena
 		$this->getLogger()->debug('Watena loaded and rendered the page in {time} sec.', array('time' => round(microtime(true) - $nTime, 5)));
 	}
 
@@ -82,14 +76,16 @@ class Watena extends Configurable {
 	}
 	
 	/**
-	 * Retrieve a valid watena path.
+	 * Retrieve a valid watena/system path.
 	 * The input path should specify a protocol such as:
 	 * r (or R) => for Root
 	 * d (or D) => for Data
 	 * b (or B) => for Base
+	 * l (or L) => for Libs
 	 * 
-	 * @param string $sPath
-	 * @return string
+	 * @param string $sPath The path to resolve.
+	 * @param bool $bVerify Indicate if you cant the path to be verified for existance (retusn false on failure)
+	 * @return string|bool
 	 */
 	public final function getPath($sPath, $bVerify = true) {
 		$aMatches = array();

@@ -12,35 +12,6 @@ if(function_exists('__autoload')) {
 	die('You are not allowed to define __autoload(); since a part of the framework depends on it.');
 }
 
-/* This should be deprecated ?
-if(!defined('NEXCEPTIONCATCH')) {
-	define('EXCEPTIONCATCH', true);
-	function exception_handler(Exception $e) {
-		if(is_a($e, 'WatCeption')) {
-			echo "<h2>{$e->getDebugMessage()}</h2>";
-			echo '<pre>';
-			print_r($e->getData());
-			echo '</pre>';
-			echo "<pre>$e</pre>";
-			if($e->getInnerException()) exception_handler($e->getInnerException());
-		}
-		else {
-			echo "<pre>$e</pre>";
-		}
-		exit;
-	}
-	set_exception_handler('exception_handler');
-}
-
-if(!defined('NERRORTOEXCEPTION')) {
-	define('ERRORTOEXCEPTION', true);
-	function error_handler($errno, $errstr, $errfile, $errline) {
-	    throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
-	}
-	set_error_handler('error_handler');
-}
-*/
-
 if(!defined('NSESSION')) {
 	session_start();
 	// TODO: use the session-guard
