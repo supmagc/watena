@@ -2,6 +2,7 @@
 
 class WebRequest extends Object {
 
+	private $m_sScheme;
 	private $m_sUrl;
 	private $m_sMethod;
 	private $m_oCurl = null;
@@ -12,18 +13,26 @@ class WebRequest extends Object {
 	public static $OPTIONS_DEFAULT = array(
 		CURLOPT_HEADER 			=> true,
 		CURLOPT_RETURNTRANSFER 	=> true,
+		CURLOPT_FOLLOWLOCATION	=> true,
 		CURLOPT_USERAGENT 		=> 'watena-curl',
 		CURLOPT_USERPWD 		=> '', // user:pass
 		CURLOPT_CONNECTTIMEOUT 	=> 10,
-		CURLOPT_TIMEOUT			=> 60
+		CURLOPT_TIMEOUT			=> 60,
+		CURLOPT_HTTP_VERSION	=> CURL_HTTP_VERSION_1_1
 	);
 
 	public function __construct($sUrl, $sMethod) {
-		$this->m_sUrl = $sUrl;
+		$aData = parse_url($sUrl);
+		$this->m_sUrl = $aData['scheme'] . '://' . $aData['host'] . (isset($aData['port']) ? ":{$aData[port]}" : '') . $aData['path'];
+		$this->m_sScheme = $aData['scheme'];
 		$this->m_sMethod = $sMethod;
-		$this->m_oCurl = curl_init($sUrl);
+		$this->m_oCurl = curl_init($this->getUrl());
 		$this->m_aOptions = self::$OPTIONS_DEFAULT;
-		if(Encoding::indexOf($this->m_sUrl, 'https://') === 0)
+		if(isset($aData['query']))
+			parse_str($aData['query'], $this->m_aFields);
+		if(isset($aData['user']) && isset($aData['pass']))
+			$this->setLogin($aData['user'], $aData['pass']);
+		if($this->m_sScheme == 'https')
 			$this->setSllCertificate(PATH_DATA . '/ca-certificates/cacert.pem');
 	}
 
@@ -39,6 +48,10 @@ class WebRequest extends Object {
 		return $this->m_sUrl;
 	}
 
+	public function getScheme() {
+		return $this->m_sScheme;
+	}
+	
 	public function getMethod() {
 		return $this->m_sMethod;
 	}
@@ -88,10 +101,10 @@ class WebRequest extends Object {
 		}
 		else {
 			if($this->m_sMethod == 'GET')
-			curl_setopt($this->m_oCurl, CURLOPT_HTTPGET, true);
+				curl_setopt($this->m_oCurl, CURLOPT_HTTPGET, true);
 			else
-			curl_setopt($this->m_oCurl, CURLOPT_CUSTOMREQUEST, $this->m_sMethod);
-			$sUrl = $this->m_sUrl . (Encoding::indexOf($this->m_sUrl, '?') ? '&' : '?') . http_build_query($this->m_aFields, null, '&');
+				curl_setopt($this->m_oCurl, CURLOPT_CUSTOMREQUEST, $this->m_sMethod);
+			$sUrl = $this->getUrl() . '?' . http_build_query($this->m_aFields, null, '&');
 			curl_setopt($this->m_oCurl, CURLOPT_URL, $sUrl);
 		}
 

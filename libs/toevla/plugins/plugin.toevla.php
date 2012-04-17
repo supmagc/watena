@@ -33,7 +33,6 @@ class ToeVla extends Plugin {
 		}
 		while($oConnection->select('game_session', $sHash, 'hash')->rowCount() > 0);
 		$oConnection->insert('game_session', array(
-			'name' => $sName,
 			'hash' => $sHash,
 			'userId' => $nUserId,
 			'characterId' => $nCharacterId
