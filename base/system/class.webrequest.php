@@ -18,7 +18,9 @@ class WebRequest extends Object {
 		CURLOPT_USERPWD 		=> '', // user:pass
 		CURLOPT_CONNECTTIMEOUT 	=> 10,
 		CURLOPT_TIMEOUT			=> 60,
-		CURLOPT_HTTP_VERSION	=> CURL_HTTP_VERSION_1_1
+		CURLOPT_HTTP_VERSION	=> CURL_HTTP_VERSION_1_1,
+		CURLOPT_COOKIEJAR		=> 'cookie.txt',
+		CURLOPT_COOKIEFILE		=> 'cookie.txt'
 	);
 
 	public function __construct($sUrl, $sMethod) {
