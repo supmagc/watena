@@ -1,18 +1,14 @@
 <?php
 
-class Context extends Object implements ILogFilter {
+class Context extends Object {
 	
 	private $m_aPlugins = array();
 	private $m_aDataFiles = array(); 
 	private $m_aLibraryPaths = array();
 	private $m_aFilterGroups = null;
 	private $m_bRequirementWatchdog = false;
-
-	private static $s_oGlobalRequirementBufferInstance;
 	
 	public function __construct() {
-		require_logger()->setFilter($this);
-		
 		$aProjects = explode(',', parent::getWatena()->getConfig('LIBRARIES', ''));
 		foreach($aProjects as $sProject) {
 			$sProject = trim($sProject);
@@ -28,7 +24,7 @@ class Context extends Object implements ILogFilter {
 	 * 
 	 * return array
 	 */
-	public function getFilterGroups() {
+	public final function getFilterGroups() {
 		if($this->m_aFilterGroups === null) {
 			$this->m_aFilterGroups = array();
 			foreach($this->m_aLibraryPaths as $sLibrary) {
@@ -57,7 +53,7 @@ class Context extends Object implements ILogFilter {
 	 * 
 	 * @return string (or false)
 	 */
-	public function getLibraryFilePath($sDirectory, $sFile, $sPreferredLibrary = null) {
+	public final function getLibraryFilePath($sDirectory, $sFile, $sPreferredLibrary = null) {
 		$sSearch = "/$sDirectory/$sFile";
 		if(($sTemp = realpath(PATH_BASE . $sSearch)) !== false) return $sTemp;
 		if(($nIndex = strpos($sFile, '$')) !== false && ($sTemp = realpath(PATH_LIBS . '/' . substr($sFile, 0, $nIndex) . "/$sDirectory/" . substr($sFile, $nIndex + 1))) !== false) return $sTemp;
@@ -77,7 +73,7 @@ class Context extends Object implements ILogFilter {
 	 * @param string $sImplements (default = null)
 	 * @return mixed The instance of the specified plugin, or null
 	 */
-	public function getPlugin($sPlugin, $sImplements = null) {
+	public final function getPlugin($sPlugin, $sImplements = null) {
 		$sKey = strtolower($sPlugin);
 		$oPlugin = (isset($this->m_aPlugins[$sKey]) || $this->loadPlugin($sPlugin)) ? $this->m_aPlugins[$sKey] : null;
 		if($oPlugin) {
@@ -94,7 +90,7 @@ class Context extends Object implements ILogFilter {
 	 * @param boolean $bTerminate (default = false)
 	 * @return boolean Indicator if the plugins were loaded
 	 */
-	public function loadPlugins(array $aPlugins, $bTerminate = true) {
+	public final function loadPlugins(array $aPlugins, $bTerminate = true) {
 		$bSucces = true;
 		foreach($aPlugins as $sPlugin) {
 			if(strlen(trim($sPlugin)) > 0)
@@ -109,7 +105,7 @@ class Context extends Object implements ILogFilter {
 	 * @param string $sPlugin
 	 * @return boolean Indicator if the plugin was loaded
 	 */
-	public function loadPlugin($sPlugin) {
+	public final function loadPlugin($sPlugin) {
 		$sKey = strtolower($sPlugin);
 		$sFilePHP = $this->getLibraryFilePath('plugins', "plugin.$sKey.php");
 		$sFileINI = $this->getLibraryFilePath('plugins', "config.$sKey.ini");
@@ -136,7 +132,7 @@ class Context extends Object implements ILogFilter {
 	 * 
 	 * @return Model
 	 */
-	public function loadModel($sName, array $aParams = array()) {
+	public final function loadModel($sName, array $aParams = array()) {
 		$sFileName = 'model.' . Encoding::toLower($sName) . '.php';
 		$sFilePath = parent::getWatena()->getContext()->getLibraryFilePath('models', $sFileName);		
 		$oModel = CacheableData::createObject($sName, $aParams, array(), null, $sFilePath, 'Model');
@@ -151,7 +147,7 @@ class Context extends Object implements ILogFilter {
 	 * 
 	 * @return View
 	 */
-	public function loadView($sName, array $aParams = array()) {
+	public final function loadView($sName, array $aParams = array()) {
 		$sFileName = 'view.' . Encoding::toLower($sName) . '.php';
 		$sFilePath = parent::getWatena()->getContext()->getLibraryFilePath('views', $sFileName);
 		return CacheableData::createObject($sName, $aParams, array(), null, $sFilePath, "View");
@@ -165,7 +161,7 @@ class Context extends Object implements ILogFilter {
 	 * 
 	 * @return Controller
 	 */
-	public function loadController($sName, array $aParams = array()) {
+	public final function loadController($sName, array $aParams = array()) {
 		$sFileName = 'controller.' . Encoding::toLower($sName) . '.php';
 		$sFilePath = parent::getWatena()->getContext()->getLibraryFilePath('controllers', $sFileName);
 		return CacheableData::createObject($sName, $aParams, array(), null, $sFilePath, "Controller");
@@ -180,7 +176,7 @@ class Context extends Object implements ILogFilter {
 	 * @param string $sExtends
 	 * @param string $sImplements
 	 */
-	public function loadObjectAndRequirements($sObjectName, array $aParams = array(), $sIncludeFile = null, $sExtends = null, array $aImplements = array()) {
+	public final function loadObjectAndRequirements($sObjectName, array $aParams = array(), $sIncludeFile = null, $sExtends = null, array $aImplements = array()) {
 		$this->m_bRequirementWatchdog = true;
 		
 		// Include main file
@@ -215,7 +211,7 @@ class Context extends Object implements ILogFilter {
 	 * @param Mapping $oMapping
 	 * @return array(Model, View, Controller)
 	 */
-	public function getMVC(Mapping $oMapping) {
+	public final function getMVC(Mapping $oMapping) {
 		$aFilterGroups = $this->getFilterGroups();
 		$oModel = null;
 		$oView = null;
@@ -241,19 +237,11 @@ class Context extends Object implements ILogFilter {
 	 * 
 	 * @param DataFile $sPath
 	 */
-	public function getDataFile($sPath) {
+	public final function getDataFile($sPath) {
 		if(!isset($this->m_aDataFiles[$sPath])) {
 			$this->m_aDataFiles[$sPath] = new DataFile($sPath);
 		}
 		return $this->m_aDataFiles[$sPath];
-	}
-	
-	public function loggerFilter(&$sIdentifier, &$nLevel, $sFile, $nLine, $sMessage, array $aData, array $aTrace) {
-		if($sIdentifier == require_logger()->getIdentifier()) {
-			$sMessage = str_replace('{name}', $aData['name'], $sMessage);
-			echo $sMessage;
-			return false;
-		}
 	}
 }
 
