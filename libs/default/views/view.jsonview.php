@@ -10,6 +10,9 @@ class JsonView extends View {
 	
 	public function render(Model $oModel = null) {
 		
+		if(!$oModel)
+		$this->getLogger()->error('No model/data was given.');
+		
 		if(!$this->m_sMethod)
 			$this->getLogger()->error('No method-parameter was given in the view-config.');
 					
@@ -17,7 +20,9 @@ class JsonView extends View {
 			$this->getLogger()->error('Unable to find the required method "{method}" in the given Model-object.', array('method' => $this->m_sMethod));
 		
 		$sContent = json_encode(call_user_func(array($oModel, $this->m_sMethod)));
-		header('Content-Type: text/'.(headers_sent() ? 'html' : 'json').';charset=' . $oModel->getCharset());
+		if(!headers_sent()) {
+			//header('Content-Type: text/'.(headers_sent() ? 'html' : 'json').';charset=' . $oModel->getCharset());
+		}
 		echo $sContent;
 	}
 }

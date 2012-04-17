@@ -140,7 +140,6 @@ class Context extends Object implements ILogFilter {
 		$sFileName = 'model.' . Encoding::toLower($sName) . '.php';
 		$sFilePath = parent::getWatena()->getContext()->getLibraryFilePath('models', $sFileName);		
 		$oModel = CacheableData::createObject($sName, $aParams, array(), null, $sFilePath, 'Model');
-		$oModel->setCharset(Encoding::charset());
 		return $oModel;
 	}
 	

@@ -2,7 +2,7 @@
 
 abstract class Model extends CacheableData {
 
-	private $m_sCharset = 'ISO-8859-1';
+	private $m_sCharset = null;
 	private $m_sContentType = 'text/plain';
 	
 	public final function setCharset($sCharset) {
@@ -14,7 +14,7 @@ abstract class Model extends CacheableData {
 	}
 	
 	public final function getCharset() {
-		return $this->m_sCharset;
+		return $this->m_sCharset ? $this->m_sCharset : Encoding::charset();
 	}
 	
 	public final function getContentType() {
