@@ -13,15 +13,9 @@ class ToeVla extends Plugin {
 			$oConnection->delete('game_session', $oUser->getId(), 'userId');
 
 			$oStatement = $oConnection->select('game_character', $oUser->getId(), 'userId');
+			$nCharacterId = null;
 			if($oStatement->rowCount() > 0) {
 				$nCharacterId = $oStatement->fetchObject()->ID;
-			}
-			else {
-				$nCharacterId = $oConnection->insert('game_character', array(
-					'userId' => $oUser->getId(),
-					'name' => $oUser->getName(),
-					'data' => ''
-				));				
 			}
 		}
 
