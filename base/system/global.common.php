@@ -146,7 +146,7 @@ function explode_trim($sSplitter, $sData) {
 		if(strlen($sValue) > 0)
 			$aReturn[$sKey] = $sValue;
 	}
-	return $aReturn;
+	return array_merge($aReturn);
 }
 
 function implode_trim($sGlue, array $aData) {

@@ -54,7 +54,7 @@ class WebResponse extends Object {
 	}
 
 	public function getContentSize() {
-		return $this->m_nContentSize();
+		return $this->m_nContentSize;
 	}
 
 	public function getHttpCode() {

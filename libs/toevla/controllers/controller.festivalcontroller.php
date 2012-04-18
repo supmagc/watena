@@ -3,7 +3,7 @@ require_plugin('DatabaseManager');
 
 class FestivalController extends Controller {
 
-	private $m_aAllowed = array('website', 'location', 'locationType', 'twitterName', 'twitterHash', 'facebook', 'youtube', 'flickr', 'picasa', 'data', 'description_EN');
+	private $m_aAllowed = array('website', 'location', 'locationType', 'twitterName', 'twitterHash', 'facebook', 'youtube', 'flickr', 'picasa', 'data', 'description_EN', 'logoFilename', 'afficheFilename');
 	
 	
 	public function process(Model $oModel = null, View $oView = null) {
@@ -45,6 +45,8 @@ class FestivalController extends Controller {
 				$oStatement = DatabaseManager::getConnection('toevla')->getTable('festival', 'hash')->select($sHash);
 				if($oStatement->rowCount() > 0) {
 					$aRow = $oStatement->fetch(PDO::FETCH_ASSOC);
+					$aRow['logoFilename'] = '' . new Mapping('/files/toevla/festival/' . $aRow['logoFilename']);
+					$aRow['afficheFilename'] = '' . new Mapping('/files/toevla/festival/' . $aRow['afficheFilename']);
 					echo json_encode(array_intersect_key($aRow, array_combine($this->m_aAllowed, $this->m_aAllowed)));
 				}
 			}
