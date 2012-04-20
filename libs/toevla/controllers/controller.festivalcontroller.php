@@ -19,14 +19,14 @@ class FestivalController extends Controller {
 			
 			$oLogoFile = new Upload('logo');
 			if($oLogoFile->exists()) {
-				$sFilename = md5(microtime()) . '.' . $oLogoFile->getExtension();
+				$sFilename = md5('logo' . microtime()) . '.' . $oLogoFile->getExtension();
 				$oLogoFile->move("L:/toevla/files/festival/$sFilename");
 				$aData['logoFilename'] = $sFilename;
 			}
 			
 			$oAfficheFile = new Upload('affiche');
 			if($oAfficheFile->exists()) {
-				$sFilename = md5(microtime()) . '.' . $oAfficheFile->getExtension();
+				$sFilename = md5('affiche' . microtime()) . '.' . $oAfficheFile->getExtension();
 				$oAfficheFile->move("L:/toevla/files/festival/$sFilename");
 				$aData['afficheFilename'] = $sFilename;
 			}
