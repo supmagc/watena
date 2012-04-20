@@ -11,15 +11,24 @@ class Mapping extends Object {
 		$this->m_aVariables['port'] = $_SERVER['SERVER_PORT'];
 		$this->m_aVariables['offset'] = Encoding::substring($_SERVER['SCRIPT_NAME'], 0, Encoding::length($_SERVER['SCRIPT_NAME']) - 10);
 		$this->m_aVariables['useragent'] = $_SERVER['HTTP_USER_AGENT'];
-		if($sLocal !== null) {
-			$this->m_aVariables['local'] = $sLocal;		
-		}
-		else if(isset($_SERVER['REDIRECT_URL'])) {
-			$this->m_aVariables['local'] = Encoding::substring($_SERVER['REDIRECT_URL'], Encoding::length($this->m_aVariables['offset']));
+		if($sLocal !== null && Encoding::beginsWith($sLocal, '/')) {
+			$this->m_aVariables['local'] = $sLocal;
 		}
 		else {
-			$nLength = Encoding::contains($_SERVER['REQUEST_URI'], '?') ? Encoding::indexOf($_SERVER['REQUEST_URI'], '?') - Encoding::length($this->m_aVariables['offset']) : null;
-			$this->m_aVariables['local'] = urldecode(Encoding::substring($_SERVER['REQUEST_URI'], Encoding::length($this->m_aVariables['offset']), $nLength));
+			if(isset($_SERVER['REDIRECT_URL'])) {
+				$this->m_aVariables['local'] = Encoding::substring($_SERVER['REDIRECT_URL'], Encoding::length($this->m_aVariables['offset']));
+			}
+			else {
+				$nLength = Encoding::contains($_SERVER['REQUEST_URI'], '?') ? Encoding::indexOf($_SERVER['REQUEST_URI'], '?') - Encoding::length($this->m_aVariables['offset']) : null;
+				$this->m_aVariables['local'] = urldecode(Encoding::substring($_SERVER['REQUEST_URI'], Encoding::length($this->m_aVariables['offset']), $nLength));
+			}
+			
+			if($sLocal !== null) {
+				$aParts = explode('/', $this->getWatena()->getMapping()->getLocal());
+				array_pop($aParts);
+				array_push($aParts, $sLocal);
+				$this->m_aVariables['local'] = implode('/', $aParts);		
+			}
 		}
 		
 		// Save main as it's used a lot
