@@ -19,13 +19,6 @@ class WebRequest extends Object {
 		CURLOPT_TIMEOUT			=> 60,
 		CURLOPT_HTTP_VERSION	=> CURL_HTTP_VERSION_1_1
 	);
-// 	curl_setopt($ch, CURLOPT_URL, $url);
-// 	curl_setopt($ch, CURLOPT_HEADER, 1);
-// 	curl_setopt($ch, CURLOPT_USERAGENT, $_SERVER['HTTP_USER_AGENT']);
-// 	curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-// 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-// 	curl_setopt($ch, CURLOPT_COOKIEJAR, 'cookie.txt');
-// 	curl_setopt($ch, CURLOPT_COOKIEFILE, 'cookie.txt');
 	
 	public function __construct($sUrl, $sMethod) {
 		$aData = parse_url($sUrl);

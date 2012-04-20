@@ -27,7 +27,6 @@ function Video(URL){
 	document.getElementById("youtubePlayer").style.display = 'block';
 	video.location=URL;
 }
-
 function showConnect() {
 	document.getElementById("loginLayer").style.display = 'block';
 }
@@ -52,15 +51,12 @@ function connectIntoFrame() {
 		window.frames['loginFrame'].location = window.tvLoginPopup.location;
 		window.tvLoginPopup.close();
 		window.tvLoginPopup = undefined;
-	}	
+	}
 }
 function connectCallback(sHash) {
-	window.tvHash = sHash;
+	if(sHash.length > 0) window.tvHash = sHash;
 	document.getElementById("loginLayer").style.display = 'none';
-	if(sHash.length > 0)
-		GetUnity().SendMessage('Persistent', 'InjectHash', window.tvHash);
-	else
-		GetUnity().SendMessage('Persistent', 'InjectNoHash', '');
+	GetUnity().SendMessage('Persistent', 'InjectHash', window.tvHash);
 	window.frames['loginFrame'].location = '{[getUrl()]}/login';	
 	if(window.tvLoginPopup) {
 		window.tvLoginPopup.close();
@@ -73,7 +69,7 @@ function connectCallback(sHash) {
 </div>
 
 <div id="youtubePlayer" style="display: none;">
-	<iframe width="150" height="120" name="video" src="/files/toevla/video/blank.html" frameborder="0" allowfullscreen></iframe>
+	<iframe width="150" height="120" name="video" src="/files/toevla/video/blank.html" frameborder="0"></iframe>
 </div>
 
 <div id="unityPlayer"></div>

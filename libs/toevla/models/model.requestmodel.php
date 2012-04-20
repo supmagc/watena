@@ -8,8 +8,14 @@ class RequestModel extends Model {
 		if(count($aLocal) > 2) {
 			$nId = $aLocal[2];
 			$sType = $aLocal[1];
-			$sKey = "TOEVLA.$sType.$nId";
-			return $this->getWatena()->getCache()->retrieve($sKey, array($this, 'getData'), 60 * 60 * 24, array($nId, $sType));
+			if($aLocal[1] == 'flush') {
+				$this->getWatena()->getCache()->delete("TOEVLA.flickr.$nId");
+				$this->getWatena()->getCache()->delete("TOEVLA.picasa.$nId");
+			} 
+			else {
+				$sKey = "TOEVLA.$sType.$nId";
+				return $this->getWatena()->getCache()->retrieve($sKey, array($this, 'getData'), 60 * 60 * 24, array($nId, $sType));
+			}
 		}
 	}
 	
@@ -26,7 +32,7 @@ class RequestModel extends Model {
 				foreach($aEntries as $aEntry) {
 					$sType = array_value($aEntry, array('content', 'type'));
 					if($sType === 'image/jpeg' || $sType == 'image/png') {
-						$aUrls []= array_value($aEntry, array('content', 'src'));
+						$aUrls []= array_value($aEntry, array('media$group', 'media$thumbnail', 2, 'url'));
 					}
 				}
 				return $aUrls;
@@ -38,8 +44,8 @@ class RequestModel extends Model {
 				$aData = unserialize($oResponse->getContent());
 				if(isset($aData['items'])) {
 					foreach($aData['items'] as $aItem) {
-						if(isset($aItem['photo_url']))
-							$aUrls []= $aItem['photo_url'];
+						if(isset($aItem['m_url']))
+							$aUrls []= $aItem['m_url'];
 					}
 				}
 				return $aUrls;
