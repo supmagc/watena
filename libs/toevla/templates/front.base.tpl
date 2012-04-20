@@ -4,25 +4,11 @@
 <meta http-equiv="Content-Type" content="{[getContentType()]}; charset={[getCharset()]}" />
 <title>{[getTitle()]}</title>
 <link href="/theme/toevla/css/style.css" rel="stylesheet" type="text/css" />
+<link href='http://fonts.googleapis.com/css?family=Lato:700,400italic,400' rel='stylesheet' type='text/css'>
 </head>
 
-<body bgcolor="f4f3ee">
+<body>
 <img src="/theme/toevla/logo.gif" id="logo" />
-<table id="centerTable">
-	<tr>
-		<td colspan="3"></td>
-	</tr>
-	<tr>
-		<td></td>
-		<td id="centerCell"><div id="spacerBox"></div>
-		<div id="centerDiv">
-			{{region use content}}
-		</div><div id="spacerBox"></div></td>
-		<td></td>
-	</tr>
-	<tr>
-		<td colspan="3"></td>
-	</tr>
-</table>
+{{region use content}}
 </body>
 </html>

@@ -4,9 +4,24 @@ class IPCO_Compiled_f__www_watena_libs_toevla_templates_front_main_tpl extends I
 		try {
 			$_ob = array();
 			$_ob []= '' . '
-';
+<table id="centerTable">
+	<tr>
+		<td colspan="3"></td>
+	</tr>
+	<tr>
+		<td></td>
+		<td id="centerCell"><div id="spacerBox"></div>
+		<div id="centerDiv">
+			';
 $_ob []= '' . parent::callInclude('F:\WWW\watena\libs\toevla\templates\front.unity.tpl');
 			$_ob []= '' . '
+		</div><div id="spacerBox"></div></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td colspan="3"></td>
+	</tr>
+</table>
 ';
 			return implode('', $_ob);
 		} catch(Exception $e) { throw new WatCeption('Unable to create template-output.', array(), null, $e); }

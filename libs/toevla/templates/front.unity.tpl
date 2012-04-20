@@ -16,7 +16,7 @@ if(typeof unityObject != "undefined") {
 			textcolor: "000000",
 			logoimage: "{[getUrl()]}/theme/toevla/loadunity.png"
 	};
-	unityObject.embedUnity("unityPlayer", "{[getUrl()]}/files/toevla/unity/WebPlayer.unity3d", 728, 450, params);
+	unityObject.embedUnity("unityPlayer", "{[getUrl()]}/files/toevla/unity/{[getConfig('unity', 'WebPlayer.unity3d')]}", 728, 450, params);
 }
 
 function Hide() {
@@ -27,14 +27,17 @@ function Video(URL){
 	document.getElementById("youtubePlayer").style.display = 'block';
 	video.location=URL;
 }
-function showConnect() {
-	document.getElementById("loginLayer").style.display = 'block';
+function requestHash(bForcePopup) {
+	if(bForcePopup == "1" || !window.tvHash || window.tvHash.length == 0)
+		document.getElementById("loginLayer").style.display = 'block';
+	else
+		GetUnity().SendMessage('Persistent', 'InjectHash', window.tvHash);
 }
 function removeHash() {
 	window.tvHash = '';
 }
 function connectCancel() {
-	connectCallback('');
+	connectCallback();
 }
 function connectPopup(sUrl) {
 	if(window.tvLoginPopup) {
@@ -54,7 +57,7 @@ function connectIntoFrame() {
 	}
 }
 function connectCallback(sHash) {
-	if(sHash.length > 0) window.tvHash = sHash;
+	if(sHash && sHash.length > 0) window.tvHash = sHash;
 	document.getElementById("loginLayer").style.display = 'none';
 	GetUnity().SendMessage('Persistent', 'InjectHash', window.tvHash);
 	window.frames['loginFrame'].location = '{[getUrl()]}/login';	
