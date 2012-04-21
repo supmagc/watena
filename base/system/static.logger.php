@@ -139,6 +139,7 @@ class Logger {
 		else
 			$oLogger = self::getGenericInstance();
 		
+		/*
 		switch($nCode) {
 			case E_ERROR :
 			case E_USER_ERROR :
@@ -161,6 +162,7 @@ class Logger {
 				$oLogger->logFull(self::INFO, $sFile, $nLine, $sMessage, array(), $aTrace);
 				break;
 		}
+		*/
 		throw new ErrorException($sMessage, 0, $nCode, $sFile, $nLine);
 	}
 	

@@ -20,11 +20,12 @@ class Encoding {
 	}
 	
 	public static function convert($sData, $sEncoding = null) {
-		return mb_convert_encoding($sData, $sEncoding === null ? self::$s_sEncoding : $sEncoding, mb_detect_encoding($sData));
+		self::convertByRef($sData, $sEncoding);
+		return $sData;
 	}
 	
 	public static function convertByRef(&$sData, $sEncoding = null) {
-		$sData = mb_convert_encoding($sData, $sEncoding === null ? self::$s_sEncoding : $sEncoding, mb_detect_encoding($sData));
+		$sData = (($sTemp = mb_detect_encoding($sData)) !== false && $sTemp != ($sEncoding === null ? self::$s_sEncoding : $sEncoding)) ? mb_convert_encoding($sData, $sEncoding === null ? self::$s_sEncoding : $sEncoding, $sTemp) : $sData;
 	}
 	
 	public static function substring($sData, $nStart, $nLength = null, $sEncoding = null) {
