@@ -30,7 +30,9 @@ if(typeof unityObject != "undefined") {
 	};
 	unityObject.embedUnity("unityPlayer", "';
 			$_ob []= '' . parent::processMember('getUrl', null);
-			$_ob []= '' . '/files/toevla/unity/WebPlayer.unity3d", 728, 450, params);
+			$_ob []= '' . '/files/toevla/unity/';
+			$_ob []= '' . parent::processMethod('getConfig', array('unity', 'WebPlayer.unity3d'), null);
+			$_ob []= '' . '", 728, 450, params);
 }
 
 function Hide() {
@@ -43,15 +45,17 @@ function Video(URL){
 	document.getElementById("youtubePlayer").style.display = \'block\';
 	video.location=URL;
 }
-
-function showConnect() {
-	document.getElementById("loginLayer").style.display = \'block\';
+function requestHash(bForcePopup) {
+	if(bForcePopup == "1" || !window.tvHash || window.tvHash.length == 0)
+		document.getElementById("loginLayer").style.display = \'block\';
+	else
+		GetUnity().SendMessage(\'Persistent\', \'InjectHash\', window.tvHash);
 }
 function removeHash() {
 	window.tvHash = \'\';
 }
 function connectCancel() {
-	connectCallback(\'\');
+	connectCallback();
 }
 function connectPopup(sUrl) {
 	if(window.tvLoginPopup) {
@@ -68,15 +72,12 @@ function connectIntoFrame() {
 		window.frames[\'loginFrame\'].location = window.tvLoginPopup.location;
 		window.tvLoginPopup.close();
 		window.tvLoginPopup = undefined;
-	}	
+	}
 }
 function connectCallback(sHash) {
-	window.tvHash = sHash;
+	if(sHash && sHash.length > 0) window.tvHash = sHash;
 	document.getElementById("loginLayer").style.display = \'none\';
-	if(sHash.length > 0)
-		GetUnity().SendMessage(\'Persistent\', \'InjectHash\', window.tvHash);
-	else
-		GetUnity().SendMessage(\'Persistent\', \'InjectNoHash\', \'\');
+	GetUnity().SendMessage(\'Persistent\', \'InjectHash\', window.tvHash);
 	window.frames[\'loginFrame\'].location = \'';
 			$_ob []= '' . parent::processMember('getUrl', null);
 			$_ob []= '' . '/login\';	
@@ -99,7 +100,7 @@ function connectCallback(sHash) {
   1 => 'src',
   2 => '/files/toevla/video/blank.html',
 ));
-			$_ob []= '' . '" frameborder="0" allowfullscreen></iframe>
+			$_ob []= '' . '" frameborder="0"></iframe>
 </div>
 
 <div id="unityPlayer"></div>

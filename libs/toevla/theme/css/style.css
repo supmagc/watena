@@ -7,13 +7,16 @@ html, body, #centerTable {
 	padding:0px;
 	margin:0px;
 }
+
 #centerTable {
 	background: url(../bg.jpg) center no-repeat;
 }
+
 #centerCell {
 	width:728px;
 	height:450px;
 }
+
 #centerDiv {
 	position:relative;
 	width:728px;
@@ -21,6 +24,7 @@ html, body, #centerTable {
 	top:0px;
 	left:0px;
 }
+
 #unityPlayer {
 	z-index:0;
 	position:absolute;
@@ -30,6 +34,7 @@ html, body, #centerTable {
 	top:0px;
 	left:0px;
 }
+
 #youtubePlayer {
 	z-index:1;
 	position:absolute;
@@ -42,6 +47,7 @@ html, body, #centerTable {
 */
 	left:10px;
 }
+
 #loginLayer {
 	z-index:2;
 	position:absolute;
@@ -52,9 +58,25 @@ html, body, #centerTable {
 	top:120px; /*125px;*/
 	left:184px; /*189px;*/	
 }
+
 #spacerBox {
 	height:120px;
 }
+
+div#spacerBox a {
+	float:right;
+	margin:60px 5px 0px 15px;
+	font-size:11px;
+	font-family: 'Arial', sans-serif;
+	color:#a3a3a3;
+	text-transform:lowercase;
+	text-decoration:none;
+}
+
+div#spacerBox a:hover {
+	text-decoration:underline;
+}
+
 #logo {
 	position:fixed;
 	right: 20px;
@@ -73,7 +95,7 @@ div#content_header_container {
 
 div#content_header_container a {
 	float:right;
-	margin:115px 10px 0px 20px;
+	margin:115px 10px 0px 25px;
 	font-size:11px;
 	font-family: 'Arial', sans-serif;
 	color:#a3a3a3;

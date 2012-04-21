@@ -56,6 +56,9 @@ class Watena extends Configurable {
 			}
 		}
 		while($this->m_oController && $this->m_oController->hasRemapping());
+		if($this->m_oView) {
+			$this->m_oView->headers($this->m_oModel);
+		}
 		ob_end_flush();
 		if($this->m_oView)
 			$this->m_oView->render($this->m_oModel);
@@ -90,7 +93,7 @@ class Watena extends Configurable {
 	public final function getPath($sPath, $bVerify = true) {
 		$aMatches = array();
 		$aPositions = array();
-		if(Encoding::regFind('^([brdlBRDL]):(/?)(.*?)(/?)$', '' . $sPath, $aMatches, $aPositions)) {
+		if(Encoding::regFind('^([brdlBRDL])([:/\\\\])?([^/\\\\]*?)(/?)$', '' . $sPath, $aMatches, $aPositions)) {
 			switch($aMatches[1]) {
 				case 'b' :
 				case 'B' : $sPath = PATH_BASE . (Encoding::length($aMatches[3]) > 0 ? "/$aMatches[3]" : ''); break;

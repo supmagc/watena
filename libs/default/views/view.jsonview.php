@@ -8,6 +8,10 @@ class JsonView extends View {
 		$this->m_sMethod = $this->getConfig('method', false);
 	}
 	
+	public function headers(Model $oModel = null) {
+		$this->headerContentType('text/json');
+	}
+	
 	public function render(Model $oModel = null) {
 		
 		if(!$oModel)
@@ -20,9 +24,6 @@ class JsonView extends View {
 			$this->getLogger()->error('Unable to find the required method "{method}" in the given Model-object.', array('method' => $this->m_sMethod));
 		
 		$sContent = json_encode(call_user_func(array($oModel, $this->m_sMethod)));
-		if(!headers_sent()) {
-			//header('Content-Type: text/'.(headers_sent() ? 'html' : 'json').';charset=' . $oModel->getCharset());
-		}
 		echo $sContent;
 	}
 }

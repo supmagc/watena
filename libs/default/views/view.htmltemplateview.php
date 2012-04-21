@@ -36,6 +36,10 @@ class HtmlTemplateView extends View implements IPCO_IContentParser {
 		'iframe' => 'src'
 	);
 	
+	public function headers(Model $oModel = null) {
+		$this->headerContentType('text/html');
+	}
+	
 	public function render(Model $oModel = null) {
 		$oPlugin = parent::getWatena()->getContext()->getPlugin('TemplateLoader');
 		$oGenerator = $oPlugin->load(parent::getConfig('template', 'index.tpl'), $this);

@@ -7,7 +7,7 @@
 	</tr>
 	<tr>
 		<td></td>
-		<td id="centerCell"><div id="spacerBox"></div>
+		<td id="centerCell"><div id="spacerBox"><a href="/about">Developers</a><a href="/about">Privacy Statement</a><a href="/about">About</a></div>
 		<div id="centerDiv">
 			{{include front.unity.tpl}}
 		</div><div id="spacerBox"></div></td>
