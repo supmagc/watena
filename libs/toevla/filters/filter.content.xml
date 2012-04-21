@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<filter name="ToeVla content filter" order="4">
+	<view name="HtmlTemplateView">
+		<param name="template">front.content.tpl</param>
+	</view>
+	<rules>
+		<rule type="mapping" variable="local">^/(about)</rule>
+		<rule type="cookie" variable="debug">enabled</rule>
+	</rules>
+</filter>
