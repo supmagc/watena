@@ -307,5 +307,17 @@ function get_called_class($bt = false,$l = 1) {
         default: throw new Exception ("Unknown backtrace method type");
     }
 }
-} 
+}
+
+function NYI() {
+	$aTrace = debug_backtrace();
+	if(count($aTrace) > 0) echo "<strong>{$aTrace[0]['file']}</strong> (<i>line: {$aTrace[0]['line']}</i>)\r\n";
+	die('NYI');
+}
+
+function dump($mVar) {
+	$aTrace = debug_backtrace();
+	if(count($aTrace) > 0) echo "<strong>{$aTrace[0]['file']}</strong> (<i>line: {$aTrace[0]['line']}</i>)\r\n";
+	var_dump($mVar);
+}
 ?>

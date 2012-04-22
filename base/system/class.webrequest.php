@@ -94,6 +94,10 @@ class WebRequest extends Object {
 		$this->m_aCookies = array_merge($this->m_aCookies, $aCookies);
 	}
 	
+	public final function takeCookies() {
+		$this->addCookies($_COOKIE);
+	}
+	
 	public final function send() {
 		$aHeaders = array_map(create_function('$a, $b', 'return $a.\': \'.$b;'), array_keys($this->m_aHeaders), array_values($this->m_aHeaders));
 		$sCookies = http_build_query($this->m_aCookies, null, '; ');
@@ -104,7 +108,7 @@ class WebRequest extends Object {
 		// Add fields and method !!
 		if($this->m_sMethod == 'PUT') {
 			curl_setopt($this->m_oCurl, CURLOPT_PUT, true);
-			die("PUT NYI"); // TODO: add the appropriazte request stuff
+			NYI();
 		}
 		else if($this->m_sMethod == 'POST') {
 			curl_setopt($this->m_oCurl, CURLOPT_POST, true);

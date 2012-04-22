@@ -76,6 +76,14 @@ class WebResponse extends Object {
 	public function getCharset() {
 		return $this->m_sCharset;
 	}
+	
+	public function getCookies() {
+		NYI();
+	}
+	
+	public function makeCookies() {
+		NYI();
+	}
 
 	public function getHeader($sKey) {
 		return isset($this->m_aHeaders[$sKey]) ? $this->m_aHeaders[$sKey] : false;

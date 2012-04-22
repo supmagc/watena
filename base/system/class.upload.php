@@ -5,37 +5,37 @@ class Upload extends Object {
 	private $m_sFile;
 	private $m_aFile;
 	
-	public function __construct($sFile) {
+	public final function __construct($sFile) {
 		$this->m_sFile = $sFile;
 		if(isset($_FILES[$sFile]))
 			$this->m_aFile = $_FILES[$sFile];
 	}
 	
-	public function exists() {
+	public final function exists() {
 		return is_array($this->m_aFile) && isset($this->m_aFile['tmp_name']) && file_exists($this->m_aFile['tmp_name']);
 	}
 	
-	public function getLength() {
+	public final function getLength() {
 		return ($this->exists() && isset($this->m_aFile['size'])) ? $this->m_aFile['size'] : false;
 	}
 	
-	public function getContent() {
+	public final function getContent() {
 		return $this->exists() ? file_get_contents($this->m_aFile['tmp_name']) : false;
 	}
 	
-	public function getFilesize() {
+	public final function getFilesize() {
 		return $this->exists() ? filesize($this->m_aFile['tmp_name']) : false;
 	}
 	
-	public function getMimeType() {
+	public final function getMimeType() {
 		return ($this->exists() && isset($this->m_aFile['type'])) ? $this->m_aFile['type'] : false;
 	}
 	
-	public function getName() {
+	public final function getName() {
 		return ($this->exists() && isset($this->m_aFile['name'])) ? $this->m_aFile['name'] : false;
 	}
 	
-	public function getFilename() {
+	public final function getFilename() {
 		if($this->getName()) {
 			$aMatches = array();
 			$aPositions = array();
@@ -47,7 +47,7 @@ class Upload extends Object {
 		return false;
 	}
 	
-	public function getExtension() {
+	public final function getExtension() {
 		if($this->getName()) {
 			$aMatches = array();
 			$aPositions = array();
@@ -59,11 +59,11 @@ class Upload extends Object {
 		return false;
 	}
 	
-	public function getError() {
+	public final function getError() {
 		return ($this->exists() && isset($this->m_aFile['error'])) ?($this->m_aFile['error'] ?: false) : false;
 	}
 	
-	public function getErrorMessage() {
+	public final function getErrorMessage() {
 		switch($this->getError()) {
 			case UPLOAD_ERR_OK: return false;
 			case UPLOAD_ERR_INI_SIZE: return 'The uploaded file exceeds the upload_max_filesize directive in php.ini.';
@@ -77,7 +77,7 @@ class Upload extends Object {
 		}
 	}
 	
-	public function move($sDestination, $bOverwrite = false) {
+	public final function move($sDestination, $bOverwrite = false) {
 		if($this->exists()) {
 			$sDestination = $this->getWatena()->getPath($sDestination, false);
 			if(is_dir($sDestination)) {
