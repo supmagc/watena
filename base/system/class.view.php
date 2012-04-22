@@ -23,6 +23,7 @@ abstract class View extends CacheableData {
 	}
 	
 	protected final function header($sLine, $bOverwrite = false) {
+		dump($sLine);
 		$sFile = '';
 		$nLine = 0;
 		if(!headers_sent($sFile, $nLine)) {
