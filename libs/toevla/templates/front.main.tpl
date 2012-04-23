@@ -10,7 +10,8 @@
 		<td id="centerCell"><div id="spacerBox"><a href="/about">Developers</a><a href="/about">Privacy Statement</a><a href="/about">About</a></div>
 		<div id="centerDiv">
 			{{include front.unity.tpl}}
-		</div><div id="spacerBox"></div></td>
+		</div>
+		<div id="spacerBox"><iframe id="dezelicious" name="dezelicious" style="display:none;" scrolling="no" frameborder="0" allowTransparency="true" src="/files/toevla/video/blank.html" width="300" height="69"></iframe></div></td>
 		<td></td>
 	</tr>
 	<tr>

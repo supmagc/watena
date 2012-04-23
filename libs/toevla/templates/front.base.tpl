@@ -8,7 +8,6 @@
 </head>
 
 <body>
-<img src="/theme/toevla/logo.gif" id="logo" />
 {{region use content}}
 </body>
 </html>

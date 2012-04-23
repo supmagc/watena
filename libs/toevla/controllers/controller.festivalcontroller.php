@@ -3,9 +3,8 @@ require_plugin('DatabaseManager');
 
 class FestivalController extends Controller {
 
-	private $m_aAllowed = array('website', 'location', 'locationType', 'twitterName', 'twitterHash', 'facebook', 'youtube', 'flickr', 'picasa', 'data', 'description_EN', 'logoFilename', 'afficheFilename');
-	
-	
+	private $m_aAllowed = array('website', 'location', 'locationType', 'twitterName', 'twitterHash', 'facebook', 'youtube', 'flickr', 'picasa', 'data', 'description_EN', 'logoFilename', 'afficheFilename', 'artists', 'quiz');
+
 	public function process(Model $oModel = null, View $oView = null) {
 		if($this->getWatena()->getMapping()->getLocal() == '/festival/save') {
 			$oConnection = DatabaseManager::getConnection('toevla');
@@ -17,6 +16,16 @@ class FestivalController extends Controller {
 				}
 			}
 			
+			if(isset($aData['picasa'])) {
+				$aMatches = array();
+				$aData['picasa'] = Encoding::regFind('(user/[0-9]+/albumid/[0-9]+)', $aData['picasa'], $aMatches) ? $aMatches[1] : null;
+			}
+			
+			if(isset($aData['flickr'])) {
+				$aMatches = array();
+				$aData['flickr'] = Encoding::regFind('(set=[^&]+&nsid=[^&]+)', $aData['flickr'], $aMatches) ? $aMatches[1] : null;
+			}
+				
 			$oLogoFile = new Upload('logo');
 			if($oLogoFile->exists()) {
 				$sFilename = md5('logo' . microtime()) . '.' . $oLogoFile->getExtension();

@@ -14,7 +14,7 @@ if(typeof unityObject != "undefined") {
 			backgroundcolor: "FFFFFF",
 			bordercolor: "FFFFFF",
 			textcolor: "000000",
-			logoimage: "{[getUrl()]}/theme/toevla/loadunity.png"
+			logoimage: "{[getUrl()]}/files/toevla/unity/loadunity.png"
 	};
 	unityObject.embedUnity("unityPlayer", "{[getUrl()]}/files/toevla/unity/{[getConfig('unity', 'WebPlayer.unity3d')]}", 728, 450, params);
 }
@@ -27,17 +27,17 @@ function Video(URL){
 	document.getElementById("youtubePlayer").style.display = 'block';
 	video.location=URL;
 }
-function requestHash(bForcePopup) {
-	if(bForcePopup == "1" || !window.tvHash || window.tvHash.length == 0)
-		document.getElementById("loginLayer").style.display = 'block';
+
+function requestHash(sRequestHashType) {
+	if(sRequestHashType == "HIDDEN" || (sRequestHashType == "AUTOMATIC" && window.tvHash.length > 0))
+		GetUnity().SendMessage('Persistent', 'InjectHash', window.tvHash);		
 	else
-		GetUnity().SendMessage('Persistent', 'InjectHash', window.tvHash);
-}
-function removeHash() {
+		document.getElementById("loginLayer").style.display = 'block';
 	window.tvHash = '';
 }
+
 function connectCancel() {
-	connectCallback();
+	hashCallback();
 }
 function connectPopup(sUrl) {
 	if(window.tvLoginPopup) {
@@ -65,6 +65,16 @@ function connectCallback(sHash) {
 		window.tvLoginPopup.close();
 		window.tvLoginPopup = undefined;
 	}	
+}
+function deezerChange(mId) {
+	if(mId && (mId.length > 0 || mId > 0)) {
+		document.getElementById("dezelicious").style.display = 'block';
+		window.frames['dezelicious'].location = 'http://www.deezer.com/nl/plugins/player?autoplay=true&playlist=false&width=300&height=69&cover=false&type=playlist&id=' + mId;
+	}
+	else {
+		document.getElementById("dezelicious").style.display = 'none';
+		window.frames['dezelicious'].location = '{[getUrl()]}/files/toevla/video/blank.html';
+	}
 }
 --></script>
 <div id="loginLayer" style="display: none;">

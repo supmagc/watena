@@ -10,12 +10,37 @@ class IPCO_Compiled_f__www_watena_libs_toevla_templates_front_main_tpl extends I
 	</tr>
 	<tr>
 		<td></td>
-		<td id="centerCell"><div id="spacerBox"></div>
+		<td id="centerCell"><div id="spacerBox"><a href="';
+			$_ob []= '' . parent::callContentParser('addMappingRoot', array (
+  0 => 'a',
+  1 => 'href',
+  2 => '/about',
+));
+			$_ob []= '' . '">Developers</a><a href="';
+			$_ob []= '' . parent::callContentParser('addMappingRoot', array (
+  0 => 'a',
+  1 => 'href',
+  2 => '/about',
+));
+			$_ob []= '' . '">Privacy Statement</a><a href="';
+			$_ob []= '' . parent::callContentParser('addMappingRoot', array (
+  0 => 'a',
+  1 => 'href',
+  2 => '/about',
+));
+			$_ob []= '' . '">About</a></div>
 		<div id="centerDiv">
 			';
 $_ob []= '' . parent::callInclude('F:\WWW\watena\libs\toevla\templates\front.unity.tpl');
 			$_ob []= '' . '
-		</div><div id="spacerBox"></div></td>
+		</div>
+		<div id="spacerBox"><iframe id="dezelicious" name="dezelicious" style="display:none;" scrolling="no" frameborder="0" allowTransparency="true" src="';
+			$_ob []= '' . parent::callContentParser('addMappingRoot', array (
+  0 => 'iframe',
+  1 => 'src',
+  2 => '/files/toevla/video/blank.html',
+));
+			$_ob []= '' . '" width="300" height="69"></iframe></div></td>
 		<td></td>
 	</tr>
 	<tr>

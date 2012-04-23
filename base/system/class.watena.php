@@ -62,8 +62,6 @@ class Watena extends Configurable {
 		ob_end_flush();
 		if($this->m_oView)
 			$this->m_oView->render($this->m_oModel);
-		else
-			echo "\0";
 		
 		// Log the end of Watena
 		$this->getLogger()->debug('Watena loaded and rendered the page in {time} sec.', array('time' => round(microtime(true) - $nTime, 5)));
