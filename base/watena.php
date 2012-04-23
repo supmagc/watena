@@ -65,6 +65,7 @@ if(!defined('NWATENA')) {
 	require_once PATH_BASE . '/system/class.time.php';
 	require_once PATH_BASE . '/system/class.interval.php';
 	require_once PATH_BASE . '/system/class.upload.php';
+	require_once PATH_BASE . '/system/class.zipfile.php';
 	
 	// ############################################################
 	// Load the application framework
@@ -75,6 +76,6 @@ if(!defined('NWATENA')) {
 	
 	$aConfig = parse_ini_file(PATH_BASE . '/watena.ini', true);
 	if(!$aConfig) die('No readable Watena config file could be found.');
-	new Watena($aConfig);
+	new Watena($aConfig, !defined(NMVC));
 }
 ?>
