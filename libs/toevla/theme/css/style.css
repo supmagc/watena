@@ -48,15 +48,19 @@ html, body, #centerTable {
 	left:10px;
 }
 
-#loginLayer {
+iframe#dezelicious {
+	position:relative;
+	top:20px;
+}
+
+#connectLayer {
 	z-index:2;
 	position:absolute;
-	background-color:#f4f3ee;
-	padding: 5px;
-	width:350px;
-	height:200px;
-	top:120px; /*125px;*/
-	left:184px; /*189px;*/	
+	background: url(../iframe_bg.jpg) center;
+	width:342px;
+	height:192px;
+	top:129px;
+	left:193px;	
 }
 
 #spacerBox {
@@ -75,12 +79,6 @@ div#spacerBox a {
 
 div#spacerBox a:hover {
 	text-decoration:underline;
-}
-
-#logo {
-	position:fixed;
-	right: 20px;
-	top: 20px;
 }
 
 div#content_header {
