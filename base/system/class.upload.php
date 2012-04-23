@@ -90,7 +90,6 @@ class Upload extends Object {
 			}
 				
 			if(!is_dir($sDirectorypath)) {
-				var_dump($sDirectorypath);
 				mkdir($sDirectorypath, 0775);
 			}
 			
