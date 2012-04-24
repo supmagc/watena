@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="{[getContentType()]}; charset={[getCharset()]}" />
-<title>{[getTitle()]}</title>
+<title>Flanders Is A Festival</title>
 <link href="/theme/toevla/css/style.css" rel="stylesheet" type="text/css" />
 <link href='http://fonts.googleapis.com/css?family=Lato:700,400italic,400' rel='stylesheet' type='text/css'>
 </head>

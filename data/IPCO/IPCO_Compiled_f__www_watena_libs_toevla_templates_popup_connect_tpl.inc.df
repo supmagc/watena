@@ -72,13 +72,11 @@ class IPCO_Compiled_f__www_watena_libs_toevla_templates_popup_connect_tpl extend
 			if((parent::processMember('isDuplicateName', null) || parent::processMember('isInvalidName', null))) {
 				$_ob []= '' . '
 	<p>This name is allready in use or invalid!<br />You may try another name!</p>
-	<form action="?action=rename" method="post">
-		<div class="field">
+	<form class="field" action="?action=rename" method="post">
 		<input type="text" value="';
 				$_ob []= '' . parent::processMember('getSaveName', null);
 				$_ob []= '' . '" name="name" />
 		<input type="submit" name="sub" value="" />
-		</div>
 	</form>
 	';
 			}
