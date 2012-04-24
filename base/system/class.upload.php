@@ -88,9 +88,9 @@ class Upload extends Object {
 				$sDirectorypath = dirname($sDestination);
 				$sFilepath = $sDestination;
 			}
-				
+			
 			if(!is_dir($sDirectorypath)) {
-				mkdir($sDirectorypath, 0775);
+				mkdir($sDirectorypath, 0775, true);
 			}
 			
 			if(!file_exists($sFilepath) || $bOverwrite) {

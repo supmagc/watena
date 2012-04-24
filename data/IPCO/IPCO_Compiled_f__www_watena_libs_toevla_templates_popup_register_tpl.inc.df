@@ -1,0 +1,86 @@
+<?php
+class IPCO_Compiled_f__www_watena_libs_toevla_templates_popup_register_tpl extends IPCO_Compiled_f__www_watena_libs_toevla_templates_popup_base_tpl {
+	protected function callRegion__content() {
+		try {
+			$_ob = array();
+			$_ob []= '' . '
+
+';
+			if(true) {
+				$_ob []= '' . '
+<br /><br />
+<h1>Under construction!</h1>
+<p>The mail-based login is currently under construction.<br />Please bare with us, as we finalize this feature!</p>
+<p><a href="';
+				$_ob []= '' . parent::callContentParser('addMappingRoot', array (
+  0 => 'a',
+  1 => 'href',
+  2 => '/login',
+));
+				$_ob []= '' . '">Go back</a></p>
+';
+			} else {
+				$_ob []= '' . '
+
+';
+				if(parent::processMember('isLogin', null)) {
+					$_ob []= '' . '
+<h1>Welcome back!</h1>
+<p>Provide us with your password, and enter \'Flanders Is A Festival\'!</p>
+';
+				}
+				$_ob []= '' . '
+
+';
+				if(parent::processMember('isRegister', null)) {
+					$_ob []= '' . '
+<h1>Register to continue!</h1>
+<p>Your email-adress wasn\'t recognised. Enter a password to register yourself.</p>
+';
+				}
+				$_ob []= '' . '
+
+<form class="field" action="';
+				$_ob []= '' . parent::callContentParser('addMappingRoot', array (
+  0 => 'form',
+  1 => 'action',
+  2 => '/login/register',
+));
+				$_ob []= '' . '" method="post">
+	<input type="hidden" name="email" value="';
+				$_ob []= '' . parent::processMember('getEmail', null);
+				$_ob []= '' . '" />
+	<input type="password" name="pass" />
+	<input type="submit" value="" />
+</form>
+
+';
+				if(parent::processMember('isUnverified', null)) {
+					$_ob []= '' . '
+<h1>Unverified user!</h1>
+<span class="error">
+<p>Your email-adress exists, but is not yet verified.<br />Please check your mailbox if this is you!</p>
+</span>
+';
+				}
+				$_ob []= '' . '
+
+';
+				if(parent::processMember('isConnection', null)) {
+					$_ob []= '' . '
+<h1>Register to continue!</h1>
+<p>Your email-adress wasn\'t recognised. Enter a password to register yourself.</p>
+';
+				}
+				$_ob []= '' . '
+
+';
+			}
+			$_ob []= '' . '
+
+';
+			return implode('', $_ob);
+		} catch(Exception $e) { throw new WatCeption('Unable to create template-output.', array(), null, $e); }
+	}
+}
+?>

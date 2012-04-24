@@ -76,6 +76,6 @@ if(!defined('NWATENA')) {
 	
 	$aConfig = parse_ini_file(PATH_BASE . '/watena.ini', true);
 	if(!$aConfig) die('No readable Watena config file could be found.');
-	new Watena($aConfig, !defined(NMVC));
+	new Watena($aConfig, !defined('NMVC'));
 }
 ?>

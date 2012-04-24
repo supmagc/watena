@@ -8,22 +8,27 @@ class RequestModel extends Model {
 		$nId = null;
 		$qType = null;
 		$sQuery = null;
+		$sType = $aLocal[1];
 		if(count($aLocal) > 2) {
 			$nId = $aLocal[2];
-			$sType = $aLocal[1];
 		}
 		if(count($aLocal) > 1 && isset($_GET['query'])) {
 			$sQuery = $_GET['query'];
-			$sType = $aLocal[1];
 		}
 		
-		if($aLocal[1] == 'flush') {
+		if($sType == 'flush') {
 				$this->getWatena()->getCache()->delete("TOEVLA.flickr.$nId.$sQuery");
 				$this->getWatena()->getCache()->delete("TOEVLA.picasa.$nId.$sQuery");
 		} 
-		else {
+		else if($sType == 'picasa' || $sType == 'flickr') {
 			$sKey = "TOEVLA.$sType.$nId.$sQuery";
 			return $this->getWatena()->getCache()->retrieve($sKey, array($this, 'getData'), 60 * 60 * 24, array($nId, $sQuery, $sType));
+		}
+		else if(file_exists(PATH_LIBS . '/toevla/listings/' . $sType . '.txt')) {
+			return explode_trim("\n", Encoding::replace("\r", "", file_get_contents(PATH_LIBS . '/toevla/listings/' . $sType . '.txt')));
+		}
+		else {
+			return array();
 		}
 	}
 	
@@ -33,7 +38,12 @@ class RequestModel extends Model {
 			$aFestivalData = $oStatement->rowCount() > 0 ? $oStatement->fetch(PDO::FETCH_ASSOC) : array();
 		}
 		if($sType == 'picasa' && ($sQuery || $aFestivalData['picasa'])) {
-			$oRequest = new WebRequest('http://picasaweb.google.com/data/feed/api/'.($sQuery ?: $aFestivalData['picasa']).'?access=public&alt=json&kind=photo', 'GET');
+			if($sQuery) {
+				$oRequest = new WebRequest($sQuery, 'GET');
+			}
+			else {
+				$oRequest = new WebRequest('http://picasaweb.google.com/data/feed/api/'.$aFestivalData['picasa'].'?access=public&alt=json&kind=photo', 'GET');
+			}
 			$oResponse = $oRequest->send();
 			$aData = json_decode($oResponse->getContent(), true);
 			$aUrls = array();
@@ -47,7 +57,16 @@ class RequestModel extends Model {
 			return $aUrls;
 		}
 		if($sType == 'flickr' && ($sQuery || $aFestivalData['flickr'])) {
-			$oRequest = new WebRequest('http://api.flickr.com/services/feeds/photoset.gne?'.($sQuery ?: $aFestivalData['flickr']).'&lang=en-us&format=php_serial', 'GET');
+			if($sQuery) {
+				$oRequest = new WebRequest($sQuery, 'GET');
+			}
+			else {
+				parse_str($aFestivalData['flickr'], $aParams);
+				if(!isset($aParams['set']))
+					$oRequest = new WebRequest('http://api.flickr.com/services/feeds/photos_public.gne?'.$aFestivalData['flickr'].'&lang=en-us&format=php_serial', 'GET');
+				else
+					$oRequest = new WebRequest('http://api.flickr.com/services/feeds/photoset.gne?'.$aFestivalData['flickr'].'&lang=en-us&format=php_serial', 'GET');
+			}
 			$oResponse = $oRequest->send();
 			$aUrls = array();
 			$aData = unserialize($oResponse->getContent());
