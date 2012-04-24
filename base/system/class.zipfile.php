@@ -8,7 +8,12 @@ class ZipFile extends Object {
 	public function __construct($sFilepath) {
 		$this->m_sPath = $this->getWatena()->getPath($sFilepath, false);
 		$this->m_oZipper = new ZipArchive();
-		$this->m_oZipper->open($this->getFilepath(), ZipArchive::CREATE | ZipArchive::OVERWRITE);
+		$sDirectory = dirname($sFilepath);
+		if(!file_exists($filename))
+			mkdir($sDirectory, 0775, true);
+		if(is_readable($sFilepath) && is_writable($sFilepath)) {
+			$this->m_oZipper->open($this->getFilepath(), ZipArchive::CREATE | ZipArchive::OVERWRITE);
+		}
 	}
 	
 	public function __destruct() {

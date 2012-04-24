@@ -4,7 +4,6 @@ class ConnectModel extends Model {
 	
 	private $m_sHash;
 	private $m_nType = 0;
-	private $m_sError;
 	private $m_sName;
 
 	public function setName($sName) {
@@ -19,16 +18,27 @@ class ConnectModel extends Model {
 		return $this->m_sHash;
 	}
 
-	public function showDuplicateName($sError) {
-		$this->m_nType = 4;
-		$this->m_sError = $sError;
+	public function showDuplicateName() {
+		$this->m_nType = 7;
 	}
 	
-	public function showDuplicateConnection() {
-		$this->m_nType = 3;		
+	public function showDuplicateLogin() {
+		$this->m_nType = 6;		
 	}
 	
 	public function showDuplicateEmail() {
+		$this->m_nType = 5;
+	}
+	
+	public function showInvalidEmail() {
+		$this->m_nType = 4;
+	}
+	
+	public function showInvalidName() {
+		$this->m_nType = 3;
+	}
+	
+	public function showUnverifiedEmail() {
 		$this->m_nType = 2;
 	}
 	
@@ -38,10 +48,6 @@ class ConnectModel extends Model {
 
 	public function showSucces() {
 		$this->m_nType = 0;
-	}
-	
-	public function getError() {
-		return $this->m_sError;
 	}
 	
 	public function getSaveName() {
@@ -56,16 +62,28 @@ class ConnectModel extends Model {
 		return $this->m_nType == 1;
 	}
 	
-	public function isDuplicateEmail() {
+	public function isUnverifiedEmail() {
 		return $this->m_nType == 2;
 	}
 	
-	public function isDuplicateConnection() {
+	public function isInvalidName() {
 		return $this->m_nType == 3;
 	}
 	
-	public function isDuplicateName() {
+	public function isInvalidEmail() {
 		return $this->m_nType == 4;
+	}
+	
+	public function isDuplicateEmail() {
+		return $this->m_nType == 5;
+	}
+	
+	public function isDuplicateLogin() {
+		return $this->m_nType == 6;
+	}
+	
+	public function isDuplicateName() {
+		return $this->m_nType == 7;
 	}
 }
 

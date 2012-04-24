@@ -11,7 +11,7 @@
 		<div id="centerDiv">
 			{{include front.unity.tpl}}
 		</div>
-		<div id="spacerBox"><iframe id="dezelicious" name="dezelicious" style="display:none;" scrolling="no" frameborder="0" allowTransparency="true" src="/files/toevla/video/blank.html" width="300" height="69"></iframe></div></td>
+		<div id="spacerBox"><div id="dezelicious"><iframe name="dezelicious" style="display:none;" scrolling="no" frameborder="0" allowTransparency="true" src="/files/toevla/video/blank.html" width="300" height="69"></iframe></div></div></td>
 		<td></td>
 	</tr>
 	<tr>

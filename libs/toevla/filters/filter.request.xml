@@ -6,6 +6,6 @@
 		<param name="method">getConfigData</param>
 	</view>
 	<rules>
-		<rule type="mapping" variable="local">^/request</rule>
+		<rule type="mapping" variable="local">^/request/</rule>
 	</rules>
 </filter>

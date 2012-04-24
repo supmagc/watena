@@ -3,7 +3,7 @@ require_plugin('DatabaseManager');
 
 class FestivalController extends Controller {
 
-	private $m_aAllowed = array('website', 'location', 'locationType', 'twitterName', 'twitterHash', 'facebook', 'youtube', 'flickr', 'picasa', 'data', 'description_EN', 'logoFilename', 'afficheFilename', 'artists', 'quiz');
+	private $m_aAllowed = array('website', 'locationType', 'twitterName', 'twitterHash', 'facebook', 'youtube', 'flickr', 'picasa', 'data', 'description_EN', 'logoFilename', 'afficheFilename', 'artists', 'quiz');
 
 	public function process(Model $oModel = null, View $oView = null) {
 		if($this->getWatena()->getMapping()->getLocal() == '/festival/save') {
@@ -23,20 +23,20 @@ class FestivalController extends Controller {
 			
 			if(isset($aData['flickr'])) {
 				$aMatches = array();
-				$aData['flickr'] = Encoding::regFind('(set=[^&]+&nsid=[^&]+)', $aData['flickr'], $aMatches) ? $aMatches[1] : null;
+				$aData['flickr'] = Encoding::regFind('(set=[^&]+&nsid=[^&]+|(ns)?id=[^&]+)', $aData['flickr'], $aMatches) ? $aMatches[1] : null;
 			}
 				
 			$oLogoFile = new Upload('logo');
 			if($oLogoFile->exists()) {
 				$sFilename = md5('logo' . microtime()) . '.' . $oLogoFile->getExtension();
-				$oLogoFile->move("L:/toevla/files/festival/$sFilename");
+				$oLogoFile->move("L:toevla/files/festival/$sFilename");
 				$aData['logoFilename'] = $sFilename;
 			}
 			
 			$oAfficheFile = new Upload('affiche');
 			if($oAfficheFile->exists()) {
 				$sFilename = md5('affiche' . microtime()) . '.' . $oAfficheFile->getExtension();
-				$oAfficheFile->move("L:/toevla/files/festival/$sFilename");
+				$oAfficheFile->move("L:toevla/files/festival/$sFilename");
 				$aData['afficheFilename'] = $sFilename;
 			}
 			

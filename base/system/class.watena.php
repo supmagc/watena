@@ -93,7 +93,7 @@ class Watena extends Configurable {
 	public final function getPath($sPath, $bVerify = true) {
 		$aMatches = array();
 		$aPositions = array();
-		if(Encoding::regFind('^([brdlBRDL])([:/\\\\])?([^/\\\\]*?)(/?)$', '' . $sPath, $aMatches, $aPositions)) {
+		if(Encoding::regFind('^([brdlBRDL])(:)(.*?)(/?)$', '' . $sPath, $aMatches, $aPositions)) {
 			switch($aMatches[1]) {
 				case 'b' :
 				case 'B' : $sPath = PATH_BASE . (Encoding::length($aMatches[3]) > 0 ? "/$aMatches[3]" : ''); break;
