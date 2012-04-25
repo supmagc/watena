@@ -12,7 +12,9 @@ class ConfigModel extends Model {
 			'imageUrlPrefix'	=> '' . new Mapping('/files/toevla/festival'),
 			'picasaUrlPrefix'	=> '' . new Mapping('/request/picasa'),
 			'flickrUrlPrefix'	=> '' . new Mapping('/request/flickr'),
-			'audioUrlPrefix'	=> '' . new Mapping('/files/toevla/audio')
+			'listingsUrlPrefix'	=> '' . new Mapping('/request/listings'),
+			'audioUrlPrefix'	=> '' . new Mapping('/files/toevla/audio'),
+			'loggerUrl'			=> '' . new Mapping('/debug/logger')
 		);
 		$oStatement = DatabaseManager::getConnection('toevla')->select('game_config');
 		foreach($oStatement as $aRow) {
