@@ -57,6 +57,30 @@ class FestivalController extends Controller {
 				$aData['flickr'] = serialize($aData['flickr']);
 			}
 			
+			if(isset($aData['twitterName']) && $aData['twitterName']) {
+				$aMatches = array();
+				if(Encoding::regFind('^@?([a-zA-Z0-9_]+)$', Encoding::trim($aData['twitterName']), $aMatches))
+					$aData['twitterName'] = $aMatches[1];
+				else 
+					$aErrors []= 'twitterName';
+			}
+			
+			if(isset($aData['twitterHash']) && $aData['twitterHash']) {
+				$aMatches = array();
+				if(Encoding::regFind('^#?([a-zA-Z0-9_]+)$', Encoding::trim($aData['twitterHash']), $aMatches))
+					$aData['twitterHash'] = $aMatches[1];
+				else
+					$aErrors []= 'twitterHash';
+			}
+			
+			if(isset($aData['facebook']) && $aData['facebook']) {
+				$aMatches = array();
+				if(Encoding::regFind('^(http://(www\\.)?facebook\\.com/)?([-a-z_]+)$', Encoding::trim($aData['facebook']), $aMatches))
+					$aData['facebook'] = $aMatches[1];
+				else
+					$aErrors []= 'facebook';
+			}
+				
 			if(isset($aData['youtube']) && $aData['youtube']) {
 				$aMatches = array();
 				if(Encoding::regFind('youtu\\.be/([-a-zA-Z0-9]+)', $aData['youtube'], $aMatches))
@@ -102,6 +126,7 @@ class FestivalController extends Controller {
 					$aRow = $oStatement->fetch(PDO::FETCH_ASSOC);
 					$aRow['logoFilename'] = '' . new Mapping('/files/toevla/festival/' . $aRow['logoFilename']);
 					$aRow['afficheFilename'] = '' . new Mapping('/files/toevla/festival/' . $aRow['afficheFilename']);
+					$aRow['facebook'] = $aRow['facebook'] ? "http://www.facebook.com/$aRow[facebook]" : '';
 					$aRow['flickr'] = unserialize($aRow['flickr']);
 					$aRow['picasa'] = unserialize($aRow['picasa']);
 					$aRow['flickr'] = isset($aRow['flickr']['source']) ? $aRow['flickr']['source'] : '';

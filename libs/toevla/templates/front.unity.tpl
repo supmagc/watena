@@ -18,6 +18,8 @@ if(typeof unityObject != "undefined") {
 	unityObject.embedUnity("unityPlayer", "{[getUrl()]}/files/toevla/unity/{[getConfig('unity', 'WebPlayer.unity3d')]}", 728, 450, params);
 }
 
+
+
 function Hide() {
 	video.location='{[getUrl()]}/files/toevla/video/blank.html';
 	document.getElementById("youtubePlayer").style.display = 'none';
@@ -28,6 +30,16 @@ function Video(URL){
 		video.location=URL;
 	}
 }
+
+
+
+function triggerFacebook() {
+}
+function triggerTwitter() {
+}
+
+
+
 function deezerChange(mId) {
 	if(mId && (mId.length > 0 || mId > 0)) {
 		document.getElementById("dezelicious").style.display = 'block';

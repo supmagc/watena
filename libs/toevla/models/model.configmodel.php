@@ -13,6 +13,7 @@ class ConfigModel extends Model {
 			'picasaUrlPrefix'	=> '' . new Mapping('/request/picasa'),
 			'flickrUrlPrefix'	=> '' . new Mapping('/request/flickr'),
 			'listingsUrlPrefix'	=> '' . new Mapping('/request/listings'),
+			'twitterUrlPrefix'	=> '' . new Mapping('/request/twitter'),
 			'audioUrlPrefix'	=> '' . new Mapping('/files/toevla/audio'),
 			'loggerUrl'			=> '' . new Mapping('/debug/logger')
 		);

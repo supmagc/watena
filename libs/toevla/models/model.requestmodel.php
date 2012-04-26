@@ -24,6 +24,11 @@ class RequestModel extends Model {
 						if($aFlickr['type'] == 'public') $sQuery = 'http://api.flickr.com/services/feeds/photos_public.gne?' . $aFlickr['url'] . '&format=php_serial';
 						if($aFlickr['type'] == 'faves') $sQuery = 'http://api.flickr.com/services/feeds/photos_faves.gne?' . $aFlickr['url'] . '&format=php_serial';
 					}
+					if($sType == 'twitter' && ($aFestivalData['twitterName'] || $aFestivalData['twitterHash'])) {
+						$sMethod = 'getTwitterData';
+						$sSearch = urlencode("@$aFestivalData[twitterName] OR #$aFestivalData[twitterHash]");
+						$sQuery = 'http://search.twitter.com/search.json?include_entities=false&rpp=25&q=' . $sSearch;
+					}
 				}
 			}
 			else {				
@@ -34,14 +39,14 @@ class RequestModel extends Model {
 			}
 		}
 		else if(isset($_GET['query'])) {
-			$sQuery = $_GET[query];
+			$sQuery = $_GET['query'];
 			if($sType == 'picasa') $sMethod = 'getPicasaData';
 			if($sType == 'flickr') $sMethod = 'getFlickrData';
 		}
 
 		if($sMethod && $sQuery) {
 			$sKey = "TOEVLA.$sMethod.$sQuery";
-			return $this->getWatena()->getCache()->retrieve($sKey, array($this, $sMethod), 60 * 60 * 24, array($sQuery));
+			return $this->getWatena()->getCache()->retrieve($sKey, array($this, $sMethod), 60 * 15, array($sQuery));
 		}
 		else {
 			return array();
@@ -75,6 +80,19 @@ class RequestModel extends Model {
 			}
 		}
 		return $aUrls;
+	}
+	
+	public function getTwitterData($sUrl) {
+		$oRequest = new WebRequest($sUrl, 'GET');
+		$oResponse = $oRequest->send();
+		$aData = json_decode($oResponse->getContent(), true);
+		$aTweets = array();
+		if(isset($aData['results'])) {
+			foreach($aData['results'] as $aTweet) {
+				$aTweets []= $aTweet['text']; 
+			}
+		}
+		return $aTweets;
 	}
 }
 

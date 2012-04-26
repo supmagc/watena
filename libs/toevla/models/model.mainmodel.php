@@ -1,6 +1,7 @@
 <?php
 require_model('HtmlModel');
 require_plugin('UserManager');
+require_plugin('ToeVla');
 
 class MainModel extends HtmlModel {
 	

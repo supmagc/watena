@@ -3,36 +3,39 @@ require_plugin('UserManager');
 
 class ToeVla extends Plugin {
 	
-	public static function getNewHash($sName = null) {
+	public static function getNewHash() {
 		$oUser = UserManager::getLoggedInUser();		
 		$oConnection = DatabaseManager::getConnection('toevla');
-		$nUserId = $oUser ? $oUser->getId() : null;
-		$nCharacterId = null;		
 		
 		if($oUser) {
+			// Delete previous sessions
 			$oConnection->delete('game_session', $oUser->getId(), 'userId');
 
+			// Get existing characterid
 			$oStatement = $oConnection->select('game_character', $oUser->getId(), 'userId');
 			$nCharacterId = null;
 			if($oStatement->rowCount() > 0) {
 				$nCharacterId = $oStatement->fetchObject()->ID;
 			}
-		}
+			
+			// Create valid hash and session
+			$nCount = 0;
+			$sHash = null;
+			do {
+				++$nCount;
+				$sHash = md5("TOEVLA.{$oUser->getId()}.$nCharacterId.$nCount.".microtime(true));
+			}
+			while($oConnection->select('game_session', $sHash, 'hash')->rowCount() > 0);
+			$oConnection->insert('game_session', array(
+				'hash' => $sHash,
+				'userId' => $oUser->getId(),
+				'characterId' => $nCharacterId
+			));
 
-		$nCount = 0;
-		$sHash = null;
-		do {
-			++$nCount;
-			$sHash = md5("TOEVLA.$nUserId.$nCharacterId.$nCount.".microtime(true));
+			// Return hash
+			return $sHash;
 		}
-		while($oConnection->select('game_session', $sHash, 'hash')->rowCount() > 0);
-		$oConnection->insert('game_session', array(
-			'hash' => $sHash,
-			'userId' => $nUserId,
-			'characterId' => $nCharacterId
-		));
-		
-		return $sHash;
+		return null;
 	}
 	
 	/**
