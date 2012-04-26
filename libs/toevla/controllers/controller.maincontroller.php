@@ -9,10 +9,10 @@ class MainController extends UserSessionController {
 		
 		if(UserManager::isLoggedIn()) {
 			$oModel->setHash(ToeVla::getNewHash());
-			$oModel->setTitle('Start to play');
+			$oModel->setTitle('Flanders Is A Festival - Welcome back ...');
 		}
 		else {
-			$oModel->setTitle('Login first');
+			$oModel->setTitle('Flanders Is A Festival');
 		}
 	}
 }
