@@ -28,6 +28,10 @@ class Time extends Object {
 		return $this->m_oTimestamp->getTimestamp();
 	}
 	
+	public function getOffset() {
+		return $this->m_oTimestamp->getTimezone()->getOffset($this->m_oTimestamp);
+	}
+	
 	public function format($sFormat) {
 		return $this->m_oTimestamp->format($sFormat);
 	}
@@ -108,10 +112,17 @@ class Time extends Object {
 	
 	public function difference(Time $oTime) {
 		$oTimeInterval = $this->m_oTimestamp->diff($oTime->m_oTimestamp);
+		NYEI();
 	}
 	
 	public static function getSystemTimezone() {
 		return self::$s_sTimezoneSystem;
+	}
+	
+	public static function getSystemOffset() {
+		$oTimezone = new DateTimeZone(self::$s_sTimezoneSystem);
+		$oDateTime = new DateTime('now', $oTimezone);
+		return $oTimezone->getOffset($oDateTime);
 	}
 	
 	public static function create($mTime = null, $sTimezone = null) {

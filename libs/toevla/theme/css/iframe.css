@@ -12,6 +12,7 @@ html, body {
 	color:#484848;
 	font-size:12px;
 	line-height:18px;
+	overflow: hidden;
 }
 
 a {
@@ -39,6 +40,10 @@ a:hover {
 	background-position:bottom;
 }
 
+#container {
+	padding:10px;
+	margin:0px;
+}
 
 #btn_facebook {
 	background:url(../btn_facebook.gif) top;
@@ -48,7 +53,7 @@ a:hover {
 	display:block;
 	margin:auto;
 	position:relative;
-	top:35px;
+	top:25px;
 }
 
 #btn_facebook:hover {
@@ -63,7 +68,7 @@ a:hover {
 	display:block;
 	margin:auto;
 	position:relative;
-	top:46px;
+	top:36px;
 }
 
 #btn_twitter:hover {
@@ -71,7 +76,15 @@ a:hover {
 }
 
 #login form.field {
-	top:54px;
+	top:44px;
+}
+
+#loading {
+	padding-top: 60px;
+}
+
+#social {
+	padding-top: 30px;
 }
 
 form.field {

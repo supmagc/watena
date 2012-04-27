@@ -39,17 +39,17 @@ class FestivalController extends Controller {
 				$aMatches = array();
 				$sSource = $aData['flickr'];
 				if(Encoding::regFind('/photos/([0-9@N]+)/sets/([0-9]+)', $sSource, $aMatches))
-					$aData['flickr'] = array('source' => $sSource, 'type' => 'set', 'url' => "id=$aMatches[1]");
+					$aData['flickr'] = array('source' => $sSource, 'type' => 'set', 'url' => "set=$aMatches[2]&nsid=$aMatches[1]");
 				else if(Encoding::regFind('/photos/([0-9@N]+)/favorites', $sSource, $aMatches))
 					$aData['flickr'] = array('source' => $sSource, 'type' => 'faves', 'url' => "nsid=$aMatches[1]");
 				else if(Encoding::regFind('/photos/([0-9@N]+)', $sSource, $aMatches))
 					$aData['flickr'] = array('source' => $sSource, 'type' => 'public', 'url' => "id=$aMatches[1]");
 				else if(Encoding::regFind('/photoset\\.gne\\?(set=[0-9]+&nsid=[0-9@N]+)', $sSource, $aMatches))
 					$aData['flickr'] = array('source' => $sSource, 'type' => 'set', 'url' => $aMatches[1]);
+				else if(Encoding::regFind('/photos_faves\\.gne\\?(nsid=[0-9@N]+)', $sSource, $aMatches))
+					$aData['flickr'] = array('source' => $sSource, 'type' => 'faves', 'url' => $aMatches[1]);
 				else if(Encoding::regFind('/photos_public\\.gne\\?(id=[0-9@N]+)', $sSource, $aMatches))
 					$aData['flickr'] = array('source' => $sSource, 'type' => 'public', 'url' => $aMatches[1]);
-				else if(Encoding::regFind('/photos_faves\\.gne\\?(nsid=[0-9@N]+)', $sSource, $aMatches))
-					$aData['flickr'] = array('source' => $sSource, 'type' => 'faces', 'url' => $aMatches[1]);
 				else {
 					$aData['flickr'] = array('source' => $sSource, 'type' => 'unknown', 'url' => '');
 					$aErrors []= 'flickr';
