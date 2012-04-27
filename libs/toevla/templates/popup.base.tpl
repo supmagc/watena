@@ -8,6 +8,8 @@
 
 <body>
 <a id="btn_close" href="javascript:window.parent.connectCancel();" alt="Cancel"></a>
+<div id="container">
 {{region use content}}
+</div>
 </body>
 </html>

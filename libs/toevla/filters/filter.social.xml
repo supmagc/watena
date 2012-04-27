@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<filter name="ToeVla login filter" order="17">
+	<model name="MainModel">
+	</model>
+	<view name="HtmlTemplateView">
+		<param name="template">popup.social.tpl</param>
+	</view>
+	<rules>
+		<rule type="mapping" variable="local">^/social</rule>
+	</rules>
+</filter>

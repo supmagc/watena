@@ -38,7 +38,7 @@ body {
 	left:0px;
 }
 
-#youtubePlayer {
+#videoLayer {
 	z-index:1;
 	position:absolute;
 	background-color:#009;
@@ -51,6 +51,14 @@ body {
 #dezelicious {
 	position:relative;
 	top:20px;
+}
+
+#triggerLayer {
+	z-index:3;
+	position:absolute;
+	background-color:#090;
+	width:728px;
+	height:450px;	
 }
 
 #connectLayer {

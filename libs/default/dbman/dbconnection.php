@@ -51,7 +51,7 @@ class DbConnection {
 				PDO::ATTR_ERRMODE => PDO::ERRMODE_WARNING
 			));
 			$this->m_oConnection->query('SET names '.Encoding::replace('-', '', Encoding::charset()).';'); // Set to UTC
-			$this->m_oConnection->query('SET time_zone = \'+00:00\';'); // Set to UTC
+			$this->m_oConnection->query('SET time_zone = \''.date('P').'\';'); // Set to UTC
 			$this->m_oConnection->query('SET wait_timeout = 120;');
 		}
 	}
