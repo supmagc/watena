@@ -1,35 +1,40 @@
 <?php
-class IPCO_Compiled_d__www_watena_libs_toevla_templates_popup_login_tpl extends IPCO_Processor {
-	public function generate() {
-		return self::callRegion____MainRegion__();
-	}
-	protected function callRegion____MainRegion__() {
+class IPCO_Compiled_d__www_watena_libs_toevla_templates_popup_login_tpl extends IPCO_Compiled_d__www_watena_libs_toevla_templates_popup_base_tpl {
+	protected function callRegion__content() {
 		try {
 			$_ob = array();
+			$_ob []= '' . '
+<div id="login">
+	';
 			if(parent::processMember('hasFacebookLogin', null)) {
 				$_ob []= '' . '
-	<a href="javascript:window.parent.connectPopup(\'';
+		<a id="btn_facebook" href="javascript:window.parent.connectPopup(\'';
 				$_ob []= '' . parent::processMember('getFacebookLoginUrl', null);
-				$_ob []= '' . '\');"><img src="';
-				$_ob []= '' . parent::callContentParser('addMappingRoot', array (
-  0 => 'img',
-  1 => 'src',
-  2 => '/theme/toevla/fb.png',
-));
-				$_ob []= '' . '" /></a><br />	
-';
+				$_ob []= '' . '\');"></a>
+	';
 			}
 			$_ob []= '' . '
-';
+	';
 			if(parent::processMember('hasTwitterLogin', null)) {
 				$_ob []= '' . '
-	<a href="javascript:window.parent.connectPopup(\'';
+		<a id="btn_twitter" href="javascript:window.parent.connectPopup(\'';
 				$_ob []= '' . parent::processMember('getTwitterLoginUrl', null);
-				$_ob []= '' . '\');">Login by Twitter</a><br />
-';
+				$_ob []= '' . '\');"></a>
+	';
 			}
 			$_ob []= '' . '
-<a href="javascript:window.parent.connectCancel();">Cancel</a>';
+	<form class="field" action="';
+			$_ob []= '' . parent::callContentParser('addMappingRoot', array (
+  0 => 'form',
+  1 => 'action',
+  2 => '/login/register',
+));
+			$_ob []= '' . '" method="post">
+		<input type="text" onfocus="if(this.value==\'Your email\') this.value=\'\';" onblur="if(this.value==\'\') this.value=\'Your email\';" name="email" value="Your email" />
+		<input type="submit" value="" />
+	</form>
+</div>
+';
 			return implode('', $_ob);
 		} catch(Exception $e) { throw new WatCeption('Unable to create template-output.', array(), null, $e); }
 	}
