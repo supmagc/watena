@@ -14,6 +14,7 @@ class ConfigModel extends Model {
 			'flickrUrlPrefix'	=> '' . new Mapping('/request/flickr'),
 			'listingsUrlPrefix'	=> '' . new Mapping('/request/listings'),
 			'twitterUrlPrefix'	=> '' . new Mapping('/request/twitter'),
+			'facebookUrlPrefix'	=> '' . new Mapping('/request/facebook'),
 			'audioUrlPrefix'	=> '' . new Mapping('/files/toevla/audio'),
 			'loggerUrl'			=> '' . new Mapping('/debug/logger')
 		);

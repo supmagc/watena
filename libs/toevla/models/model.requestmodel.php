@@ -1,5 +1,6 @@
 <?php
 require_plugin('DatabaseManager');
+require_plugin('Socializer');
 
 class RequestModel extends Model {
 	
@@ -29,6 +30,10 @@ class RequestModel extends Model {
 						$sSearch = urlencode("@$aFestivalData[twitterName] OR #$aFestivalData[twitterHash]");
 						$sQuery = 'http://search.twitter.com/search.json?include_entities=false&rpp=25&q=' . $sSearch;
 					}
+					if($sType == 'facebook' && $aFestivalData['facebook']) {
+						$sMethod = 'getFacebookData';
+						$sQuery = '/' . $aFestivalData['facebook'] . '/feed';
+					}
 				}
 			}
 			else {				
@@ -42,6 +47,8 @@ class RequestModel extends Model {
 			$sQuery = $_GET['query'];
 			if($sType == 'picasa') $sMethod = 'getPicasaData';
 			if($sType == 'flickr') $sMethod = 'getFlickrData';
+			if($sType == 'twitter') $sMethod = 'getTwitterData';
+			if($sType == 'facebook') $sMethod = 'getFacebookData';
 		}
 
 		if($sMethod && $sQuery) {
@@ -93,6 +100,18 @@ class RequestModel extends Model {
 			}
 		}
 		return $aTweets;
+	}
+	
+	public function getFacebookData($sUrl) {
+		$aData = $this->getWatena()->getContext()->getPlugin('Socializer')->getFacebook()->api($sUrl, array('limit' => 10));
+		$aPosts = array();
+		if(isset($aData['data'])) {
+			foreach($aData['data'] as $aPost) {
+				if(isset($aPost['message'])) $aPosts []= $aPost['message'];
+				if(isset($aPost['story'])) $aPosts []= $aPost['story'];
+			}	
+		}
+		return $aPosts;
 	}
 }
 

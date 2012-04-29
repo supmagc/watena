@@ -1,15 +1,15 @@
 <?php
-class IPCO_Compiled_d__www_watena_libs_toevla_templates_popup_connect_tpl extends IPCO_Processor {
-	public function generate() {
-		return self::callRegion____MainRegion__();
-	}
-	protected function callRegion____MainRegion__() {
+class IPCO_Compiled_d__www_watena_libs_toevla_templates_popup_connect_tpl extends IPCO_Compiled_d__www_watena_libs_toevla_templates_popup_base_tpl {
+	protected function callRegion__content() {
 		try {
 			$_ob = array();
+			$_ob []= '' . '
+
+';
 			if(!parent::processMember('isSucces', null)) {
 				$_ob []= '' . '
 	<script><!--
-	if(window.opener && window.opener.connectIntoFrame) window.opener.connectIntoFrame();
+	if(window.opener && window.opener.connectIntoFrame) window.opener.toFrame();
 	--></script>
 ';
 			}
@@ -19,66 +19,80 @@ class IPCO_Compiled_d__www_watena_libs_toevla_templates_popup_connect_tpl extend
 			if(parent::processMember('isSucces', null)) {
 				$_ob []= '' . '
 	<script><!--
-	if(window.opener.parent.connectCallback) {
-		window.opener.parent.connectCallback(\'';
+	if(window.opener.parent.hashCallback)
+		window.opener.parent.hashCallback(\'';
 				$_ob []= '' . parent::processMember('getHash', null);
 				$_ob []= '' . '\');
-	}
-	else if(window.parent.connectCallback) {
-		window.parent.connectCallback(\'';
+	else if(window.parent.hashCallback)
+		window.parent.hashCallback(\'';
 				$_ob []= '' . parent::processMember('getHash', null);
 				$_ob []= '' . '\');
-	}
 	--></script>
 ';
 			}
 			$_ob []= '' . '
-
-';
+	
+<br /><br />
+<h1>Oeps, an error ...</h1>
+<span class="error">
+	';
 			if(parent::processMember('isFailed', null)) {
 				$_ob []= '' . '
-FAILED !
-';
+	<p>An error occured, but couldn\'t be determined!</p>
+	<p>If this problem continues,<br />please contact us at info@flandersisafestival.com.</p>
+	';
 			}
 			$_ob []= '' . '
-
-';
+	
+	';
 			if(parent::processMember('isDuplicateLogin', null)) {
 				$_ob []= '' . '
-You are allready logged in with a different account !
-';
+	<p>You are allready logged in with a different account!</p>
+	';
 			}
 			$_ob []= '' . '
-
-';
+	
+	';
 			if(parent::processMember('isDuplicateEmail', null)) {
 				$_ob []= '' . '
-Duplicate email ... maybe you allready have an account ?
-';
+	<p>Duplicate email-adress.<br />Maybe you allready have an account?</p>
+	';
 			}
 			$_ob []= '' . '
-
-';
+	
+	';
+			if(parent::processMember('isInvalidEmail', null)) {
+				$_ob []= '' . '
+	<p>Invalid email-adress!</p>
+	';
+			}
+			$_ob []= '' . '
+	
+	';
 			if((parent::processMember('isDuplicateName', null) || parent::processMember('isInvalidName', null))) {
 				$_ob []= '' . '
-This name is allready in use or invalid
-<form action="?action=rename" method="post">
-	<input type="text" name="name" value="';
+	<p>This name is allready in use or invalid!<br />You may try another name!</p>
+	<form class="field" action="?action=rename" method="post">
+		<input type="text" value="';
 				$_ob []= '' . parent::processMember('getSaveName', null);
-				$_ob []= '' . '" />
-	<input type="submit" name="sub" value="Rename" />
-</form>
-';
+				$_ob []= '' . '" name="name" />
+		<input type="submit" name="sub" value="" />
+	</form>
+	';
 			}
 			$_ob []= '' . '
-
-';
+	
+	';
 			if(parent::processMember('isUnverifiedEmail', null)) {
 				$_ob []= '' . '
-An account with this email-adress exists, but can\'t be merched since it\'s not activated yet!
-If this is you, check your inbox for a verificationmail.
-';
+	<p>An account with this email-adress exists,<br />but can\'t be merched since it\'s not activated yet!</p>
+	<p>If this is you, check your inbox for a verificationmail.</p>
+	';
 			}
+			$_ob []= '' . '
+</span>
+
+';
 			return implode('', $_ob);
 		} catch(Exception $e) { throw new WatCeption('Unable to create template-output.', array(), null, $e); }
 	}
