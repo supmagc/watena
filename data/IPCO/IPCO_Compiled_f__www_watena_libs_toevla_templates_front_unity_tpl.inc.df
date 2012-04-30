@@ -43,7 +43,7 @@ function Hide() {
 }
 function Video(URL){
 	if(URL.length > 0) {
-		document.getElementById("videoLayer").style.display = \'block\';
+		document.getElementById(\'videoLayer\').style.display = \'block\';
 		videoFrame.location = URL;
 	}
 }
