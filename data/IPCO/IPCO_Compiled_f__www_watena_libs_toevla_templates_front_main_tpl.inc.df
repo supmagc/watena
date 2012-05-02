@@ -4,13 +4,13 @@ class IPCO_Compiled_f__www_watena_libs_toevla_templates_front_main_tpl extends I
 		try {
 			$_ob = array();
 			$_ob []= '' . '
-<table id="centerTable">
-	<tr>
-		<td colspan="3"></td>
-	</tr>
-	<tr>
-		<td></td>
-		<td id="centerCell"><div id="spacerBox"><a href="';
+<div id="header"><div class="container_main"><img src="';
+			$_ob []= '' . parent::callContentParser('addMappingRoot', array (
+  0 => 'img',
+  1 => 'src',
+  2 => '/theme/toevla/logo.png',
+));
+			$_ob []= '' . '" id="logo" /><a href="';
 			$_ob []= '' . parent::callContentParser('addMappingRoot', array (
   0 => 'a',
   1 => 'href',
@@ -28,25 +28,18 @@ class IPCO_Compiled_f__www_watena_libs_toevla_templates_front_main_tpl extends I
   1 => 'href',
   2 => '/about',
 ));
-			$_ob []= '' . '">About</a></div>
-		<div id="centerDiv">
-			';
+			$_ob []= '' . '">About</a></div></div>
+<div id="body_main"><div class="container_main"><div id="unity">';
 $_ob []= '' . parent::callInclude('F:\WWW\watena\libs\toevla\templates\front.unity.tpl');
-			$_ob []= '' . '
-		</div>
-		<div id="spacerBox"><div id="dezelicious"><iframe name="dezelicious" style="display:none;" scrolling="no" frameborder="0" allowTransparency="true" src="';
+			$_ob []= '' . '</div></div></div>
+<div id="footer"><div class="container_main">Copyright &copy; 2012 Toerisme Vlaanderen</div></div>
+<div id="dezelicious"><iframe name="dezelicious" style="display:none;" scrolling="no" frameborder="0" allowTransparency="true" src="';
 			$_ob []= '' . parent::callContentParser('addMappingRoot', array (
   0 => 'iframe',
   1 => 'src',
   2 => '/files/toevla/video/blank.html',
 ));
 			$_ob []= '' . '" width="300" height="69"></iframe></div></div></td>
-		<td></td>
-	</tr>
-	<tr>
-		<td colspan="3"></td>
-	</tr>
-</table>
 ';
 			return implode('', $_ob);
 		} catch(Exception $e) { throw new WatCeption('Unable to create template-output.', array(), null, $e); }

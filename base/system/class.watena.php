@@ -92,17 +92,16 @@ class Watena extends Configurable {
 	 */
 	public final function getPath($sPath, $bVerify = true) {
 		$aMatches = array();
-		$aPositions = array();
-		if(Encoding::regFind('^[brdlBRDL][:/\\\\]([^/\\\\].*?)/?$', '' . $sPath, $aMatches, $aPositions)) {
+		if(Encoding::regFind('^([brdlBRDL])[:/\\\\]([^:/\\\\].*?)/?$', '' . $sPath, $aMatches)) {
 			switch($aMatches[1]) {
 				case 'b' :
-				case 'B' : $sPath = PATH_BASE . (Encoding::length($aMatches[1]) > 0 ? "/$aMatches[1]" : ''); break;
+				case 'B' : $sPath = PATH_BASE . (Encoding::length($aMatches[2]) > 0 ? "/$aMatches[2]" : ''); break;
 				case 'd' :
-				case 'D' : $sPath = PATH_DATA . (Encoding::length($aMatches[1]) > 0 ? "/$aMatches[1]" : ''); break;
+				case 'D' : $sPath = PATH_DATA . (Encoding::length($aMatches[2]) > 0 ? "/$aMatches[2]" : ''); break;
 				case 'r' :
-				case 'R' : $sPath = PATH_ROOT . (Encoding::length($aMatches[1]) > 0 ? "/$aMatches[1]" : ''); break;
+				case 'R' : $sPath = PATH_ROOT . (Encoding::length($aMatches[2]) > 0 ? "/$aMatches[2]" : ''); break;
 				case 'l' :
-				case 'L' : $sPath = PATH_LIBS . (Encoding::length($aMatches[1]) > 0 ? "/$aMatches[1]" : ''); break;
+				case 'L' : $sPath = PATH_LIBS . (Encoding::length($aMatches[2]) > 0 ? "/$aMatches[2]" : ''); break;
 			}
 		}
 		if($bVerify) {

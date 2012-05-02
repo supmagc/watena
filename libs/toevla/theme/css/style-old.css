@@ -8,50 +8,24 @@ html, body, #centerTable, iframe {
 }
 
 body {
-	background:#f1ede2 url(../header_bg.jpg) center top repeat-x;
+	background:#f8f6ea;
 }
 
-#header {
-	background:url(../header.jpg) center no-repeat;
-	height:153px;
+#centerTable {
+	background: url(../bg.jpg) center no-repeat;
 }
 
-#body_main {
-	background:url(../body_bg_main.jpg) center no-repeat;
-	height:537px;
-}
-
-#footer {
-	background:url(../footer_bg.jpg) center repeat-x;
-	height:48px;
-	text-align:right;
-	font-style:italic;
-	color:#726b60;
-	font-size:11px;
-	font-family:"Arial";
-	line-height:50px;
-}
-
-.container_main {
-	position:relative;
-	margin:auto;
-	width:740px;
-	padding:0px 10px;
-}
-
-.container_main #logo {
-	position:absolute;
-	top:26px;
-	left:10px;
-}
-
-#unity {
-	position:absolute;
-	margin:auto;
+#centerCell {
 	width:728px;
 	height:450px;
-	left:14px;
-	top:30px;
+}
+
+#centerDiv {
+	position:relative;
+	width:728px;
+	height:450px;
+	top:0px;
+	left:0px;
 }
 
 #unityPlayer {
@@ -95,6 +69,24 @@ body {
 	height:192px;
 	top:129px;
 	left:193px;	
+}
+
+#spacerBox {
+	height:120px;
+}
+
+div#spacerBox a {
+	float:right;
+	margin:60px 5px 0px 15px;
+	font-size:11px;
+	font-family: 'Arial', sans-serif;
+	color:#a3a3a3;
+	text-transform:lowercase;
+	text-decoration:none;
+}
+
+div#spacerBox a:hover {
+	text-decoration:underline;
 }
 
 div#content_header {

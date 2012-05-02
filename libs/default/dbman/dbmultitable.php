@@ -11,7 +11,7 @@ class DbMultiTable {
 	public function __construct(DbConnection $oConnection, $sTable, array $aIdFields, $sConcatenation) {
 		$this->m_oConnection = $oConnection;
 		$this->m_sTable = $sTable;
-		$this->m_sIdFields = $aIdFields;
+		$this->m_aIdFields = $aIdFields;
  		$this->m_sConcatenation = $sConcatenation;
 	}
 

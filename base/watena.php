@@ -44,6 +44,7 @@ if(!defined('NWATENA')) {
 	require_once PATH_BASE . '/system/global.requirements.php';
 	require_once PATH_BASE . '/system/interface.icache.php';
 	require_once PATH_BASE . '/system/exception.watception.php';
+	require_once PATH_BASE . '/system/exception.webexception.php';
 	require_once PATH_BASE . '/system/class.object.php';
 	require_once PATH_BASE . '/system/class.configurable.php';
 	require_once PATH_BASE . '/system/class.cacheable.php';
@@ -65,6 +66,8 @@ if(!defined('NWATENA')) {
 	require_once PATH_BASE . '/system/class.time.php';
 	require_once PATH_BASE . '/system/class.interval.php';
 	require_once PATH_BASE . '/system/class.upload.php';
+	require_once PATH_BASE . '/system/class.webrequest.php';
+	require_once PATH_BASE . '/system/class.webresponse.php';
 	require_once PATH_BASE . '/system/class.zipfile.php';
 	
 	// ############################################################

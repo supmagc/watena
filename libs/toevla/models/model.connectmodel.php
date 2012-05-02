@@ -1,6 +1,7 @@
 <?php
+require_model('HtmlModel');
 
-class ConnectModel extends Model {
+class ConnectModel extends HtmlModel {
 	
 	private $m_sHash;
 	private $m_nType = 0;

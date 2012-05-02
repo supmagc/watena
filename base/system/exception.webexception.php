@@ -1,11 +1,14 @@
 <?php
 
-class WebException extends Exception {
+class WebException extends WatCeption {
 
 	private $m_oRequest;
 
-	public function __construct(WebRequest $oRequest) {
-		parent::__construct($oRequest ? curl_error($oRequest->getCurl()) : 'An unknown CURL-error happened!', $oRequest ? curl_errno($oRequest->getCurl()) : 0);
+	public function __construct(WebRequest $oRequest = null) {
+		if($oRequest)
+			parent::__construct('An error occured while processing a WebRequest/-Response {code}: {message}', array('message' => curl_error($oRequest->getCurl()), 'code' => curl_errno($oRequest->getCurl())));
+		else
+			parent::__construct('An unknown WebRequest/-Response error occured!');
 		$this->m_oRequest = $oRequest;
 	}
 

@@ -2,13 +2,21 @@
 
 require_once PATH_BASE . '/system/static.encoding.php';
 require_once PATH_BASE . '/system/static.logger.php';
-require_once PATH_BASE . '/system/class.object.php';
-require_once PATH_BASE . '/system/class.webrequest.php';
-require_once PATH_BASE . '/system/class.webresponse.php';
-require_once PATH_BASE . '/system/exception.webexception.php';
+
+function NYI() {
+	terminate('NYI');
+}
 
 function terminate($sMessage) {
+	$aTrace = debug_backtrace();
+	if(count($aTrace) > 0) echo "<strong>{$aTrace[0]['file']}</strong> (<i>line: {$aTrace[0]['line']}</i>)\r\n";
 	die($sMessage);
+}
+
+function dump($mVar) {
+	$aTrace = debug_backtrace();
+	if(count($aTrace) > 0) echo "<strong>{$aTrace[0]['file']}</strong> (<i>line: {$aTrace[0]['line']}</i>)\r\n";
+	var_dump($mVar);
 }
 
 /**
@@ -24,7 +32,7 @@ function terminate($sMessage) {
  * @param mixed $mValue
  * @param bool $bOverwrite
  */
-function array_assure(&$arr, array $aKeys, $mValue = array(), $bOverwrite = true) {
+function array_assure(array &$arr, array $aKeys, $mValue = array(), $bOverwrite = true) {
 	// Copy a reference to the array for resoration purposes
 	// This means that at the end of the rouytine we store this reference
 	// If this isn't done, the calling routine will have an invalid ref
@@ -64,7 +72,7 @@ function array_assure(&$arr, array $aKeys, $mValue = array(), $bOverwrite = true
  * @param array $aKeys
  * @param mixed $mDefault
  */
-function array_value(&$arr, array $aKeys, $mDefault = null) {
+function array_value(array &$arr, array $aKeys, $mDefault = null) {
 	// Copy a reference to the array for internal usage
 	// In contrast to array_assure, we use this reference as a helper
 	// This optimisation saves us a couple lines
@@ -105,19 +113,53 @@ function array_all($mCallback, array &$aData) {
 	return $bResult;
 }
 
-function array_first(&$arr) {
+/**
+ * Retrieve the last element of an array.
+ * 
+ * @param array $arr The array from which you need the last value.
+ * @return mixed|false The last value, or false when empty array.
+ */
+function array_first(array &$arr) {
 	if(count($arr) == 0) return false;
 	$aKeys = array_keys($arr);
 	return $arr[$aKeys[0]];
 }
 
-function array_last(&$arr) {
+/**
+ * Retrieve the first element of an array.
+ * 
+ * @param array $arr The array from which you need the first value.
+ * @return mixed|false The first value, or false when empty array.
+ */
+function array_last(array &$arr) {
 	if(count($arr) == 0) return false;
 	$aKeys = array_keys($arr);
 	return $arr[$aKeys[count($aKeys) - 1]];
 }
 
-function array_assoc(array $arr) {
+function file_assure($sPath, $nMode = 0664) {
+	$sDirectory = dirname($sPath);
+	if(!file_exists($sDirectory) && !mkdir($sDirectory, 0775, true)) return false;
+	if(!file_exists($sPath) && file_put_contents($sPath, '') === false) return false;
+	if(substr(sprintf('%o', fileperms($sPath)), - 3) != sprintf('%o', $nMode) && !chmod($sPath, $nMode)) return false;
+	return true;
+}
+
+function dir_assure($sPath, $nMode = 0775) {
+	if(!file_exists($sPath) && !mkdir($sPath, $nMode, true)) return false;
+	if(substr(sprintf('%o', fileperms($sPath)), - 3) != sprintf('%o', $nMode) && !chmod($sPath, $nMode)) return false;
+	return true;
+}
+
+/**
+ * Check if the given array is associatrive
+ * 
+ * @param array $arr The array to check for associativeness.
+ * @return boolean
+ */
+function is_assoc(array &$arr) {
+	// This is in fact a for-each loop where all keys are checkt to match an incremental counter.
+	// If the loop breaks, the key/counter didn't match and the key will be valid.
 	for(reset($arr), $i=0 ; key($arr) === $i ; next($arr), ++$i);
 	return !is_null(key($arr));
 }
@@ -307,17 +349,5 @@ function get_called_class($bt = false,$l = 1) {
         default: throw new Exception ("Unknown backtrace method type");
     }
 }
-}
-
-function NYI() {
-	$aTrace = debug_backtrace();
-	if(count($aTrace) > 0) echo "<strong>{$aTrace[0]['file']}</strong> (<i>line: {$aTrace[0]['line']}</i>)\r\n";
-	die('NYI');
-}
-
-function dump($mVar) {
-	$aTrace = debug_backtrace();
-	if(count($aTrace) > 0) echo "<strong>{$aTrace[0]['file']}</strong> (<i>line: {$aTrace[0]['line']}</i>)\r\n";
-	var_dump($mVar);
 }
 ?>
