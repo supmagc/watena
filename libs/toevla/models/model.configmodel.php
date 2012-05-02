@@ -1,5 +1,6 @@
 <?php
 require_plugin('DatabaseManager');
+require_plugin('ToeVla');
 
 class ConfigModel extends Model {
 	
@@ -16,7 +17,8 @@ class ConfigModel extends Model {
 			'twitterUrlPrefix'	=> '' . new Mapping('/request/twitter'),
 			'facebookUrlPrefix'	=> '' . new Mapping('/request/facebook'),
 			'audioUrlPrefix'	=> '' . new Mapping('/files/toevla/audio'),
-			'loggerUrl'			=> '' . new Mapping('/debug/logger')
+			'loggerUrl'			=> '' . new Mapping('/debug/logger'),
+			'analytics'			=> 'UA-31352229-1'
 		);
 		$oStatement = DatabaseManager::getConnection('toevla')->select('game_config');
 		foreach($oStatement as $aRow) {

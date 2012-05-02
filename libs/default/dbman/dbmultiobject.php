@@ -49,7 +49,7 @@ class DbMultiObject extends Object {
 			return false;
 		if(!isset(self::$s_aObjectInstances[$sClass]))
 			self::$s_aObjectInstances[$sClass] = array();
-		if(array_assoc($mData)) {
+		if(is_assoc($mData)) {
 			$aKeys = array();
 			foreach($oTable->getIdFields() as $sField) {
 				if(!isset($mData[$sField])) return false;

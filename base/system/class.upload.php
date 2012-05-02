@@ -89,12 +89,8 @@ class Upload extends Object {
 				$sFilepath = $sDestination;
 			}
 			
-			if(!is_dir($sDirectorypath)) {
-				mkdir($sDirectorypath, 0775, true);
-			}
-			
-			if(!file_exists($sFilepath) || $bOverwrite) {
-				if(@move_uploaded_file($this->m_aFile['tmp_name'], $sFilepath)) {
+			if(dir_assure($sDirectorypath) && (!file_exists($sFilepath) || $bOverwrite)) {
+				if(move_uploaded_file($this->m_aFile['tmp_name'], $sFilepath)) {
 					chmod($sFilepath, 0664);
 					return true;
 				}
