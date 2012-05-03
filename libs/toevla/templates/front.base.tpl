@@ -25,3 +25,11 @@ _gaq.push(['_trackPageview']);
 })();
 </script></body>
 </html>
+
+{{region begin nav}}
+<a href="/"><img src="/theme/toevla/logo.png" id="logo" /></a><a href="/developers" class="nav">Developers</a><a href="/privacy" class="nav">Privacy Statement</a><a href="/about" class="nav">About</a>
+{{region end}}
+
+{{region begin copy}}
+Copyright &copy; 2012 Toerisme Vlaanderen
+{{region end}}
