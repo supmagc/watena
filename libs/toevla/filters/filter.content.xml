@@ -4,7 +4,7 @@
 		<param name="template">front.content.tpl</param>
 	</view>
 	<rules>
-		<rule type="mapping" variable="local">^/(about)</rule>
+		<rule type="mapping" variable="local">^/(about|privacy|developers)</rule>
 		<rule type="cookie" variable="debug">enabled</rule>
 	</rules>
 </filter>

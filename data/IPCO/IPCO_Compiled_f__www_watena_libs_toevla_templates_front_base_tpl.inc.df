@@ -55,6 +55,60 @@ _gaq.push([\'_trackPageview\']);
 })();
 </script></body>
 </html>
+
+';
+			$_ob []= '' . '
+
+';
+			$_ob []= '' . '
+';
+			return implode('', $_ob);
+		} catch(Exception $e) { throw new WatCeption('Unable to create template-output.', array(), null, $e); }
+	}
+	protected function callRegion__nav() {
+		try {
+			$_ob = array();
+			$_ob []= '' . '
+<a href="';
+			$_ob []= '' . parent::callContentParser('addMappingRoot', array (
+  0 => 'a',
+  1 => 'href',
+  2 => '/',
+));
+			$_ob []= '' . '"><img src="';
+			$_ob []= '' . parent::callContentParser('addMappingRoot', array (
+  0 => 'img',
+  1 => 'src',
+  2 => '/theme/toevla/logo.png',
+));
+			$_ob []= '' . '" id="logo" /></a><a href="';
+			$_ob []= '' . parent::callContentParser('addMappingRoot', array (
+  0 => 'a',
+  1 => 'href',
+  2 => '/developers',
+));
+			$_ob []= '' . '" class="nav">Developers</a><a href="';
+			$_ob []= '' . parent::callContentParser('addMappingRoot', array (
+  0 => 'a',
+  1 => 'href',
+  2 => '/privacy',
+));
+			$_ob []= '' . '" class="nav">Privacy Statement</a><a href="';
+			$_ob []= '' . parent::callContentParser('addMappingRoot', array (
+  0 => 'a',
+  1 => 'href',
+  2 => '/about',
+));
+			$_ob []= '' . '" class="nav">About</a>
+';
+			return implode('', $_ob);
+		} catch(Exception $e) { throw new WatCeption('Unable to create template-output.', array(), null, $e); }
+	}
+	protected function callRegion__copy() {
+		try {
+			$_ob = array();
+			$_ob []= '' . '
+Copyright &copy; 2012 Toerisme Vlaanderen
 ';
 			return implode('', $_ob);
 		} catch(Exception $e) { throw new WatCeption('Unable to create template-output.', array(), null, $e); }

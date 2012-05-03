@@ -4,35 +4,15 @@ class IPCO_Compiled_f__www_watena_libs_toevla_templates_front_main_tpl extends I
 		try {
 			$_ob = array();
 			$_ob []= '' . '
-<div id="header"><div class="container_main"><img src="';
-			$_ob []= '' . parent::callContentParser('addMappingRoot', array (
-  0 => 'img',
-  1 => 'src',
-  2 => '/theme/toevla/logo.png',
-));
-			$_ob []= '' . '" id="logo" /><a href="';
-			$_ob []= '' . parent::callContentParser('addMappingRoot', array (
-  0 => 'a',
-  1 => 'href',
-  2 => '/about',
-));
-			$_ob []= '' . '">Developers</a><a href="';
-			$_ob []= '' . parent::callContentParser('addMappingRoot', array (
-  0 => 'a',
-  1 => 'href',
-  2 => '/about',
-));
-			$_ob []= '' . '">Privacy Statement</a><a href="';
-			$_ob []= '' . parent::callContentParser('addMappingRoot', array (
-  0 => 'a',
-  1 => 'href',
-  2 => '/about',
-));
-			$_ob []= '' . '">About</a></div></div>
+<div id="header_main"><div class="container_main">';
+			$_ob []= '' . method_exists($this, 'callRegion__nav') ? $this->callRegion__nav() : '';
+			$_ob []= '' . '</div></div>
 <div id="body_main"><div class="container_main"><div id="unity">';
 $_ob []= '' . parent::callInclude('F:\WWW\watena\libs\toevla\templates\front.unity.tpl');
 			$_ob []= '' . '</div></div></div>
-<div id="footer"><div class="container_main">Copyright &copy; 2012 Toerisme Vlaanderen</div></div>
+<div id="footer"><div class="container_main">';
+			$_ob []= '' . method_exists($this, 'callRegion__copy') ? $this->callRegion__copy() : '';
+			$_ob []= '' . '</div></div>
 <div id="dezelicious"><iframe name="dezelicious" style="display:none;" scrolling="no" frameborder="0" allowTransparency="true" src="';
 			$_ob []= '' . parent::callContentParser('addMappingRoot', array (
   0 => 'iframe',
