@@ -47,7 +47,9 @@ function deezerChange(mId) {
 
 
 
+window.tvHub = '{[getHubId()]}';
 window.tvHash = '{[getHash()]}';
+window.tvFestival = '{[getFestivalId()]}';
 window.cancelCallback;
 function triggerSocial() {
 	document.getElementById('connectLayer').style.display = 'block';

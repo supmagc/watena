@@ -7,7 +7,7 @@ html, body, #centerTable, iframe {
 	margin:0px;
 }
 
-body {
+#page {
 	background:#f1ede2 url(../header_bg.jpg) center top repeat-x;
 	font-family: 'Arial', sans-serif;
 	font-size:11px;
