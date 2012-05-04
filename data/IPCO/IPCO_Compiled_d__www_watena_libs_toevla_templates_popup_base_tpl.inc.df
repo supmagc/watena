@@ -26,9 +26,11 @@ class IPCO_Compiled_d__www_watena_libs_toevla_templates_popup_base_tpl extends I
 
 <body>
 <a id="btn_close" href="javascript:window.parent.connectCancel();" alt="Cancel"></a>
+<div id="container">
 ';
 			$_ob []= '' . method_exists($this, 'callRegion__content') ? $this->callRegion__content() : '';
 			$_ob []= '' . '
+</div>
 </body>
 </html>';
 			return implode('', $_ob);

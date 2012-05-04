@@ -1,0 +1,22 @@
+<?php
+class IPCO_Compiled_d__www_watena_libs_toevla_templates_popup_loading_tpl extends IPCO_Compiled_d__www_watena_libs_toevla_templates_popup_base_tpl {
+	protected function callRegion__content() {
+		try {
+			$_ob = array();
+			$_ob []= '' . '
+<div id="loading">
+	<h1>Please wait ...</h1>
+	<img src="';
+			$_ob []= '' . parent::callContentParser('addMappingRoot', array (
+  0 => 'img',
+  1 => 'src',
+  2 => '/theme/toevla/loading.gif',
+));
+			$_ob []= '' . '" />
+</div>
+';
+			return implode('', $_ob);
+		} catch(Exception $e) { throw new WatCeption('Unable to create template-output.', array(), null, $e); }
+	}
+}
+?>

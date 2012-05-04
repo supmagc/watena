@@ -14,7 +14,15 @@ class IPCO_Compiled_d__www_watena_libs_toevla_templates_front_base_tpl extends I
 			$_ob []= '' . '; charset=';
 			$_ob []= '' . parent::processMember('getCharset', null);
 			$_ob []= '' . '" />
-<title>Flanders Is A Festival</title>
+<meta http-equiv="Keywords" content="';
+			$_ob []= '' . parent::processMember('getKeywords', null);
+			$_ob []= '' . '" />
+<meta http-equiv="Description" content="';
+			$_ob []= '' . parent::processMember('getDescription', null);
+			$_ob []= '' . '" />
+<title>';
+			$_ob []= '' . parent::processMember('getTitle', null);
+			$_ob []= '' . '</title>
 <link href="';
 			$_ob []= '' . parent::callContentParser('addMappingRoot', array (
   0 => 'link',
@@ -23,14 +31,84 @@ class IPCO_Compiled_d__www_watena_libs_toevla_templates_front_base_tpl extends I
 ));
 			$_ob []= '' . '" rel="stylesheet" type="text/css" />
 <link href=\'http://fonts.googleapis.com/css?family=Lato:700,400italic,400\' rel=\'stylesheet\' type=\'text/css\'>
+<script type="text/javascript">
+var _gaq = _gaq || [];
+_gaq.push([\'_setAccount\', \'';
+			$_ob []= '' . parent::processMember('getAnalytics', null);
+			$_ob []= '' . '\']);
+_gaq.push([\'_setDomainName\', \'';
+			$_ob []= '' . parent::processMember('getHost', null);
+			$_ob []= '' . '\']);
+_gaq.push([\'_trackPageview\']);
+</script>
 </head>
 
 <body>
 ';
 			$_ob []= '' . method_exists($this, 'callRegion__content') ? $this->callRegion__content() : '';
 			$_ob []= '' . '
-</body>
+<script type="text/javascript">
+(function() {
+	var ga = document.createElement(\'script\'); ga.type = \'text/javascript\'; ga.async = true;
+	ga.src = (\'https:\' == document.location.protocol ? \'https://ssl\' : \'http://www\') + \'.google-analytics.com/ga.js\';
+	var s = document.getElementsByTagName(\'head\')[0]; s.appendChild(ga);
+})();
+</script></body>
 </html>
+
+';
+			$_ob []= '' . '
+
+';
+			$_ob []= '' . '
+';
+			return implode('', $_ob);
+		} catch(Exception $e) { throw new WatCeption('Unable to create template-output.', array(), null, $e); }
+	}
+	protected function callRegion__nav() {
+		try {
+			$_ob = array();
+			$_ob []= '' . '
+<a href="';
+			$_ob []= '' . parent::callContentParser('addMappingRoot', array (
+  0 => 'a',
+  1 => 'href',
+  2 => '/',
+));
+			$_ob []= '' . '"><img src="';
+			$_ob []= '' . parent::callContentParser('addMappingRoot', array (
+  0 => 'img',
+  1 => 'src',
+  2 => '/theme/toevla/logo.png',
+));
+			$_ob []= '' . '" id="logo" /></a><a href="';
+			$_ob []= '' . parent::callContentParser('addMappingRoot', array (
+  0 => 'a',
+  1 => 'href',
+  2 => '/developers',
+));
+			$_ob []= '' . '" class="nav">Developers</a><a href="';
+			$_ob []= '' . parent::callContentParser('addMappingRoot', array (
+  0 => 'a',
+  1 => 'href',
+  2 => '/privacy',
+));
+			$_ob []= '' . '" class="nav">Privacy Statement</a><a href="';
+			$_ob []= '' . parent::callContentParser('addMappingRoot', array (
+  0 => 'a',
+  1 => 'href',
+  2 => '/about',
+));
+			$_ob []= '' . '" class="nav">About</a>
+';
+			return implode('', $_ob);
+		} catch(Exception $e) { throw new WatCeption('Unable to create template-output.', array(), null, $e); }
+	}
+	protected function callRegion__copy() {
+		try {
+			$_ob = array();
+			$_ob []= '' . '
+Copyright &copy; 2012 Toerisme Vlaanderen
 ';
 			return implode('', $_ob);
 		} catch(Exception $e) { throw new WatCeption('Unable to create template-output.', array(), null, $e); }

@@ -64,7 +64,7 @@ abstract class Cacheable extends Configurable {
 				return $oObject;
 			}
 			catch(Exception $e) {
-				throw new WatCeption('A previously loaded and cached object no longer meets it requirements.', array('object' => $sObject, 'requirements' => $oRequirements), $this);
+				throw new WatCeption('A previously loaded and cached object no longer meets it requirements.', array('object' => $sObject), null, $e);
 			}
 		}		
 	}

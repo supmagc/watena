@@ -4,49 +4,24 @@ class IPCO_Compiled_d__www_watena_libs_toevla_templates_front_main_tpl extends I
 		try {
 			$_ob = array();
 			$_ob []= '' . '
-<table id="centerTable">
-	<tr>
-		<td colspan="3"></td>
-	</tr>
-	<tr>
-		<td></td>
-		<td id="centerCell"><div id="spacerBox"><a href="';
-			$_ob []= '' . parent::callContentParser('addMappingRoot', array (
-  0 => 'a',
-  1 => 'href',
-  2 => '/about',
-));
-			$_ob []= '' . '">Developers</a><a href="';
-			$_ob []= '' . parent::callContentParser('addMappingRoot', array (
-  0 => 'a',
-  1 => 'href',
-  2 => '/about',
-));
-			$_ob []= '' . '">Privacy Statement</a><a href="';
-			$_ob []= '' . parent::callContentParser('addMappingRoot', array (
-  0 => 'a',
-  1 => 'href',
-  2 => '/about',
-));
-			$_ob []= '' . '">About</a></div>
-		<div id="centerDiv">
-			';
+<div id="page">
+<div id="header_main"><div class="container_main">';
+			$_ob []= '' . method_exists($this, 'callRegion__nav') ? $this->callRegion__nav() : '';
+			$_ob []= '' . '</div></div>
+<div id="body_main"><div class="container_main"><div id="unity">';
 $_ob []= '' . parent::callInclude('D:\www\watena\libs\toevla\templates\front.unity.tpl');
-			$_ob []= '' . '
-		</div>
-		<div id="spacerBox"><div id="dezelicious"><iframe name="dezelicious" style="display:none;" scrolling="no" frameborder="0" allowTransparency="true" src="';
+			$_ob []= '' . '</div></div></div>
+<div id="footer"><div class="container_main">';
+			$_ob []= '' . method_exists($this, 'callRegion__copy') ? $this->callRegion__copy() : '';
+			$_ob []= '' . '</div></div>
+<div id="dezelicious"><iframe name="dezelicious" style="display:none;" scrolling="no" frameborder="0" allowTransparency="true" src="';
 			$_ob []= '' . parent::callContentParser('addMappingRoot', array (
   0 => 'iframe',
   1 => 'src',
   2 => '/files/toevla/video/blank.html',
 ));
 			$_ob []= '' . '" width="300" height="69"></iframe></div></div></td>
-		<td></td>
-	</tr>
-	<tr>
-		<td colspan="3"></td>
-	</tr>
-</table>
+</div>
 ';
 			return implode('', $_ob);
 		} catch(Exception $e) { throw new WatCeption('Unable to create template-output.', array(), null, $e); }
