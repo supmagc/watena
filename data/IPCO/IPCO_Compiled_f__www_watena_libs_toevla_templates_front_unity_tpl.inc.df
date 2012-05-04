@@ -65,8 +65,14 @@ function deezerChange(mId) {
 
 
 
+window.tvHub = \'';
+			$_ob []= '' . parent::processMember('getHubId', null);
+			$_ob []= '' . '\';
 window.tvHash = \'';
 			$_ob []= '' . parent::processMember('getHash', null);
+			$_ob []= '' . '\';
+window.tvFestival = \'';
+			$_ob []= '' . parent::processMember('getFestivalId', null);
 			$_ob []= '' . '\';
 window.cancelCallback;
 function triggerSocial() {

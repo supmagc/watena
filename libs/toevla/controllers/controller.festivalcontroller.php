@@ -6,8 +6,8 @@ class FestivalController extends Controller {
 	private $m_aAllowed = array('website', 'locationType', 'twitterName', 'twitterHash', 'facebook', 'youtube', 'flickr', 'picasa', 'data', 'description_EN', 'logoFilename', 'afficheFilename', 'artists', 'quiz');
 
 	public function process(Model $oModel = null, View $oView = null) {
+		$oConnection = DatabaseManager::getConnection('toevla');
 		if($this->getWatena()->getMapping()->getLocal() == '/festival/save') {
-			$oConnection = DatabaseManager::getConnection('toevla');
 
 			$aErrors = array();
 			$aData = array();
@@ -134,9 +134,6 @@ class FestivalController extends Controller {
 					echo json_encode(array_intersect_key($aRow, array_combine($this->m_aAllowed, $this->m_aAllowed)));
 				}
 			}
-		}
-		else if($this->getWatena()->getMapping()->getLocal() == '/festival/download') {
-			
 		}
 		else {
 			$oConnection = DatabaseManager::getConnection('toevla');

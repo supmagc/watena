@@ -27,9 +27,11 @@ class Mapping extends Object {
 				$aParts = explode('/', $this->getWatena()->getMapping()->getLocal());
 				array_pop($aParts);
 				array_push($aParts, $sLocal);
-				$this->m_aVariables['local'] = implode('/', $aParts);		
+				$this->m_aVariables['local'] = implode('/', $aParts);
 			}
 		}
+		// SPlit the localpart
+		$this->m_aVariables['parts'] = explode_trim('/', $this->m_aVariables['local']);
 		
 		// Save main as it's used a lot
 		$this->m_aVariables['root'] = 'http://' . $this->m_aVariables['host'] . ($this->m_aVariables['port'] != 80 ? ':'.$this->m_aVariables['port'] : '') . $this->m_aVariables['offset'];
@@ -59,6 +61,11 @@ class Mapping extends Object {
 	
 	public final function getLocal() {
 		return $this->getVariable('local');
+	}
+	
+	public final function getPart($nIndex) {
+		$aParts = $this->getVariable('parts');
+		return $nIndex < count($aParts) ? $aParts[$nIndex] : false;
 	}
 	
 	public final function getFull() {

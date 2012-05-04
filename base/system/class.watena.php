@@ -46,27 +46,36 @@ class Watena extends Configurable {
 		
 		// Load the mapping and retrieve the appropriate controller
 		if($bUseMvc) {
-			do {
-				list($this->m_oModel, $this->m_oView, $this->m_oController) = $this->m_oContext->getMVC($this->m_oMapping);
-				if($this->m_oController) {
-					$this->m_oController->process($this->m_oModel, $this->m_oView);
-					if($this->m_oController->hasRemapping()) {
-						$this->m_oMapping = $this->m_oController->getRemapping();
-						$bContinue = true;
-					}
+			list($this->m_oModel, $this->m_oView, $this->m_oController) = $this->m_oContext->getMVC($this->m_oMapping);
+			while($this->m_oController) {
+				$this->m_oController->clearRemapping();
+				$this->m_oController->clearNewModel();
+				$this->m_oController->clearNewView();
+				$this->m_oController->process($this->m_oModel, $this->m_oView);
+				if($this->m_oController->hasRemapping()) {
+					$this->m_oMapping = $this->m_oController->getRemapping();
+					list($this->m_oModel, $this->m_oView, $this->m_oController) = $this->m_oContext->getMVC($this->m_oMapping);
+				}
+				if($this->m_oController->hasNewModel()) {
+					$this->m_oModel = $this->m_oController->getNewModel();
+				}
+				if($this->m_oController->hasNewView()) {
+					$this->m_oView = $this->m_oController->getNewView();
+				}
+				if(!$this->m_oController->hasRemapping()) {
+					break;
 				}
 			}
-			while($this->m_oController && $this->m_oController->hasRemapping());
 			if($this->m_oView) {
 				$this->m_oView->headers($this->m_oModel);
 			}
 			ob_end_flush();
 			if($this->m_oView)
 				$this->m_oView->render($this->m_oModel);
-		}
 		
-		// Log the end of Watena
-		$this->getLogger()->debug('Watena loaded and rendered the page in {time} sec.', array('time' => round(microtime(true) - $nTime, 5)));
+			// Log the end of Watena
+			$this->getLogger()->debug('Watena loaded and rendered the page in {time} sec.', array('time' => round(microtime(true) - $nTime, 5)));
+		}
 	}
 
 	/**
