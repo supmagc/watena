@@ -1,6 +1,7 @@
 {{extends front.base.tpl}}
 
 {{region begin content}}
+<div id="page">
 <div id="header_content"><div class="container_content">{{region use nav}}</div></div>
 <div id="body_content_header"></div>
 <div id="body_content">
@@ -19,5 +20,6 @@
 </div>
 <div id="body_content_footer"></div>
 <div id="footer"><div class="container_content">{{region use copy}}</div></div>
+</div>
 {{region end content}}
 
