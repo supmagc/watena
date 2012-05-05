@@ -6,6 +6,7 @@ class ConfigModel extends Model {
 	
 	public function getConfigData() {
 		$aData = array(
+			'debug'				=> Encoding::indexOf($this->getWatena()->getMapping()->getHost(), '.com') ? (isset($_COOKIE['debug']) ? 1 : 0) : 1,
 			'host'				=> '' . new Mapping(''),
 			'developmentLogin'	=> '' . new Mapping('/debug/login'),
 			'logoutUrl'			=> '' . new Mapping('/logout'),
