@@ -32,8 +32,16 @@ class Encoding {
 		return mb_substr($sData, $nStart, $nLength === null ? (self::length($sData, $sEncoding) - $nStart) : $nLength, $sEncoding === null ? self::$s_sEncoding : $sEncoding);
 	}
 	
-	public static function trim($sData, $sEncoding = null) {
-		return trim($sData);
+	public static function trim($sData, $sChars = null, $sEncoding = null) {
+		return $sChars ? trim($sData, $sChars) : trim($sData);
+	}
+	
+	public static function trimEnd($sData, $sChars = null, $sEncoding = null) {
+		return $sChars ? rtrim($sData, $sChars) : rtrim($sData);
+	}
+	
+	public static function trimBegin($sData, $sChars = null, $sEncoding = null) {
+		return $sChars ? ltrim($sData, $sChars) : ltrim($sData);
 	}
 	
 	public static function contains($sData, $sSearch, $bCaseInsensitive = true, $sEncoding = null) {
@@ -49,10 +57,10 @@ class Encoding {
 		return mb_strtolower($sData, $sEncoding === null ? self::$s_sEncoding : $sEncoding);
 	}
 	
-	public static function upperCaseFirst($sData, $sEncoding = null) {
-		$sData[0] = self::toUpper($sData[0], $sEncoding);
-		return $sData;
-	}
+// 	public static function upperCaseFirst($sData, $sEncoding = null) {
+// 		$sData[0] = self::toUpper($sData[0], $sEncoding);
+// 		return $sData;
+// 	}
 	
 	public static function replace($mSearch, $mReplace, $sData, $bCaseInsensitive = true, $sEncoding = null) {
 		if(!is_array($mSearch)) $mSearch = array($mSearch);

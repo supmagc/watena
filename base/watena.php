@@ -13,6 +13,7 @@ if(function_exists('__autoload')) {
 }
 
 if(!defined('NSESSION')) {
+	define('SESSION', true);
 	session_start();
 	// TODO: use the session-guard
 }
@@ -45,6 +46,7 @@ if(!defined('NWATENA')) {
 	require_once PATH_BASE . '/system/interface.icache.php';
 	require_once PATH_BASE . '/system/exception.watception.php';
 	require_once PATH_BASE . '/system/exception.webexception.php';
+	require_once PATH_BASE . '/system/exception.assureexception.php';
 	require_once PATH_BASE . '/system/class.object.php';
 	require_once PATH_BASE . '/system/class.configurable.php';
 	require_once PATH_BASE . '/system/class.cacheable.php';
@@ -76,9 +78,5 @@ if(!defined('NWATENA')) {
 	function watena() {
 		return Watena::getWatena();
 	}
-	
-	$aConfig = parse_ini_file(PATH_BASE . '/watena.ini', true);
-	if(!$aConfig) die('No readable Watena config file could be found.');
-	new Watena($aConfig, !defined('NMVC'));
 }
 ?>

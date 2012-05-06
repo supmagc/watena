@@ -7,7 +7,6 @@ class Mapping extends Object {
 	
 	public final function __construct($sLocal = null) {
 		$this->m_aVariables['host'] = $_SERVER['HTTP_HOST'];
-		//$this->m_aVariables['root'] = $_SERVER['DOCUMENT_ROOT'];
 		$this->m_aVariables['port'] = $_SERVER['SERVER_PORT'];
 		$this->m_aVariables['offset'] = Encoding::substring($_SERVER['SCRIPT_NAME'], 0, Encoding::length($_SERVER['SCRIPT_NAME']) - 10);
 		$this->m_aVariables['useragent'] = $_SERVER['HTTP_USER_AGENT'];
@@ -78,6 +77,15 @@ class Mapping extends Object {
 	
 	public final function toString() {
 		return $this->getFull();
+	}
+	
+	public final static function assure() {
+		if(!isset($_SERVER['HTTP_HOST'])) throw new AssureException("Make sure \$_SERVER['HTTP_HOST'] is set!");
+		if(!isset($_SERVER['SERVER_PORT'])) throw new AssureException("Make sure \$_SERVER['SERVER_PORT'] is set!");
+		if(!isset($_SERVER['SCRIPT_NAME'])) throw new AssureException("Make sure \$_SERVER['SCRIPT_NAME'] is set!");
+		if(!isset($_SERVER['HTTP_USER_AGENT'])) throw new AssureException("Make sure \$_SERVER['HTTP_USER_AGENT'] is set!");
+		if(!isset($_SERVER['REDIRECT_URL']) && !isset($_SERVER['REQUEST_URI'])) throw new AssureException("Make sure \$_SERVER['REDIRECT_URL'] or \$_SERVER['REQUEST_URI'] are set!");
+		return true;
 	}
 }
 
