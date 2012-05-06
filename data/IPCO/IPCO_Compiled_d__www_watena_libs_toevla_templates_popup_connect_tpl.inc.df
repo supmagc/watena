@@ -6,16 +6,6 @@ class IPCO_Compiled_d__www_watena_libs_toevla_templates_popup_connect_tpl extend
 			$_ob []= '' . '
 
 ';
-			if(!parent::processMember('isSucces', null)) {
-				$_ob []= '' . '
-	<script><!--
-	if(window.opener && window.opener.connectIntoFrame) window.opener.toFrame();
-	--></script>
-';
-			}
-			$_ob []= '' . '
-
-';
 			if(parent::processMember('isSucces', null)) {
 				$_ob []= '' . '
 	<script><!--
@@ -29,68 +19,73 @@ class IPCO_Compiled_d__www_watena_libs_toevla_templates_popup_connect_tpl extend
 				$_ob []= '' . '\');
 	--></script>
 ';
-			}
-			$_ob []= '' . '
-	
-<br /><br />
-<h1>Oeps, an error ...</h1>
-<span class="error">
-	';
-			if(parent::processMember('isFailed', null)) {
+			} else {
 				$_ob []= '' . '
-	<p>An error occured, but couldn\'t be determined!</p>
-	<p>If this problem continues,<br />please contact us at info@flandersisafestival.com.</p>
-	';
-			}
-			$_ob []= '' . '
-	
-	';
-			if(parent::processMember('isDuplicateLogin', null)) {
+	<script><!--
+	if(window.opener && window.opener.connectIntoFrame) window.opener.toFrame();
+	--></script>
+	<br /><br />
+	<h1>Oeps, an error ...</h1>
+	<span class="error">
+		';
+				if(parent::processMember('isFailed', null)) {
+					$_ob []= '' . '
+		<p>An error occured, but couldn\'t be determined!</p>
+		<p>If this problem continues,<br />please contact us at info@flandersisafestival.com.</p>
+		';
+				}
 				$_ob []= '' . '
-	<p>You are allready logged in with a different account!</p>
-	';
-			}
-			$_ob []= '' . '
-	
-	';
-			if(parent::processMember('isDuplicateEmail', null)) {
+		
+		';
+				if(parent::processMember('isDuplicateLogin', null)) {
+					$_ob []= '' . '
+		<p>You are allready logged in with a different account!</p>
+		';
+				}
 				$_ob []= '' . '
-	<p>Duplicate email-adress.<br />Maybe you allready have an account?</p>
-	';
-			}
-			$_ob []= '' . '
-	
-	';
-			if(parent::processMember('isInvalidEmail', null)) {
+		
+		';
+				if(parent::processMember('isDuplicateEmail', null)) {
+					$_ob []= '' . '
+		<p>Duplicate email-adress.<br />Maybe you allready have an account?</p>
+		';
+				}
 				$_ob []= '' . '
-	<p>Invalid email-adress!</p>
-	';
-			}
-			$_ob []= '' . '
-	
-	';
-			if((parent::processMember('isDuplicateName', null) || parent::processMember('isInvalidName', null))) {
+		
+		';
+				if(parent::processMember('isInvalidEmail', null)) {
+					$_ob []= '' . '
+		<p>Invalid email-adress!</p>
+		';
+				}
 				$_ob []= '' . '
-	<p>This name is allready in use or invalid!<br />You may try another name!</p>
-	<form class="field" action="?action=rename" method="post">
-		<input type="text" value="';
-				$_ob []= '' . parent::processMember('getSaveName', null);
-				$_ob []= '' . '" name="name" />
-		<input type="submit" name="sub" value="" />
-	</form>
-	';
-			}
-			$_ob []= '' . '
-	
-	';
-			if(parent::processMember('isUnverifiedEmail', null)) {
+		
+		';
+				if((parent::processMember('isDuplicateName', null) || parent::processMember('isInvalidName', null))) {
+					$_ob []= '' . '
+		<p>This name is allready in use or invalid!<br />You may try another name!</p>
+		<form class="field" action="?action=rename" method="post">
+			<input type="text" value="';
+					$_ob []= '' . parent::processMember('getSaveName', null);
+					$_ob []= '' . '" name="name" />
+			<input type="submit" name="sub" value="" />
+		</form>
+		';
+				}
 				$_ob []= '' . '
-	<p>An account with this email-adress exists,<br />but can\'t be merched since it\'s not activated yet!</p>
-	<p>If this is you, check your inbox for a verificationmail.</p>
-	';
+		
+		';
+				if(parent::processMember('isUnverifiedEmail', null)) {
+					$_ob []= '' . '
+		<p>An account with this email-adress exists,<br />but can\'t be merched since it\'s not activated yet!</p>
+		<p>If this is you, check your inbox for a verificationmail.</p>
+		';
+				}
+				$_ob []= '' . '
+	</span>
+';
 			}
 			$_ob []= '' . '
-</span>
 
 ';
 			return implode('', $_ob);
