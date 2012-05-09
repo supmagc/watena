@@ -57,11 +57,6 @@ class Encoding {
 		return mb_strtolower($sData, $sEncoding === null ? self::$s_sEncoding : $sEncoding);
 	}
 	
-// 	public static function upperCaseFirst($sData, $sEncoding = null) {
-// 		$sData[0] = self::toUpper($sData[0], $sEncoding);
-// 		return $sData;
-// 	}
-	
 	public static function replace($mSearch, $mReplace, $sData, $bCaseInsensitive = true, $sEncoding = null) {
 		if(!is_array($mSearch)) $mSearch = array($mSearch);
     	foreach($mSearch as $nSearch => $sSearch) {
@@ -73,6 +68,10 @@ class Encoding {
 	        }
     	}
         return $sData; 
+	}
+	
+	public static function translate($sSearch, $sReplace, $sData, $bCaseInsensitive = true, $sEncoding = null) {
+		return self::replace(str_split($sSearch), str_split($sReplace), $sData, $bCaseInsensitive, $sEncoding);
 	}
 	
 	public static function beginsWith($sData, $sSearch, $bCaseInsensitive = true, $sEncoding = null) {
@@ -158,6 +157,14 @@ class Encoding {
 		}
 		if($sEncoding !== null) mb_regex_encoding(self::$s_sEncoding);
 		return $sData;
+	}
+	
+	public static function regSplit($sPatern, $sData, $sEncoding = null) {
+		if($sEncoding !== null) mb_regex_encoding($sEncoding);
+		$aData = mb_split($sPatern, $sData);
+		if($sEncoding !== null) mb_regex_encoding(self::$s_sEncoding);
+		return $aData;
+		
 	}
 	
 	public static function regEncode($sData, $sEncoding = null) {

@@ -10,10 +10,10 @@ class MainController extends UserSessionController {
 		
 		if(UserManager::isLoggedIn()) {
 			$oModel->setHash(ToeVla::getNewHash());
-			$oModel->setTitle('Flanders Is A Festival - Welcome back ...');
-		}
-		else {
-			$oModel->setTitle('Flanders Is A Festival');
+			
+			if(UserManager::getLoggedInUser()->getConnectionFacebook()) {
+				
+			}
 		}
 		
 		if($this->getWatena()->getMapping()->getPart(0) == 'iframe' && Encoding::length($this->getWatena()->getMapping()->getPart(1)) == 32) {

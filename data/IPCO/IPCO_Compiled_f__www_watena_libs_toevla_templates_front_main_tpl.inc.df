@@ -20,7 +20,7 @@ $_ob []= '' . parent::callInclude('F:\WWW\watena\libs\toevla\templates\front.uni
   1 => 'src',
   2 => '/files/toevla/video/blank.html',
 ));
-			$_ob []= '' . '" width="300" height="69"></iframe></div></div></td>
+			$_ob []= '' . '" width="300" height="69"></iframe></div>
 </div>
 ';
 			return implode('', $_ob);

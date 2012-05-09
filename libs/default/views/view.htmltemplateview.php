@@ -33,7 +33,8 @@ class HtmlTemplateView extends View implements IPCO_IContentParser {
 		'link' => 'href',
 		'img' => 'src',
 		'form' => 'action',
-		'iframe' => 'src'
+		'iframe' => 'src',
+		'script' => 'src'
 	);
 	
 	public function headers(Model $oModel = null) {

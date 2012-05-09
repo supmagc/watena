@@ -1,5 +1,6 @@
 <?php
 require_plugin('DatabaseManager');
+require_plugin('ToeVla');
 
 class FestivalController extends Controller {
 
@@ -7,7 +8,7 @@ class FestivalController extends Controller {
 
 	public function process(Model $oModel = null, View $oView = null) {
 		$oConnection = DatabaseManager::getConnection('toevla');
-		if($this->getWatena()->getMapping()->getLocal() == '/festival/save') {
+		if($this->getWatena()->getMapping()->getPart(1) == 'save') {
 
 			$aErrors = array();
 			$aData = array();
@@ -17,81 +18,40 @@ class FestivalController extends Controller {
 				}
 			}
 			
-			if(isset($aData['picasa']) && $aData['picasa']) {
-				$aMatches = array();
-				$sSource = $aData['picasa'];
-				if(Encoding::regFind('(user/[0-9]+/albumid/[0-9]+)', $aData['picasa'], $aMatches))
-					$aData['picasa'] = array('source' => $sSource, 'type' => 'default', 'url' => $aMatches[1]);
-				else if(Encoding::regFind('(user/[0-9]+)', $aData['picasa'], $aMatches))
-					$aData['picasa'] = array('source' => $sSource, 'type' => 'default', 'url' => $aMatches[1]);
-				else if(Encoding::regFind('google\\.com/([0-9]+)/photos/([0-9]+)', $aData['picasa'], $aMatches))
-					$aData['picasa'] = array('source' => $sSource, 'type' => 'default', 'url' => "user/$aMatches[1]/albumid/$aMatches[2]");
-				else if(Encoding::regFind('google\\.com/([0-9]+)', $aData['picasa'], $aMatches))
-					$aData['picasa'] = array('source' => $sSource, 'type' => 'default', 'url' => "user/$aMatches[1]");
-				else {
-					$aData['picasa'] = array('source' => $sSource, 'type' => 'unknown', 'url' => '');
-					$aErrors []= 'picasa';
-				}
-				$aData['picasa'] = serialize($aData['picasa']);
+			if(isset($aData['picasa'])) {
+				$bError = false;
+				$aData['picasa'] = ToeVla::parsePicasa($aData['picasa'], $bError);
+				if($bError) $aErrors []= 'picasa';
 			}
 			
-			if(isset($aData['flickr']) && $aData['flickr']) {
-				$aMatches = array();
-				$sSource = $aData['flickr'];
-				if(Encoding::regFind('/photos/([0-9@N]+)/sets/([0-9]+)', $sSource, $aMatches))
-					$aData['flickr'] = array('source' => $sSource, 'type' => 'set', 'url' => "set=$aMatches[2]&nsid=$aMatches[1]");
-				else if(Encoding::regFind('/photos/([0-9@N]+)/favorites', $sSource, $aMatches))
-					$aData['flickr'] = array('source' => $sSource, 'type' => 'faves', 'url' => "nsid=$aMatches[1]");
-				else if(Encoding::regFind('/photos/([0-9@N]+)', $sSource, $aMatches))
-					$aData['flickr'] = array('source' => $sSource, 'type' => 'public', 'url' => "id=$aMatches[1]");
-				else if(Encoding::regFind('/photoset\\.gne\\?(set=[0-9]+&nsid=[0-9@N]+)', $sSource, $aMatches))
-					$aData['flickr'] = array('source' => $sSource, 'type' => 'set', 'url' => $aMatches[1]);
-				else if(Encoding::regFind('/photos_faves\\.gne\\?(nsid=[0-9@N]+)', $sSource, $aMatches))
-					$aData['flickr'] = array('source' => $sSource, 'type' => 'faves', 'url' => $aMatches[1]);
-				else if(Encoding::regFind('/photos_public\\.gne\\?(id=[0-9@N]+)', $sSource, $aMatches))
-					$aData['flickr'] = array('source' => $sSource, 'type' => 'public', 'url' => $aMatches[1]);
-				else {
-					$aData['flickr'] = array('source' => $sSource, 'type' => 'unknown', 'url' => '');
-					$aErrors []= 'flickr';
-				}
-				$aData['flickr'] = serialize($aData['flickr']);
+			if(isset($aData['flickr'])) {
+				$bError = false;
+				$aData['flickr'] = ToeVla::parseFlickr($aData['flickr'], $bError);
+				if($bError) $aErrors []= 'flickr';
 			}
 			
-			if(isset($aData['twitterName']) && $aData['twitterName']) {
-				$aMatches = array();
-				if(Encoding::regFind('^@?([a-zA-Z0-9_]+)$', Encoding::trim($aData['twitterName']), $aMatches))
-					$aData['twitterName'] = $aMatches[1];
-				else 
-					$aErrors []= 'twitterName';
+			if(isset($aData['twitterName'])) {
+				$bError = false;
+				$aData['twitterName'] = ToeVla::parseTwitterName($aData['twitterName'], $bError);
+				if($bError) $aErrors []= 'twitterName';
 			}
 			
-			if(isset($aData['twitterHash']) && $aData['twitterHash']) {
-				$aMatches = array();
-				if(Encoding::regFind('^#?([a-zA-Z0-9_]+)$', Encoding::trim($aData['twitterHash']), $aMatches))
-					$aData['twitterHash'] = $aMatches[1];
-				else
-					$aErrors []= 'twitterHash';
+			if(isset($aData['twitterHash'])) {
+				$bError = false;
+				$aData['twitterHash'] = ToeVla::parseTwitterHash($aData['twitterHash'], $bError);
+				if($bError) $aErrors []= 'twitterHash';
 			}
 			
-			if(isset($aData['facebook']) && $aData['facebook']) {
-				$aMatches = array();
-				if(Encoding::regFind('^(http://(www\\.)?facebook\\.com/)?([-a-z_]+)$', Encoding::trim($aData['facebook']), $aMatches))
-					$aData['facebook'] = $aMatches[1];
-				else
-					$aErrors []= 'facebook';
+			if(isset($aData['facebook'])) {
+				$bError = false;
+				$aData['facebook'] = ToeVla::parseFacebook($aData['facebook'], $bError);
+				if($bError) $aErrors []= 'facebook';
 			}
 				
-			if(isset($aData['youtube']) && $aData['youtube']) {
-				$aMatches = array();
-				if(Encoding::regFind('youtu\\.be/([-a-zA-Z0-9]+)', $aData['youtube'], $aMatches))
-					$aData['youtube'] = $aMatches[1];
-				else if(Encoding::regFind('youtube\\.com/watch\\?.*v=([-a-zA-Z0-9]+)', $aData['youtube'], $aMatches))
-					$aData['youtube'] = $aMatches[1];
-				else if(Encoding::regFind('youtube-nocookie\\.com/embed/([-a-zA-Z0-9]+)', $aData['youtube'], $aMatches))
-					$aData['youtube'] = $aMatches[1];
-				else 
-					$aErrors []= 'youtube';
-				$aData['youtube'] = "http://www.youtube-nocookie.com/embed/$aData[youtube]?version=3&feature=player_embedded&autoplay=1&controls=0&rel=0&showinfo=0";
+			if(isset($aData['youtube'])) {
+				$bError = false;
+				$aData['youtube'] = ToeVla::parseYoutube($aData['youtube'], $bError);
+				if($bError) $aErrors []= 'youtube';
 			}
 				
 			$oLogoFile = new Upload('logo');
@@ -118,7 +78,7 @@ class FestivalController extends Controller {
 				echo "NO HASH !";
 			}
 		}
-		else if($this->getWatena()->getMapping()->getLocal() == '/festival/load') {
+		else if($this->getWatena()->getMapping()->getPart(1) == 'load') {
 			if(isset($_GET['hash'])) {
 				$sHash = $_GET['hash'];
 				$oStatement = DatabaseManager::getConnection('toevla')->getTable('festival', 'hash')->select($sHash);
@@ -132,6 +92,26 @@ class FestivalController extends Controller {
 					$aRow['flickr'] = isset($aRow['flickr']['source']) ? $aRow['flickr']['source'] : '';
 					$aRow['picasa'] = isset($aRow['picasa']['source']) ? $aRow['picasa']['source'] : '';
 					echo json_encode(array_intersect_key($aRow, array_combine($this->m_aAllowed, $this->m_aAllowed)));
+				}
+			}
+		}
+		else if($this->getWatena()->getMapping()->getPart(1) == 'download') {
+			if(Encoding::length($this->getWatena()->getMapping()->getPart(2)) == 32) {
+				$oTable = $oConnection->getTable('festival', 'hash');
+				if(($oData = $oTable->select($this->getWatena()->getMapping()->getPart(2))->fetchObject()) !== false) {
+					$sFilename = 'Editor-' . Encoding::regReplace('[^-a-zA-Z0-9_]', '_', $oData->name) . '.zip';
+					$oZipper = new ZipFile(PATH_LIBS . '/toevla/files/editor/' . $sFilename);
+					if(!$oZipper->exists()) {
+						$oZipper->add('/', PATH_DATA . '/editor');
+						$oZipper->create('data', "http://flandersisafestival.dev/festival/save
+http://flandersisafestival.dev/festival/load
+{$oData->hash}
+{$oData->name}");
+					}
+					$this->redirect(new Mapping('/files/toevla/editor/' . $sFilename));
+				}
+				else {
+					$this->display('No valid festival found!');
 				}
 			}
 		}

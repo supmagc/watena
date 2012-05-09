@@ -125,6 +125,10 @@ class Time extends Object {
 		return $oTimezone->getOffset($oDateTime);
 	}
 	
+	public static function getSystemTimestamp() {
+		return time();
+	}
+	
 	public static function create($mTime = null, $sTimezone = null) {
 		return new Time($mTime ?: time(), $sTimezone ?: self::getSystemTimezone());
 	}

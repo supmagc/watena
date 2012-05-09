@@ -11,7 +11,7 @@
 	--></script>
 {{else}}
 	<script><!--
-	if(window.opener && window.opener.connectIntoFrame) window.opener.toFrame();
+	if(window.opener && window.opener.toFrame) window.opener.toFrame();
 	--></script>
 	<br /><br />
 	<h1>Oeps, an error ...</h1>

@@ -3,20 +3,13 @@
 {{region begin content}}
 <div id="fb-root" style="width:150px;"></div>
 <script>
-window.fbAsyncInit = function() {
-	FB.init({
-      appId      : '121283004662650',
-      cookie     : true, // enable cookies to allow the server to access the session
-    });
-};
-
-(function(d){
-	var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
-	if (d.getElementById(id)) {return;}
-	js = d.createElement('script'); js.id = id; js.async = true;
-	js.src = "//connect.facebook.net/en_US/all.js";
-	ref.parentNode.insertBefore(js, ref);
-}(document));
+(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/nl_NL/all.js#xfbml=1&appId=121283004662650";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));
 
 function postToFacebook() {
 	var obj = {
@@ -54,6 +47,7 @@ twttr.ready(function(twttr) {
 </script>
 <div id="social">
 	<p><a href="javascript:postToFacebook();">Post to Facebook</a></p>
-	<p><a href="https://twitter.com/intent/tweet">Post to Twitter</a></p>
+	<p><a href="https://twitter.com/intent/tweet?{[getTwitterParams()]}">Post to Twitter</a></p>
+	<!--<div class="fb-like" data-href="http://flandersisafestival.com" data-send="false" data-layout="button_count" data-width="450" data-show-faces="false" data-font="arial"></div>-->
 </div>
 {{region end}}

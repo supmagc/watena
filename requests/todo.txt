@@ -1,8 +1,0 @@
-8:set=72157624250321501&nsid=12219474@N03
-39:id=60392402@N07
-
-full login for caching
-festival reloads
-flickr getlistings ??
-direct load to festival
-google analytics

@@ -1,9 +1,10 @@
 <?php
-
 define('NMVC', true);
 include '../base/watena.php';
 
-dump(file_assure('F:/Temp/Bla/Test.txt'));
-dump(dir_assure('F:/Temp/Bla'));
+require_plugin('DatabaseManager');
+$oConnection = DatabaseManager::getConnection('toevladmin');
+$oTable = $oConnection->getTable('festival');
+dump($oTable->select('13')->fetchObject());
 
 ?>
