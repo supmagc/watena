@@ -2,6 +2,8 @@
 <filter name="ToeVla main filter" order="1">
 	<model name="MainModel">
 		<param name="unity">WebPlayer.unity3d</param>
+		<param name="title">Flanders Is A Festival - Play!</param>
+		<param name="description">Flanders is the ultimate festival destination. Tourism Flanders has therefore created an online music festival game in 3d.</param>
 	</model>
 	<view name="HtmlTemplateView">
 		<param name="template">front.main.tpl</param>

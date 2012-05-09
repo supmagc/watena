@@ -85,12 +85,6 @@ _gaq.push([\'_trackPageview\']);
 			$_ob []= '' . parent::callContentParser('addMappingRoot', array (
   0 => 'a',
   1 => 'href',
-  2 => '/developers',
-));
-			$_ob []= '' . '" class="nav">Developers</a><a href="';
-			$_ob []= '' . parent::callContentParser('addMappingRoot', array (
-  0 => 'a',
-  1 => 'href',
   2 => '/privacy',
 ));
 			$_ob []= '' . '" class="nav">Privacy Statement</a><a href="';
@@ -99,7 +93,13 @@ _gaq.push([\'_trackPageview\']);
   1 => 'href',
   2 => '/about',
 ));
-			$_ob []= '' . '" class="nav">About</a>
+			$_ob []= '' . '" class="nav">About</a><a href="';
+			$_ob []= '' . parent::callContentParser('addMappingRoot', array (
+  0 => 'a',
+  1 => 'href',
+  2 => '/',
+));
+			$_ob []= '' . '" class="nav">Play</a>
 ';
 			return implode('', $_ob);
 		} catch(Exception $e) { throw new WatCeption('Unable to create template-output.', array(), null, $e); }

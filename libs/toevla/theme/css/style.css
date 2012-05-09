@@ -35,6 +35,10 @@ html, body, #centerTable, iframe {
 	background:url(../body_content_bg.jpg) center top repeat-y;
 }
 
+#body_content a, #body_content a:hover, #body_content a:visited {
+	color:#00C;
+}
+
 #body_content_header {
 	background:url(../body_content_header_bg.jpg) center no-repeat;
 	height:65px;
@@ -170,7 +174,7 @@ div.spacer {
 }
 
 p {
-	margin-bottom:0px;
+	margin:10px 0ox;
 }
 
 hr {
@@ -205,7 +209,7 @@ h2 {
 	font-size:21px;
 	font-weight:700;
 	line-height:24px;
-	margin:0px 0px 20px 0px;
+	margin:20px 0px;
 	text-transform:uppercase;
 	letter-spacing:1px;
 	color:#5918a7;
@@ -238,7 +242,7 @@ div.image_holder_right {
 }
 
 div.image_holder_left img, div.image_holder_right img {
-	margin:11px 12px 11px 10px;
+	margin:10px 12px 11px 10px;
 	width:360px;
-	height:224px;
+	height:225px;
 }

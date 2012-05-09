@@ -47,6 +47,7 @@ if(!defined('NWATENA')) {
 	require_once PATH_BASE . '/system/exception.watception.php';
 	require_once PATH_BASE . '/system/exception.webexception.php';
 	require_once PATH_BASE . '/system/exception.assureexception.php';
+	require_once PATH_BASE . '/system/exception.filepermissionexception.php';
 	require_once PATH_BASE . '/system/class.object.php';
 	require_once PATH_BASE . '/system/class.configurable.php';
 	require_once PATH_BASE . '/system/class.cacheable.php';
@@ -71,12 +72,18 @@ if(!defined('NWATENA')) {
 	require_once PATH_BASE . '/system/class.webrequest.php';
 	require_once PATH_BASE . '/system/class.webresponse.php';
 	require_once PATH_BASE . '/system/class.zipfile.php';
+	require_once PATH_BASE . '/system/class.mail.php';
 	
 	// ############################################################
 	// Load the application framework
 	// ############################################################
-	function watena() {
-		return Watena::getWatena();
+	if(defined('WATENA')) {
+		function watena() {
+			return Watena::getWatena();
+		}
+		$aConfig = parse_ini_file(PATH_BASE . '/watena.ini', true);
+		if(!$aConfig) die('No readable Watena config file could be found to bootstrap Watena!');
+		new Watena($aConfig, !defined('NMVC'));
 	}
 }
 ?>

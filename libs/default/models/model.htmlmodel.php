@@ -6,7 +6,7 @@ class HtmlModel extends Model {
 	private $m_sContentType = null;
 	private $m_sTitle = null;
 	private $m_sDescription = null;
-	private $m_aKeywords = array();
+	private $m_aKeywords = null;
 	
 	public function getRoot() {
 		return $this->getWatena()->getMapping()->getRoot();
@@ -16,12 +16,16 @@ class HtmlModel extends Model {
 		return $this->getWatena()->getMapping()->getHost();
 	}
 	
+	public function getLocal() {
+		return $this->getWatena()->getMapping()->getLocal();
+	}
+	
 	public function setTitle($sTitle) {
 		$this->m_sTitle = $sTitle;
 	}
 	
 	public function getTitle() {
-		return $this->m_sTitle;
+		return $this->m_sTitle ?: $this->getConfig('title', $this->getWatena()->getMapping()->getHost());
 	}
 	
 	public function setContentType($sContentType) {
@@ -29,7 +33,7 @@ class HtmlModel extends Model {
 	}
 	
 	public function getContentType() {
-		return $this->m_sContentType ?: 'text/html';
+		return $this->m_sContentType ?: $this->getConfig('contenttype', 'text/html');
 	}
 	
 	public function setCharset($sCharset) {
@@ -37,7 +41,7 @@ class HtmlModel extends Model {
 	}
 	
 	public function getCharset() {
-		return $this->m_sCharset ?: Encoding::charset();
+		return $this->m_sCharset ?: $this->getConfig('charset', Encoding::charset());
 	}
 	
 	public function setDescription($sDescription) {
@@ -45,19 +49,24 @@ class HtmlModel extends Model {
 	}
 	
 	public function getDescription() {
-		return $this->m_sDescription;
+		return $this->m_sDescription ?: $this->getConfig('description', '');
 	}
 	
 	public function setKeywords(array $aKeywords) {
 		$this->m_aKeywords = $aKeywords;
 	}
 	
+	public function clearKeywords() {
+		$this->m_aKeywords = null;
+	}
+	
 	public function addKeyword($sKeyword) {
+		if(!is_array($this->m_aKeywords)) $this->m_aKeywords = array();
 		$this->m_aKeywords []= $sKeyword;
 	}
 	
 	public function getKeyWords() {
-		return implode(', ', $this->m_aKeywords);
+		return is_array($this->m_aKeywords) ? implode(', ', $this->m_aKeywords) : $this->getConfig('keywords', '');
 	}
 }
 

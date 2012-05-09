@@ -8,16 +8,21 @@ class ZipFile extends Object {
 	public function __construct($sFilepath) {
 		$this->m_sPath = $this->getWatena()->getPath($sFilepath, false);
 		$this->m_oZipper = new ZipArchive();
-		$sDirectory = dirname($sFilepath);
-		if(!file_exists($filename))
-			mkdir($sDirectory, 0775, true);
-		if(is_readable($sFilepath) && is_writable($sFilepath)) {
+		$sDirectory = dirname($this->getFilepath());
+		if(dir_assure($sDirectory) && (is_readable($this->getFilepath()) || is_writable($sDirectory))) {
 			$this->m_oZipper->open($this->getFilepath(), ZipArchive::CREATE | ZipArchive::OVERWRITE);
+		}
+		else {
+			throw new FilePermissionException($this->getFilepath(), $this);
 		}
 	}
 	
 	public function __destruct() {
 		$this->m_oZipper->close();
+	}
+	
+	public function exists() {
+		return file_exists($this->getFilepath());
 	}
 	
 	public function getFilepath() {
@@ -26,11 +31,12 @@ class ZipFile extends Object {
 	
 	public function add($sName, $sPath) {
 		$sPath = $this->getWatena()->getPath($sPath);
+		$sName = Encoding::trim($sName, '/\\');
 		if(is_file($sPath))
 			return $this->m_oZipper->addFile($sPath, $sName);
 		else if(is_dir($sPath)) {
 			$aFiles = scandir($sPath);
-			$bSuccess = $this->m_oZipper->addEmptyDir($sName);
+			$bSuccess = !$sName || $this->m_oZipper->addEmptyDir($sName);
 			foreach($aFiles as $sFile) {
 				if($sFile != '.' && $sFile != '..')
 					$bSuccess = $bSuccess && $this->add($sName . '/' . $sFile, $sPath . '/' . $sFile);

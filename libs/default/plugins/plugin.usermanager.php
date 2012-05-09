@@ -29,6 +29,9 @@ class UserManager extends Plugin {
 		self::$s_oSingleton = $this;
 	}
 	
+	/**
+	 * @return DbConnection
+	 */
 	public static function getDatabaseConnection() {
 		return self::$s_oSingleton->m_oDatabaseConnection;
 	}
@@ -56,6 +59,9 @@ class UserManager extends Plugin {
 		return self::getConnectionProvider('ProviderFacebook');
 	}
 	
+	/**
+	 * @return User|null
+	 */
 	public static function getLoggedInUser() {
 		if(self::$s_oLoggedInUser === false && isset($_SESSION['USERID']) && $_SESSION['USERID']) {
 			self::$s_oLoggedInUser = User::load($_SESSION['USERID']);
@@ -63,8 +69,19 @@ class UserManager extends Plugin {
 		return self::$s_oLoggedInUser;
 	}
 	
+	public static function login($sUser, $sPassword) {
+		
+	}
+	
+	public static function verify($sVerifier) {
+		
+	}
+	
 	public static function setLoggedInUser(User $oUser = null) {
-		self::$s_oLoggedInUser = $oUser ? $oUser : null;
+		if(self::$s_oLoggedInUser != $oUser) {
+			self::$s_oLoggedInUser = $oUser;
+			
+		}
 		$_SESSION['USERID'] = $oUser ? $oUser->getId() : 0;
 	}
 	

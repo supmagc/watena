@@ -45,6 +45,18 @@ class MainModel extends HtmlModel {
 		return $this->getWatena()->getMapping()->getRoot();
 	}
 
+	public function getTwitterParams() {
+		$aData = array(
+			'hashtags' => 'fiaf12',
+			'url' => urlencode('' . new Mapping('/')),
+		);
+		if(isset($_GET['hash']) && $_GET['hash'])
+			$aData['hashtags'] .= ',' . $_GET['hash'];
+		if(isset($_GET['name']) && $_GET['name'])
+			$aData['related'] = $_GET['name'];
+		return http_build_query($aData, null, '&');
+	}
+	
 	public function hasTwitterLogin() {
 		return UserManager::getProviderTwitter(); 
 	}

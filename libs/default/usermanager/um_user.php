@@ -105,6 +105,16 @@ class User extends DbObject {
 		return isset($aConnections[$oConnectionProvider->getName()]) ? $aConnections[$oConnectionProvider->getName()] : false;
 	}
 	
+	public function getConnectionFacebook() {
+		$oConnection = UserManager::getProviderFacebook();
+		return $oConnection ? $this->getConnection($oConnection) : false;
+	}
+	
+	public function getConnectionTwitter() {
+		$oConnection = UserManager::getProviderTwitter();
+		return $oConnection ? $this->getConnection($oConnection) : false;
+	}
+	
 	public function removeConnection(UserConnection $oConnection) {
 		if(isset($this->m_aConnections[$oConnection->getProvider()])) {
 			$oConnection->delete();

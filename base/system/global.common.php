@@ -16,7 +16,9 @@ function terminate($sMessage) {
 function dump($mVar) {
 	$aTrace = debug_backtrace();
 	if(count($aTrace) > 0) echo "<strong>{$aTrace[0]['file']}</strong> (<i>line: {$aTrace[0]['line']}</i>)\r\n";
+	echo '<pre>';
 	var_dump($mVar);
+	echo '</pre>';
 }
 
 /**
