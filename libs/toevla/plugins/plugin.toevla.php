@@ -85,8 +85,8 @@ class ToeVla extends Plugin {
 	public static function parseFacebook($sData, &$bError) {
 		if($sData) {
 			$aMatches = array();
-			if(Encoding::regFind('^(https?://(www\\.)?facebook\\.com/(#!/)?)?([-a-zA-Z_]+)$', Encoding::trim($sData), $aMatches))
-				$sData = $aMatches[4];
+			if(Encoding::regFind('(facebook\\.com/(#!/)?)?([-a-zA-Z_]+)$', Encoding::trim($sData), $aMatches))
+				$sData = $aMatches[3];
 			else if(Encoding::regFind('(/|id=)([0-9]+)$', Encoding::trim($sData), $aMatches))
 				$sData = $aMatches[2];
 			else
@@ -100,8 +100,8 @@ class ToeVla extends Plugin {
 			$aMatches = array();
 			if(Encoding::regFind('^@?([a-zA-Z0-9_]+)$', Encoding::trim($sData), $aMatches))
 				$sData = $aMatches[1];
-			else if(Encoding::regFind('^https?://(www\\.)?twitter\\.com/(#!/)?([a-zA-Z0-9_]+)$', Encoding::trim($sData), $aMatches))
-				$sData = $aMatches[3];
+			else if(Encoding::regFind('twitter\\.com/(#!/)?([a-zA-Z0-9_]+)$', Encoding::trim($sData), $aMatches))
+				$sData = $aMatches[2];
 			else
 				$bError = true;
 			return $sData;

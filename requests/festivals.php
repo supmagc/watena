@@ -6,7 +6,6 @@ require_plugin('DatabaseManager');
 require_plugin('ToeVla');
 
 $oConnection = DatabaseManager::getConnection('toevladmin');
-$oConnection->query('TRUNCATE `festival`');
 
 function getGenreId($sGenre) {
 	$sGenre = mb_strtolower($sGenre);
@@ -40,6 +39,8 @@ function makeDate($sDate, $nDayOffset = 0) {
 	return date('Y-m-d', strtotime(str_replace('/', '-', $sDate)) + ($nDayOffset * 24 * 60 * 60));
 }
 
+/*
+$oConnection->query('TRUNCATE `festival`');
 $sContent = file_get_contents('listing.csv');
 $sContent = mb_convert_encoding($sContent, 'UTF-8');
 $aLines = explode("\n", $sContent);
@@ -82,6 +83,7 @@ foreach($aFestivals as $aFestival) {
 	print_r($aFestival);
 	echo '</pre>';
 }
+*/
 
 $sContent = file_get_contents('update.csv');
 $sContent = mb_convert_encoding($sContent, 'UTF-8');
@@ -136,11 +138,13 @@ foreach($aLines as $sLine) {
 			if(!$bError) $aFestival['youtube'] = $sData ?: $oData->youtube;
 			else echo "<strong>ERROR:</strong><i>$sData</i><br />";
 				
-			echo 'Found <br />';
-			echo '<pre>';
-			$oTable->update($aFestival, $oData->name);
-			print_r($aFestival);
-			echo '</pre>';
+			echo "Found: $aParts[1]<br />";
+			if($oData->mailCount == 0) {
+				echo '<pre>';
+				$oTable->update($aFestival, $oData->name);
+				print_r($aFestival);
+				echo '</pre>';
+			}
 		}
 		else {
 			echo "Unknown festival: " . $aParts[1] . "<br />";
