@@ -59,7 +59,7 @@ class FestivalController extends Controller {
 				$sFilename = md5('logo' . microtime()) . '.' . $oLogoFile->getExtension();
 				$oLogoFile->move("L/toevla/files/festival/$sFilename");
 				$aData['logoFilename'] = $sFilename;
-				if($oLogoFile->getError()) $aErrors []= 'logo';
+				if($oLogoFile->getError()) $aErrors []= 'logoUpload';
 			}
 			
 			$oAfficheFile = new Upload('affiche');
@@ -67,7 +67,7 @@ class FestivalController extends Controller {
 				$sFilename = md5('affiche' . microtime()) . '.' . $oAfficheFile->getExtension();
 				$oAfficheFile->move("L/toevla/files/festival/$sFilename");
 				$aData['afficheFilename'] = $sFilename;
-				if($oAfficheFile->getError()) $aErrors []= 'affiche';
+				if($oAfficheFile->getError()) $aErrors []= 'posterUpload';
 			}
 			
 			if(isset($_POST['hash'])) {
