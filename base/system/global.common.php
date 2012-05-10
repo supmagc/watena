@@ -159,7 +159,10 @@ function dir_assure($sPath, $nMode = 0775) {
  * @param array $arr The array to check for associativeness.
  * @return boolean
  */
-function is_assoc(array &$arr) {
+function is_assoc(&$arr) {
+	// Make sure it's an array'
+	if(!is_array($arr)) return false;
+	
 	// This is in fact a for-each loop where all keys are checkt to match an incremental counter.
 	// If the loop breaks, the key/counter didn't match and the key will be valid.
 	for(reset($arr), $i=0 ; key($arr) === $i ; next($arr), ++$i);

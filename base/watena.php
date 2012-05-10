@@ -73,6 +73,7 @@ if(!defined('NWATENA')) {
 	require_once PATH_BASE . '/system/class.webresponse.php';
 	require_once PATH_BASE . '/system/class.zipfile.php';
 	require_once PATH_BASE . '/system/class.mail.php';
+	require_once PATH_BASE . '/system/class.html2text.php';
 	
 	// ############################################################
 	// Load the application framework

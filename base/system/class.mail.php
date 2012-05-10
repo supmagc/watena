@@ -3,171 +3,201 @@
 class Mail extends Object {
 	
 	const CHARSET_DEFAULT = 'us-ascii';
+	const DISPOSITION_INLINE = 'inline';
+	const DISPOSITION_ATTACHMENT = 'attachment';
 
-	private $m_aSendTo = array();
+	private $m_aTo = array();
 	private $m_aCc = array();
 	private $m_aBcc = array();
 	private $m_aAttach = array();
 	private $m_sSubject = null;
 	private $m_sFrom = null;
-	private $m_sBody = null;
+	private $m_sContextText = null;
+	private $m_sContextHtml = null;
 	private $m_sReplyTo = null;
 	private $m_sOrganisation = null;
 	private $m_aPriorities = array( '1 (Highest)', '2 (High)', '3 (Normal)', '4 (Low)', '5 (Lowest)' );
-	private $m_sCharset = null;
+	private $m_sCharsetText = null;
+	private $m_sCharsetHtml = null;
 	private $m_sPriority = '3 (Normal)';
 	private $m_bReceipt = false;
-	private $m_bCheckAdresses = false;
 
 	public function __construct() {
-		$this->autoCheck(true);
-		$this->boundary= "--" . md5(uniqid("myboundary"));
 	}
 
-	/**
-	 * Activate or desactivate the email addresses validator.
-	 * By default autoCheck feature is on.
-	 * 
-	 * @param boolean $bCheck set to true to turn on the auto validation.
-	 */
-	public function autoCheck($bCheck) {
-		$this->m_bCheckAdresses = $bCheck;
+	public function setSubject($sSubject ) {
+		$this->m_sSubject = $sSubject;
+	}
+	
+	public function getSUbject() {
+		return $this->m_sSubject;
 	}
 
-	/**
-	 * Define the subject line of the email.
-	 * 
-	 * @param string $sSubject Any monoline string.
-	 */
-	public function subject($sSubject ) {
-		$this->m_sSubject = Encoding::translate("\r\n" , "  ", $sSubject);
-	}
-
-	/**
-	 * Set the sender of the mail.
-	 * 
-	 * @param string $sFrom Should be an email address
-	 */
-	public function from($sFrom){
-		if(!is_string($sFrom)) return false;
-		$this->m_sFrom = $sFrom;
+	public function setFrom($sAddress, $sName = null){
+		if(!is_string($sAddress)) return false;
+		$this->m_sFrom = $this->formatAddress($sAddress, $sName);
 		return true;
 	}
-
-	/**
-	 * Set the Reply-to header.
-	 * 
-	 * @param string $sAddress Should be an email address.
-	 */
-	public function replyTo($sAddress) {
-		if(!is_string($address)) return false;
-		$this->m_sReplyTo = $address;
-		return true;
+	
+	public function getFrom() {
+		return $this->m_sFrom;
 	}
 
-	/**
-	 * Add a m_bReceipt to the mail ie. A confirmation is returned to the "From" address (or "ReplyTo" if defined)
-	 * when the receiver opens the message.
-	 *
-	 * @warning this functionality is *not* a standard, thus only some mail clients are compliants.
-	 */
-	public function receipt() {
+	public function setReplyTo($sAddress, $sName = null) {
+		if(!is_string($sAddress)) return false;
+		$this->m_sReplyTo = $this->formatAddress($sAddress, $sName);
+		return true;
+	}
+	
+	public function getReplyTo() {
+		return $this->m_sReplyTo;
+	}
+
+	public function setReceipt() {
 		$this->m_bReceipt = true;
+		return true;
+	}
+	
+	public function getReceipt() {
+		return $this->m_bReceipt;
 	}
 
-	/**
-	 * Set the mail recipient.
-	 * 
-	 * @param string|array $to email address, accept both a single address or an array of addresses
-	 */
-	public function to($mTo) {
-		if($this->m_bCheckAdresses && !$this->checkAdresses($mTo)) return false;		
-		if(is_array($mTo))
-			$this->m_aSendTo = $mTo;
+	public function setTo($mAddress, $mName = null) {
+		return $this->clearTo() && $this->addTo($mAddress, $mName);
+	}
+	
+	public function clearTo() {
+		$this->m_aTo = array();
+		return true;
+	}
+	
+	public function addTo($mAddress, $mName = null) {
+		if(is_array($mAddress))
+			$this->m_aTo = $this->formatAddress($mAddress, $mName);
 		else
-			$this->m_aSendTo[] = '' . $mTo;
+			$this->m_aTo[] = $this->formatAddress($mAddress, $mName);
 		return true;
 	}
-
-	/**
-	 * Set the CC headers (carbon copy).
-	 * 
-	 * @param string|array $sCcc : email address(es), accept both array and string.
-	 */
-	public function cc($sCc) {
-		if($this->m_bCheckAdresses && !$this->checkAdresses($sCc)) return false;		
-		if(is_array($sCc))
-			$this->m_aCc= $sCc;
+	
+	public function getTo() {
+		return $this->m_aTo;
+	}
+	
+	public function setCc($mAddress, $mName = null) {
+		return $this->clearCc() && $this->addCc($mAdress, $mName);
+	}
+	
+	public function clearCc() {
+		$this->m_aCc = array();
+		return true;
+	}
+	
+	public function addCc($mAddress, $mName = null) {
+		if(is_array($mAddress))
+			$this->m_aCc = $this->formatAddress($mAddress, $mName);
 		else
-			$this->m_aCc[]= $sCc;
+			$this->m_aCc[] = $this->formatAddress($mAddress, $mName);
 		return true;
 	}
-
-	/**
-	 * Set the Bcc headers (blank carbon copy).
-	 * 
-	 * @param string|array $sBcc : email address(es), accept both array and string.
-	 */
-	public function bcc($sBcc ) {
-		if($this->m_bCheckAdresses && !$this->checkAdresses($sBcc)) return false;		
-		if(is_array($sBcc))
-			$this->m_aBcc= $sBcc;
+	
+	public function getCc() {
+		return $this->m_aCc;
+	}
+	
+	public function setBcc($mAddress, $mName = null) {
+		return $this->clearBcc() && $this->addBcc($mAdress, $mName);
+	}
+	
+	public function clearBcc() {
+		$this->m_aBcc = array();
+		return true;
+	}
+	
+	public function addBcc($mAddress, $mName = null) {
+		if(is_array($mAddress))
+			$this->m_aBcc = $this->formatAddress($mAddress, $mName);
 		else
-			$this->m_aBcc[]= $sBcc;
+			$this->m_aBcc[] = $this->formatAddress($mAddress, $mName);
 		return true;
 	}
-
-	/**
-	 * Set the body (message) of the mail.
-	 * Define the m_sCharset if the message contains extended characters (accents).
-	 */
-	function body($sBody, $sCharset = null ) {
-		$sCharset = Encoding::trim($sCharset);
-		if($sCharset) $this->m_sCharset = $sCharset;
-		$this->m_sBody = $sBody;
-		return true;
+	
+	public function getBcc() {
+		return $this->m_aBcc;
 	}
-
-	/**
-	 * Set the Organization header.
-	 */
-	public function organization($sOrganisation) {
+	
+	public function setOrganisation($sOrganisation) {
 		$sOrganisation = Encoding::trim($sOrganisation);
 		if(!$sOrganisation) return false;
 		$this->m_sOrganisation = $sOrganisation;
 		return true;
 	}
+	
+	public function getOrganisation() {
+		return $this->m_sOrganisation;
+	}
 
-	/**
-	 * Set the mail priority.
-	 * 
-	 * @param int $priority Integer taken between 1 (highest) and 5 ( lowest ).
-	 */
-	public function priority($nPriority) {
+	public function setPriority($nPriority) {
 		if(!is_int($nPriority) || ! isset($this->m_aPriorities[$nPriority-1])) return false;
 		$this->m_sPriority = $this->m_aPriorities[$nPriority-1];
 		return true;
 	}
-
-	/**
-	 * Attach a file to the mail.
-	 * 
-	 * @param string $sFilename : path of the file to attach
-	 * @param string $sFiletype : MIME-type of the file. default to 'application/x-unknown-content-type'
-	 * @param string $sDisposition : instruct the Mailclient to display the file if possible ("inline") or always as a link ("attachment") possible values are "inline", "attachment"
- 	 */
-	public function attach($sFilename, $sFiletype = null, $sDisposition = "inline" ) {
-		if(!$sFiletype)
-			$sFiletype = "application/x-unknown-content-type";
-
-		$this->m_aAttach[] = $sFilename;
-		$this->actype[] = $sFiletype;
-		$this->adispo[] = $sDisposition;
+	
+	public function getPriority() {
+		return $this->m_sPriority;
 	}
 
-	/**
-	 * Build the email message.
-	 */
+	public function addAttachment($sFilepath, $sFilename = null, $sFiletype = 'application/x-unknown-content-type', $sDisposition = self::DISPOSITION_INLINE) {
+		$sFilepath = $this->getWatena()->getPath($sFilepath);
+		if(!$sFilepath) return false;
+		if(!$sFilename) $sFilename = basename($sFilepath);
+		$this->m_aAttach[$sFilepath] = array(
+			'path' => $sFilepath,
+			'name' => $sFilename,
+			'type' => $sFiletype,
+			'disposition' => $sDisposition
+		);
+		return true;
+	}
+	
+	public function removeAttachment($sFilepath) {
+		$sFilepath = $this->getWatena()->getPath($sFilepath);
+		unset($this->m_aAttach[$sFilepath]);
+		return true;
+	}
+	
+	public function isAttachments($sFilepath) {
+		$sFilepath = $this->getWatena()->getPath($sFilepath);
+		return isset($this->m_aAttach[$sFilepath]);
+	}
+	
+	function setContentText($sContent, $sCharset = self::CHARSET_DEFAULT) {
+		$sCharset = Encoding::trim($sCharset);
+		$this->m_sCharsetText = $sCharset;
+		$this->m_sContextText = $sContent;
+		return true;
+	}
+	
+	public function getContentText() {
+		return $this->m_sContextText;
+	}
+	
+	function setContentHtml($sContent, $sCharset = self::CHARSET_DEFAULT) {
+		$sCharset = Encoding::trim($sCharset);
+		$this->m_sCharsetHtml = $sCharset;
+		$this->m_sContextHtml = $sContent;
+		return true;
+	}
+	
+	public function getContentHtml() {
+		return $this->m_sContextHtml;
+	}
+	
+	public function convertHtmlToText() {
+		if(!$this->getContentHtml()) return false;
+		$oHtml2Text = new html2text($this->getContentHtml());
+		$this->setContentText($oHtml2Text->getText());
+	}
+	
 	public function buildMail() {
 
 		// build the headers
@@ -175,80 +205,90 @@ class Mail extends Object {
 		$aHeaders = array();
 		
 		if($this->m_sFrom)
-			$aHeaders['From'] = $this->m_sFrom;
+			$aHeaders['From'] = $this->getFrom();
 		
 		if($this->m_sReplyTo)
-			$aHeaders['Reply-To'] = $this->m_sReplyTo;
+			$aHeaders['Reply-To'] = $this->getReplyTo();
 		
 		if($this->m_sSubject)
-			$aHeaders['Subject'] = $this->m_sSubject;
+			$aHeaders['Subject'] = $this->getSUbject();
 		
 		if(count($this->m_aCc) > 0)
-			$aHeaders['CC'] = implode( ", ", $this->m_aCc );
+			$aHeaders['CC'] = implode(', ', $this->getCc());
 
 		if(count($this->m_aBcc) > 0 )
-			$aHeaders['BCC'] = implode( ", ", $this->m_aBcc );
-		
-		if($this->m_sPriority)
-			$aHeaders['X-Priority'] = $this->m_sPriority;
+			$aHeaders['BCC'] = implode(', ', $this->getBcc());
 		
 		if($this->m_sOrganisation)
-			$aHeaders['Organisation'] = $this->m_sOrganisation;		
+			$aHeaders['Organization'] = $this->getOrganisation();		
 		
-		if($this->m_bReceipt) {
-			if($this->m_sReplyTo)
-				$aHeaders["Disposition-Notification-To"] = $this->m_sReplyTo;
-			else
-				$aHeaders["Disposition-Notification-To"] = $this->m_sFrom;
-		}
+		if($this->m_sPriority)
+			$aHeaders['X-Priority'] = $this->getPriority();
 		
-		if($this->m_sCharset && Encoding::toLower($this->m_sCharset) != Encoding::toLower(self::CHARSET_DEFAULT)) {
-			$aHeaders["Mime-Version"] = "1.0";
-			$aHeaders["Content-Type"] = "text/plain; charset=$this->m_sCharset";
-			$aHeaders["Content-Transfer-Encoding"] = 'base64';
-		}
-
 		$aHeaders["X-Mailer"] = "Php/Watena";
-
-		if(count($this->m_aAttach) > 0)
-			NYI(); //$sBody = $this->buildAttachement();
-		else
-			$sBody = Encoding::convert($this->m_sBody, $this->m_sCharset);
-
+		
+		if($this->getReceipt()) {
+			if($this->getReplyTo())
+				$aHeaders["Disposition-Notification-To"] = $this->getReplyTo();
+			else
+				$aHeaders["Disposition-Notification-To"] = $this->getFrom();
+		}
+		
+		if(count($this->m_aAttach) > 0 || $this->getContentHtml()) {
+			$sBoundary = md5(uniqid('watena-boundary') . microtime(true));
+			$aHeaders["Mime-Version"] = "1.0";
+			$aHeaders["Content-Type"] = "multipart/mixed; boundary=$sBoundary";
+			$sBody = "This is a multi-part message in MIME format.\r\n";
+			
+			if($this->getContentText()) {
+				$sContent = Encoding::convert($this->getContentText(), $this->m_sCharsetText);
+				$sBody .= "--$sBoundary\r\nContent-Type: text/plain; charset=$this->m_sCharsetText\r\nContent-Transfer-Encoding: quoted-printable\r\n\r\n";				
+				$sBody .= quoted_printable_encode(Encoding::convert($this->getContentText(), $this->m_sCharsetText)) ."\r\n";
+			}
+			
+			if($this->getContentHtml()) {
+				$sBody .= "--$sBoundary\r\nContent-Type: text/html; charset=$this->m_sCharsetHtml\r\nContent-Transfer-Encoding: quoted-printable\r\n\r\n";
+				$sBody .= quoted_printable_encode(Encoding::convert($this->getContentHtml(), $this->m_sCharsetText)) ."\r\n";
+			}
+			
+			foreach($this->m_aAttach as $aData) {
+				if(is_readable($aData['path']) ) {
+					$sBody .= "--$sBoundary\r\nContent-type: $aData[type]; name=\"$aData[name]\"\r\nContent-Transfer-Encoding: base64\r\nContent-Disposition: $aData[disposition]; filename=\"$aData[name]\"\r\n\r\n";
+					$nLength = filesize($aData['path'])+1;
+					$hFile = fopen($aData['path'], 'r' );
+					$sBody .= chunk_split(base64_encode(fread($hFile, $nLength)));
+					fclose($hFile);
+				}
+			}
+			$sBody .= "--$sBoundary--";
+		}
+		else {
+			$aHeaders["Mime-Version"] = "1.0";
+			$aHeaders["Content-Type"] = "text/plain; charset=$this->m_sCharsetText";
+			$aHeaders["Content-Transfer-Encoding"] = $this->m_sCharsetText == self::CHARSET_DEFAULT ? '7bit' : '8bit';
+			$sEncoding = $this->m_sCharsetText == self::CHARSET_DEFAULT ? '7bit' : 'quoted-printable';
+			$sContent = Encoding::convert($this->getContentText(), $this->m_sCharsetText);
+			$sBody = wordwrap($sContent, 999) ."\r\n";
+		}
 		
 		$sHeaders = '';
 		foreach($aHeaders as $sKey => $sValue) {
-			$sHeaders .= "$sKey: $sValue\n";
+			$sHeaders .= "$sKey: $sValue\r\n";
 		}
 		
-		return array(implode( ", ", $this->m_aSendTo), $this->m_sSubject, $this->m_sBody, $sHeaders);
+		return array(implode( ", ", $this->getTo()), $this->getSUbject(), $sBody, $sHeaders);
 	}
 
-	/**
-	 * Format and send the mail.
-	 */
 	public function send() {
 		list($sTo, $sSubject, $sContent, $sHeaders) = $this->buildMail();
 		$bResult = @mail($sTo, $sSubject, $sContent, $sHeaders);
 	}
 
-	/**
-	 * Return the whole e-mail , headers + message.
-	 * Can be used for displaying the message in plain text or logging it
-	 * 
-	 * @return string
-	 */
 	function get() {
 		list($sTo, $sSubject, $sContent, $sHeaders) = $this->buildMail();
 		return "To: $sTo\nSubject: $sSubject\n\n$sHeaders\n\n$sContent";
 	}
 
-	/**
-	 * Check validity of email addresses.
-	 * 
-	 * @param string|array $mAdresses
-	 * @return if unvalid, output an error message and exit, this may -should- be customized
-	 */
 	public function checkAdresses($mAdresses){
 		if(!is_array($mAdresses)) return is_email($mAdresses);
 		foreach($mAdresses as $sAdress) {
@@ -257,6 +297,22 @@ class Mail extends Object {
 			}
 		}
 		return true;
+	}
+	
+	public function formatAddress($mAddress, $mName = null) {
+		if(is_array($mAddress) && is_array($mName) && count($mAddress) == count($mName)) {
+			return array_map(array($this, 'formatAddress'), $mAddress, $mName);
+		}
+		if(is_assoc($mAddress)) {
+			if(is_email(reset($mAddress)))
+				return array_map(array($this, 'formatAddress'), array_values($mAddress), array_keys($mAddress));
+			else 
+				return array_map(array($this, 'formatAddress'), array_keys($mAddress), array_values($mAddress));
+		}
+		if(!is_array($mAddress) && !is_array($mName)) {
+			return $mName ? "\"$mName\" <$mAddress>" : $mAddress;
+		}
+		return false;
 	}
 
 // 	/**
