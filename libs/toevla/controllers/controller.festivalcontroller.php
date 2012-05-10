@@ -103,8 +103,10 @@ class FestivalController extends Controller {
 					$oZipper = new ZipFile(PATH_LIBS . '/toevla/files/editor/' . $sFilename);
 					if(!$oZipper->exists()) {
 						$oZipper->add('/', PATH_DATA . '/editor');
-						$oZipper->create('data', "http://flandersisafestival.dev/festival/save
-http://flandersisafestival.dev/festival/load
+						$sSave = '' . new Mapping('/festival/save');
+						$sLoad = '' . new Mapping('/festival/load');
+						$oZipper->create('data', "$sSave
+$sLoad
 {$oData->hash}
 {$oData->name}");
 					}
