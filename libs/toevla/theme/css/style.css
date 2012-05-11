@@ -1,6 +1,7 @@
 @CHARSET "UTF-8";
 
 html, body, #centerTable, iframe {
+	background:#f1ede2;
 	width:100%;
 	height:100%;
 	padding:0px;
@@ -8,7 +9,7 @@ html, body, #centerTable, iframe {
 }
 
 #page {
-	background:#f1ede2 url(../header_bg.jpg) center top repeat-x;
+	background:url(../header_bg.jpg) center top repeat-x;
 	font-family: 'Arial', sans-serif;
 	font-size:11px;
 	line-height:18px;
