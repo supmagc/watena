@@ -4,7 +4,7 @@ require_plugin('ToeVla');
 
 class FestivalController extends Controller {
 
-	private $m_aAllowed = array('website', 'locationType', 'twitterName', 'twitterHash', 'facebook', 'youtube', 'flickr', 'picasa', 'data', 'description_EN', 'logoFilename', 'afficheFilename', 'artists', 'quiz');
+	private $m_aAllowed = array('website', 'locationTypeId', 'twitterName', 'twitterHash', 'facebook', 'youtube', 'flickr', 'picasa', 'data', 'description_EN', 'logoFilename', 'afficheFilename', 'artists', 'quiz');
 
 	public function process(Model $oModel = null, View $oView = null) {
 		$oConnection = DatabaseManager::getConnection('toevla');
@@ -68,6 +68,16 @@ class FestivalController extends Controller {
 				$oAfficheFile->move("L/toevla/files/festival/$sFilename");
 				$aData['afficheFilename'] = $sFilename;
 				if($oAfficheFile->getError()) $aErrors []= 'posterUpload';
+			}
+			
+			if(isset($aData['data']) && (!isset($aData['locationTypeId']) || $aData['locationTypeId'] == 0)) {
+				$nIndex = Encoding::indexOf($aData['data'], '@');
+				$sName = Encoding::substring($aData['data'], 0, $nIndex);
+				if($sName == 'Park') $aData['locationTypeId'] =  5;
+				if($sName == 'Beach') $aData['locationTypeId'] =  2;
+				if($sName == 'Field') $aData['locationTypeId'] =  4;
+				if($sName == 'Indoor') $aData['locationTypeId'] =  6;
+				if($sName == 'City') $aData['locationTypeId'] =  1;				
 			}
 			
 			if(isset($_POST['hash'])) {

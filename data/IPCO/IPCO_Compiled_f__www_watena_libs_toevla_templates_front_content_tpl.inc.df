@@ -31,10 +31,10 @@ $_ob []= '' . parent::callInclude('F:\WWW\watena\libs\toevla\templates\content.p
 			}
 			$_ob []= '' . '
 			';
-			if((parent::processMember('getLocal', null) == '/developers')) {
+			if((parent::processMember('getLocal', null) == '/tos')) {
 				$_ob []= '' . '
 				';
-$_ob []= '' . parent::callInclude('F:\WWW\watena\libs\toevla\templates\content.developers.tpl');
+$_ob []= '' . parent::callInclude('F:\WWW\watena\libs\toevla\templates\content.tos.tpl');
 				$_ob []= '' . '
 			';
 			}

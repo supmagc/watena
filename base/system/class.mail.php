@@ -15,6 +15,7 @@ class Mail extends Object {
 	private $m_sContextText = null;
 	private $m_sContextHtml = null;
 	private $m_sReplyTo = null;
+	private $m_sReturnPath = null;
 	private $m_sOrganisation = null;
 	private $m_aPriorities = array( '1 (Highest)', '2 (High)', '3 (Normal)', '4 (Low)', '5 (Lowest)' );
 	private $m_sCharsetText = null;
@@ -29,7 +30,7 @@ class Mail extends Object {
 		$this->m_sSubject = $sSubject;
 	}
 	
-	public function getSUbject() {
+	public function getSubject() {
 		return $this->m_sSubject;
 	}
 
@@ -52,9 +53,19 @@ class Mail extends Object {
 	public function getReplyTo() {
 		return $this->m_sReplyTo;
 	}
-
-	public function setReceipt() {
-		$this->m_bReceipt = true;
+	
+	public function setReturnPath($sAddress, $sName = null) {
+		if(!is_string($sAddress)) return false;
+		$this->m_sReturnPath = $this->formatAddress($sAddress, $sName);
+		return true;
+	}
+	
+	public function getReturnPath() {
+		return $this->m_sReturnPath;
+	}
+	
+	public function setReceipt($bEnabled) {
+		$this->m_bReceipt = $bEnabled;
 		return true;
 	}
 	
@@ -84,7 +95,7 @@ class Mail extends Object {
 	}
 	
 	public function setCc($mAddress, $mName = null) {
-		return $this->clearCc() && $this->addCc($mAdress, $mName);
+		return $this->clearCc() && $this->addCc($mAddress, $mName);
 	}
 	
 	public function clearCc() {
@@ -105,7 +116,7 @@ class Mail extends Object {
 	}
 	
 	public function setBcc($mAddress, $mName = null) {
-		return $this->clearBcc() && $this->addBcc($mAdress, $mName);
+		return $this->clearBcc() && $this->addBcc($mAddress, $mName);
 	}
 	
 	public function clearBcc() {
@@ -204,28 +215,38 @@ class Mail extends Object {
 		$sBody = '';
 		$aHeaders = array();
 		
-		if($this->m_sFrom)
+		if($this->getFrom())
 			$aHeaders['From'] = $this->getFrom();
 		
-		if($this->m_sReplyTo)
+		if($this->getReplyTo())
 			$aHeaders['Reply-To'] = $this->getReplyTo();
+		else if($this->getFrom())
+			$aHeaders['Reply-To'] = $this->getFrom();
 		
-		if($this->m_sSubject)
-			$aHeaders['Subject'] = $this->getSUbject();
+		if($this->getReturnPath())
+			$aHeaders['Return-Path'] = $this->getReturnPath();
+		else if($this->getReplyTo())
+			$aHeaders['Return-Path'] = $this->getReplyTo();
+		else if($this->getFrom())
+			$aHeaders['Return-Path'] = $this->getFrom();
 		
-		if(count($this->m_aCc) > 0)
+		if($this->getSubject())
+			$aHeaders['Subject'] = $this->getSubject();
+		
+		if(count($this->getCc()) > 0)
 			$aHeaders['CC'] = implode(', ', $this->getCc());
 
-		if(count($this->m_aBcc) > 0 )
+		if(count($this->getBcc()) > 0 )
 			$aHeaders['BCC'] = implode(', ', $this->getBcc());
 		
-		if($this->m_sOrganisation)
+		if($this->getOrganisation())
 			$aHeaders['Organization'] = $this->getOrganisation();		
 		
-		if($this->m_sPriority)
+		if($this->getPriority())
 			$aHeaders['X-Priority'] = $this->getPriority();
 		
 		$aHeaders["X-Mailer"] = "Php/Watena";
+		$aHeaders['Date'] = $this->getWatena()->getTime()->formatRfc2822();
 		
 		if($this->getReceipt()) {
 			if($this->getReplyTo())
@@ -273,7 +294,7 @@ class Mail extends Object {
 			$sHeaders .= "$sKey: $sValue\r\n";
 		}
 		
-		return array(implode( ", ", $this->getTo()), $this->getSUbject(), $sBody, $sHeaders);
+		return array(implode( ", ", $this->getTo()), $this->getSubject(), $sBody, $sHeaders);
 	}
 
 	public function send() {

@@ -75,8 +75,8 @@ function connectPopup(sUrl) {
 	var nLeft = (screen.width - 950) / 2;
 	var nTop = (screen.height - 600) / 2;
 	window.tvLoginPopup = window.open(sUrl, 'Login', 'toolbar=0,scrollbars=0,location=0,statusbar=0,menubar=0,resizable=1,width=950,height=600,left='+nLeft+',top='+nTop);
-	window.tvLoginPopup.blur();
-	window.focus();
+	//window.tvLoginPopup.blur();
+	//window.focus();
 	setTimeout('if(window.tvLoginPopup) window.tvLoginPopup.focus();', 3000);
 }
 
