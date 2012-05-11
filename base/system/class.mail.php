@@ -181,7 +181,7 @@ class Mail extends Object {
 		return $this->m_sContextText;
 	}
 	
-	function setContentHtml($sContent, $sCharset = self::CHARSET_DEFAULT) {
+	public function setContentHtml($sContent, $sCharset = self::CHARSET_DEFAULT) {
 		$sCharset = Encoding::trim($sCharset);
 		$this->m_sCharsetHtml = $sCharset;
 		$this->m_sContextHtml = $sContent;
@@ -237,11 +237,10 @@ class Mail extends Object {
 		if(count($this->m_aAttach) > 0 || $this->getContentHtml()) {
 			$sBoundary = md5(uniqid('watena-boundary') . microtime(true));
 			$aHeaders["Mime-Version"] = "1.0";
-			$aHeaders["Content-Type"] = "multipart/mixed; boundary=$sBoundary";
+			$aHeaders["Content-Type"] = "multipart/alternative; boundary=$sBoundary";
 			$sBody = "This is a multi-part message in MIME format.\r\n";
 			
 			if($this->getContentText()) {
-				$sContent = Encoding::convert($this->getContentText(), $this->m_sCharsetText);
 				$sBody .= "--$sBoundary\r\nContent-Type: text/plain; charset=$this->m_sCharsetText\r\nContent-Transfer-Encoding: quoted-printable\r\n\r\n";				
 				$sBody .= quoted_printable_encode(Encoding::convert($this->getContentText(), $this->m_sCharsetText)) ."\r\n";
 			}
@@ -266,9 +265,7 @@ class Mail extends Object {
 			$aHeaders["Mime-Version"] = "1.0";
 			$aHeaders["Content-Type"] = "text/plain; charset=$this->m_sCharsetText";
 			$aHeaders["Content-Transfer-Encoding"] = $this->m_sCharsetText == self::CHARSET_DEFAULT ? '7bit' : '8bit';
-			$sEncoding = $this->m_sCharsetText == self::CHARSET_DEFAULT ? '7bit' : 'quoted-printable';
-			$sContent = Encoding::convert($this->getContentText(), $this->m_sCharsetText);
-			$sBody = wordwrap($sContent, 999) ."\r\n";
+			$sBody = wordwrap(Encoding::convert($this->getContentText(), $this->m_sCharsetText), 999) ."\r\n";
 		}
 		
 		$sHeaders = '';
@@ -284,7 +281,7 @@ class Mail extends Object {
 		$bResult = @mail($sTo, $sSubject, $sContent, $sHeaders);
 	}
 
-	function get() {
+	public function get() {
 		list($sTo, $sSubject, $sContent, $sHeaders) = $this->buildMail();
 		return "To: $sTo\nSubject: $sSubject\n\n$sHeaders\n\n$sContent";
 	}
