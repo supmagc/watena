@@ -27,7 +27,7 @@ _gaq.push(['_trackPageview']);
 </html>
 
 {{region begin nav}}
-<a href="/"><img src="/theme/toevla/logo.png" id="logo" /></a><a href="/privacy" class="nav">Privacy Statement</a><a href="/about" class="nav">About</a><a href="/" class="nav">Play</a>
+<a href="/"><img src="/theme/toevla/logo.png" id="logo" /></a><a href="/privacy" class="nav">Privacy Statement</a><a href="/tos" class="nav">Terms of service</a><a href="/about" class="nav">About</a><a href="/" class="nav">Play</a>
 {{region end}}
 
 {{region begin copy}}

@@ -13,8 +13,8 @@
 			{{if getLocal() == '/privacy'}}
 				{{include content.privacy.tpl}}
 			{{end}}
-			{{if getLocal() == '/developers'}}
-				{{include content.developers.tpl}}
+			{{if getLocal() == '/tos'}}
+				{{include content.tos.tpl}}
 			{{end}}
 		</div>
 	</div>

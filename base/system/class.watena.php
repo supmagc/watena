@@ -8,6 +8,7 @@ class Watena extends Configurable {
 	private $m_oModel = null;
 	private $m_oView = null;
 	private $m_oController = null;
+	private $m_oTime = null;
 	
 	public function __construct($aConfig, $bUseMvc) {	
 		ob_start();
@@ -16,6 +17,7 @@ class Watena extends Configurable {
 		$this->assureEnvironment();
 		
 		// Create a default context and default cache
+		$this->m_oTime = new Time();
 		$this->m_oCache = new CacheEmpty();
 		$this->m_oContext = new Context();
 		$this->m_oMapping = new Mapping();
@@ -141,6 +143,15 @@ class Watena extends Configurable {
 		return "{$this->m_aConfig['VERSION_NAME']} - {$this->m_aConfig['VERSION_MAJOR']}.{$this->m_aConfig['VERSION_MINOR']}.{$this->m_aConfig['VERSION_BUILD']} ({$this->m_aConfig['VERSION_STATE']})";
 	}
 
+	/**
+	 * The time object from watena as system time
+	 * 
+	 * @return Time
+	 */
+	public final function getTime() {
+		return $this->m_oTime;
+	}
+	
 	/**
 	 * Sett all required PHP-settings
 	 */

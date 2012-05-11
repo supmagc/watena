@@ -8,6 +8,6 @@
 		<param name="template">front.content.tpl</param>
 	</view>
 	<rules>
-		<rule type="mapping" variable="local">^/(about|privacy)</rule>
+		<rule type="mapping" variable="local">^/(about|privacy|tos)</rule>
 	</rules>
 </filter>

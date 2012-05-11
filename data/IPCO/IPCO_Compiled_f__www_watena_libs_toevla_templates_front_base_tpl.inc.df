@@ -91,6 +91,12 @@ _gaq.push([\'_trackPageview\']);
 			$_ob []= '' . parent::callContentParser('addMappingRoot', array (
   0 => 'a',
   1 => 'href',
+  2 => '/tos',
+));
+			$_ob []= '' . '" class="nav">Terms of service</a><a href="';
+			$_ob []= '' . parent::callContentParser('addMappingRoot', array (
+  0 => 'a',
+  1 => 'href',
   2 => '/about',
 ));
 			$_ob []= '' . '" class="nav">About</a><a href="';

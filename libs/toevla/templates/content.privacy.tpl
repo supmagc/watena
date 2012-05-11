@@ -1,7 +1,7 @@
 <h1>Privacy Policy</h1>
 <hr />
 <p>
-The game Flanders Festival is organised by TOURISM FLANDERS, an internal, autonomous 
+The game Flanders Is A Festival is organised by TOURISM FLANDERS, an internal, autonomous 
 incorporated agency of the Flemish Government with registered office at 1000 Brussels, 
 Grasmarkt 61. More information about TOURISM FLANDERS can be found on its website: <a href="http://www.toerismevlaanderen.be">www.toerismevlaanderen.be</a>
 </p>

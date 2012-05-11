@@ -7,8 +7,9 @@ class Time extends Object {
 	
 	private $m_oTimestamp;
 	
-	public function __construct($mTimestamp, $mTimezone = null) {
+	public function __construct($mTimestamp = null, $mTimezone = null) {
 		parent::__construct();
+		if(!$mTimestamp) $mTimestamp = time();
 		$this->m_oTimestamp = new DateTime(self::formatTimestamp($mTimestamp), new DateTimeZone(self::formatTimezone($mTimezone)));
 	}
 	
@@ -36,11 +37,11 @@ class Time extends Object {
 		return $this->m_oTimestamp->format($sFormat);
 	}
 	
-	public function formatDefault($sFormat) {
+	public function formatDefault() {
 		return $this->m_oTimestamp->format(self::getDefaultFormat());
 	}
 	
-	public function formatSqlTimestamp($sFormat) {
+	public function formatSqlTimestamp() {
 		return $this->format('Y-m-d H:i:s'); // Y-m-d H:i:s
 	}
 	
@@ -113,6 +114,10 @@ class Time extends Object {
 	public function difference(Time $oTime) {
 		$oTimeInterval = $this->m_oTimestamp->diff($oTime->m_oTimestamp);
 		NYEI();
+	}
+	
+	public static function getSystemTime() {
+		return new Time(self::getSystemTimestamp());
 	}
 	
 	public static function getSystemTimezone() {
