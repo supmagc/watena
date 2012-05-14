@@ -38,7 +38,7 @@ ErrorDocument 503 /index.php?w_error=503
   RewriteRule ^libs/([^/]+)/(files|theme)/ - [QSA,R=404]
 
   # When a url can qualify as a requests/-page, redirect it  
-  RewriteRule ^([^/]+\.(php|xml|txt|ico)) requests/$1 [QSA,L]
+  RewriteRule ^([^/]+\.(php|xml|txt|ico|png)) requests/$1 [QSA,L]
 
   # Redirect the rest of requests to the index.php
   # This is the fallthrough for most requests.

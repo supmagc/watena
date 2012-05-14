@@ -82,7 +82,10 @@ foreach($aUrls as $sSource) {
 $aUrls = array(
 	'http://www.facebook.com/genkonstage',
 	'https://www.facebook.com/#!/popwijk',
-	'http://www.facebook.com/pages/Antilliaanse-feesten/112970158735517'
+	'http://www.facebook.com/pages/Antilliaanse-feesten/112970158735517',
+	'https://www.facebook.com/kokopelli.01',
+	'http://www.facebook.com/events/239187446124390/',
+	'http://www.facebook.com/pages/Couleur-Café-official/38614443445'
 );
 
 foreach($aUrls as $sSource) {

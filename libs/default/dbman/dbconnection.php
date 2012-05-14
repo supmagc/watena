@@ -139,9 +139,13 @@ class DbConnection {
 	public function buildWhere($mId, $mIdField, $sConcatenation = 'AND') {
 		if(!is_array($mId)) $mId = array($mId);
 		if(!is_array($mIdField)) $mIdField = array($mIdField);
-		$bAssoc = is_assoc($mId);
-		$aWheres = array_map(create_function('$a', 'return "`$a` = :$a";'), $bAssoc ? array_keys($mId) : $mIdField);
-		return array(implode(" $sConcatenation ", $aWheres), $bAssoc ? $mId : array_combine($mIdField, $mId));
+		$aWheres = array();
+		$aIdFieldCount = array();
+		for($i=0 ; $i<count($mIdField) ; ++$i) {
+			$aIdFieldCount []= "var$i";
+			$aWheres []=  "`$mIdField[$i]` " . ($mId[$i] === null ? "IS" : "=") . " :var$i";
+		}
+		return array(implode(" $sConcatenation ", $aWheres), array_combine($aIdFieldCount, $mId));
 	}
 }
 
