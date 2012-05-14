@@ -5,6 +5,8 @@
 <meta http-equiv="Keywords" content="{[getKeywords()]}" />
 <meta http-equiv="Description" content="{[getDescription()]}" />
 <title>{[getTitle()]}</title>
+<link href="/favicon.png" rel="shortcut icon" type="image/png" />
+<link href="/favicon.ico" rel="shortcut icon" type="image/x-icon" />
 <link href="/theme/toevla/css/style.css" rel="stylesheet" type="text/css" />
 <link href='http://fonts.googleapis.com/css?family=Lato:700,400italic,400' rel='stylesheet' type='text/css'>
 <script type="text/javascript">
