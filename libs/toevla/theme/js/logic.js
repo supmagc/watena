@@ -82,7 +82,7 @@ function connectPopup(sUrl) {
 
 function toFrame() {
 	if(window.tvLoginPopup) {
-		document.getElementById("loginLayer").style.display = 'block';
+		document.getElementById("connectLayer").style.display = 'block';
 		window.frames['connectFrame'].location = window.tvLoginPopup.location;
 		window.tvLoginPopup.close();
 		window.tvLoginPopup = undefined;
