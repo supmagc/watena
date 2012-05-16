@@ -16,6 +16,16 @@ class DebugController extends Controller {
 			setcookie('debug', 'enabled', $nExpiration, $this->getWatena()->getMapping()->getOffset() ?: '/');
 			$this->display('Debugging is enabled !');
 		}
+		else if($this->getWatena()->getMapping()->getLocal() == '/debug/logger') {
+			$sFile = $this->getWatena()->getPath('l/toevla/files/unity/debug.log');
+			$sTrace = implode("\r\n\t", explode_trim("\n", $_POST['trace']));
+			$sData = sprintf("%s\t%s\t%s at:\r\n\t%s\r\n", $this->getWatena()->getTime()->formatDefault(), $_SERVER['REMOTE_ADDR'], $_POST['message'], $sTrace);
+			if(file_assure($sFile))
+				file_put_contents($sFile, $sData, FILE_APPEND);
+			if(filesize($sFile) > 1024*1024*10) {
+				copy($sFile, $sFile . '.' . $this->getWatena()->getTime()->getTimestamp());
+			}
+		}
 		else {
 			echo 'UNKNOWN';
 		}

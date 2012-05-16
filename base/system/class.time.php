@@ -134,6 +134,10 @@ class Time extends Object {
 		return time();
 	}
 	
+	public static function getDefaultFormat() {
+		return self::$s_sDefaultFormat;
+	}
+	
 	public static function create($mTime = null, $sTimezone = null) {
 		return new Time($mTime ?: time(), $sTimezone ?: self::getSystemTimezone());
 	}
