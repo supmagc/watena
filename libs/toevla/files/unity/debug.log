@@ -1,0 +1,1277 @@
+2012/05/15 10:22:39	192.168.1.101	BroadcastMessage CloseGate has no receiver! at UnityEngine.GameObject:BroadcastMessage(String)still trying to access it.
+Your script should either check if it is null or you should not destroy the object. at UnityEngine.Component.SendMessage (System.String methodName) (at C:/BuildAgent/work/b0bcff80449a48aa/Runtime/ExportGenerated/Editor/UnityEngineComponent.cs:211)2012/05/15 10:26:47	192.168.1.101	MissingReferenceException: The object of type 'ToeVlaSwitcher' has been destroyed but you are still trying to access it.
+Your script should either check if it is null or you should not destroy the object. at:
+ UnityEngine.Component.SendMessage (System.String methodName) (at C:/BuildAgent/work/b0bcff80449a48aa/Runtime/ExportGenerated/Editor/UnityEngineComponent.cs:211)
+	ToeVlaArea.Activate () (at Assets/Scripts/ToeVla/ToeVlaArea.js:90)
+	UnityEngine.Component:SendMessage(String)
+	ToeVlaSwitcher:Update() (at Assets/Scripts/ToeVla/ToeVlaSwitcher.js:124)
+2012/05/15 10:26:49	192.168.1.101	BroadcastMessage CloseGate has no receiver! at:
+ UnityEngine.GameObject:BroadcastMessage(String)
+	ToeVlaSwitcher:Update() (at Assets/Scripts/ToeVla/ToeVlaSwitcher.js:157)
+2012/05/15 10:26:49	192.168.1.101	MissingReferenceException: The object of type 'ToeVlaSwitcher' has been destroyed but you are still trying to access it.
+Your script should either check if it is null or you should not destroy the object. at:
+ UnityEngine.Component.SendMessage (System.String methodName) (at C:/BuildAgent/work/b0bcff80449a48aa/Runtime/ExportGenerated/Editor/UnityEngineComponent.cs:211)
+	ToeVlaArea.Activate () (at Assets/Scripts/ToeVla/ToeVlaArea.js:90)
+	UnityEngine.Component:SendMessage(String)
+	ToeVlaSwitcher:Update() (at Assets/Scripts/ToeVla/ToeVlaSwitcher.js:147)
+2012/05/15 10:26:56	192.168.1.101	MissingReferenceException: The object of type 'ToeVlaSwitcher' has been destroyed but you are still trying to access it.
+Your script should either check if it is null or you should not destroy the object. at:
+ UnityEngine.Component.SendMessage (System.String methodName) (at C:/BuildAgent/work/b0bcff80449a48aa/Runtime/ExportGenerated/Editor/UnityEngineComponent.cs:211)
+	ToeVlaArea.Activate () (at Assets/Scripts/ToeVla/ToeVlaArea.js:90)
+	UnityEngine.Component:SendMessage(String)
+	ToeVlaSwitcher:Update() (at Assets/Scripts/ToeVla/ToeVlaSwitcher.js:124)
+2012/05/15 10:26:58	192.168.1.101	MissingReferenceException: The object of type 'ToeVlaSwitcher' has been destroyed but you are still trying to access it.
+Your script should either check if it is null or you should not destroy the object. at:
+ UnityEngine.Component.SendMessage (System.String methodName) (at C:/BuildAgent/work/b0bcff80449a48aa/Runtime/ExportGenerated/Editor/UnityEngineComponent.cs:211)
+	ToeVlaArea.Deactivate () (at Assets/Scripts/ToeVla/ToeVlaArea.js:110)
+	UnityEngine.Component:SendMessage(String)
+	ToeVlaSwitcher:Update() (at Assets/Scripts/ToeVla/ToeVlaSwitcher.js:142)
+2012/05/15 10:27:07	192.168.1.101	MissingReferenceException: The object of type 'ToeVlaSwitcher' has been destroyed but you are still trying to access it.
+Your script should either check if it is null or you should not destroy the object. at:
+ UnityEngine.Component.SendMessage (System.String methodName) (at C:/BuildAgent/work/b0bcff80449a48aa/Runtime/ExportGenerated/Editor/UnityEngineComponent.cs:211)
+	ToeVlaArea.Activate () (at Assets/Scripts/ToeVla/ToeVlaArea.js:90)
+	UnityEngine.Component:SendMessage(String)
+	ToeVlaSwitcher:Update() (at Assets/Scripts/ToeVla/ToeVlaSwitcher.js:124)
+2012/05/15 10:27:08	192.168.1.101	MissingReferenceException: The object of type 'ToeVlaSwitcher' has been destroyed but you are still trying to access it.
+Your script should either check if it is null or you should not destroy the object. at:
+ UnityEngine.Component.SendMessage (System.String methodName) (at C:/BuildAgent/work/b0bcff80449a48aa/Runtime/ExportGenerated/Editor/UnityEngineComponent.cs:211)
+	ToeVlaArea.Activate () (at Assets/Scripts/ToeVla/ToeVlaArea.js:90)
+	UnityEngine.Component:SendMessage(String)
+	ToeVlaSwitcher:Update() (at Assets/Scripts/ToeVla/ToeVlaSwitcher.js:147)
+2012/05/15 10:27:08	192.168.1.101	BroadcastMessage CloseGate has no receiver! at:
+ UnityEngine.GameObject:BroadcastMessage(String)
+	ToeVlaSwitcher:Update() (at Assets/Scripts/ToeVla/ToeVlaSwitcher.js:157)
+2012/05/16 16:24:09	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	SetTexture.Start ()
+2012/05/16 16:24:09	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Start ()
+2012/05/16 16:24:09	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:09	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:09	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:09	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:09	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:09	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:09	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:09	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:09	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:09	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:09	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:10	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:10	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:10	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:10	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:10	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:10	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:10	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:10	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:10	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:10	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:10	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:10	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:10	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:10	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:10	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:10	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:10	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:10	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:10	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:10	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:10	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:10	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:10	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:10	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:10	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:10	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:10	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:10	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:10	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:10	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:10	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:10	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:10	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:10	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:10	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:10	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:10	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:10	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:10	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:11	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:11	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:11	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:11	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:11	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:11	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:11	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:11	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:11	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:11	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:11	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:11	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:11	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:11	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:11	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:11	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:11	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:11	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:11	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:11	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:11	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:11	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:11	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:11	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:11	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:11	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:11	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:11	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:11	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:11	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:11	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:11	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:11	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:11	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:11	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:11	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:11	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:11	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:11	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:11	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:11	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:11	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:11	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:11	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:11	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:11	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:11	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:11	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:11	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:11	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:11	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:11	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:11	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:11	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:11	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:11	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:12	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:12	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:12	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:12	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:12	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:12	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:12	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:12	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:12	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:12	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:12	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:12	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:12	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:12	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:12	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:12	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:12	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:12	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:12	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:12	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:12	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:12	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:12	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:12	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:12	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:12	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:12	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:12	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:12	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:12	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:12	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:12	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:12	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:12	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:12	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:12	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:12	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:12	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:12	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:12	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:12	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:12	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:12	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:12	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:12	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:12	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:12	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:12	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:12	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:12	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:12	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:12	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:12	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:12	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:12	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:12	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:12	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:12	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:12	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:12	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:13	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:13	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:13	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:13	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:13	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:13	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:13	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:13	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:13	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:13	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:13	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:13	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:13	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:13	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:13	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:13	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:13	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:13	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:13	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:13	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:13	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:13	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:13	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:13	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:13	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:13	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:13	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:13	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:13	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:13	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:13	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:13	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:13	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:13	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:13	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:13	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:13	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:13	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:13	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:13	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:13	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:13	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:13	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:13	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:13	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:13	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:13	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:13	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:13	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:13	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:13	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:13	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:14	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:14	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:14	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:14	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:14	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:14	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:14	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:14	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:14	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:14	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:14	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:14	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:14	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:14	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:14	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:14	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:14	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:14	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:14	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:14	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:14	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:14	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:14	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:14	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:14	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:14	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:14	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:14	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:14	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:14	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:14	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:14	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:14	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:14	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:14	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:14	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:14	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:14	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:14	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:14	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:14	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:14	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:14	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:14	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:14	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:14	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:14	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:15	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:15	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:15	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:15	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:15	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:15	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:15	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:15	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:15	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:15	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:15	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:15	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:15	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:15	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:15	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:15	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:15	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:15	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:15	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:15	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:15	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:15	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:15	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:15	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:15	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:15	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:15	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:15	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:15	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:15	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:15	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:15	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:15	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:15	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:15	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:15	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:15	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:15	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:15	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:15	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:15	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:15	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:15	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:15	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:15	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:15	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:16	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:16	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:16	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:16	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:16	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:16	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:16	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:16	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:16	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:16	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:16	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:16	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:16	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:16	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:16	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:16	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:16	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:16	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:16	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:16	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:16	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:16	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:16	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:16	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:16	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:16	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:16	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:16	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:16	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:16	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:16	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:16	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:16	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:16	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:16	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:16	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:16	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:16	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:16	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:16	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:16	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:16	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:17	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:17	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:17	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:17	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:17	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:17	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:17	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:17	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:17	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:17	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:17	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:17	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:17	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:17	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:17	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:17	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:17	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:17	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:17	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:17	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:17	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:17	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:17	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:17	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:17	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:17	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:17	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:17	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:17	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:17	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:17	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:17	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:17	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:17	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:17	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:17	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:17	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:17	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:17	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:17	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:18	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:18	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:18	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:18	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:18	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:18	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:18	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:18	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:18	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:18	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:18	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:18	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:18	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:18	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:18	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:18	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:18	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:18	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:18	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:18	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:18	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:18	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:18	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:18	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:18	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:18	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:18	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:18	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:18	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:18	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:18	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:18	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:18	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:18	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:18	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:18	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:18	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:18	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:19	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:19	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:19	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:19	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:19	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:19	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:19	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:19	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:19	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:19	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:19	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:19	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:19	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:19	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:19	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:19	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:19	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:19	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:19	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:19	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:19	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:19	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:19	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:19	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:19	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:19	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:19	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:19	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:19	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:19	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:19	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:19	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:19	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:19	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:19	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:19	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:19	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:19	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:19	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:19	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:19	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:19	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:19	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:19	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:19	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:19	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:19	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:19	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:19	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:19	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:19	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:19	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:19	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:19	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:20	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:20	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:20	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:20	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:20	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:20	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:20	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:20	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:20	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:20	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:20	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:20	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:20	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:20	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:20	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:20	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:20	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:20	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:20	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:20	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:20	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:20	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:20	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:20	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:20	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:20	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:20	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:20	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:20	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:20	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:20	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:20	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:20	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:20	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:20	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:20	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:20	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:20	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:20	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:20	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:20	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:20	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:20	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:20	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:20	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:20	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:20	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:20	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:20	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:20	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:20	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:20	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:20	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:20	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:20	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:20	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:20	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:20	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:20	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:20	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:20	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:20	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:20	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:21	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:21	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:21	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:21	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:21	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:21	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:21	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:21	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:21	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:21	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:21	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:21	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:21	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:21	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:21	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:21	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:21	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:21	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:21	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:21	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:21	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:21	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:21	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:21	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:21	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:21	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:21	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:21	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:21	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:21	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:21	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:21	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:21	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:21	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:21	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:21	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:21	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:21	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:21	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:21	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:21	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:21	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:21	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:21	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:21	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:24:21	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	WalkToTarget.Update ()
+2012/05/16 16:26:06	192.168.1.101	[SF-Error] Wrong password for user 4efb40f881eb02d33df952cc3604fa01 at:
+	
+2012/05/16 16:26:09	192.168.1.101	[SF-Error] Wrong password for user 4efb40f881eb02d33df952cc3604fa01 at:
+	
+2012/05/16 16:26:13	192.168.1.101	[SF-Error] Wrong password for user 4efb40f881eb02d33df952cc3604fa01 at:
+	
+2012/05/16 16:26:17	192.168.1.101	[SF-Error] Wrong password for user 4efb40f881eb02d33df952cc3604fa01 at:
+	
+2012/05/16 16:26:18	192.168.1.101	[SF-Error] Wrong password for user 4efb40f881eb02d33df952cc3604fa01 at:
+	
+2012/05/16 16:26:43	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	SetTexture.Start ()
+2012/05/16 16:29:13	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	SetTexture.Start ()
+2012/05/16 16:32:14	192.168.1.101	Reponse for: http://farm7.staticflickr.com/6236/6329013582_76949ac697_m.jpg
+Request-error: Failed downloading http://farm7.staticflickr.com/6236/6329013582_76949ac697_m.jpg at:
+	
+2012/05/16 16:32:15	192.168.1.101	Unable to set fileloader data since the data returned was invalid. at:
+	
+2012/05/16 16:32:36	192.168.1.101	Reponse for: http://farm7.staticflickr.com/6236/6329013582_76949ac697_m.jpg
+Request-error: Failed downloading http://farm7.staticflickr.com/6236/6329013582_76949ac697_m.jpg at:
+	
+2012/05/16 16:32:36	192.168.1.101	Unable to set fileloader data since the data returned was invalid. at:
+	
+2012/05/16 16:32:57	192.168.1.101	Reponse for: http://farm7.staticflickr.com/6236/6329013582_76949ac697_m.jpg
+Request-error: Failed downloading http://farm7.staticflickr.com/6236/6329013582_76949ac697_m.jpg at:
+	
+2012/05/16 16:32:57	192.168.1.101	Unable to set fileloader data since the data returned was invalid. at:
+	
+2012/05/16 16:33:18	192.168.1.101	Reponse for: http://farm7.staticflickr.com/6236/6329013582_76949ac697_m.jpg
+Request-error: Failed downloading http://farm7.staticflickr.com/6236/6329013582_76949ac697_m.jpg at:
+	
+2012/05/16 16:33:18	192.168.1.101	Unable to set fileloader data since the data returned was invalid. at:
+	
+2012/05/16 16:33:39	192.168.1.101	Reponse for: http://farm7.staticflickr.com/6236/6329013582_76949ac697_m.jpg
+Request-error: Failed downloading http://farm7.staticflickr.com/6236/6329013582_76949ac697_m.jpg at:
+	
+2012/05/16 16:33:39	192.168.1.101	Unable to set fileloader data since the data returned was invalid. at:
+	
+2012/05/16 17:08:38	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
+	Hat.SetHat (Int32 nr)
+	Hat.Start ()

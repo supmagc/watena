@@ -89,8 +89,10 @@ class ToeVla extends Plugin {
 				$sData = $aMatches[1];
 			else if(Encoding::regFind('(/|id=)([0-9]+)$', Encoding::trim($sData), $aMatches))
 				$sData = $aMatches[2];
-			else
+			else {
 				$bError = true;
+				$sData = null;
+			}
 			return $sData;
 		}
 	}
@@ -102,8 +104,10 @@ class ToeVla extends Plugin {
 				$sData = $aMatches[1];
 			else if(Encoding::regFind('twitter\\.com/(#!/)?([a-zA-Z0-9_]+)$', Encoding::trim($sData), $aMatches))
 				$sData = $aMatches[2];
-			else
+			else {
 				$bError = true;
+				$sData = null;
+			}
 			return $sData;
 		}
 	}
@@ -113,8 +117,10 @@ class ToeVla extends Plugin {
 			$aMatches = array();
 			if(Encoding::regFind('^#?([a-zA-Z0-9_]+)$', Encoding::trim($sData), $aMatches))
 				$sData = $aMatches[1];
-			else
+			else {
 				$bError = true;
+				$sData = null;
+			}
 			return $sData;
 		}
 	}
@@ -128,8 +134,10 @@ class ToeVla extends Plugin {
 				$sData= $aMatches[1];
 			else if(Encoding::regFind('youtube-nocookie\\.com/embed/([-a-zA-Z0-9]+)', $sData, $aMatches))
 				$sData = $aMatches[1];
-			else
+			else {
 				$bError = true;
+				$sData = null;
+			}
 			return !$bError ? "http://www.youtube-nocookie.com/embed/$sData?version=3&feature=player_embedded&autoplay=1&controls=0&rel=0&showinfo=0" : $sData;
 		}
 	}
