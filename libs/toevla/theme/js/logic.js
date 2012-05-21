@@ -28,17 +28,17 @@ function deezerChange(mId) {
 	}
 }
 
-function triggerSocial() {
+function triggerSocial(sHash, sName) {
 	document.getElementById('connectLayer').style.display = 'block';
-	connectFrame.location = window.url + '/social';	
+	connectFrame.location = window.url + '/social?hash=' + sHash + '&name=' + sName;	
 	window.cancelCallback = window.socialCallback;
 	console.log('Social triggered !');
 }
 
-function socialCallback(sHash, sName) {
+function socialCallback() {
 	document.getElementById('connectLayer').style.display = 'none';
 	GetUnity().SendMessage('Persistent', 'InjectSocial', '');
-	connectFrame.location = window.url + '/loading?hash=' + sHash + '&name=' + sName;	
+	connectFrame.location = window.url + '/loading';	
 }
 
 function requestHash(sRequestHashType) {

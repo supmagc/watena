@@ -13,6 +13,7 @@ html, body {
 	font-size:12px;
 	line-height:18px;
 	overflow: hidden;
+	background:url(../iframe_bg.jpg) center no-repeat;
 }
 
 a {
