@@ -83,7 +83,13 @@ _gaq.push([\'_trackPageview\']);
 		try {
 			$_ob = array();
 			$_ob []= '' . '
-<a href="';
+<a href="http://www.facebook.com/flandersisafestival/"><img src="';
+			$_ob []= '' . parent::callContentParser('addMappingRoot', array (
+  0 => 'img',
+  1 => 'src',
+  2 => '/theme/toevla/facebook.png',
+));
+			$_ob []= '' . '" id="facebook" /></a><a href="';
 			$_ob []= '' . parent::callContentParser('addMappingRoot', array (
   0 => 'a',
   1 => 'href',

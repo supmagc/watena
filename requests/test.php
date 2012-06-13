@@ -4,8 +4,11 @@ include '../base/watena.php';
 
 require_plugin('DatabaseManager');
 $oConnection = DatabaseManager::getConnection('toevla');
-$oTable = $oConnection->getTable('festival');
+$oTable = $oConnection->getMultiTable('festival', array('artists', 'artists'), 'OR');
 
+$oTable->update(array('artists' => '§;§;§;§;§;§;§;§;§;§;'), array(null, ''));
+
+/*
 $mails = array(
 	'jelle@tomo-design.be',
 	'jeroen@jeroenvr.be',
@@ -21,5 +24,5 @@ foreach($mails as $sMail) {
 	$oMail->setFrom('info@flandersisafestival.com', 'Flanders Is A Festival');
 	$oMail->send();
 }
-
+*/
 ?>
