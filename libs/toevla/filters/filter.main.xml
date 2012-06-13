@@ -12,6 +12,5 @@
 	</controller>
 	<rules>
 		<rule type="mapping" variable="local">^/</rule>
-		<rule type="cookie" variable="debug">enabled</rule>
 	</rules>
 </filter>

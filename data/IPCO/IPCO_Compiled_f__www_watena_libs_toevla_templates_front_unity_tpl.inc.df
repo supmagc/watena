@@ -6,8 +6,13 @@ class IPCO_Compiled_f__www_watena_libs_toevla_templates_front_unity_tpl extends 
 	protected function callRegion____MainRegion__() {
 		try {
 			$_ob = array();
-			$_ob []= '' . '<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-<script type="text/javascript" src="http://webplayer.unity3d.com/download_webplayer-3.x/3.0/uo/UnityObject.js"></script>
+			$_ob []= '' . '<script type="text/javascript" src="';
+			$_ob []= '' . parent::callContentParser('addMappingRoot', array (
+  0 => 'script',
+  1 => 'src',
+  2 => '/theme/toevla/js/unity.js',
+));
+			$_ob []= '' . '"></script>
 <script type="text/javascript" src="';
 			$_ob []= '' . parent::callContentParser('addMappingRoot', array (
   0 => 'script',

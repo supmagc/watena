@@ -74,6 +74,12 @@ html, body, #centerTable, iframe {
 	top:26px;
 }
 
+#facebook {
+	position:absolute;
+	right:10px;
+	top:50px;
+}
+
 .container_main {
 	position:relative;
 	margin:auto;
