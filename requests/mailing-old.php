@@ -1,5 +1,5 @@
 <?php
-define('MAILCOUNT', 3);
+define('MAILCOUNT', 2);
 define('NMVC', true);
 include '../base/watena.php';
 
@@ -17,7 +17,7 @@ while(($oData = $oStatement->fetchObject()) !== false) {
 		$oMail->addCc('wim@grin.be', 'Wim Wouters');
 		$oMail->setSubject('Festival editor: Flanders is a Festival');
 		$oMail->setReceipt(true);
-		$sContent = file_get_contents(dirname(__FILE__) . '/mailing.html');
+		$sContent = file_get_contents(dirname(__FILE__) . '/mailing-old.html');
 		$sContent = Encoding::replace(array('{name}', '{linkExe}', '{linkPreview}'), array($oData->adminName, 'http://flandersisafestival.com/festival/download/' . $oData->hash, 'http://flandersisafestival.com/iframe/' . $oData->hash), $sContent);
 		$oMail->setContentHtml($sContent);
 		$oMail->convertHtmlToText();
@@ -28,9 +28,9 @@ while(($oData = $oStatement->fetchObject()) !== false) {
 		
 		if(isset($_GET['action'])) {
 			if($_GET['action'] == 'test') {
-				$oMail->setTo('grin.underdog@gmail.com', 'Wim Wouters');
-				$oMail->setCc('wim@underdog.be', 'Wim Wouters');
-				$oMail->setBcc('wim@grin.be', 'Wim Wouters');
+				$oMail->setTo('supmagc@gmail.com', 'Jelle Voet');
+				$oMail->setCc('jelle@tomo-design.be', 'Jelle Voet');
+				$oMail->setBcc('jelle@grin.be', 'Jelle Voet');
 			}
 			if($_GET['action'] == 'send' || $_GET['action'] == 'test') {
 				$oMail->send();

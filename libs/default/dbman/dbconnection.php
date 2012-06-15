@@ -142,8 +142,15 @@ class DbConnection {
 		$aWheres = array();
 		$aIdFieldCount = array();
 		for($i=0 ; $i<count($mIdField) ; ++$i) {
+			$aMatches = array();
 			$aIdFieldCount []= "var$i";
-			$aWheres []=  "`$mIdField[$i]` " . ($mId[$i] === null ? "IS" : "=") . " :var$i";
+			Encoding::regFind('^(.*?)([!<>=]?)(.*?)$',  $mIdField[$i], $aMatches);
+			$sField = $aMatches[1] . $aMatches[3];
+			$sCompare = $aMatches[2];
+			if($mId[$i] === null) $sCompare = $sCompare == '!' ? "IS NOT" : "IS";
+			else if($sCompare == '!') $sCompare ='<>';
+			else if(!$sCompare == '!') $sCompare ='=';
+			$aWheres []=  "`$sField` " . $sCompare . " :var$i";
 		}
 		return array(implode(" $sConcatenation ", $aWheres), array_combine($aIdFieldCount, $mId));
 	}
