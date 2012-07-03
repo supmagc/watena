@@ -23,7 +23,7 @@ class DebugController extends Controller {
 			if(file_assure($sFile))
 				file_put_contents($sFile, $sData, FILE_APPEND);
 			if(filesize($sFile) > 1024*1024*10) {
-				copy($sFile, $sFile . '.' . $this->getWatena()->getTime()->getTimestamp());
+				rename($sFile, $sFile . '.' . $this->getWatena()->getTime()->getTimestamp());
 			}
 		}
 		else {
