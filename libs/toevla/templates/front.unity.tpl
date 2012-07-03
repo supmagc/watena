@@ -16,7 +16,7 @@ if(typeof unityObject != "undefined") {
 			textcolor: "000000",
 			logoimage: "{[getUrl()]}/files/toevla/unity/loadunity.png"
 	};
-	unityObject.embedUnity("unityPlayer", "{[getUrl()]}/files/toevla/unity/{[getConfig('unity', 'WebPlayer.unity3d')]}", 728, 450, params);
+	unityObject.embedUnity("unityPlayer", "{[getUrl()]}/files/toevla/unity/{[getConfig('unity', 'loader.unity3d')]}", 728, 450, params);
 }
 --></script>
 <div id="connectLayer" style="display: none;">
