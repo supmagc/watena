@@ -15,8 +15,8 @@ class DbObject extends Object {
 		self::$s_aObjectInstances[get_class($this)][$this->getId()] = $this;
 	}
 	
-	protected function getDataValue($sColumn) {
-		return isset($this->m_aData[$sColumn]) ? $this->m_aData[$sColumn] : false;
+	protected function getDataValue($sColumn, $mDefault = false) {
+		return isset($this->m_aData[$sColumn]) ? $this->m_aData[$sColumn] : $mDefault;
 	}
 	
 	protected function setDataValue($sColumn, $mValue) {
