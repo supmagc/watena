@@ -5,12 +5,6 @@ require_includeonce(dirname(__FILE__) . '/../usermanager/index.php');
 
 class UserManager extends Plugin {
 	
-	const TYPE_GUEST = 0;
-	const TYPE_CONNECTION = 1;
-	const TYPE_MEMBER = 2;
-	const TYPE_ADMIN = 3;
-	const TYPE_TLA = 4;
-	
 	private $m_aConnectionProviders = null;
 	private $m_oDatabaseConnection = null;
 	private static $s_oLoggedInUser = false;
@@ -36,10 +30,21 @@ class UserManager extends Plugin {
 		return self::$s_oSingleton->m_oDatabaseConnection;
 	}
 	
+	public static function getPasswordFormat() {
+		return self::$s_oSingleton->getConfig('PASSWORD_FORMAT', '^.{6,}$');
+	}
+	
+	/**
+	 * @return array
+	 */
 	public static function getConnectionProviders() {
 		return self::$s_oSingleton->m_aConnectionProviders;
 	}
 	
+	/**
+	 * @param string $sName
+	 * @return ConnectionProvider
+	 */
 	public static function getConnectionProvider($sName) {
 		$aProviders = self::getConnectionProviders();
 		return isset($aProviders[strtoupper($sName)]) ? $aProviders[strtoupper($sName)] : null;
@@ -69,7 +74,125 @@ class UserManager extends Plugin {
 		return self::$s_oLoggedInUser;
 	}
 	
-	public static function login($sUser, $sPassword) {
+	/**
+	 * @param string $sName
+	 * @return int|false
+	 */	
+	public static function getUserIdByName($sName) {
+		$oStatement = self::getDatabaseConnection()->select('user', $sName, 'name');
+		return $oStatement->rowCount() > 0 ? $oStatement->fetchObject()->ID : false;
+	}
+	
+	/**
+	 * @param string $sEmail
+	 * @return int|false
+	 */	
+	public static function getUserIdByEmail($sEmail) {
+		$oStatement = self::getDatabaseConnection()->select('user_email', $sEmail, 'email');
+		return $oStatement->rowCount() > 0 ? $oStatement->fetchObject()->userId : false;
+	}
+	
+	/**
+	 * @param UserConnectionProvider $oConnectionProvider
+	 * @return int|false
+	 */	
+	public static function getUserIdByConnection(UserConnectionProvider $oConnectionProvider) {
+		$oStatement = self::getDatabaseConnection()->select('user_connection', array($oConnectionProvider->getConnectionId(), $oConnectionProvider->getName()), array('connectionId', 'provider'), 'AND');
+		return $oStatement->rowCount() > 0 ? $oStatement->fetchObject()->userId : false;
+	}
+	
+	public static function isLoggedIn() {
+		return (bool)self::getLoggedInUser();
+	}
+	
+	public static function isValidName($sName) {
+		return Encoding::regMatch('^[-a-zA-z0-9._ ]{3,64}$', $sName);
+	}
+	
+	public static function isValidEmail($sEmail) {
+		return is_email($sEmail);
+	}
+	
+	public static function isValidPassword($sPassword) {
+		return Encoding::regMatch(self::getPasswordFormat(), $sPassword);
+	}
+	
+	/**
+	 * Try to login a user by the given name (and password)
+	 * This returns the user when login.
+	 * 
+	 * @param string $sName
+	 * @param string $sPassword
+	 * @throws UserUnknownNameException The provided name is not known for any user.
+	 * @throws UserNoPasswordException The user exists, but has no password set.
+	 * @throws UserInvalidPasswordException The given password is invalid.
+	 * @return User
+	 */
+	public static function loginByName($sName, $sPassword) {
+		// Get and check the matching UserId
+		$oUser = User::Load(self::getUserIdByName($sName));
+		if($oUser !== false) 
+			throw new UserUnknownNameException($sName);
+
+		// Try to log the user in with the provided password
+		return self::Login($oUser, $sPassword);
+	}
+	
+	/**
+	 * Try to login a user by the given email (and password)
+	 * This returns the user when login.
+	 * 
+	 * @param string $sEmail
+	 * @param string $sPassword
+	 * @throws UserUnknownEmailException The provided email is not known for any user.
+	 * @throws UserUnverifiedEmailException The email is known, but not verified. It thus cannot be used to login.
+	 * @throws UserNoPasswordException The user exists, but has no password set.
+	 * @throws UserInvalidPasswordException The given password is invalid.
+	 * @return User
+	 */
+	public static function loginByEmail($sEmail, $sPassword) {
+		// Get and check the matching UserId
+		$oUser = User::Load(self::getUserIdByEmail($sEmail));
+		if($oUser !== false) 
+			throw new UserUnknownEmailException($sEmail);
+		
+		// Get the user and the email-object
+		$oEmail = $oUser->getEmail($sEmail);
+
+		// Verify the email-object
+		if(!$oEmail) 
+			throw new UserUnknownEmailException($sEmail);
+		if(!$oEmail->getVerified()) 
+			throw new UserUnverifiedEmailException($sEmail);
+		
+		// Try to log the user in with the provided password
+		return self::Login($oUser, $sPassword);
+	}
+	
+	/**
+	 * Try to login the specified user with the given password.
+	 * Possibly the user won't have any password set ... see exception.
+	 * This returns the user when login.
+	 * 
+	 * @param User $oUser
+	 * @param string $sPassword
+	 * @throws UserNoPasswordException The user exists, but has no password set.
+	 * @throws UserInvalidPasswordException The given password is invalid.
+	 * @return User
+	 */
+	public static function Login(User $oUser, $sPassword) {
+		// Check if user has a password
+		if(!$oUser->hasPassword())
+			throw new UserNoPasswordException($oUser->getName());
+		
+		// Verify the given password
+		if(!UserManager::isValidPassword($sPassword) || !$oUser->verifyPassword($sPassword))
+			throw new UserInvalidPasswordException($sPassword);
+			
+		return $oUser;
+	}
+	
+	public static function register() {
 		
 	}
 	
@@ -80,36 +203,8 @@ class UserManager extends Plugin {
 	public static function setLoggedInUser(User $oUser = null) {
 		if(self::$s_oLoggedInUser != $oUser) {
 			self::$s_oLoggedInUser = $oUser;
-			
 		}
 		$_SESSION['USERID'] = $oUser ? $oUser->getId() : 0;
-	}
-	
-	public static function isLoggedIn() {
-		return (bool)self::getLoggedInUser();
-	}
-	
-	public static function getUserIdByName($sName) {
-		$oStatement = self::getDatabaseConnection()->select('user', $sName, 'name');
-		return $oStatement->rowCount() > 0 ? $oStatement->fetchObject()->ID : false;
-	}
-	
-	public static function getUserIdByEmail($sEmail) {
-		$oStatement = self::getDatabaseConnection()->select('user_email', $sEmail, 'email');
-		return $oStatement->rowCount() > 0 ? $oStatement->fetchObject()->userId : false;
-	}
-	
-	public static function getUserIdByConnection(UserConnectionProvider $oConnectionProvider) {
-		$oStatement = self::getDatabaseConnection()->select('user_connection', array($oConnectionProvider->getConnectionId(), $oConnectionProvider->getName()), array('connectionId', 'provider'), 'AND');
-		return $oStatement->rowCount() > 0 ? $oStatement->fetchObject()->userId : false;
-	}
-	
-	public static function isValidName($sName) {
-		return Encoding::regMatch('^[-a-zA-z0-9._ ]{3,64}$', $sName);
-	}
-	
-	public static function isValidEmail($sEmail) {
-		return is_email($sEmail);
 	}
 	
 	/**
@@ -183,7 +278,7 @@ class UserManager extends Plugin {
 					if(self::getUserIdByName($sConnectionName) !== false) 
 						throw new UserDuplicateNameException($sConnectionName);
 					
-					$oCurrentUser = User::create($sConnectionName, self::TYPE_CONNECTION);
+					$oCurrentUser = User::create($sConnectionName);
 				}
 				$oCurrentUser->addConnection($oConnectionProvider);
 			}
