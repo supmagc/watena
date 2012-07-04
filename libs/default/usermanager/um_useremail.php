@@ -22,21 +22,28 @@ class UserEmail extends DbObject {
 		return (bool)$this->getDataValue('verified');
 	}
 	
+	public function getVerifier() {
+		return $this->getDataValue('verifier', false);
+	}
+	
 	public function setVerified($mValue) {
 		$this->setDataValue('verified', $mValue ? 1 : 0);
 		return true;
 	}
 	
+	public function resetVerifier() {
+		
+	} 
+	
 	public static function load($mData) {
 		return DbObject::loadObject('UserEmail', UserManager::getDatabaseConnection()->getTable('user_email'), $mData);
 	}
 	
-	public static function create(User $oUser, $sEmail, $bVerified) {
+	public static function create(User $oUser, $sEmail) {
 		return (!UserManager::getUserIdByEmail($sEmail) && UserManager::isValidEmail($sEmail)) ? DbObject::createObject('UserEmail', UserManager::getDatabaseConnection()->getTable('user_email'), array(
 			'userId' => $oUser->getId(),
 			'email' => $sEmail,
-			'verified' => $bVerified ? 1 : 0,
-			'hash' => md5($oUser->getId() . $sEmail . microtime(true) . mt_rand())
+			'verifier' => md5($oUser->getId() . mt_rand() . $sEmail . microtime(true))
 		)) : false;
 	}
 }

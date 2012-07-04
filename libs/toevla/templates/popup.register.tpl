@@ -2,41 +2,56 @@
 
 {{region begin content}}
 
-{{if true}}
-<br /><br />
-<h1>Under construction!</h1>
-<p>The mail-based login is currently under construction.<br />Please bare with us, as we finalize this feature!</p>
-<p><a href="/login">Go back</a></p>
-{{else}}
-
-{{if isLogin()}}
-<h1>Welcome back!</h1>
-<p>Provide us with your password, and enter 'Flanders Is A Festival'!</p>
-{{end}}
-
-{{if isRegister()}}
-<h1>Register to continue!</h1>
-<p>Your email-adress wasn't recognised. Enter a password to register yourself.</p>
-{{end}}
-
+{{if isInvalidEmail()}}
+<h1>Hello!</h1>
+<p>The email-adress you provided isnot valid. Please, try something else!</p>
 <form class="field" action="/login/register" method="post">
-	<input type="hidden" name="email" value="{[getEmail()]}" />
-	<input type="password" name="pass" />
+	<input type="text" name="email" value="{[getEmail()]}" />
 	<input type="submit" value="" />
 </form>
 
-{{if isUnverified()}}
-<h1>Unverified user!</h1>
+{{elseif isUnverifiedEmail()}}
+<h1>Unverified email!</h1>
 <span class="error">
 <p>Your email-adress exists, but is not yet verified.<br />Please check your mailbox if this is you!</p>
 </span>
+
+{{elseif isRegisterDone()}}
+<h1>Registration done!</h1>
+<span class="succes">
+<p>You are registered, but your email is not yet verified.<br />Please check your mailbox if this is you!</p>
+</span>
+
+{{else}}
+	
+	{{if isLogin()}}
+	<h1>Welcome back!</h1>
+	<p>Provide us with your password, and enter 'Flanders Is A Festival'!</p>
+	
+	{{elseif isRegister()}}
+	<h1>Register to continue!</h1>
+	<p>Choose a valid password you can remember to continue!</p>
+	
+	{{elseif isInvalidPassword()}}
+	<h1>Invalid password!</h1>
+	<p>The password you entered is not valid. Try again!</p>
+	{{end}}
+	
+	<form class="field" action="/login/register" method="post">
+		<input type="hidden" name="email" value="{[getEmail()]}" />
+		<input type="password" name="pass" />
+		<input type="submit" value="" />
+	</form>	
+
 {{end}}
 
-{{if isConnection()}}
-<h1>Register to continue!</h1>
-<p>Your email-adress wasn't recognised. Enter a password to register yourself.</p>
-{{end}}
-
+{{if isDone()}}
+<script><!--
+if(window.opener.parent.hashCallback)
+	window.opener.parent.hashCallback('{[getHash()]}');
+else if(window.parent.hashCallback)
+	window.parent.hashCallback('{[getHash()]}');
+--></script>
 {{end}}
 
 {{region end}}

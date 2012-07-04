@@ -49,7 +49,7 @@ if(typeof unityObject != "undefined") {
 	unityObject.embedUnity("unityPlayer", "';
 			$_ob []= '' . parent::processMember('getUrl', null);
 			$_ob []= '' . '/files/toevla/unity/';
-			$_ob []= '' . parent::processMethod('getConfig', array('unity', 'WebPlayer.unity3d'), null);
+			$_ob []= '' . parent::processMethod('getConfig', array('unity', 'loader.unity3d'), null);
 			$_ob []= '' . '", 728, 450, params);
 }
 --></script>

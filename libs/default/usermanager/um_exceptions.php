@@ -62,6 +62,33 @@ class UserConnectionProviderInitializeFailed extends WatCeption {
 	}
 }
 
+class UserUnknownNameException extends WatCeption {
+
+	private $m_sName;
+
+	public function __construct($sName) {
+		parent::__construct('Unknown name: {name}', array('name' => $sName));
+		$this->m_sName = $sName;
+	}
+
+	public function getName() {
+		return $this->m_sName;
+	}
+}
+
+class UserUnknownEmailException extends WatCeption {
+
+	private $m_sEmail;
+
+	public function __construct($sEmail) {
+		parent::__construct('Unknown email: {email}', array('email' => $sEmail));
+	}
+
+	public function getEmail() {
+		return $this->m_sEmail;
+	}
+}
+
 class UserInvalidNameException extends WatCeption {
 	
 	private $m_sName;
@@ -86,6 +113,32 @@ class UserInvalidEmailException extends WatCeption {
 	
 	public function getEmail() {
 		return $this->m_sEmail;
+	}
+}
+
+class UserInvalidPasswordException extends WatCeption {
+
+	private $m_sPassword;
+
+	public function __construct($sPassword) {
+		parent::__construct('Invalid password: {password}', array('password' => $sPassword));
+	}
+
+	public function getPassword() {
+		return $this->m_sPassword;
+	}
+}
+
+class UserNoPasswordException extends WatCeption {
+
+	private $m_sName;
+
+	public function __construct($sName) {
+		parent::__construct('User has no password password: {name}', array('name' => $sName));
+	}
+
+	public function getName() {
+		return $this->m_sName;
 	}
 }
 

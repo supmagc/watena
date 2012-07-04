@@ -5,8 +5,8 @@ class User extends DbObject {
 	private $m_aConnections = null;
 	private $m_aEmails = null;
 	
-	public function getName() {
-		return $this->getDataValue('name');
+	public function hasPassword() {
+		return (bool)$this->getDataValue('password');
 	}
 
 	public function getGender() {
@@ -31,6 +31,10 @@ class User extends DbObject {
 	
 	public function getLocale() {
 		return $this->getDataValue('locale');
+	}
+	
+	public function getHash() {
+		return $this->getDataValue('hash');
 	}
 	
 	public function setGender($mValue) {
@@ -80,7 +84,19 @@ class User extends DbObject {
 		$this->setDataValue('locale', $mValue);
 		return true;
 	}
-		
+
+	public function setPassword($mValue) {
+		if(UserManager::isValidPassword($mValue)) {
+			$this->setDataValue('password', $this->encodePassword($mValue));
+			return true;
+		}
+		return false;
+	}
+	
+	public function verifyPassword($mValue) {
+		return $this->getDataValue('password') === $this->encodePassword($mValue);
+	}
+	
 	public function getConnections() {
 		if($this->m_aConnections === null) {
 			$this->m_aConnections = array();
@@ -135,12 +151,8 @@ class User extends DbObject {
 	}
 	
 	public function addEmail($sEmail, $bVerified = false) {
-		if($oEmail = UserEmail::create($this, $sEmail, $bVerified)) {
+		if($oEmail = UserEmail::create($this, $sEmail)) {
 			$this->m_aEmails []= $oEmail;
-		}
-		else if($oEmail = $this->getEmail($sEmail)) {
-			if(!$oEmail->getVerified() && $bVerified)
-				$oEmail->setVerified(true);
 		}
 		return $this->getEmail($sEmail);
 	}
@@ -157,14 +169,20 @@ class User extends DbObject {
 		}
 	}
 	
+	public function encodePassword($mValue) {
+		$sHash = Encoding::substring($this->getHash(), ($this->getId() / 3) % 16, ($this->getId() / 2) % 16);
+		$sData = sprintf('%s.%s.%s', $this->getId(), $mValue, $sHash);
+		return md5($sData);
+	}
+	
 	public static function load($mData) {
 		return DbObject::loadObject('User', UserManager::getDatabaseConnection()->getTable('user'), $mData);
 	}
 	
-	public static function create($sName, $nType) {
+	public static function create($sName) {
 		return DbObject::createObject('User', UserManager::getDatabaseConnection()->getTable('user'), array(
-			'type' => $nType,
-			'name' => $sName
+			'name' => $sName,
+			'hash' => md5(mt_rand() . $sName . microtime())
 		));	
 	}
 }
