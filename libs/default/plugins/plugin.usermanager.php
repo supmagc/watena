@@ -123,12 +123,18 @@ class UserManager extends Plugin {
 	 * 
 	 * @param string $sName
 	 * @param string $sPassword
+	 * @throws UserInvalidNameException The provided name is of an invalid format.
 	 * @throws UserUnknownNameException The provided name is not known for any user.
+	 * @throws UserUnverifiedUserException The user exists, but isn't verified.
 	 * @throws UserNoPasswordException The user exists, but has no password set.
 	 * @throws UserInvalidPasswordException The given password is invalid.
 	 * @return User
 	 */
 	public static function loginByName($sName, $sPassword) {
+		// Check the validity of the email
+		if(!UserManager::isValidName($sName))
+			throw new UserInvalidNameException($sName);
+		
 		// Get and check the matching UserId
 		$oUser = User::Load(self::getUserIdByName($sName));
 		if($oUser !== false) 
@@ -144,13 +150,19 @@ class UserManager extends Plugin {
 	 * 
 	 * @param string $sEmail
 	 * @param string $sPassword
+	 * @throws UserInvalidEmailException The provided email is of an invalid format.
 	 * @throws UserUnknownEmailException The provided email is not known for any user.
 	 * @throws UserUnverifiedEmailException The email is known, but not verified. It thus cannot be used to login.
+	 * @throws UserUnverifiedUserException The user exists, but isn't verified.
 	 * @throws UserNoPasswordException The user exists, but has no password set.
 	 * @throws UserInvalidPasswordException The given password is invalid.
 	 * @return User
 	 */
 	public static function loginByEmail($sEmail, $sPassword) {
+		// Check the validity of the email
+		if(!UserManager::isValidEmail($sEmail))
+			throw new UserInvalidEmailException($sEmail);
+		
 		// Get and check the matching UserId
 		$oUser = User::Load(self::getUserIdByEmail($sEmail));
 		if($oUser !== false) 
@@ -160,10 +172,8 @@ class UserManager extends Plugin {
 		$oEmail = $oUser->getEmail($sEmail);
 
 		// Verify the email-object
-		if(!$oEmail) 
-			throw new UserUnknownEmailException($sEmail);
-		if(!$oEmail->getVerified()) 
-			throw new UserUnverifiedEmailException($sEmail);
+		if(!$oEmail->isVerified()) 
+			throw new UserUnverifiedEmailException($oEmail);
 		
 		// Try to log the user in with the provided password
 		return self::Login($oUser, $sPassword);
@@ -176,14 +186,19 @@ class UserManager extends Plugin {
 	 * 
 	 * @param User $oUser
 	 * @param string $sPassword
+	 * @throws UserUnverifiedUserException The user exists, but isn't verified.
 	 * @throws UserNoPasswordException The user exists, but has no password set.
 	 * @throws UserInvalidPasswordException The given password is invalid.
 	 * @return User
 	 */
 	public static function Login(User $oUser, $sPassword) {
+		// Check if verified
+		if(!$oUser->isVerified())
+			throw new UserUnverifiedUserException($oUser);
+		
 		// Check if user has a password
 		if(!$oUser->hasPassword())
-			throw new UserNoPasswordException($oUser->getName());
+			throw new UserNoPasswordException($oUser);
 		
 		// Verify the given password
 		if(!UserManager::isValidPassword($sPassword) || !$oUser->verifyPassword($sPassword))
@@ -196,13 +211,13 @@ class UserManager extends Plugin {
 		if(!UserManager::isValidName($sName))
 			throw new UserInvalidNameException($sName);
 		if(UserManager::getUserIdByName($sName))
-			throw new UserUsedNameException($sName);
+			throw new UserDuplicateNameException($sName);
 		if($sPassword && !UserManager::isValidPassword($sPassword))
 			throw new UserInvalidPasswordException($sPassword);
 		if($sEmail && !UserManager::isValidEmail($sEmail))
 			throw new UserInvalidEmailException($sEmail);
 		if($sEmail && UserManager::getUserIdByEmail($sEmail))
-			throw new UserUsedEmailException($sEmail);
+			throw new UserDuplicateEmailException($sEmail);
 		
 		$oUser = User::create($sName);
 		if($sPassword) $oUser->setPassword($sPassword);
@@ -226,7 +241,7 @@ class UserManager extends Plugin {
 	 * 
 	 * @param UserConnectionProvider $oConnectionProvider
 	 * @param string $sName Possebility to overwrite the username.
-	 * @throws UserDuplicateLoginException The connection is known and there is a logged in user, but they don't match.
+	 * @throws UserDuplicateUserException The connection is known and there is a logged in user, but they don't match.
 	 * @throws UserDuplicateEmailException The email-adress is known and there is a logged in user, but they don't match.
 	 * @throws UserUnverifiedEmailException The connection can be linked to an email-adress, but the adress is not yet verified.
 	 * @throws UserInvalidNameException The name is invalid, and should be overwritten.
@@ -249,7 +264,7 @@ class UserManager extends Plugin {
 				// If both are the same, all is good
 				// If both are different, we don't know what to do
 				if($oConnectionUser != $oCurrentUser)
-					throw new UserDuplicateLoginException($oCurrentUser, $oConnectionUser);
+					throw new UserDuplicateUserException($oCurrentUser, $oConnectionUser);
 			}
 			
 			// If we only have a connection user
@@ -275,7 +290,7 @@ class UserManager extends Plugin {
 				$sConnectionEmail = $oConnectionProvider->getConnectionEmail();
 				if(self::isValidEmail($sConnectionEmail) && ($nId = self::getUserIdByEmail($sConnectionEmail)) !== false) {
 					$oCurrentUser = User::load($nId);
-					if(!$oCurrentUser->getEmail($sConnectionEmail)->getVerified())
+					if(!$oCurrentUser->getEmail($sConnectionEmail)->isVerified())
 						throw new UserUnverifiedEmailException($sConnectionEmail);
 				}
 				else {
