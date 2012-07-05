@@ -4,6 +4,12 @@ class RegisterModel extends Model {
 	
 	private $m_nType;
 	private $m_sHash;
+	private $m_sTitle;
+	private $m_sText;
+	private $m_bEmail;
+	private $m_bPass;
+	private $m_bSucces;
+	private $m_bError;
 	
 	public function getHash() {
 		return $this->m_sHash;
@@ -17,61 +23,59 @@ class RegisterModel extends Model {
 		return isset($_POST['pass']) ? $_POST['pass'] : false;
 	}
 	
-	public function showInvalidEmail() {
-		$this->m_nType = 0;
+	public function getTitle() {
+		return $this->m_sTitle;
 	}
 	
-	public function showUnverifiedEmail() {
-		$this->m_nType =1;
+	public function getText() {
+		return $this->m_sText;
 	}
 	
-	public function showLogin() {
-		$this->m_nType = 2;
+	public function getShowEmail() {
+		return $this->m_bEmail;
 	}
 	
-	public function showRegister() {
-		$this->m_nType = 3;
+	public function getShowPass() {
+		return $this->m_bPass;
 	}
 	
-	public function showInvalidPassword() {
-		$this->m_nType = 4;
+	public function getShowSucces() {
+		return $this->m_bSucces;
 	}
 	
-	public function showRegisterDone() {
-		$this->m_nType = 5;
+	public function getShowError() {
+		return $this->m_bError;
 	}
 	
-	public function showDone($sHash) {
+	public function showDone($sTitle, $sText, $sHash) {
+		$this->m_sTitle = $sTitle;
+		$this->m_sText = $sText;
 		$this->m_sHash = $sHash;
-		$this->m_nType = 6;
+		$this->m_bSucces = true;
 	}
 	
-	public function isInvalidEmail() {
-		return $this->m_nType == 0;
+	public function showEmail($sTitle, $sText, $bError = false) {
+		$this->m_sTitle = $sTitle;
+		$this->m_sText = $sText;
+		$this->m_bError = $bError;
 	}
 	
-	public function isUnverifiedEmail() {
-		return $this->m_nType == 1;
+	public function showPassword($sTitle, $sText, $bError = false) {
+		$this->m_sTitle = $sTitle;
+		$this->m_sText = $sText;
+		$this->m_bError = $bError;
 	}
 	
-	public function isLogin() {
-		return $this->m_nType == 2;
+	public function showError($sTitle, $sText) {
+		$this->m_sTitle = $sTitle;
+		$this->m_sText = $sText;
+		$this->m_bError = true;
 	}
 	
-	public function isRegister() {
-		return $this->m_nType == 3;
-	}
-	
-	public function isInvalidPassword() {
-		return $this->m_nType == 4;
-	}	
-	
-	public function isRegisterDone() {
-		return $this->m_nType == 5;
-	}
-	
-	public function isDone() {
-		return $this->m_nType == 6;
+	public function showSucces($sTitle, $sSucces) {
+		$this->m_sTitle = $sTitle;
+		$this->m_sText = $sText;
+		$this->m_bSucces = true;
 	}
 }
 

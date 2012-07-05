@@ -7,6 +7,46 @@ class UserInvalidIdException extends WatCeption {
 	}
 }
 
+class UserInvalidNameException extends WatCeption {
+
+	private $m_sName;
+
+	public function __construct($sName) {
+		parent::__construct('Invalid name: {name}', array('name' => $sName));
+		$this->m_sName = $sName;
+	}
+
+	public function getName() {
+		return $this->m_sName;
+	}
+}
+
+class UserInvalidEmailException extends WatCeption {
+
+	private $m_sEmail;
+
+	public function __construct($sEmail) {
+		parent::__construct('Invalid email: {email}', array('email' => $sEmail));
+	}
+
+	public function getEmail() {
+		return $this->m_sEmail;
+	}
+}
+
+class UserInvalidPasswordException extends WatCeption {
+
+	private $m_sPassword;
+
+	public function __construct($sPassword) {
+		parent::__construct('Invalid password: {password}', array('password' => $sPassword));
+	}
+
+	public function getPassword() {
+		return $this->m_sPassword;
+	}
+}
+
 class UserDuplicateEmailException extends WatCeption {
 	
 	private $m_sEmail;
@@ -35,7 +75,7 @@ class UserDuplicateNameException extends WatCeption {
 	}
 }
 
-class UserDuplicateLoginException extends WatCeption {
+class UserDuplicateUserException extends WatCeption {
 	
 	private $m_oUserA;
 	private $m_oUserB;
@@ -89,96 +129,42 @@ class UserUnknownEmailException extends WatCeption {
 	}
 }
 
-class UserUsedNameException extends WatCeption {
-
-	private $m_sName;
-
-	public function __construct($sName) {
-		parent::__construct('Used name: {name}', array('name' => $sName));
-		$this->m_sName = $sName;
-	}
-
-	public function getName() {
-		return $this->m_sName;
-	}
-}
-
-class UserUsedEmailException extends WatCeption {
-
-	private $m_sEmail;
-
-	public function __construct($sEmail) {
-		parent::__construct('Used email: {email}', array('email' => $sEmail));
-	}
-
-	public function getEmail() {
-		return $this->m_sEmail;
-	}
-}
-
-class UserInvalidNameException extends WatCeption {
-	
-	private $m_sName;
-	
-	public function __construct($sName) {
-		parent::__construct('Invalid name: {name}', array('name' => $sName));
-		$this->m_sName = $sName;
-	}
-	
-	public function getName() {
-		return $this->m_sName;
-	}
-}
-
-class UserInvalidEmailException extends WatCeption {
-	
-	private $m_sEmail;
-
-	public function __construct($sEmail) {
-		parent::__construct('Invalid email: {email}', array('email' => $sEmail));
-	}
-	
-	public function getEmail() {
-		return $this->m_sEmail;
-	}
-}
-
-class UserInvalidPasswordException extends WatCeption {
-
-	private $m_sPassword;
-
-	public function __construct($sPassword) {
-		parent::__construct('Invalid password: {password}', array('password' => $sPassword));
-	}
-
-	public function getPassword() {
-		return $this->m_sPassword;
-	}
-}
-
 class UserNoPasswordException extends WatCeption {
 
-	private $m_sName;
+	private $m_oUser;
 
-	public function __construct($sName) {
-		parent::__construct('User has no password password: {name}', array('name' => $sName));
+	public function __construct(User $oUser) {
+		parent::__construct('User has no password password: {name}', array('name' => $oUser->getName()));
 	}
 
-	public function getName() {
-		return $this->m_sName;
+	public function getUser() {
+		return $this->m_oUser;
 	}
 }
 
 class UserUnverifiedEmailException extends Exception {
 	
-	private $m_sEmail;
+	private $m_oEmail;
 	
-	public function __construct($sEmail) {
-		parent::__construct('A user with this email-adress exists, but is unverified: {email}', array('email' => $sEmail));
+	public function __construct(UserEmail $oEmail) {
+		parent::__construct('A user with this email-adress exists, but is unverified: {email}', array('email' => $oEmail->getEmail()));
 	}
 	
 	public function getEmail() {
-		return $this->m_sEmail;
+		return $this->m_oEmail;
+	}
+}
+
+class UserUnverifiedUserException extends Exception {
+	
+	private $m_oUser;
+	
+	public function __construct(User $oUser) {
+		parent::__construct('A user exists, but is unverified: {name}', array('name' => $oUser->getName()));
+	}
+	
+	public function getUser() {
+		return $this->m_oUser;
 	}
 }
 ?>

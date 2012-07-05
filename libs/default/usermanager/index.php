@@ -1,4 +1,5 @@
 <?php
+require_once 'um_verifiable.php';
 require_once 'um_user.php';
 require_once 'um_useremail.php';
 require_once 'um_userlogin.php';

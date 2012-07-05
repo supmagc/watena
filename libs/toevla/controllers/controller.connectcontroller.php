@@ -20,7 +20,7 @@ class ConnectController extends Controller {
 				$oModel->showFailed();
 			}
 		}
-		catch(UserDuplicateLoginException $e) {
+		catch(UserDuplicateUserException $e) {
 			$oModel->showDuplicateLogin();
 		}
 		catch(UserDuplicateNameException $e) {

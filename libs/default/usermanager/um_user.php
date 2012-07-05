@@ -1,6 +1,6 @@
 <?php
 
-class User extends DbObject {
+class User extends UserVerifiable {
 	
 	private $m_aConnections = null;
 	private $m_aEmails = null;
@@ -11,6 +11,10 @@ class User extends DbObject {
 
 	public function getGender() {
 		return $this->getDataValue('gender');
+	}
+	
+	public function getName() {
+		return $this->getDataValue('name');
 	}
 	
 	public function getBirthday() {
@@ -151,7 +155,7 @@ class User extends DbObject {
 	}
 	
 	public function addEmail($sEmail, $bVerified = false) {
-		if($oEmail = UserEmail::create($this, $sEmail)) {
+		if($oEmail = UserEmail::create($this, $sEmail, $bVerified)) {
 			$this->m_aEmails []= $oEmail;
 		}
 		return $this->getEmail($sEmail);
