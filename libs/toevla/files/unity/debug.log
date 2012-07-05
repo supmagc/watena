@@ -1275,3 +1275,24 @@ Request-error: Failed downloading http://farm7.staticflickr.com/6236/6329013582_
 2012/05/16 17:08:38	192.168.1.101	NullReferenceException: Object reference not set to an instance of an object at:
 	Hat.SetHat (Int32 nr)
 	Hat.Start ()
+2012/07/04 10:31:30	192.168.1.101	InvalidProgramException: Unable to prefetch the crossdomain.xml from 192.168.1.101 at:
+	SmartFoxInterface.Connect ()
+	LoginHelper+<Login_Asyn>c__Iterator8.MoveNext ()
+2012/07/04 14:49:17	192.168.1.101	InvalidProgramException: Unable to prefetch the crossdomain.xml from 192.168.1.101 at:
+	SmartFoxInterface.Connect ()
+	LoginHelper+<Login_Asyn>c__Iterator8.MoveNext ()
+2012/07/04 15:24:08	192.168.1.101	InvalidProgramException: Unable to prefetch the crossdomain.xml from 192.168.1.101 at:
+	SmartFoxInterface.Connect ()
+	LoginHelper+<Login_Asyn>c__Iterator8.MoveNext ()
+2012/07/04 15:27:12	192.168.1.101	InvalidProgramException: Unable to prefetch the crossdomain.xml from 192.168.1.101 at:
+	SmartFoxInterface.Connect ()
+	LoginHelper+<Login_Asyn>c__Iterator8.MoveNext ()
+2012/07/04 15:27:17	192.168.1.101	InvalidProgramException: Unable to prefetch the crossdomain.xml from 192.168.1.101 at:
+	SmartFoxInterface.Connect ()
+	LoginHelper+<Login_Asyn>c__Iterator8.MoveNext ()
+2012/07/04 15:27:20	192.168.1.101	InvalidProgramException: Unable to prefetch the crossdomain.xml from 192.168.1.101 at:
+	SmartFoxInterface.Connect ()
+	LoginHelper+<Login_Asyn>c__Iterator8.MoveNext ()
+2012/07/04 15:27:23	192.168.1.101	InvalidProgramException: Unable to prefetch the crossdomain.xml from 192.168.1.101 at:
+	SmartFoxInterface.Connect ()
+	LoginHelper+<Login_Asyn>c__Iterator8.MoveNext ()
