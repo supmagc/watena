@@ -89,6 +89,33 @@ class UserUnknownEmailException extends WatCeption {
 	}
 }
 
+class UserUsedNameException extends WatCeption {
+
+	private $m_sName;
+
+	public function __construct($sName) {
+		parent::__construct('Used name: {name}', array('name' => $sName));
+		$this->m_sName = $sName;
+	}
+
+	public function getName() {
+		return $this->m_sName;
+	}
+}
+
+class UserUsedEmailException extends WatCeption {
+
+	private $m_sEmail;
+
+	public function __construct($sEmail) {
+		parent::__construct('Used email: {email}', array('email' => $sEmail));
+	}
+
+	public function getEmail() {
+		return $this->m_sEmail;
+	}
+}
+
 class UserInvalidNameException extends WatCeption {
 	
 	private $m_sName;
