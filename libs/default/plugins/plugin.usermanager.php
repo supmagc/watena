@@ -192,12 +192,22 @@ class UserManager extends Plugin {
 		return $oUser;
 	}
 	
-	public static function register() {
+	public static function register($sName, $sPassword = null, $sEmail = null) {
+		if(!UserManager::isValidName($sName))
+			throw new UserInvalidNameException($sName);
+		if(UserManager::getUserIdByName($sName))
+			throw new UserUsedNameException($sName);
+		if($sPassword && !UserManager::isValidPassword($sPassword))
+			throw new UserInvalidPasswordException($sPassword);
+		if($sEmail && !UserManager::isValidEmail($sEmail))
+			throw new UserInvalidEmailException($sEmail);
+		if($sEmail && UserManager::getUserIdByEmail($sEmail))
+			throw new UserUsedEmailException($sEmail);
 		
-	}
-	
-	public static function verify($sVerifier) {
-		
+		$oUser = User::create($sName);
+		if($sPassword) $oUser->setPassword($sPassword);
+		if($sEmail) $oUser->addEmail($sEmail);
+		return $oUser;
 	}
 	
 	public static function setLoggedInUser(User $oUser = null) {
