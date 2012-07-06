@@ -34,6 +34,9 @@ class RegisterController extends Controller {
 					$oMail->convertHtmlToText();
 					$oMail->send();
 				}
+				catch(UserInvalidPasswordException $e) {
+					$oModel->showPass('Wrong password!', 'Try another password (at least 6 characters)!', true);
+				}
 				catch(UserException $e) {
 					$oModel->showError('Registration Error!', 'We couldn\'t register your account. Maybe you can try again?');
 				}
@@ -78,7 +81,7 @@ class RegisterController extends Controller {
 				$oModel->showDone('Logged in!', 'You will be redirected within the next seconds.', ToeVla::getNewHash());
 			}
 			catch(UserInvalidPasswordException $e) {
-				$oModel->showPass('Wrong password!', 'Try another password!', true);
+				$oModel->showPass('Wrong password!', 'Try another password (at least 6 characters)!', true);
 			}
 		}
 		else if($oModel->getEmail()) {

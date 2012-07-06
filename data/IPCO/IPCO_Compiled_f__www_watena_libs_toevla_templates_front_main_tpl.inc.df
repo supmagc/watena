@@ -22,6 +22,19 @@ $_ob []= '' . parent::callInclude('F:\WWW\watena\libs\toevla\templates\front.uni
 ));
 			$_ob []= '' . '" width="300" height="69"></iframe></div>
 </div>
+
+';
+			if(parent::processMember('getEmail', null)) {
+				$_ob []= '' . '
+<script><!--
+window.tvEmail = \'';
+				$_ob []= '' . parent::processMember('getEmail', null);
+				$_ob []= '' . '\';
+--></script>
+';
+			}
+			$_ob []= '' . '
+
 ';
 			return implode('', $_ob);
 		} catch(Exception $e) { throw new WatCeption('Unable to create template-output.', array(), null, $e); }

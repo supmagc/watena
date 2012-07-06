@@ -79,6 +79,11 @@ class RegisterModel extends Model {
 		$this->m_sText = $sText;
 		$this->m_bSucces = true;
 	}
+	
+	public function showMessage($sTitle, $sText) {
+		$this->m_sHeader = $sTitle;
+		$this->m_sText = $sText;
+	}
 }
 
 ?>
