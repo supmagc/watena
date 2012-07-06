@@ -1,5 +1,5 @@
 <?php
-define('MAILCOUNT', 3);
+define('MAILCOUNT', 2);
 define('NMVC', true);
 include '../base/watena.php';
 
