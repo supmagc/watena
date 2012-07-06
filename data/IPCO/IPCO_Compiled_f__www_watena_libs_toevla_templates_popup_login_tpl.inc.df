@@ -23,6 +23,9 @@ class IPCO_Compiled_f__www_watena_libs_toevla_templates_popup_login_tpl extends 
 	';
 			}
 			$_ob []= '' . '
+	';
+			$_ob []= '' . parent::processMember('email', null);
+			$_ob []= '' . '
 	<form class="field" action="';
 			$_ob []= '' . parent::callContentParser('addMappingRoot', array (
   0 => 'form',
@@ -30,7 +33,13 @@ class IPCO_Compiled_f__www_watena_libs_toevla_templates_popup_login_tpl extends 
   2 => '/login/register',
 ));
 			$_ob []= '' . '" method="post">
-		<input type="text" onfocus="if(this.value==\'Your email\') this.value=\'\';" onblur="if(this.value==\'\') this.value=\'Your email\';" name="email" value="Your email" />
+		<input type="text" onfocus="if(this.value==\'Your email\') this.value=\'\';" onblur="if(this.value==\'Your email\') this.value=\'\';" name="email" value="';
+			if(parent::processMember('email', null)) {
+				$_ob []= '' . parent::processMember('email', null);
+			} else {
+				$_ob []= '' . 'Your email';
+			}
+			$_ob []= '' . '" />
 		<input type="submit" value="" />
 	</form>
 </div>

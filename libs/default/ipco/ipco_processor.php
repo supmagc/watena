@@ -97,6 +97,14 @@ abstract class IPCO_Processor extends IPCO_Base {
 				$bReturn = self::tryProcessMember($mReturn, $sName, $this->m_aComponents[$i]);
 				if($bReturn) return true;
 			}
+			if(isset($_POST[$sName])) {
+				$mReturn = $_POST[$sName];
+				return true;
+			}
+			if(isset($_GET[$sName])) {
+				$mReturn = $_GET[$sName];
+				return true;
+			}
 		}
 		return false;
 	}

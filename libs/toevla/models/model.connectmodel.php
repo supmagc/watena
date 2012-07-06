@@ -6,7 +6,7 @@ class ConnectModel extends HtmlModel {
 	private $m_sHash;
 	private $m_nType = 0;
 	private $m_sName;
-
+	
 	public function setName($sName) {
 		$this->m_sName = $sName;
 	}

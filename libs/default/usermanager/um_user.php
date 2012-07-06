@@ -41,6 +41,10 @@ class User extends UserVerifiable {
 		return $this->getDataValue('hash');
 	}
 	
+	public function isTla() {
+		return (bool)$this->getDataValue('tla', false);
+	}
+	
 	public function setGender($mValue) {
 		$mValue = Encoding::toLower($mValue);
 		if($mValue === 'm') $mValue = 'male';
@@ -156,7 +160,7 @@ class User extends UserVerifiable {
 	
 	public function addEmail($sEmail, $bVerified = false) {
 		if($oEmail = UserEmail::create($this, $sEmail, $bVerified)) {
-			$this->m_aEmails []= $oEmail;
+			$this->m_aEmails[Encoding::toLower($sEmail)] = $oEmail;
 		}
 		return $this->getEmail($sEmail);
 	}
@@ -164,7 +168,7 @@ class User extends UserVerifiable {
 	public function getEmail($sEmail = null) {
 		$aEmails = $this->getEmails();
 		if($sEmail)
-			return isset($aEmails[$sEmail]) ? $aEmails[$sEmail] : false;
+			return isset($aEmails[Encoding::toLower($sEmail)]) ? $aEmails[Encoding::toLower($sEmail)] : false;
 		else 
 			return count($aEmails) > 0 ? array_first($aEmails) : false;
 	}

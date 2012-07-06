@@ -208,6 +208,19 @@ class UserManager extends Plugin {
 		return $oUser;
 	}
 	
+	/**
+	 * Register a new user
+	 * 
+	 * @param string $sName
+	 * @param string $sPassword
+	 * @param string $sEmail
+	 * @throws UserInvalidNameException
+	 * @throws UserDuplicateNameException
+	 * @throws UserInvalidPasswordException
+	 * @throws UserInvalidEmailException
+	 * @throws UserDuplicateEmailException
+	 * @return User
+	 */
 	public static function register($sName, $sPassword = null, $sEmail = null) {
 		if(!UserManager::isValidName($sName))
 			throw new UserInvalidNameException($sName);

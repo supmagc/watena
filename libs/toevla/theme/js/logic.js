@@ -28,18 +28,6 @@ function deezerChange(mId) {
 	}
 }
 
-function triggerVerification(sEmail) {
-	document.getElementById('connectLayer').style.display = 'block';
-	connectFrame.location = window.url + '/login/register?email=' + sEmail;	
-	window.cancelCallback = window.verificationCallback;
-	console.log('Verification triggered !');	
-}
-
-function verificationCallback() {
-	document.getElementById('connectLayer').style.display = 'none';
-	connectFrame.location = window.url + '/loading';	
-}
-
 function triggerSocial(sHash, sName) {
 	document.getElementById('connectLayer').style.display = 'block';
 	connectFrame.location = window.url + '/social?hash=' + sHash + '&name=' + sName;	
@@ -54,7 +42,12 @@ function socialCallback() {
 }
 
 function requestHash(sRequestHashType) {
-	if(sRequestHashType == "HIDDEN" || (sRequestHashType == "AUTOMATIC" && window.tvHash.length > 0))
+	if(sRequestHashType == "HIDDEN" && window.tvEmail) {
+		document.getElementById('connectLayer').style.display = 'block';
+		connectFrame.location = window.url + '/login?email=' + escape(window.tvEmail);			
+		window.tvEmail = undefined;
+	}
+	else if(sRequestHashType == "HIDDEN" || (sRequestHashType == "AUTOMATIC" && window.tvHash.length > 0))
 		GetUnity().SendMessage('Persistent', 'InjectHash', window.tvHash);		
 	else {
 		document.getElementById('connectLayer').style.display = 'block';

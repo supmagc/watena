@@ -10,7 +10,7 @@
 
 {{if getEmail()}}
 <script><!--
-triggerVerification('{[getEmail()]}');
+window.tvEmail = '{[getEmail()]}';
 --></script>
 {{end}}
 
