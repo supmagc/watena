@@ -5,11 +5,39 @@ class IPCO_Compiled_d__www_watena_libs_toevla_templates_popup_register_tpl exten
 			$_ob = array();
 			$_ob []= '' . '
 
+<h1>';
+			$_ob []= '' . parent::processMember('getHeader', null);
+			$_ob []= '' . '</h1>
+
 ';
-			if(parent::processMember('isInvalidEmail', null)) {
+			if(parent::processMember('getShowSucces', null)) {
 				$_ob []= '' . '
-<h1>Hello!</h1>
-<p>The email-adress you provided isnot valid. Please, try something else!</p>
+<span class="succes">
+<p>';
+				$_ob []= '' . parent::processMember('getText', null);
+				$_ob []= '' . '</p>
+</span>
+';
+			} else if(parent::processMember('getShowError', null)) {
+				$_ob []= '' . '
+<span class="error">
+<p>';
+				$_ob []= '' . parent::processMember('getText', null);
+				$_ob []= '' . '</p>
+</span>
+';
+			} else {
+				$_ob []= '' . '
+<p>';
+				$_ob []= '' . parent::processMember('getText', null);
+				$_ob []= '' . '</p>
+';
+			}
+			$_ob []= '' . '
+
+';
+			if(parent::processMember('getShowEmail', null)) {
+				$_ob []= '' . '
 <form class="field" action="';
 				$_ob []= '' . parent::callContentParser('addMappingRoot', array (
   0 => 'form',
@@ -22,75 +50,35 @@ class IPCO_Compiled_d__www_watena_libs_toevla_templates_popup_register_tpl exten
 				$_ob []= '' . '" />
 	<input type="submit" value="" />
 </form>
+';
+			}
+			$_ob []= '' . '
 
 ';
-			} else if(parent::processMember('isUnverifiedEmail', null)) {
+			if(parent::processMember('getShowPass', null)) {
 				$_ob []= '' . '
-<h1>Unverified email!</h1>
-<span class="error">
-<p>Your email-adress exists, but is not yet verified.<br />Please check your mailbox if this is you!</p>
-</span>
-
-';
-			} else if(parent::processMember('isRegisterDone', null)) {
-				$_ob []= '' . '
-<h1>Registration done!</h1>
-<span class="succes">
-<p>You are registered, but your email is not yet verified.<br />Please check your mailbox if this is you!</p>
-</span>
-
-';
-			} else {
-				$_ob []= '' . '
-	
-	';
-				if(parent::processMember('isLogin', null)) {
-					$_ob []= '' . '
-	<h1>Welcome back!</h1>
-	<p>Provide us with your password, and enter \'Flanders Is A Festival\'!</p>
-	
-	';
-				} else if(parent::processMember('isRegister', null)) {
-					$_ob []= '' . '
-	<h1>Register to continue!</h1>
-	<p>Choose a valid password you can remember to continue!</p>
-	
-	';
-				} else if(parent::processMember('isInvalidPassword', null)) {
-					$_ob []= '' . '
-	<h1>Invalid password!</h1>
-	<p>The password you entered is not valid. Try again!</p>
-	';
-				}
-				$_ob []= '' . '
-	
-	<form class="field" action="';
+<form class="field" action="';
 				$_ob []= '' . parent::callContentParser('addMappingRoot', array (
   0 => 'form',
   1 => 'action',
   2 => '/login/register',
 ));
 				$_ob []= '' . '" method="post">
-		<input type="hidden" name="email" value="';
+	<input type="hidden" name="email" value="';
 				$_ob []= '' . parent::processMember('getEmail', null);
 				$_ob []= '' . '" />
-		<input type="password" name="pass" />
-		<input type="submit" value="" />
-	</form>	
-
+	<input type="password" name="pass" />
+	<input type="submit" value="" />
+</form>	
 ';
 			}
 			$_ob []= '' . '
 
 ';
-			if(parent::processMember('isDone', null)) {
+			if(parent::processMember('getHash', null)) {
 				$_ob []= '' . '
 <script><!--
-if(window.opener.parent.hashCallback)
-	window.opener.parent.hashCallback(\'';
-				$_ob []= '' . parent::processMember('getHash', null);
-				$_ob []= '' . '\');
-else if(window.parent.hashCallback)
+if(window.parent.hashCallback)
 	window.parent.hashCallback(\'';
 				$_ob []= '' . parent::processMember('getHash', null);
 				$_ob []= '' . '\');

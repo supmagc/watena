@@ -161,9 +161,12 @@ class User extends UserVerifiable {
 		return $this->getEmail($sEmail);
 	}
 	
-	public function getEmail($sEmail) {
+	public function getEmail($sEmail = null) {
 		$aEmails = $this->getEmails();
-		return isset($aEmails[$sEmail]) ? $aEmails[$sEmail] : false;
+		if($sEmail)
+			return isset($aEmails[$sEmail]) ? $aEmails[$sEmail] : false;
+		else 
+			return count($aEmails) > 0 ? array_first($aEmails) : false;
 	}
 	
 	public function removeEmail(UserEmail $oEmail) {

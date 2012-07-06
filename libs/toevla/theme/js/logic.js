@@ -28,6 +28,18 @@ function deezerChange(mId) {
 	}
 }
 
+function triggerVerification(sEmail) {
+	document.getElementById('connectLayer').style.display = 'block';
+	connectFrame.location = window.url + '/login/register?email=' + sEmail;	
+	window.cancelCallback = window.verificationCallback;
+	console.log('Verification triggered !');	
+}
+
+function verificationCallback() {
+	document.getElementById('connectLayer').style.display = 'none';
+	connectFrame.location = window.url + '/loading';	
+}
+
 function triggerSocial(sHash, sName) {
 	document.getElementById('connectLayer').style.display = 'block';
 	connectFrame.location = window.url + '/social?hash=' + sHash + '&name=' + sName;	
@@ -55,6 +67,7 @@ function requestHash(sRequestHashType) {
 
 function hashCallback(sHash) {
 	document.getElementById('connectLayer').style.display = 'none';
+	connectFrame.location = window.url + '/loading';	
 	GetUnity().SendMessage('Persistent', 'InjectHash', '' + sHash);
 	if(window.tvLoginPopup) {
 		window.tvLoginPopup.close();

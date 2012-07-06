@@ -7,5 +7,12 @@
 <div id="footer"><div class="container_main">{{region use copy}}</div></div>
 <div id="dezelicious"><iframe name="dezelicious" style="display:none;" scrolling="no" frameborder="0" allowTransparency="true" src="/files/toevla/video/blank.html" width="300" height="69"></iframe></div>
 </div>
+
+{{if getEmail()}}
+<script><!--
+triggerVerification('{[getEmail()]}');
+--></script>
+{{end}}
+
 {{region end content}}
 

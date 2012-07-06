@@ -8,6 +8,15 @@ class MainModel extends HtmlModel {
 	private $m_sHash = null;
 	private $m_nHubId = null;
 	private $m_nFestivalId = null;
+	private $m_sEmail = null;
+	
+	public function showVerifier($sEmail) {
+		$this->m_sEmail = $sEmail;
+	}
+	
+	public function getEmail() {
+		return $this->m_sEmail;
+	}
 	
 	public function setHash($sHash) {
 		$this->m_sHash = $sHash;

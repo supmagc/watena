@@ -8,12 +8,33 @@ class MainController extends UserSessionController {
 
 	public function process(Model $oModel = null, View $oView = null) {
 		
+		if($this->getWatena()->getMapping()->getPart(0) == 'verify') {
+			$sMail = null;
+			$nVerifyUser = -1;
+			$nVerifyMail = -1;
+			if(isset($_GET['verify_user']) && isset($_GET['verify_user_id'])) {
+				$nVerifyUser = 0;
+				$oUser = User::load($_GET['verify_user_id']);
+				if($oUser && $oUser->verify($_GET['verify_user'])) {
+					$nVerifyUser = 1;
+					$sMail = $oUser->getEmail()->getEmail();
+				}
+			}
+			if(isset($_GET['verify_mail']) && isset($_GET['verify_mail_id'])) {
+				$nVerifyMail = 0;
+				$oMail = UserEmail::load($_GET['verify_mail_id']);
+				if($oMail && $oMail->verify($_GET['verify_mail'])) {
+					$nVerifyMail = 1;
+					$sMail = $oMail->getEmail();
+				}
+			}
+			if($nVerifyUser != 0 && $nVerifyMail != 0 && $sMail) {
+				$oModel->showVerifier($sMail);
+			}
+		}
+		
 		if(UserManager::isLoggedIn()) {
 			$oModel->setHash(ToeVla::getNewHash());
-			
-			if(UserManager::getLoggedInUser()->getConnectionFacebook()) {
-				
-			}
 		}
 		
 		if($this->getWatena()->getMapping()->getPart(0) == 'iframe' && Encoding::length($this->getWatena()->getMapping()->getPart(1)) == 32) {
