@@ -1,13 +1,17 @@
 <?php
 
-class UserInvalidIdException extends WatCeption {
+class UserException extends WatCeption {
+	
+}
+
+class UserInvalidIdException extends UserException {
 
 	public function __construct() {
 		parent::__construct('No record could be retrieved for the given id.');
 	}
 }
 
-class UserInvalidNameException extends WatCeption {
+class UserInvalidNameException extends UserException {
 
 	private $m_sName;
 
@@ -21,12 +25,13 @@ class UserInvalidNameException extends WatCeption {
 	}
 }
 
-class UserInvalidEmailException extends WatCeption {
+class UserInvalidEmailException extends UserException {
 
 	private $m_sEmail;
 
 	public function __construct($sEmail) {
 		parent::__construct('Invalid email: {email}', array('email' => $sEmail));
+		$this->m_sEmail = $sEmail;
 	}
 
 	public function getEmail() {
@@ -34,12 +39,13 @@ class UserInvalidEmailException extends WatCeption {
 	}
 }
 
-class UserInvalidPasswordException extends WatCeption {
+class UserInvalidPasswordException extends UserException {
 
 	private $m_sPassword;
 
 	public function __construct($sPassword) {
 		parent::__construct('Invalid password: {password}', array('password' => $sPassword));
+		$this->m_sPassword = $sPassword;
 	}
 
 	public function getPassword() {
@@ -47,7 +53,7 @@ class UserInvalidPasswordException extends WatCeption {
 	}
 }
 
-class UserDuplicateEmailException extends WatCeption {
+class UserDuplicateEmailException extends UserException {
 	
 	private $m_sEmail;
 	
@@ -61,7 +67,7 @@ class UserDuplicateEmailException extends WatCeption {
 	}
 }
 
-class UserDuplicateNameException extends WatCeption {
+class UserDuplicateNameException extends UserException {
 	
 	private $m_sName;
 	
@@ -75,7 +81,7 @@ class UserDuplicateNameException extends WatCeption {
 	}
 }
 
-class UserDuplicateUserException extends WatCeption {
+class UserDuplicateUserException extends UserException {
 	
 	private $m_oUserA;
 	private $m_oUserB;
@@ -95,14 +101,14 @@ class UserDuplicateUserException extends WatCeption {
 	}
 }
 
-class UserConnectionProviderInitializeFailed extends WatCeption {
+class UserConnectionProviderInitializeFailed extends UserException {
 	
 	public function __construct() {
 		parent::__construct('Unable to initialize the ConnectionProvider-object.');
 	}
 }
 
-class UserUnknownNameException extends WatCeption {
+class UserUnknownNameException extends UserException {
 
 	private $m_sName;
 
@@ -116,12 +122,13 @@ class UserUnknownNameException extends WatCeption {
 	}
 }
 
-class UserUnknownEmailException extends WatCeption {
+class UserUnknownEmailException extends UserException {
 
 	private $m_sEmail;
 
 	public function __construct($sEmail) {
 		parent::__construct('Unknown email: {email}', array('email' => $sEmail));
+		$this->m_sEmail = $sEmail;
 	}
 
 	public function getEmail() {
@@ -129,12 +136,13 @@ class UserUnknownEmailException extends WatCeption {
 	}
 }
 
-class UserNoPasswordException extends WatCeption {
+class UserNoPasswordException extends UserException {
 
 	private $m_oUser;
 
 	public function __construct(User $oUser) {
 		parent::__construct('User has no password password: {name}', array('name' => $oUser->getName()));
+		$this->m_oUser = $oUser;
 	}
 
 	public function getUser() {
@@ -142,12 +150,13 @@ class UserNoPasswordException extends WatCeption {
 	}
 }
 
-class UserUnverifiedEmailException extends Exception {
+class UserUnverifiedEmailException extends UserException {
 	
 	private $m_oEmail;
 	
 	public function __construct(UserEmail $oEmail) {
 		parent::__construct('A user with this email-adress exists, but is unverified: {email}', array('email' => $oEmail->getEmail()));
+		$this->m_oEmail = $oEmail;
 	}
 	
 	public function getEmail() {
@@ -155,12 +164,13 @@ class UserUnverifiedEmailException extends Exception {
 	}
 }
 
-class UserUnverifiedUserException extends Exception {
+class UserUnverifiedUserException extends UserException {
 	
 	private $m_oUser;
 	
 	public function __construct(User $oUser) {
 		parent::__construct('A user exists, but is unverified: {name}', array('name' => $oUser->getName()));
+		$this->m_oUser = $oUser;
 	}
 	
 	public function getUser() {

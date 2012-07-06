@@ -4,7 +4,7 @@ class RegisterModel extends Model {
 	
 	private $m_nType;
 	private $m_sHash;
-	private $m_sTitle;
+	private $m_sHeader;
 	private $m_sText;
 	private $m_bEmail;
 	private $m_bPass;
@@ -23,8 +23,8 @@ class RegisterModel extends Model {
 		return isset($_POST['pass']) ? $_POST['pass'] : false;
 	}
 	
-	public function getTitle() {
-		return $this->m_sTitle;
+	public function getHeader() {
+		return $this->m_sHeader;
 	}
 	
 	public function getText() {
@@ -48,32 +48,34 @@ class RegisterModel extends Model {
 	}
 	
 	public function showDone($sTitle, $sText, $sHash) {
-		$this->m_sTitle = $sTitle;
+		$this->m_sHeader = $sTitle;
 		$this->m_sText = $sText;
 		$this->m_sHash = $sHash;
 		$this->m_bSucces = true;
 	}
 	
 	public function showEmail($sTitle, $sText, $bError = false) {
-		$this->m_sTitle = $sTitle;
+		$this->m_sHeader = $sTitle;
 		$this->m_sText = $sText;
+		$this->m_bEmail = true;
 		$this->m_bError = $bError;
 	}
 	
-	public function showPassword($sTitle, $sText, $bError = false) {
-		$this->m_sTitle = $sTitle;
+	public function showPass($sTitle, $sText, $bError = false) {
+		$this->m_sHeader = $sTitle;
 		$this->m_sText = $sText;
+		$this->m_bPass = true;
 		$this->m_bError = $bError;
 	}
 	
 	public function showError($sTitle, $sText) {
-		$this->m_sTitle = $sTitle;
+		$this->m_sHeader = $sTitle;
 		$this->m_sText = $sText;
 		$this->m_bError = true;
 	}
 	
-	public function showSucces($sTitle, $sSucces) {
-		$this->m_sTitle = $sTitle;
+	public function showSucces($sTitle, $sText) {
+		$this->m_sHeader = $sTitle;
 		$this->m_sText = $sText;
 		$this->m_bSucces = true;
 	}

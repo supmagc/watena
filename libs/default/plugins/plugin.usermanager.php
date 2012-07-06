@@ -106,7 +106,7 @@ class UserManager extends Plugin {
 	}
 	
 	public static function isValidName($sName) {
-		return Encoding::regMatch('^[-a-zA-z0-9._ ]{3,64}$', $sName);
+		return Encoding::regMatch('^[-a-zA-z0-9.@_ ]{3,64}$', $sName);
 	}
 	
 	public static function isValidEmail($sEmail) {
@@ -165,7 +165,7 @@ class UserManager extends Plugin {
 		
 		// Get and check the matching UserId
 		$oUser = User::Load(self::getUserIdByEmail($sEmail));
-		if($oUser !== false) 
+		if($oUser === false) 
 			throw new UserUnknownEmailException($sEmail);
 		
 		// Get the user and the email-object
@@ -203,7 +203,8 @@ class UserManager extends Plugin {
 		// Verify the given password
 		if(!UserManager::isValidPassword($sPassword) || !$oUser->verifyPassword($sPassword))
 			throw new UserInvalidPasswordException($sPassword);
-			
+
+		self::setLoggedInUser($oUser);
 		return $oUser;
 	}
 	
