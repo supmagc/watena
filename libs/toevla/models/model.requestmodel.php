@@ -90,7 +90,7 @@ class RequestModel extends Model {
 	}
 	
 	public function getTwitterData($sUrl) {
-		if(!Encoding::beginsWith($sData, 'http')) $sUrl = 'http://search.twitter.com/search.json?include_entities=false&rpp=25&q='.$sUrl;
+		if(!Encoding::beginsWith($sUrl, 'http')) $sUrl = 'http://search.twitter.com/search.json?include_entities=false&rpp=25&q='.$sUrl;
 		$oRequest = new WebRequest($sUrl, 'GET');
 		$oResponse = $oRequest->send();
 		$aData = json_decode($oResponse->getContent(), true);
