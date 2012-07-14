@@ -79,6 +79,17 @@ class Mapping extends Object {
 		return $this->getFull();
 	}
 	
+	public final static function current() {
+		$sUrl = 'http';
+		if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') $sUrl .= 's';
+		$sUrl .= '://';
+		if(isset($_SERVER['SERVER_NAME'])) $sUrl .= $_SERVER['SERVER_NAME'];
+		if(isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] != '80') $sUrl .= ":".$_SERVER['SERVER_PORT'];
+		if(isset($_SERVER['REQUEST_URI'])) $sUrl .= $_SERVER['REQUEST_URI'];
+		if(isset($_SERVER['REQUEST_METHOD'])) $sUrl .= ' (' . $_SERVER['REQUEST_METHOD'] . ')';
+		return $sUrl;
+	}
+	
 	public final static function assure() {
 		if(!isset($_SERVER['HTTP_HOST'])) throw new AssureException("Make sure \$_SERVER['HTTP_HOST'] is set!");
 		if(!isset($_SERVER['SERVER_PORT'])) throw new AssureException("Make sure \$_SERVER['SERVER_PORT'] is set!");

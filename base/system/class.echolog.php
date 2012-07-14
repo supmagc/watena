@@ -94,7 +94,7 @@ EOT;
 		}
 		// TODO: http or https ?
 		// TODO: make this easier by adding a static getCurrent to Mapping
-		$sReturn .= '<li>http://' . $_SERVER['HTTP_HOST'] . ':' . $_SERVER['SERVER_PORT'] . $_SERVER['REQUEST_URI'] . ' [' . $_SERVER['REQUEST_METHOD'] . ']</li>';
+		$sReturn .= '<li>' . Mapping::current() . '</li>';
 		return $sReturn . '</ul>';
 	}
 }
