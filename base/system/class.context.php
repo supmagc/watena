@@ -111,14 +111,15 @@ class Context extends Object {
 		$sFileINI = $this->getLibraryFilePath('plugins', "config.$sKey.ini");
 		if($sFilePHP === false) throw new WatCeption('Unable to find a library that contains the required plugin: {plugin}', array('plugin' => $sPlugin));
 		if(!isset($this->m_aPlugins[$sKey])) {
-			$aConfig = parent::getWatena()->getCache()->retrieve(
+			$oIniFile = IniFile::create($sFileINI);
+			/*$aConfig = parent::getWatena()->getCache()->retrieve(
 				"W_PLUGININI_$sPlugin", 
 				create_function(
 					'$a', 
 					'return file_exists($a) ? parse_ini_file($a, true) : array();'),
-				5, array($sFileINI));
+				5, array($sFileINI));*/
 			include_once $sFilePHP;
-			$oPlugin = CacheableData::createObject($sPlugin, $aConfig, array(), null, $sFilePHP, 'Plugin');
+			$oPlugin = CacheableData::createObject($sPlugin, $oIniFile->getConfig(), array(), null, $sFilePHP, 'Plugin');
 			$this->m_aPlugins[$sKey] = $oPlugin;
 		}
 		return $this->m_aPlugins[$sKey] !== null;
