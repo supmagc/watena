@@ -59,9 +59,9 @@ class CacheableDirectory extends Cacheable {
 		return self::createObject($sObject, $sDirectoryName, $aConfig, $aInstances);
 	}
 	
-	public static function createObject($sObject, $sDirectoryName, array $aConfig = array(), array $aInstances = array(), $sIncludeFile = null, $sExtends = null, array $aImplements = array()) {
+	public static function createObject($sObject, $sDirectoryName, array $aConfig = array(), array $aInstances = array(), $sIncludeFile = null, $sExtends = null, array $aImplements = array(), $nAdditionalExpiration = null) {
 		$sDirectoryPath = parent::getWatena()->getPath($sDirectoryName);
-		if($sDirectoryPath === false || !is_dir($sDirectoryPath)) throw new WatCeption('CacheDirectory does not exist.', array('name' => $sDirectoryName, 'path' => $sDirectoryPath));
+		if($sDirectoryPath === false || !is_dir($sDirectoryPath)) throw new WatCeption('CacheableDirectory target does not exist.', array('name' => $sDirectoryName, 'path' => $sDirectoryPath));
 		return parent::_create($sObject, array($sDirectoryName, $sDirectoryPath, $aConfig), $aInstances, $sIncludeFile, $sExtends === null ? 'CacheableDirectory' : $sExtends, $aImplements, 'DIRECTORY_' . $sObject, filemtime($sDirectoryPath));
 	}
 }
