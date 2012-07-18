@@ -65,7 +65,7 @@ EOT;
 	}
 	
 	public function getTrace(array $aTrace = array()) {
-		$sReturn = '<ul>';
+		$sReturn = "<ul>\n";
 		foreach($aTrace as $aPart) {
 			$sReturn .= '<li>';
 			$sReturn .= isset($aPart['class']) ? ($aPart['class'] . $aPart['type']) : '';
@@ -90,12 +90,19 @@ EOT;
 				$sReturn .= ')';
 			}
 			if(isset($aPart['file']) && isset($aPart['line']))
-				$sReturn .= " - $aPart[file] (line: $aPart[line])</li>";
+				$sReturn .= " - $aPart[file] (line: $aPart[line])</li>\n";
 		}
-		// TODO: http or https ?
-		// TODO: make this easier by adding a static getCurrent to Mapping
-		$sReturn .= '<li>' . Mapping::current() . '</li>';
+		$sReturn .= '<li>' . $this->getInitCall() . "</li>";
 		return $sReturn . '</ul>';
+	}
+	
+	public function getInitCall() {
+		$sReturn = isset($_SERVER['HTTPS']) ? 'https://' : 'http://';
+		if(isset($_SERVER['HTTP_HOST'])) $sReturn .= $_SERVER['HTTP_HOST'];
+		if(isset($_SERVER['SERVER_PORT'])) $sReturn .= ':' . $_SERVER['SERVER_PORT'];
+		if(isset($_SERVER['REQUEST_URI'])) $sReturn .= $_SERVER['REQUEST_URI'];
+		if(isset($_SERVER['REQUEST_METHOD'])) $sReturn .= ' [' . $_SERVER['REQUEST_METHOD'] . ']';
+		return $sReturn;
 	}
 }
 ?>
