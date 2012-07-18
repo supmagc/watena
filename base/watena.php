@@ -72,6 +72,7 @@ if(!defined('NWATENA')) {
 	require_once PATH_BASE . '/system/class.webrequest.php';
 	require_once PATH_BASE . '/system/class.webresponse.php';
 	require_once PATH_BASE . '/system/class.zipfile.php';
+	require_once PATH_BASE . '/system/class.inifile.php';
 	require_once PATH_BASE . '/system/class.mail.php';
 	require_once PATH_BASE . '/system/class.html2text.php';
 	
@@ -82,9 +83,9 @@ if(!defined('NWATENA')) {
 		function watena() {
 			return Watena::getWatena();
 		}
-		$aConfig = parse_ini_file(PATH_BASE . '/watena.ini', true);
+		$aConfig = parse_ini_file(PATH_BASE . '/watena.ini');
 		if(!$aConfig) die('No readable Watena config file could be found to bootstrap Watena!');
-		new Watena($aConfig, !defined('NMVC'));
+		new Watena($aConfig, defined('CONFIG') ? CONFIG : 'default', !defined('NMVC'));
 	}
 }
 ?>

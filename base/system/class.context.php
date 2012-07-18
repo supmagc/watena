@@ -7,15 +7,21 @@ class Context extends Object {
 	private $m_aLibraryPaths = array();
 	private $m_aFilterGroups = null;
 	private $m_bRequirementWatchdog = false;
+	private $m_sConfigName = null;
 	
-	public function __construct() {
-		$aProjects = explode(',', parent::getWatena()->getConfig('LIBRARIES', ''));
+	public function __construct($sConfigName) {
+		$this->m_sConfigName = $sConfigName;
+		$aProjects = explode_trim(',', parent::getWatena()->getConfig('LIBRARIES', ''));
 		foreach($aProjects as $sProject) {
 			$sProject = trim($sProject);
 			$sPath = realpath(PATH_LIBS . "/$sProject");
 			if($sPath === null) throw new WatCeption("One of the specified library-paths could not be mapped, and seems to not exist: {library}", array('library' => $sProject), $this);
 			else $this->m_aLibraryPaths []= $sPath;
 		}
+	}
+	
+	public final function getConfigName() {
+		return $this->m_sConfigName;
 	}
 	
 	/**
@@ -111,7 +117,7 @@ class Context extends Object {
 		$sFileINI = $this->getLibraryFilePath('plugins', "config.$sKey.ini");
 		if($sFilePHP === false) throw new WatCeption('Unable to find a library that contains the required plugin: {plugin}', array('plugin' => $sPlugin));
 		if(!isset($this->m_aPlugins[$sKey])) {
-			$oIniFile = IniFile::create($sFileINI);
+			$aConfig = $sFileINI ? IniFile::create($sFileINI)->getData($this->getConfigName()) : array();
 			/*$aConfig = parent::getWatena()->getCache()->retrieve(
 				"W_PLUGININI_$sPlugin", 
 				create_function(
@@ -119,7 +125,7 @@ class Context extends Object {
 					'return file_exists($a) ? parse_ini_file($a, true) : array();'),
 				5, array($sFileINI));*/
 			include_once $sFilePHP;
-			$oPlugin = CacheableData::createObject($sPlugin, $oIniFile->getConfig(), array(), null, $sFilePHP, 'Plugin');
+			$oPlugin = CacheableData::createObject($sPlugin, $aConfig, array(), null, $sFilePHP, 'Plugin');
 			$this->m_aPlugins[$sKey] = $oPlugin;
 		}
 		return $this->m_aPlugins[$sKey] !== null;

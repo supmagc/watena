@@ -10,7 +10,7 @@ class Watena extends Configurable {
 	private $m_oController = null;
 	private $m_oTime = null;
 	
-	public function __construct($aConfig, $bUseMvc) {	
+	public function __construct($aConfig, $sConfigName, $bUseMvc) {	
 		ob_start();
 		$nTime = microtime(true);	
 		parent::__construct($aConfig);
@@ -19,8 +19,8 @@ class Watena extends Configurable {
 		// Create a default context and default cache
 		$this->m_oTime = new Time();
 		$this->m_oCache = new CacheEmpty();
-		$this->m_oContext = new Context();
 		$this->m_oMapping = new Mapping();
+		$this->m_oContext = new Context($sConfigName);
 		
 		// Load all specified logProcessors
 		Logger::setDefaultFilterLevel(self::getConfig('LOGGER_FILTERLEVEL', 'ALWAYS'));

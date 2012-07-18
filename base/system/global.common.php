@@ -26,7 +26,7 @@ function dump($mVar) {
  * The structure is as defined by the keys array
  * If an none existing key is found, it's created and set to the value
  * The default behaviour sets the ending index to the provided value
- * If you only want this to happen when the index is none-existing
+ * If you only want to assure this valkue is set, even with an existing value
  * you need to specify the $bOverwrite flag as true
  * 
  * @param array $arr
@@ -128,10 +128,10 @@ function array_first(array &$arr) {
 }
 
 /**
- * Retrieve the first element of an array.
+ * Retrieve the last element of an array.
  * 
- * @param array $arr The array from which you need the first value.
- * @return mixed|false The first value, or false when empty array.
+ * @param array $arr The array from which you need the last value.
+ * @return mixed|false The last value, or false when empty array.
  */
 function array_last(array &$arr) {
 	if(count($arr) == 0) return false;
