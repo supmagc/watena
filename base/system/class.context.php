@@ -7,21 +7,15 @@ class Context extends Object {
 	private $m_aLibraryPaths = array();
 	private $m_aFilterGroups = null;
 	private $m_bRequirementWatchdog = false;
-	private $m_sConfigName = null;
 	
-	public function __construct($sConfigName) {
-		$this->m_sConfigName = $sConfigName;
-		$aProjects = explode_trim(',', parent::getWatena()->getConfig('LIBRARIES', ''));
+	public function __construct() {
+		$aProjects = parent::getWatena()->getConfig()->getLibraries();
 		foreach($aProjects as $sProject) {
 			$sProject = trim($sProject);
 			$sPath = realpath(PATH_LIBS . "/$sProject");
-			if($sPath === null) throw new WatCeption("One of the specified library-paths could not be mapped, and seems to not exist: {library}", array('library' => $sProject), $this);
+			if($sPath === null) $this->getLogger()->terminate("One of the specified library-paths could not be mapped, and seems to not exist: {library}", array('library' => $sProject));
 			else $this->m_aLibraryPaths []= $sPath;
 		}
-	}
-	
-	public final function getConfigName() {
-		return $this->m_sConfigName;
 	}
 	
 	/**
@@ -59,15 +53,29 @@ class Context extends Object {
 	 * 
 	 * @return string (or false)
 	 */
-	public final function getLibraryFilePath($sDirectory, $sFile, $sPreferredLibrary = null) {
+	public final function getLibraryFilePath($sDirectory, $sFile, $bAllOfThem = false, $sPreferredLibrary = null) {
+		$aReturn = array();
 		$sSearch = "/$sDirectory/$sFile";
-		if(($sTemp = realpath(PATH_BASE . $sSearch)) !== false) return $sTemp;
-		if(($nIndex = strpos($sFile, '$')) !== false && ($sTemp = realpath(PATH_LIBS . '/' . substr($sFile, 0, $nIndex) . "/$sDirectory/" . substr($sFile, $nIndex + 1))) !== false) return $sTemp;
-		if($sPreferredLibrary != null && ($sTemp = realpath(PATH_LIBS . "/$sPreferredLibrary" . $sSearch)) !== false) return $sTemp;
+
+		// Check path in base directory
+		if(($sTemp = realpath(PATH_BASE . $sSearch)) !== false) 
+			if($bAllOfThem) $aReturn[$sTemp] = null; else return $sTemp;
+
+		// Check path with predefined library
+		if(($nIndex = strpos($sFile, '$')) !== false && ($sTemp = realpath(PATH_LIBS . '/' . substr($sFile, 0, $nIndex) . "/$sDirectory/" . substr($sFile, $nIndex + 1))) !== false) 
+			if($bAllOfThem) $aReturn[$sTemp] = null; else return $sTemp;
+		
+		// Check preferred library
+		if($sPreferredLibrary != null && ($sTemp = realpath(PATH_LIBS . "/$sPreferredLibrary" . $sSearch)) !== false) 
+			if($bAllOfThem) $aReturn[$sTemp] = null; else return $sTemp;
+		
+		// Check existing library directories
 		foreach($this->m_aLibraryPaths as $sPath) {
-			if(($sTemp = realpath($sPath . $sSearch)) !== false) return $sTemp;
+			if(($sTemp = realpath($sPath . $sSearch)) !== false) 
+				if($bAllOfThem) $aReturn[$sTemp] = null; else return $sTemp;
 		}
-		return false;
+		
+		return $bAllOfThem ? array_keys($aReturn) : false;
 	}
 	
 	/**
@@ -84,7 +92,7 @@ class Context extends Object {
 		$oPlugin = (isset($this->m_aPlugins[$sKey]) || $this->loadPlugin($sPlugin)) ? $this->m_aPlugins[$sKey] : null;
 		if($oPlugin) {
 			if($sImplements && !in_array($sImplements, class_implements($oPlugin, false)))
-				parent::terminate("The plugin you requested is loaded, but doesn implement the required interface: $sPlugin::$sImplements");
+				$this->getLogger()->terminate("The plugin you requested is loaded, but doesn implement the required interface: $sPlugin::$sImplements");
 		}
 		return $oPlugin;
 	}
@@ -112,18 +120,13 @@ class Context extends Object {
 	 * @return boolean Indicator if the plugin was loaded
 	 */
 	public final function loadPlugin($sPlugin) {
-		$sKey = strtolower($sPlugin);
+		$sKey = Encoding::toLower($sPlugin);
 		$sFilePHP = $this->getLibraryFilePath('plugins', "plugin.$sKey.php");
-		$sFileINI = $this->getLibraryFilePath('plugins', "config.$sKey.ini");
-		if($sFilePHP === false) throw new WatCeption('Unable to find a library that contains the required plugin: {plugin}', array('plugin' => $sPlugin));
+		$aFileINI = $this->getLibraryFilePath('plugins', "config.$sKey.ini", true);
+		if($sFilePHP === false) $this->getLogger()->terminate('Unable to find a library that contains the required plugin: {plugin}', array('plugin' => $sPlugin));
 		if(!isset($this->m_aPlugins[$sKey])) {
-			$aConfig = $sFileINI ? IniFile::create($sFileINI)->getData($this->getConfigName()) : array();
-			/*$aConfig = parent::getWatena()->getCache()->retrieve(
-				"W_PLUGININI_$sPlugin", 
-				create_function(
-					'$a', 
-					'return file_exists($a) ? parse_ini_file($a, true) : array();'),
-				5, array($sFileINI));*/
+			$this->getLogger()->debug('Loading plugin \'{plugin}\' from \'{php}\' with \'{ini}\'', array('plugin' => $sPlugin, 'php' => $sFilePHP, 'ini' => $sFileINI));
+			$aFileINI = array_map(array('IniFile', 'create'), $aFileINI);
 			include_once $sFilePHP;
 			$oPlugin = CacheableData::createObject($sPlugin, $aConfig, array(), null, $sFilePHP, 'Plugin');
 			$this->m_aPlugins[$sKey] = $oPlugin;
@@ -191,15 +194,15 @@ class Context extends Object {
 			require_includeonce($sIncludeFile);
 		}
 		
-		if(!class_exists($sObjectName, false)) throw new WatCeption('The class of the object to be loaded could not be found.', array('object' => $sObjectName), $this);		
+		if(!class_exists($sObjectName, false)) $this->getLogger()->terminate('The class of the object to be loaded could not be found.', array('object' => $sObjectName), $this);		
 		
 		$aExtendsFound = class_parents($sObjectName);
 		$aImplementsFound = class_implements($sObjectName);
 		
-		if(!in_array("Object", $aExtendsFound)) throw new WatCeption('The object top be loaded does not extend \'Object\'.', array('object' => $sObjectName), $this);
-		if($sExtends && !in_array($sExtends, $aExtendsFound)) throw new WatCeption('The object to be loaded does not extend the required class.', array('object' => $sObjectName, 'class' => $sExtends), $this);
+		if(!in_array("Object", $aExtendsFound)) $this->getLogger()->terminate('The object top be loaded does not extend \'Object\'.', array('object' => $sObjectName), $this);
+		if($sExtends && !in_array($sExtends, $aExtendsFound)) $this->getLogger()->terminate('The object to be loaded does not extend the required class.', array('object' => $sObjectName, 'class' => $sExtends), $this);
 		foreach($aImplements as $sImplements)
-			if($sImplements && !in_array($sImplements, $aImplements)) throw new WatCeption('The object to be loaded does not implement the required interface.', array('object' => $sObjectName, 'interface' => $sImplements), $this);
+			if($sImplements && !in_array($sImplements, $aImplements)) $this->getLogger()->terminate('The object to be loaded does not implement the required interface.', array('object' => $sObjectName, 'interface' => $sImplements), $this);
 		
 		$this->m_bRequirementWatchdog = false;
 		if(true) {
@@ -208,7 +211,7 @@ class Context extends Object {
 			return $oTmp;
 		}
 		else {
-			throw new WatCeption('The object you are loading has some requirements that couldn\'t be met.', array('object' => $sObjectName, 'errors' => $oRequirement->getErrors(), 'requirements' => $oRequirement), $this);
+			$this->getLogger()->terminate('The object you are loading has some requirements that couldn\'t be met.', array('object' => $sObjectName, 'errors' => $oRequirement->getErrors(), 'requirements' => $oRequirement), $this);
 		}
 	}
 	

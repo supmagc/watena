@@ -2,6 +2,8 @@
 
 class IniFile extends CacheableFile {
 	
+	const FALLBACK = 'default';
+	
 	private $m_aData = array();
 	private $m_aInheritance = array();
 		
@@ -24,6 +26,10 @@ class IniFile extends CacheableFile {
 	}
 	
 	public function getData($sSection) {
+		if(!isset($this->m_aData[$sSection])) {
+			$this->getLogger()->debug('Unknown ini-section \'{section}\', thus reverting to fallback in {file}', array('section' => $sSection, 'file' => $this->getFilePath()));
+			$sSection = self::FALLBACK;
+		}
 		if(isset($this->m_aData[$sSection])) {
 			$aData = $this->m_aData[$sSection];
 			$sInheritance = $this->m_aInheritance[$sSection];
@@ -31,7 +37,7 @@ class IniFile extends CacheableFile {
 			else return $aData;
 		}
 		else {
-			$this->getLogger()->debug('Unknown ini-section \'{section}\' in {file}', array('section' => $sSection, 'file' => $this->getFilePath()));
+			$this->getLogger()->warning('Unknown ini-section \'{section}\' in {file}', array('section' => $sSection, 'file' => $this->getFilePath()));
 			return array();
 		}
 	}
