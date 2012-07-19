@@ -1,6 +1,6 @@
 <?php
 
-class Watena extends Configurable {
+class Watena extends Object {
 	
 	private $m_oContext = null;
 	private $m_oCache = null;
@@ -9,22 +9,24 @@ class Watena extends Configurable {
 	private $m_oView = null;
 	private $m_oController = null;
 	private $m_oTime = null;
+	private $m_oConfig;
 	
-	public function __construct($aConfig, $sConfigName, $bUseMvc) {	
+	public function __construct(WatenaConfig $oConfig, $bUseMvc) {	
 		ob_start();
 		$nTime = microtime(true);	
-		parent::__construct($aConfig);
+		parent::__construct();
+		$this->m_oConfig = $oConfig;
 		$this->assureEnvironment();
 		
 		// Create a default context and default cache
 		$this->m_oTime = new Time();
 		$this->m_oCache = new CacheEmpty();
+		$this->m_oContext = new Context();
 		$this->m_oMapping = new Mapping();
-		$this->m_oContext = new Context($sConfigName);
 		
 		// Load all specified logProcessors
-		Logger::setDefaultFilterLevel(self::getConfig('LOGGER_FILTERLEVEL', 'ALWAYS'));
-		$aLogProcessors = explode_trim(',', self::getConfig('LOGGER_PROCESSORS', ''));
+		Logger::setDefaultFilterLevel($this->getConfig()->getLoggerLevel());
+		$aLogProcessors = $this->getConfig()->getLoggerProcessors();
 		foreach($aLogProcessors as $sProcessor) {
 			if($this->m_oContext->loadPlugin($sProcessor)) {
 				$oProcessor = $this->m_oContext->getPlugin($sProcessor, 'ILogProcessor');
@@ -33,14 +35,11 @@ class Watena extends Configurable {
 		}
 				
 		// Load the specified cachingengine
-		$sCachePlugin = self::getConfig('CACHE_ENGINE', null);
+		$sCachePlugin = $this->getConfig()->getCacheEngine();
 		if($sCachePlugin) {
 			$this->m_oContext->loadPlugin($sCachePlugin);
 			$this->m_oCache = $this->m_oContext->GetPlugin($sCachePlugin, 'ICache');
 		}
-		
-		// Load all default plugins
-		$this->m_oContext->loadPlugins(explode_trim(',', self::getConfig('PLUGINS', '')));
 
 		// Log the end of the init
 		$this->getLogger()->debug('Watena was succesfully initialised in {time} sec.', array('time' => round(microtime(true) - $nTime, 5)));
@@ -78,6 +77,13 @@ class Watena extends Configurable {
 			// Log the end of Watena
 			$this->getLogger()->debug('Watena loaded and rendered the page in {time} sec.', array('time' => round(microtime(true) - $nTime, 5)));
 		}
+	}
+	
+	/**
+	 * @return WatenaConfig
+	 */
+	public final function getConfig() {
+		return $this->m_oConfig;
 	}
 
 	/**
@@ -156,9 +162,9 @@ class Watena extends Configurable {
 	 * Sett all required PHP-settings
 	 */
 	public final function assureEnvironment() {
-		set_include_path(get_include_path() . PATH_SEPARATOR . str_replace(',', PATH_SEPARATOR, self::getConfig('INCLUDE', '')));
-		Encoding::init(self::getConfig('CHARSET', 'UTF-8'));
-		Time::init(self::getConfig('TIME_TIMEZONE', 'UTC'), self::getConfig('TIME_FORMAT', 'Y/m/d H:i:s'));
+		//set_include_path(get_include_path() . PATH_SEPARATOR . str_replace(',', PATH_SEPARATOR, self::getConfig('INCLUDE', '')));
+		Encoding::init($this->getConfig()->getCharset());
+		Time::init($this->getConfig()->getTimeZone(), $this->getConfig()->getTimeFormat());
 		if(!is_writable(PATH_DATA)) die('Data path is not writeable.');
 	}
 	
