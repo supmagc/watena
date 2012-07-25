@@ -28,10 +28,24 @@ class Logger {
 		$this->m_nFilterLevel = self::INHERIT;
 	}
 	
+	/**
+	 * Set an optional filter (object implementing ILOgFilter) to verify and adapt
+	 * log messages and calls. It to provides the means to change the data  before 
+	 * being logged, thus enabling external log-control. 
+	 * 
+	 * Only one filter for each logger can be active at any given time.
+	 * If during the filtering, the filter would be changed, the behaviour is undefined.
+	 * 
+	 * @param ILogFilter $oFilter
+	 */
 	public final function setFilter(ILogFilter $oFilter) {
 		$this->m_oFilter = $oFilter;
 	}
 	
+	/**
+	 * 
+	 * Enter description here ...
+	 */
 	public final function getFilter() {
 		return $this->m_oFilter;
 	}
