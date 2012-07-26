@@ -134,7 +134,7 @@ class WatenaLoader {
 		if(!defined('NLOGGER')) {
 			define('LOGGER', true);
 			Logger::registerProcessor(new EchoLog());
-			Logger::init();
+			Logger::init(Logger::WARNING);
 		}
 		
 		if(!defined('NWATENA')) {
