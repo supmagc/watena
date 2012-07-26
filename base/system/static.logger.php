@@ -23,6 +23,11 @@ class Logger {
 	private static $s_oGenericLogger = self::GENERIC_IDENTIFIER;
 	private static $s_nDefaultFilterLevel = self::ALWAYS;
 	
+	/**
+	 * Only used internally when no logger with the specified identifier exists.
+	 * 
+	 * @param string $sIdentifier
+	 */
 	private final function __construct($sIdentifier) {
 		$this->m_sIdentifier = $sIdentifier;
 		$this->m_nFilterLevel = self::INHERIT;
@@ -43,45 +48,117 @@ class Logger {
 	}
 	
 	/**
+	 * Get the optional ILogFilter object or null when none is set.
 	 * 
-	 * Enter description here ...
+	 * @return ILogFilter | null
 	 */
 	public final function getFilter() {
 		return $this->m_oFilter;
 	}
 
+	/**
+	 * Set the filter-level for this logger.
+	 * For more information on the available levels, have a look at the class constants.
+	 * Defaults to Logger::INHERIT which takes the Logger::getDefaultFilterLevel().
+	 * 
+	 * @param int $nLevel
+	 */
 	public final function setFilterLevel($nLevel) {
 		$this->m_nFilterLevel = $nLevel;
 	}
 	
+	/**
+	 * Get the actual filter-level for this logger.
+	 * For more information on the available levels, have a look at the class constants.
+	 * 
+	 * @return int
+	 */
 	public final function getFilterLevel() {
 		return $this->m_nFilterLevel;
 	}
 	
+	/**
+	 * Check if the given filter-level would pass the settings of this logger.
+	 * The result is influenced by the getFilterLevel() and possibly
+	 * Logger::getDefaultFilterLevel() results.
+	 * 
+	 * @param int $nLevel
+	 * @return bool
+	 */
 	public final function approveFilterLevel($nLevel) {
 		return $nLevel >= ($this->getFilterLevel() < self::ALWAYS ? self::getDefaultFilterLevel() : $this->getFilterLevel());
 	}
 	
+	/**
+	 * Get the identifier of thgis logger.
+	 * Mostly this represents the class to which the logger is linked,
+	 * or it's the name of a custom created logger. (ex: the requirements)
+	 * 
+	 * @return string
+	 */
 	public final function getIdentifier() {
 		return $this->m_sIdentifier;
 	}
 	
+	/**
+	 * Used for debug messages when things get wrong.
+	 * These should be extended info messages (both quantity and quality)
+	 * A good measure is to use this for messages never used in production.
+	 * This means a bugreport not cotaining these should be sufficient.
+	 * 
+	 * @param string $sMessage
+	 * @param array $aData
+	 */
 	public final function debug($sMessage, $aData = array()) {
 		$this->logCall(self::DEBUG, $sMessage, $aData);
 	}
-	
+
+	/**
+	 * Used for information messages about the processing of the request.
+	 * These should be very specific messages when things get processed.
+	 * Based on this information you should be able to trace what happened.
+	 * 
+	 * @param string $sMessage
+	 * @param array $aData
+	 */
 	public final function info($sMessage, $aData = array()) {
 		$this->logCall(self::INFO, $sMessage, $aData);
 	}
 	
+	/**
+	 * Used for warning messages when things happen that should be fixed
+	 * or clarified. The system is capable to continue working, but the
+	 * results might not be what you expected.
+	 * Idealy, the message should contain some hints on how to improve.
+	 * 
+	 * @param string $sMessage
+	 * @param array $aData
+	 */
 	public final function warning($sMessage, $aData = array()) {
 		$this->logCall(self::WARNING, $sMessage, $aData);
 	}
-	
+
+	/**
+	 * Used for error messages when something goes wrong.
+	 * Most of the time, the code will continue to run, but you'll
+	 * encounter some problems due to this error later on.
+	 * You should look into this as soon as possible, and fix it!
+	 * 
+	 * @param string $sMessage
+	 * @param array $aData
+	 */
 	public final function error($sMessage, $aData = array()) {
 		$this->logCall(self::ERROR, $sMessage, $aData);
 	}
 	
+	/**
+	 * Used for logging an exception as critical when not being correctly catched.
+	 * This will terminate your code as expected from an uncatched exception.
+	 * You should mostly onlu use this with ugly external libraries,
+	 * or when you're to lasy to write an approriate try-catch.
+	 * 
+	 * @param Exception $oException
+	 */
 	public final function exception(Exception $oException) {
 		if(method_exists($oException, 'getInnerException') && is_a($oException->getInnerException(), 'Exception'))
 			$this->exception($oException->getInnerException());
@@ -93,6 +170,13 @@ class Logger {
 		$this->logFull(self::EXCEPTION, $oException->getFile(), $oException->getLine(), $oException->getMessage(), $aData, $oException->getTrace());
 	}
 	
+	/**
+	 * Used to terminate the system with a logger message.
+	 * Call this when to prevent actions that could affect the stability of the system.
+	 * 
+	 * @param string $sMessage
+	 * @param array $aData
+	 */
 	public final function terminate($sMessage, $aData = array()) {
 		$this->logCall(self::TERMINATE, $sMessage, $aData);
 	}
@@ -125,6 +209,9 @@ class Logger {
 					$oProcessor->loggerProcess($this->getIdentifier(), $nLevel, $sFile, $nLine, $sMessage, $aData, $aTrace);
 				}
 			}
+			if($nLevel > Logger::ERROR) {
+				exit;
+			}
 		}
 	}
 	
@@ -142,6 +229,19 @@ class Logger {
 		return self::$s_aInstances[$sIdentifier];
 	}
 	
+	/**
+	 * PHP error catcher.
+	 * This will create an exception, based on the error, and throw it.
+	 * The design principle here is, make your code safe !
+	 * If it doesn't compile, or generates php-errors at runtime
+	 * you're doing it wrong and you should look into it!
+	 * 
+	 * @param int $nCode
+	 * @param string $sMessage
+	 * @param string $sFile
+	 * @param int $nLine
+	 * @throws ErrorException
+	 */
 	public static final function processError($nCode, $sMessage, $sFile, $nLine) {
 		$aTrace = debug_backtrace(false);
 		if(in_array($nCode, array(E_USER_NOTICE, E_USER_WARNING, E_USER_ERROR, E_USER_DEPRECATED)))
@@ -152,34 +252,19 @@ class Logger {
 			$oLogger = self::getInstance($sClass);
 		else
 			$oLogger = self::getGenericInstance();
-		
-		/*
-		switch($nCode) {
-			case E_ERROR :
-			case E_USER_ERROR :
-			case E_CORE_ERROR :
-			case E_COMPILE_ERROR :
-			case E_RECOVERABLE_ERROR :
-				$oLogger->logFull(self::ERROR, $sFile, $nLine, $sMessage, array(), $aTrace);
-				break;
-			case E_WARNING :
-			case E_USER_WARNING :
-			case E_CORE_WARNING :
-			case E_COMPILE_WARNING :
-				$oLogger->logFull(self::WARNING, $sFile, $nLine, $sMessage, array(), $aTrace);
-				break;
-			case E_NOTICE :
-			case E_USER_NOTICE :
-			case E_STRICT :
-			case E_DEPRECATED :
-			case E_USER_DEPRECATED :
-				$oLogger->logFull(self::INFO, $sFile, $nLine, $sMessage, array(), $aTrace);
-				break;
-		}
-		*/
+
 		throw new ErrorException($sMessage, 0, $nCode, $sFile, $nLine);
 	}
-	
+
+	/**
+	 * PHP exception catcher.
+	 * This function will try to redirect the exception to its rightfull owner/logger,
+	 * and will try to create a log entry for the provided data.
+	 * The log-creation/-processing will be done in all registered ILogProcessor's.
+	 * Make sure nothing can go wrong in those, as otherwise the behaviour is undefined.
+	 * 
+	 * @param Exception $oException
+	 */
 	public static final function processException(Exception $oException) {
 		if(method_exists($oException, 'getInnerException') && is_a($oException->getInnerException(), 'Exception')) {
 			self::processException($oException->getInnerException());
@@ -206,28 +291,69 @@ class Logger {
 		$oLogger->logFull(self::TERMINATE, $oException->getFile(), $oException->getLine(), $oException->getMessage(), $aData, $aTrace);
 	}
 	
-	public static final function init() {
+	/**
+	 * Initialize the Logger system.
+	 * This is not inforced to be called before using anything else, bit is highly
+	 * recommended. It sets the error-reporting to cancel out PHP's settings, and it
+	 * registers the PHP error and exception catchers and sets the initial default 
+	 * filter level.
+	 * 
+	 * @param int $nDefaultfilterLevel
+	 */
+	public static final function init($nDefaultfilterLevel) {
 		ini_set('error_reporting', E_ALL);
 		set_error_handler('Logger::processError');
 		set_exception_handler('Logger::processException');
+		self::$s_nDefaultFilterLevel = (int)$nDefaultfilterLevel;
 	}
 	
+	/**
+	 * Get the default filter level.
+	 * This setting is  originally retrieved form the watena-configuration, and is used for
+	 * loggers who have their filter-level set to Logger::INHERIT.
+	 * 
+	 * @return int
+	 */
 	public static final function getDefaultFilterLevel() {
 		return self::$s_nDefaultFilterLevel;
 	}
 	
+	/**
+	 * Sets the default filter level.
+	 * This can be a integer value (see the class constants) or can be a
+	 * string representation of one of the class constants.
+	 * 
+	 * @param mixed $mLevel
+	 */
 	public static final function setDefaultFilterLevel($mLevel) {
 		self::$s_nDefaultFilterLevel = is_numeric($mLevel) ? (int)$mLevel : self::getLevelConstant($mLevel);
 	}
 	
-	public static final function registerProcessor($oProcessor) {
+	/**
+	 * Register a given ILogProcessor.
+	 * These will process and dispatch all received logger messages.
+	 * 
+	 * @param ILogProcessor $oProcessor
+	 */
+	public static final function registerProcessor(ILogProcessor $oProcessor) {
 		self::$s_aProcessors []= $oProcessor;
 	}
-	
+
+	/**
+	 * Get the generic logger instance.
+	 * 
+	 * @return Logger
+	 */
 	public static final function getGenericInstance() {
 		return self::getInstance(self::GENERIC_IDENTIFIER);
 	}
 	
+	/**
+	 * Get the filter level string representation based on a given class constant.
+	 * 
+	 * @param int $nLevel
+	 * @return string
+	 */
 	public static final function getLevelName($nLevel) {
 		switch($nLevel) {
 			case self::INHERIT : return 'INHERIT';
@@ -243,6 +369,12 @@ class Logger {
 		}
 	}
 	
+	/**
+	 * Get the filter level class constant based on a given string representation.
+	 * 
+	 * @param string $sLevel
+	 * @return int
+	 */
 	public static final function getLevelConstant($sLevel) {
 		switch($sLevel) {
 			case 'INHERIT' : return self::INHERIT;
