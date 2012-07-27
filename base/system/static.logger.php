@@ -181,12 +181,32 @@ class Logger {
 		$this->logCall(self::TERMINATE, $sMessage, $aData);
 	}
 	
+	/**
+	 * Internal function to extract the file and line data from the trace
+	 * and dispatches these to logFull().
+	 * 
+	 * @param int $nLevel
+	 * @param string $sMessage
+	 * @param array $aData
+	 */
 	private final function logCall($nLevel, $sMessage, array $aData) {
 		$aTrace = array_slice(debug_backtrace(false), 1);
 		$aPart = array_shift($aTrace);
 		$this->logFull($nLevel, $aPart['file'], $aPart['line'], $sMessage, $aData, $aTrace);
 	}
 	
+	/**
+	 * Perform the actual logging. This internal method takes care of the filtering,
+	 * the approval, and the dispatching to the ILogProcessors.
+	 * If the level is exception or terminate, this call exists the runtime.
+	 * 
+	 * @param int $nLevel
+	 * @param string $sFile
+	 * @param int $nLine
+	 * @param string $sMessage
+	 * @param array $aData
+	 * @param array $aTrace
+	 */
 	private final function logFull($nLevel, $sFile, $nLine, $sMessage, array $aData, array $aTrace) {
 		if($this->approveFilterLevel($nLevel)) {
 			$bLoggable = true;
