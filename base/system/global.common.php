@@ -7,6 +7,10 @@ function NYI() {
 	terminate('NYI');
 }
 
+function DEPR() {
+	terminate('DEPRECATED');
+}
+
 function terminate($sMessage) {
 	$aTrace = debug_backtrace();
 	if(count($aTrace) > 0) echo "<strong>{$aTrace[0]['file']}</strong> (<i>line: {$aTrace[0]['line']}</i>)\r\n";

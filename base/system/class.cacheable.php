@@ -1,6 +1,6 @@
 <?php
 
-abstract class Cacheable extends Configurable {
+abstract class Cacheable extends Object {
 	
 	/**
 	 * This method is called when initting the object and should leave the object in a cacheable/serializeable state.
@@ -13,7 +13,37 @@ abstract class Cacheable extends Configurable {
 	 */
 	public function init() {}
 	
-	private $m_aInstances = null;
+	private $m_oData;
+	
+	public function __construct(CacheData $oData) {
+		$this->m_oData = $oData;
+	}
+	
+	public function getCacheData() {
+		return $this->m_oData;
+	}
+	
+	public function getInstances() {
+		return $this->getCacheData()->getInstances();
+	}
+	
+	public function getConfiguration() {
+		return $this->getCacheData()->getConfiguration();
+	}
+	
+	public function getInstance($sKey, $mDefault = null) {
+		return $this->getCacheData()->getInstance($sKey, $mDefault);
+	}
+	
+	public function getConfig($sKey, $mDefault = null) {
+		return $this->getCacheData()->getConfig($sKey, $mDefault);
+	}
+	
+	public function update() {
+		return $this->getCacheData()->update($this);
+	}
+	
+	/*private $m_aInstances = null;
 	
 	public function getInstance($sKey, $mDefault = null) {
 		$sKey = strtoupper($sKey); // Don't use Encoding, since it might not be inited yet
@@ -67,7 +97,7 @@ abstract class Cacheable extends Configurable {
 				throw new WatCeption('A previously loaded and cached object no longer meets it requirements.', array('object' => $sObject), null, $e);
 			}
 		}		
-	}
+	}*/
 }
 
 ?>
