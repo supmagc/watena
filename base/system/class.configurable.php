@@ -1,4 +1,5 @@
 <?php
+DEPR();
 
 class Configurable extends Object {
 	

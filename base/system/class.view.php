@@ -9,7 +9,7 @@ abstract class View extends CacheableData {
 	private $m_sContentType = null;
 	
 	public final function getCharset() {
-		return $this->m_sCharset ? $this->m_sCharset : ($this->hasConfig('charset') ? $this->getConfig('charset') : Encoding::charset());
+		return $this->m_sCharset ? $this->m_sCharset : $this->hasConfig('charset', Encoding::charset());
 	}
 	
 	public final function getContentType() {
