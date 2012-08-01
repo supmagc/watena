@@ -6,7 +6,7 @@ class DatabaseManager extends Plugin {
 	private $m_aConnections = array();
 	private static $s_oSingleton;
 	
-	public function make() {
+	public function make(array $aMembers) {
 		$aConnections = explode_trim(',', parent::getConfig('CONNECTIONS', ''));
 		foreach($aConnections as $sConnection) {
 			$sConnection = strtoupper($sConnection);

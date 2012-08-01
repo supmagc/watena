@@ -1,17 +1,24 @@
 <?php
 
-class IniFile extends CacheableFile {
+class IniParser extends CacheableData {
 	
 	const FALLBACK = 'default';
 	
 	private $m_aData = array();
 	private $m_aInheritance = array();
 		
-	public function make() {
-		$aParsing = parse_ini_file($this->getFilePath(), true);
+	public function make(array $aMembers) {
+		$sContent = $this->getConfig('content', '');
+		$sFile = $this->getConfig('file', null);
+		$aFiles = $this->getConfig('files', array());
+		
+		if($sFile) $sContent .= "\n" . file_get_contents($sFile);
+		foreach($aFiles as $sFile) $sContent .= "\n" . file_get_contents($sFile);
+		
+		$aParsing = parse_ini_string($sContent, true);
 				
 		if($aParsing === false) {
-			$this->getLogger()->warning('Unable to parse *.ini file: {path}', array('path' => $this->getFilePath()));
+			$this->getLogger()->warning('Unable to parse *.ini data.', array('data' => $this->m_sContent));
 		}
 		else {
 			foreach($aParsing as $sSection => $aData) {
@@ -27,7 +34,7 @@ class IniFile extends CacheableFile {
 	
 	public function getData($sSection) {
 		if(!isset($this->m_aData[$sSection])) {
-			$this->getLogger()->debug('Unknown ini-section \'{section}\', thus reverting to fallback in {file}', array('section' => $sSection, 'file' => $this->getFilePath()));
+			$this->getLogger()->debug('Unknown ini-section \'{section}\', thus reverting to fallback \'{fallback}\'.', array('section' => $sSection, 'fallback' => self::FALLBACK));
 			$sSection = self::FALLBACK;
 		}
 		if(isset($this->m_aData[$sSection])) {
@@ -80,6 +87,28 @@ class IniFile extends CacheableFile {
 		foreach($b as $k => $v)
 			$a[$k] = (is_assoc($a[$k]) && is_assoc($v)) ? $this->merge($a[$k], $v) : $v;
 		return $a;
+	}
+	
+	public static function createFromFile($sFileName) {
+		$sFilePath = parent::getWatena()->getPath($sFileName);
+		$oLoader = new CacheLoader('IniParser');
+		$oLoader->addPathDependency($sFilePath);
+		return $oLoader->get(array('file' => $sFilePath));
+	}
+	
+	public static function createFromFiles(array $aFileNames) {
+		$oLoader = new CacheLoader('IniParser');
+		foreach($aFileNames as $sFileName) {
+			$sFilePath = parent::getWatena()->getPath($sFileName);
+			$oLoader->addPathDependency($sFilePath, true);
+		}
+		return $oLoader->get(array('files' => $aFileNames));
+	}
+	
+	public static function createFromContent($sContent) {
+		$oLoader = new CacheLoader('IniParser');
+		$oLoader->addDataDependency($sContent);
+		return $oLoader->get(array('content' => $sContent));
 	}
 }
 

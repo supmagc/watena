@@ -10,7 +10,7 @@ class UserManager extends Plugin {
 	private static $s_oLoggedInUser = false;
 	private static $s_oSingleton;
 	
-	public function make() {
+	public function make(array $aMembers) {
 		$this->m_oDatabaseConnection = DatabaseManager::getConnection($this->getConfig('DATABASECONNECTION', 'default'));
 		$this->m_aConnectionProviders = array();
 		if($this->getConfig('PROVIDERFACEBOOK_ENABLED', false))

@@ -122,13 +122,15 @@ class Context extends Object {
 	public final function loadPlugin($sPlugin) {
 		$sKey = Encoding::toLower($sPlugin);
 		$sFilePHP = $this->getLibraryFilePath('plugins', "plugin.$sKey.php");
-		$aFileINI = $this->getLibraryFilePath('plugins', "config.$sKey.ini", true);
+		$aFileINIs = $this->getLibraryFilePath('plugins', "config.$sKey.ini", true);
 		if($sFilePHP === false) $this->getLogger()->terminate('Unable to find a library that contains the required plugin: {plugin}', array('plugin' => $sPlugin));
 		if(!isset($this->m_aPlugins[$sKey])) {
-			$this->getLogger()->debug('Loading plugin \'{plugin}\' from \'{php}\' with \'{ini}\'', array('plugin' => $sPlugin, 'php' => $sFilePHP, 'ini' => $sFileINI));
-			$aFileINI = array_map(array('IniFile', 'create'), $aFileINI);
+			$this->getLogger()->debug('Loading plugin \'{plugin}\' from \'{php}\' with \'{ini}\'', array('plugin' => $sPlugin, 'php' => $sFilePHP, 'ini' => implode(', ', $aFileINIs)));
 			include_once $sFilePHP;
-			$oPlugin = CacheableData::createObject($sPlugin, $aConfig, array(), null, $sFilePHP, 'Plugin');
+			$aConfig = count($aFileINIs) > 0 ? IniParser::createFromFiles($aFileINIs)->getData(parent::getWatena()->getConfig()->getConfigName()) : array();
+			$oPhpLoader = new CacheLoader($sPlugin);
+			$oPhpLoader->addPathDependencies($aFileINIs);
+			$oPlugin = $oPhpLoader->get($aConfig);
 			$this->m_aPlugins[$sKey] = $oPlugin;
 		}
 		return $this->m_aPlugins[$sKey] !== null;
@@ -144,9 +146,8 @@ class Context extends Object {
 	 */
 	public final function loadModel($sName, array $aParams = array()) {
 		$sFileName = 'model.' . Encoding::toLower($sName) . '.php';
-		$sFilePath = parent::getWatena()->getContext()->getLibraryFilePath('models', $sFileName);		
-		$oModel = CacheableData::createObject($sName, $aParams, array(), null, $sFilePath, 'Model');
-		return $oModel;
+		$sFilePath = parent::getWatena()->getContext()->getLibraryFilePath('models', $sFileName);
+		return Model::includeAndCreate($sFilePath, $sName, $aParams, $aParams);
 	}
 	
 	/**
@@ -160,7 +161,7 @@ class Context extends Object {
 	public final function loadView($sName, array $aParams = array()) {
 		$sFileName = 'view.' . Encoding::toLower($sName) . '.php';
 		$sFilePath = parent::getWatena()->getContext()->getLibraryFilePath('views', $sFileName);
-		return CacheableData::createObject($sName, $aParams, array(), null, $sFilePath, "View");
+		return View::includeAndCreate($sFilePath, $sName, $aParams, $aParams);
 	}
 	
 	/**
@@ -174,7 +175,7 @@ class Context extends Object {
 	public final function loadController($sName, array $aParams = array()) {
 		$sFileName = 'controller.' . Encoding::toLower($sName) . '.php';
 		$sFilePath = parent::getWatena()->getContext()->getLibraryFilePath('controllers', $sFileName);
-		return CacheableData::createObject($sName, $aParams, array(), null, $sFilePath, "Controller");
+		return Controller::includeAndCreate($sFilePath, $sName, $aParams, $aParams);
 	}
 	
 	/**

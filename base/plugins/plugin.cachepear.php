@@ -6,7 +6,7 @@ class CachePEAR extends Plugin implements ICache {
 	private $m_sContainer;
 	private $m_aOptions = array();
 	
-	public function make() {
+	public function make(array $aMembers) {
 		$this->m_sContainer = parent::getConfig('CONTAINER', 'file');
 		$this->m_aOptions = parent::getConfig('OPTIONS', array());
 		

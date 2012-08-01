@@ -4,7 +4,10 @@ include 'base/watena.php';
 class MyConfig extends WatenaConfig {
 	
 	public function libraries($sConfigName) {
-		return array('toevla', 'admin', 'default');
+		if($sConfigName == 'toevla')
+			return array('toevla', 'admin', 'default');
+		else
+			return array('admin', 'default');
 	}
 	
 	public function charset($sConfigName) {

@@ -100,11 +100,13 @@ class WatenaLoader {
 		require_once PATH_BASE . '/system/class.echolog.php';
 //		require_once PATH_BASE . '/system/class.configurable.php';
 		require_once PATH_BASE . '/system/class.cacheable.php';
-		require_once PATH_BASE . '/system/class.cachedata.php';
-		require_once PATH_BASE . '/system/class.cacheloader.php';
-		require_once PATH_BASE . '/system/class.cacheabledata.php';
 		require_once PATH_BASE . '/system/class.cacheablefile.php';
 		require_once PATH_BASE . '/system/class.cacheabledirectory.php';
+		require_once PATH_BASE . '/system/class.cachedata.php';
+		require_once PATH_BASE . '/system/class.cacheloader.php';
+		require_once PATH_BASE . '/system/class.cacheloaderfile.php';
+		require_once PATH_BASE . '/system/class.cacheloaderdirectory.php';
+		require_once PATH_BASE . '/system/class.cacheabledata.php';
 		require_once PATH_BASE . '/system/class.context.php';
 		require_once PATH_BASE . '/system/class.requirementbuffer.php';
 		require_once PATH_BASE . '/system/class.filter.php';
@@ -123,7 +125,7 @@ class WatenaLoader {
 		require_once PATH_BASE . '/system/class.webrequest.php';
 		require_once PATH_BASE . '/system/class.webresponse.php';
 		require_once PATH_BASE . '/system/class.zipfile.php';
-		require_once PATH_BASE . '/system/class.inifile.php';
+		require_once PATH_BASE . '/system/class.iniparser.php';
 		require_once PATH_BASE . '/system/class.mail.php';
 		require_once PATH_BASE . '/system/class.html2text.php';
 		

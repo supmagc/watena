@@ -3,19 +3,17 @@
 class CacheData extends Object {
 	
 	private $m_aConfig = array();
-	private $m_aInstances = array();
 	private $m_sIdentifierInstance;
 	private $m_sIdentifierLastChanged;
 	
-	public function __construct(array $aConfig, array $aInstances, $sIdentifierInstance, $sIdentifierLastChanged) {
+	public function __construct(array $aConfig, $sIdentifierInstance, $sIdentifierLastChanged) {
 		$this->m_aConfig = array_change_key_case($aConfig, CASE_LOWER);
-		$this->m_aInstances = array_change_key_case($aInstances, CASE_LOWER);
 		$this->m_sIdentifierInstance = $sIdentifierInstance;
 		$this->m_sIdentifierLastChanged = $sIdentifierLastChanged;
 	}
 	
 	public function __sleep() {
-		return array('m_aConfig', 'm_sIdentifierInstance', 'm_sIdentifierLastChanged');
+		return array('m_sIdentifierInstance', 'm_sIdentifierLastChanged');
 	}
 	
 	public function getIdentifierInstance() {
@@ -35,20 +33,12 @@ class CacheData extends Object {
 		return $this->m_aConfig;
 	}
 	
-	public function getInstances() {
-		return $this->m_aInstances;
-	}
-	
 	public function getConfig($sKey, $mDefault = null) {
 		return array_value($this->m_aConfig, explode_trim('.', Encoding::toLower($sKey)), $mDefault);
 	}
 	
-	public function getInstance($sKey, $mDefault = null) {
-		return array_value($this->m_aInstances, explode_trim('.', Encoding::toLower($sKey)), $mDefault);
-	}
-	
-	public function injectInstances(array $aInstances) {
-		$this->m_aInstances = array_change_key_case($aInstances, CASE_LOWER);
+	public function injectConfiguration(array $aConfig) {
+		$this->m_aConfig = $aConfig;
 	}
 }
 
