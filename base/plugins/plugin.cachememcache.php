@@ -18,7 +18,7 @@ class CacheMemcache extends Plugin implements ICache {
 	}
 	
 	public function retrieve($sKey, $cbRetriever, $nExpirationSec = 0, array $aParams = array(), $bForceRefresh = false) {
-		$mData = $bForceRefresh ? false : $this->m_oCache->get($sKey);
+		$mData = $bForceRefresh ? false : @$this->m_oCache->get($sKey);
 		if(!$mData || $bForceRefresh) {
 			$mData = call_user_func_array($cbRetriever, $aParams);
 			$this->m_oCache->set($sKey, $mData, $nExpirationSec);
