@@ -21,7 +21,7 @@ class WebRequest extends Object {
 		CURLOPT_HTTP_VERSION	=> CURL_HTTP_VERSION_1_1
 	);
 	
-	public final function __construct($sUrl, $sMethod) {
+	public final function __construct($sUrl, $sMethod = 'GET') {
 		$aData = parse_url($sUrl);
 		$this->m_sUrl = $aData['scheme'] . '://' . $aData['host'] . (isset($aData['port']) ? ":{$aData[port]}" : '') . $aData['path'];
 		$this->m_sScheme = $aData['scheme'];
