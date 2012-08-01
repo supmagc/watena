@@ -60,7 +60,7 @@ class Filter extends CacheableFile {
 	private $m_nOrder = 0;
 	private $m_aRules = array();
 	
-	public function make() {
+	public function make(array $aMembers) {
 		$oXml = new XMLReader();
 		$oLast = null;
 		if($oXml->open(parent::getFilepath())) {

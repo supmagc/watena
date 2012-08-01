@@ -22,7 +22,7 @@ class IPCO_Compiled_d__www_watena_libs_toevla_templates_popup_connect_tpl extend
 			} else {
 				$_ob []= '' . '
 	<script><!--
-	if(window.opener && window.opener.connectIntoFrame) window.opener.toFrame();
+	if(window.opener && window.opener.toFrame) window.opener.toFrame();
 	--></script>
 	<br /><br />
 	<h1>Oeps, an error ...</h1>

@@ -1,6 +1,6 @@
 <?php
 
-abstract class Plugin extends CacheableData {
+abstract class Plugin extends Cacheable {
 		
 	/**
 	 * Retrieve version information of this plugin.

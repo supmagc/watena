@@ -2,20 +2,21 @@
 
 
 class CacheableData extends Cacheable {
-	
-	public final function __construct(array $aConfig) {
-		parent::__construct($aConfig);
-	}
 
-	public static function create(array $aConfig = array(), array $aInstances = array(), $nExpiration = null) {
-		$sObject = get_called_class();
-		return self::createObject($sObject, $aConfig, $aInstances, $nExpiration);
+	public static function create(array $aMembers, array $aConfig = array()) {
+		$oLoader = new CacheLoader(get_called_class(), $aMembers, get_called_class());
+		return $oLoader->get($aConfig);
 	}
 	
-	public static function createObject($sObject, array $aConfig = array(), array $aInstances = array(), $nExpiration = null, $sIncludeFile = null, $sExtends = null, array $aImplements = array()) {
-		$sIdentifier = 'DATA_' . $sObject . '_' . md5(serialize($aConfig));
-		if(!$nExpiration) $nExpiration = parent::getWatena()->getConfig()->getCacheExpiration();
-		return parent::_create($sObject, array($aConfig), $aInstances, $sIncludeFile, $sExtends === null ? 'CacheableData' : $sExtends, $aImplements, 'DATA_' . $sIdentifier, time() + $nExpiration);		
+	public static function includeAndCreate($sIncludeFileName, $sClassName, array $aMembers = array(), array $aConfig) {
+		$sIncludeFilePath = parent::getWatena()->getPath($sIncludeFileName);
+		if(!$sIncludeFilePath || !is_readable($sIncludeFilePath)) {
+			Logger::getInstance(get_called_class())->error('CacheableData cannot include the required file \'{file}\'.', array('file' => $sIncludeFilePath));
+		}
+		require_once $sIncludeFilePath;
+		$oLoader = new CacheLoader($sClassName, $aMembers, get_called_class());
+		$oLoader->addPathDependency($sIncludeFilePath);
+		return $oLoader->get($aConfig);
 	}
 }
 

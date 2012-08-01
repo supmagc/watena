@@ -8,7 +8,7 @@ class Socializer extends Plugin {
 	private $m_oTwitter; 
 	private $m_oGoogle;
 	
-	public function make() {
+	public function make(array $aMembers) {
 		$this->m_oFacebook = $this->getConfig('FACEBOOK_ENABLED', false) ? new Facebook(array(
 			'appId' => $this->getConfig('FACEBOOK_ID', ''),
 			'secret' => $this->getConfig('FACEBOOK_SECRET', '')

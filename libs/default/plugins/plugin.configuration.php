@@ -6,7 +6,7 @@ class Configuration extends Plugin {
 	private $m_oTable;
 	private $m_aConfig = array();
 	
-	public function make() {
+	public function make(array $aMembers) {
 		$oConnection = DatabaseManager::getConnection($this->getConfig('DATABASE_CONNECTION', 'default'));
 		$this->m_oTable = $oConnection->getMultiTable($this->getConfig('DATABASE_TABLE', 'config'), array('category', 'key'));
 	}

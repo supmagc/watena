@@ -3,7 +3,7 @@ require_model('HtmlBaseModel');
 
 class PortfolioListModel extends HtmlBaseModel {
 	
-	public function make() {
+	public function make(array $aMembers) {
 		$this->setCharset('UTF-8');
 		$this->setTitle('ToMo-design - powered by Watena');
 	}

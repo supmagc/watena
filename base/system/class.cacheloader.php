@@ -2,28 +2,44 @@
 
 class CacheLoader extends Object {
 	
-	private $m_aConfig;
-	private $m_sClassName;
-	private $m_sCustomIdentifier;
-	private $m_nLastChanged;
-	private $m_sIdentifier;
+	private $m_sExtends = null;
+	private $m_aMembers = array();
+	private $m_sClassName = null;
+	private $m_nLastChanged = 0;
+	private $m_aIdentifiers = array();
 	
-	public final function __construct($sClassName, array $aConfig = array(), $sIdentifier = null) {
+	public function __construct($sClassName, array $aMembers = array(), $sExtends = 'Cacheable') {
 		if(!class_exists($sClassName, false)) {
-			$this->getLogger()->error('The class \'{class}\' you want to load CacheLoader does not exists.', array('class' => $sClassName));			
+			$this->getLogger()->error('CacheLoader cannot load \'{class}\' as the class does not exists.', array('class' => $sClassName));			
 		}
-		else if(in_array('Cacheable', class_parents($sClassName, false))) {
-			$this->getLogger()->error('The class \'{class}\' you want to load CacheLoader does not extend Cacheable.', array('class' => $sClassName));			
+		else if(!in_array($sExtends, class_parents($sClassName, false))) {
+			$this->getLogger()->error('CacheLoader cannot load \'{class}\' as the class does not extend \'{extends}\'.', array('class' => $sClassName, 'extends' => $sExtends));			
 		}
 		else {
-			$this->m_aConfig = $aConfig;
 			$this->m_sClassName = $sClassName;
-			$this->m_sCustomIdentifier = $sIdentifier;
+			$this->m_aMembers = $aMembers;
+			$this->m_sExtends = $sExtends;
 		}
 	}
 	
-	public function getConfig() {
-		return $this->m_aConfig;
+	public function setMembers(array $aMembers) {
+		$this->m_aMembers = $aMembers;
+	}
+	
+	public function addMembers(array $aMembers) {
+		$this->m_aMembers = array_merge_recursive($this->m_aMembers, $aMembers);
+	}
+	
+	public function addMember($sName, $mValue) {
+		$this->m_aMembers[$sName] = $mValue;
+	}
+	
+	public function getMembers() {
+		return $this->m_aMembers;
+	}
+	
+	public function getExtends() {
+		return $this->m_sExtends;
 	}
 	
 	public function getClassName() {
@@ -34,40 +50,71 @@ class CacheLoader extends Object {
 		return $this->m_nLastChanged;
 	}
 	
+	public function addPathDependencies(array $aPaths) {
+		foreach($aPaths as $sPath) {
+			$this->addPathDependency($sPath);
+		}
+	}
+	
 	public function addPathDependency($sPath) {
 		$sPath = parent::getWatena()->getPath($sPath);
 		if(!file_exists($sPath)) {
 			$this->getLogger()->warning('The path-dependency \'{path}\' for the CacheLoader does not exists.', array('path' => $sPath));
 		}
 		else {
+			$this->m_aIdentifiers []= $sPath;
 			$this->m_nLastChanged = max($this->m_nLastChanged, filemtime($sPath));
 		}
 	}
 	
-	public function get($sClassName, array $aConfig = array(), array $aInstances = array()) {
+	public function addDataDependency($mData) {
+		$this->m_aIdentifiers []= serialize($mData, true);
+	}
+	
+	public function get(array $aConfig = array()) {
 		$oInstance = null;
-		$sIdentifierInstance = "W_CACHE_$sIdentifier_INSTANCE";
-		$sIdentifierLastChanged = "W_CACHE_$sIdentifier_LASTCHANGED";
+		ksort($this->m_aMembers);
+		sort($this->m_aIdentifiers);
+		$sIdentifier = md5($this->getClassName() . serialize($this->m_aMembers) . serialize($this->m_aIdentifiers));
+		$sIdentifierInstance = "W_CACHE_{$sIdentifier}_INSTANCE";
+		$sIdentifierLastChanged = "W_CACHE_{$sIdentifier}_LASTCHANGED";
 		$nLastChanged = parent::getWatena()->getCache()->get($sIdentifierLastChanged, 0);
 		
 		if($this->getLastChanged() <= $nLastChanged) {
-			$oInstance = parent::getWatena()->getCache()->get($sIndentifierInstance, null);
+			$oInstance = parent::getWatena()->getCache()->get($sIdentifierInstance, null);
 			if($oInstance) {
-				$this->getLogger()->info('CacheLoader loaded an existing version of \'{class}\' as \'{identifier}\'.', array('class' => $this->getClassName(), 'identifier' => $this->getIdentifier()));
-				$oInstance->getCacheData()->injectInstances($aInstances);
+				$this->getLogger()->info('CacheLoader loaded an existing version of \'{class}\' as \'{identifier}\'.', array('class' => $this->getClassName(), 'identifier' => $sIdentifier));
+				$oInstance->getCacheData()->injectConfiguration($aConfig);
 			}
 			else {
-				$this->getLogger()->info('CacheLoader was unable to retrieve an existing version of \'{class}\' as \'{identifier}\'.', array('class' => $this->getClassName(), 'identifier' => $this->getIdentifier()));
+				$this->getLogger()->info('CacheLoader was unable to retrieve an existing version of \'{class}\' as \'{identifier}\'.', array('class' => $this->getClassName(), 'identifier' => $sIdentifier));
 			}
 		}
 		
-		if(!$oInstance) {
-			$this->getLogger()->info('CacheLoader creates a new version of \'{class}\' as \'{identifier}\'.', array('class' => $this->getClassName(), 'identifier' => $this->getIdentifier()));
+		if(!$oInstance || !$oInstance->validate()) {
 			$oType = new ReflectionClass($this->getClassName());
-			$oData = new CacheData($this->getConfig(), $aInstances, $sIdentifierInstance, $sIdentifierLastChanged);
+			$oData = new CacheData($aConfig, $sIdentifierInstance, $sIdentifierLastChanged);
 			$oInstance = $oType->newInstanceArgs(array($oData));
+			$this->getLogger()->info('CacheLoader created a new version of \'{class}\' as \'{identifier}\'.', array('class' => $this->getClassName(), 'identifier' => $sIdentifier));
+			if($this->GetExtends()) {
+				$oType = new ReflectionClass($this->getExtends());
+			}
+			while($oType && $oType->getName() != 'Cacheable') {
+				$aProperties = $oType->getProperties(ReflectionProperty::IS_PRIVATE | ReflectionProperty::IS_PROTECTED | ReflectionProperty::IS_PUBLIC);
+				foreach($aProperties as $oProperty) {
+					if(isset($this->m_aMembers[$oProperty->getName()])) {
+						$oProperty->setAccessible(true);
+						$oProperty->setValue($oInstance, $this->m_aMembers[$oProperty->getName()]);
+					}
+				}
+				$oType = $oType->getParentClass();
+			}
+			$oInstance->make($this->getMembers());
 			$oData->update($oInstance);
 		}
+		
+		if($oInstance)
+			$oInstance->init();
 		
 		return $oInstance;
 	}

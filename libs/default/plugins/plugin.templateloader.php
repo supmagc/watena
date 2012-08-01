@@ -7,7 +7,7 @@ class TemplateFile extends CacheableFile implements IPCO_ICallbacks {
 	private $m_sClassName;
 	private $m_sExtends = null;
 	
-	public function make() {
+	public function make(array $aMembers) {
 		$oIpco = new IPCO($this->_getContentParser(), $this);
 		$this->m_sClassName = $oIpco->getTemplateClassName(parent::getFilePath());
 		$this->m_sDataPath = 'IPCO/' . $this->m_sClassName . '.inc';
@@ -19,7 +19,7 @@ class TemplateFile extends CacheableFile implements IPCO_ICallbacks {
 	
 	public function init() {
 		if($this->m_sExtends !== null) {
-			TemplateFile::create($this->m_sExtends, parent::getConfiguration(), parent::getInstances());
+			TemplateFile::create($this->m_sExtends, parent::getConfiguration(), parent::getConfiguration());
 		}
 		$oDataFile = parent::getWatena()->getContext()->getDataFile($this->m_sDataPath);
 		while(!$oDataFile->exists())
@@ -32,7 +32,7 @@ class TemplateFile extends CacheableFile implements IPCO_ICallbacks {
 	}
 	
 	public function getTemplateForFilePath($sFilePath) {
-		return TemplateFile::create($sFilePath, array(), array('contentparser' => $this->_getContentParser()))->createTemplateClass(); //->getContent(true);
+		return TemplateFile::create($sFilePath, array('contentparser' => $this->_getContentParser()))->createTemplateClass(); //->getContent(true);
 	}
 	
 	public function createTemplateClass() {
@@ -42,8 +42,8 @@ class TemplateFile extends CacheableFile implements IPCO_ICallbacks {
 	}
 	
 	private function _getContentParser() {
-		$oContentParser = parent::getInstance('contentparser', null);
-		if($oContentParser !== null && !is_a($oContentParser, 'IPCO_IContentParser'))
+		$oContentParser = $this->getConfig('contentparser', null);
+		if(!$oContentParser || !is_a($oContentParser, 'IPCO_IContentParser'))
 			throw new WatCeption(
 				'The additional content parsers you provided for the selected template is not an IPCO_IContentParser.', 
 				array('contentparser' => is_object($oContentParser) ? get_class($oContentParser) : 'None Object', 'file' => parent::getFilePath()), 
@@ -70,7 +70,7 @@ class TemplateLoader extends Plugin {
 	public function load($sTemplate, IPCO_IContentParser $oContentParser = null) {
 		$sFilePath = parent::getWatena()->getContext()->getLibraryFilePath('templates', $sTemplate);
 		if(!$sFilePath) throw new WatCeption('Templatefile does not exists in any of the libraries, unable to load.', array('template' => $sTemplate), $this);
-		return TemplateFile::create($sFilePath, array(), array('contentparser' => $oContentParser))->createTemplateClass();
+		return TemplateFile::create($sFilePath, array('contentparser' => $oContentParser))->createTemplateClass();
 	}
 		
 	/**
@@ -83,10 +83,6 @@ class TemplateLoader extends Plugin {
 	 */
 	public function getVersion() {
 		return array('major' => 0, 'minor' => 1, 'build' => 1, 'state' > 'dev');
-	}
-
-	public static function getRequirements() {
-		return array('plugins' => 'ThemeManager');
 	}
 }
 

@@ -27,9 +27,9 @@ $_ob []= '' . parent::callInclude('D:\www\watena\libs\toevla\templates\front.uni
 			if(parent::processMember('getEmail', null)) {
 				$_ob []= '' . '
 <script><!--
-triggerVerification(\'';
+window.tvEmail = \'';
 				$_ob []= '' . parent::processMember('getEmail', null);
-				$_ob []= '' . '\');
+				$_ob []= '' . '\';
 --></script>
 ';
 			}

@@ -7,7 +7,7 @@ class CacheMemcache extends Plugin implements ICache {
 	private $m_sHost;
 	private $m_nPort;
 	
-	public function make() {
+	public function make(array $aMembers) {
 		$this->m_sHost = parent::getConfig('HOST', 'localhost');
 		$this->m_nPort = parent::getConfig('PORT', 11211);
 	}
