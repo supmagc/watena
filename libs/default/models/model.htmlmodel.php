@@ -65,7 +65,7 @@ class HtmlModel extends Model {
 		$this->m_aKeywords []= $sKeyword;
 	}
 	
-	public function getKeyWords() {
+	public function getKeywords() {
 		return is_array($this->m_aKeywords) ? implode(', ', $this->m_aKeywords) : $this->getConfig('keywords', '');
 	}
 }

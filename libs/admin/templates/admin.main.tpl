@@ -1,66 +1,18 @@
-<?php
-class IPCO_Compiled_d__www_watena_libs_admin_templates_admin_main_tpl extends IPCO_Processor {
-	public function generate() {
-		return self::callRegion____MainRegion__();
-	}
-	protected function callRegion____MainRegion__() {
-		try {
-			$_ob = array();
-			$_ob []= '' . '<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="';
-			$_ob []= '' . parent::processMember('getContentType', null);
-			$_ob []= '' . '; charset=';
-			$_ob []= '' . parent::processMember('getCharset', null);
-			$_ob []= '' . '">
-<meta http-equiv="Description" content="';
-			$_ob []= '' . parent::processMember('getDescription', null);
-			$_ob []= '' . '">
-<meta http-equiv="Keywords" content="';
-			$_ob []= '' . parent::processMember('getKeywords', null);
-			$_ob []= '' . '">
-<link href="';
-			$_ob []= '' . parent::callContentParser('addMappingRoot', array (
-  0 => 'link',
-  1 => 'href',
-  2 => '/theme/admin/css/admin_main.css',
-));
-			$_ob []= '' . '" rel="stylesheet" type="text/css" media="all" />
-<script type="text/javascript" src="';
-			$_ob []= '' . parent::callContentParser('addMappingRoot', array (
-  0 => 'script',
-  1 => 'src',
-  2 => '/theme/admin/js/overlib.js',
-));
-			$_ob []= '' . '"></script>
-<script type="text/javascript" src="';
-			$_ob []= '' . parent::callContentParser('addMappingRoot', array (
-  0 => 'script',
-  1 => 'src',
-  2 => '/theme/admin/js/overlib_shadow.js',
-));
-			$_ob []= '' . '"></script>
-<script type="text/javascript" src="';
-			$_ob []= '' . parent::callContentParser('addMappingRoot', array (
-  0 => 'script',
-  1 => 'src',
-  2 => '/theme/admin/js/admin_logic.js',
-));
-			$_ob []= '' . '"></script>
-<title>Watena - ';
-			$_ob []= '' . parent::processMember('getTitle', null);
-			$_ob []= '' . '</title>
+<meta http-equiv="Content-Type" content="{[getContentType()]}; charset={[getCharset()]}">
+<meta http-equiv="Description" content="{[getDescription()]}">
+<meta http-equiv="Keywords" content="{[getKeywords()]}">
+<link href="/theme/admin/css/admin_main.css" rel="stylesheet" type="text/css" media="all" />
+<script type="text/javascript" src="/theme/admin/js/overlib.js"></script>
+<script type="text/javascript" src="/theme/admin/js/overlib_shadow.js"></script>
+<script type="text/javascript" src="/theme/admin/js/admin_logic.js"></script>
+<title>Watena - {[getTitle()]}</title>
 </head>
 <body onload="PTM_Init();">
 <div id="overDiv" style="position:absolute; visibility:hidden; z-index:1000;"></div>
-<div id="Container"><img src="';
-			$_ob []= '' . parent::callContentParser('addMappingRoot', array (
-  0 => 'img',
-  1 => 'src',
-  2 => '/theme/admin/logo.png',
-));
-			$_ob []= '' . '" id="LogoImg" />
+<div id="Container"><img src="/theme/admin/logo.png" id="LogoImg" />
 	<div id="MenuGroup">
 		<[BLOCK-MENU[
 		<ul class="MenuItem" style="left:<[OFFSET]>px;">
@@ -68,7 +20,7 @@ class IPCO_Compiled_d__www_watena_libs_admin_templates_admin_main_tpl extends IP
 			<li class="SubMenuItem">
 				<ul class="SubMenuList">
 					<[BLOCK-MENUITEM[
-					<li class="SubMenuBtn" style="background-color:<[COLOR]>;" ><a href="javascript:PTM_RequestContent(\'<[MAPPING]>\');" onMouseOver="PTM_SetHelp(\'<[DESCRIPTION]>\');" onMmouseOut="PTM_CH();" title="<[DESCRIPTION]>"><[TITLE]></a></li>
+					<li class="SubMenuBtn" style="background-color:<[COLOR]>;" ><a href="javascript:PTM_RequestContent('<[MAPPING]>');" onMouseOver="PTM_SetHelp('<[DESCRIPTION]>');" onMmouseOut="PTM_CH();" title="<[DESCRIPTION]>"><[TITLE]></a></li>
 					]]>
 				</ul>
 			</li>
@@ -104,13 +56,7 @@ class IPCO_Compiled_d__www_watena_libs_admin_templates_admin_main_tpl extends IP
 							<tr>
 				
 								<td class="Left">&nbsp;</td>
-								<td class="Center"><img src="';
-			$_ob []= '' . parent::callContentParser('addMappingRoot', array (
-  0 => 'img',
-  1 => 'src',
-  2 => '/PXTMSTYLE/succes/Succes.png',
-));
-			$_ob []= '' . '" style="position:relative; right:5px;" align="right" />
+								<td class="Center"><img src="/PXTMSTYLE/succes/Succes.png" style="position:relative; right:5px;" align="right" />
 									<div id="RoundedSuccesTableTitle">SUCCES:</div>
 									<div id="RoundedSuccesTableContent">Succesfully logged in !</div></td>
 								<td class="Right">&nbsp;</td>
@@ -141,13 +87,7 @@ class IPCO_Compiled_d__www_watena_libs_admin_templates_admin_main_tpl extends IP
 							<tr>
 				
 								<td class="Left">&nbsp;</td>
-								<td class="Center" id="SmallCell"><img src="';
-			$_ob []= '' . parent::callContentParser('addMappingRoot', array (
-  0 => 'img',
-  1 => 'src',
-  2 => '/PXTMSTYLE/error/Error.png',
-));
-			$_ob []= '' . '" style="position:relative; right:5px;" align="right" />
+								<td class="Center" id="SmallCell"><img src="/PXTMSTYLE/error/Error.png" style="position:relative; right:5px;" align="right" />
 									<div id="RoundedErrorTableTitle">ERROR:</div>
 									<div id="RoundedErrorTableContent">Unable to login !</div></td>
 								<td class="Right">&nbsp;</td>
@@ -178,13 +118,7 @@ class IPCO_Compiled_d__www_watena_libs_admin_templates_admin_main_tpl extends IP
 							<tr>
 				
 								<td class="Left">&nbsp;</td>
-								<td class="Center" id="SmallCell"><img src="';
-			$_ob []= '' . parent::callContentParser('addMappingRoot', array (
-  0 => 'img',
-  1 => 'src',
-  2 => '/PXTMSTYLE/confirm/Confirm.png',
-));
-			$_ob []= '' . '" style="position:relative; right:5px;" align="right" />
+								<td class="Center" id="SmallCell"><img src="/PXTMSTYLE/confirm/Confirm.png" style="position:relative; right:5px;" align="right" />
 									<div id="RoundedConfirmTableTitle">CONFIRM:</div>
 									<div id="RoundedConfirmTableContent">Are you sure !</div>
 									<div id="SmallTableButton"></div></td>
@@ -238,7 +172,7 @@ class IPCO_Compiled_d__www_watena_libs_admin_templates_admin_main_tpl extends IP
 					<td class="Center" id="ModuleCell"><table id="ModuleTabTable" cellpadding="0" cellspacing="0">
 						<tr>
 							<td id="ModuleTabMenu"><ul id="ModuleTabMenuList"><[BLOCK-CONTENT-TAB[
-									<li<[SELECTED]> onclick="PTM_RequestContent(\'<[MAPPING]>\'"><[TITLE]></li>
+									<li<[SELECTED]> onclick="PTM_RequestContent('<[MAPPING]>'"><[TITLE]></li>
 									<li>testB</li>
 									<li class="selected">Selected</li>
 								]]></ul></td>
@@ -267,12 +201,7 @@ class IPCO_Compiled_d__www_watena_libs_admin_templates_admin_main_tpl extends IP
 		}
 		</script>
 	</div>
-	<div id="HelpGroup"><div id="HelpSwitch"><input type="checkbox" checked="checked" onchange="PTM_SetCookie(\'OverLibHelp\', this.checked);" onmouseover="PTM_SetSimpleHelp(\'Check this box to enable in-place-help.\');" onmouseout="PTM_CH();" id="OverLibCheckBox" /></div><div id="HelpContainer">&nbsp;</div>&nbsp;PEToM v2.0 All rights reserved &copy; <a href="http://www.tomo-design.be">ToMo-design</a> - <a href="javascript:PTM_RequestRefresh();" title="Refresh the backend">Refresh</a></div>
+	<div id="HelpGroup"><div id="HelpSwitch"><input type="checkbox" checked="checked" onchange="PTM_SetCookie('OverLibHelp', this.checked);" onmouseover="PTM_SetSimpleHelp('Check this box to enable in-place-help.');" onmouseout="PTM_CH();" id="OverLibCheckBox" /></div><div id="HelpContainer">&nbsp;</div>&nbsp;PEToM v2.0 All rights reserved &copy; <a href="http://www.tomo-design.be">ToMo-design</a> - <a href="javascript:PTM_RequestRefresh();" title="Refresh the backend">Refresh</a></div>
 </div>
 </body>
-</html>';
-			return implode('', $_ob);
-		} catch(Exception $e) { throw new WatCeption('Unable to create template-output.', array(), null, $e); }
-	}
-}
-?>
+</html>

@@ -10,10 +10,12 @@ class CacheableData extends Cacheable {
 	
 	public static function includeAndCreate($sIncludeFileName, $sClassName, array $aMembers = array(), array $aConfig) {
 		$sIncludeFilePath = parent::getWatena()->getPath($sIncludeFileName);
-		if(!$sIncludeFilePath || !is_readable($sIncludeFilePath)) {
-			Logger::getInstance(get_called_class())->error('CacheableData cannot include the required file \'{file}\'.', array('file' => $sIncludeFilePath));
+		if(!$sIncludeFilePath || !is_file($sIncludeFilePath) || !is_readable($sIncludeFilePath)) {
+			Logger::getInstance(get_called_class())->error('CacheableData cannot include the required file \'{file}\' to load \'{class}\'.', array('file' => $sIncludeFileName, 'class' => $sClassName));
 		}
-		require_once $sIncludeFilePath;
+		else {
+			require_once $sIncludeFilePath;
+		}
 		$oLoader = new CacheLoader($sClassName, $aMembers, get_called_class());
 		$oLoader->addPathDependency($sIncludeFilePath);
 		return $oLoader->get($aConfig);
