@@ -1,0 +1,735 @@
+/* CSS Document */
+
+/* GENERAL STUFF */
+div.clear {
+	clear:both;
+	height: 0px;
+}
+
+img.floatLeft {
+	float:left;
+}
+
+img.floatRight {
+	float:right;
+}
+
+
+
+/* MODULETABCONTENT-SEARCH */
+div#MTCSearch table#MTCSearch_Table {
+	width:100%;
+}
+div#MTCSearch th {
+	font-weight: bold;
+	color: #FFF;
+	background-color: #5A9BE7;
+	padding: 2px 8px;
+	border-bottom: 1px solid #8C8EB9;
+}
+div#MTCSearch p#MTCSearch_ResultDescription {
+	text-align: center;
+	font-size: 10px;
+	color: #BBBBBB;
+}
+
+
+
+
+
+
+
+/* PEXTOM specifics */
+html, body {
+	width:100%;
+	height:100%;
+	color:#0F2E42;
+	background-color:#6b6b98;
+	margin:0px;
+	padding:0px;
+	font-family:Geneva, Arial, Helvetica, sans-serif;
+	font-size:12px;
+	line-height:17px;
+	color:#776633;
+}
+
+img#LogoImg {
+	position:absolute;
+	top:10px;
+	left:15px;
+	z-index:2;
+}
+
+div#Container {
+	position:absolute;
+	left:0px;
+	top:0px;
+	width:100%;
+	height:100%;
+	z-index:0;
+}
+
+div#MenuGroup {
+	height:63px;
+	width:100%;
+	background:url(../MenuGroupBG.jpg) repeat-x;
+	position:absolute;
+	border-bottom:#ffff99 1px solid;
+	top:0px;
+	left:0px;
+	z-index:1;
+}
+
+div#CenterGroup {
+	background-color:#9999AA;
+	position:absolute;
+	top:62px;
+	bottom:24px;
+	width:100%;
+	z-index:0;
+}
+
+div#LayoutGroupA {
+	background:url(../Line.png) bottom right no-repeat;
+}
+
+div#LayoutGroupB {
+	background:url(../Sun.png) top center no-repeat;
+}
+
+div#ContentGroup {
+	overflow:auto;
+}
+
+div#LayoutGroupA, div#LayoutGroupB, div#ContentGroup {
+	width:100%;
+	height:100%;
+	position:absolute;
+}
+
+div#HelpGroup {
+	height:23px;
+	width:100%;
+	background:url(../HelpGroupBG.jpg) repeat-x;
+	position:absolute;
+	border-top:#ffff99 1px solid;
+	bottom:0px;
+	color:#777777;
+	line-height:22px;
+	left:0px;
+	z-index:1;
+}
+
+div#HelpContainer {
+	float:right;
+}
+
+div#HelpSwitch {
+	float:right;
+}
+
+ul.MenuItem {
+	position:absolute;
+	top:15px;
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	color:#6b6b98;
+	list-style:none;
+	z-index:2;
+	padding:0px;
+	margin:0px;
+	margin-right:10px;
+}
+
+ul.MenuItem li.MainBtn {
+	color:#FFFFFF;
+	background:url(../btnMainNormal.png) no-repeat;
+	height:35px;
+	width:105px;
+	text-align:center;
+	font-size:14px;
+	font-weight:bold;
+	line-height:35px;
+	font-variant:small-caps;
+	z-index:2;
+}
+
+ul.MenuItem:hover li.MainBtn {
+	color:#CCCCCC;
+	background:url(../btnMainHover.png) no-repeat;
+	height:37px;
+}
+
+ul.MenuItem ul.SubMenuList {
+	position:relative;
+	width:160px;
+	display:none;
+	background-color:#DDDDDD;
+	border:#7a7a7a 1px solid;
+	border-bottom:none;
+	list-style:none;
+	z-index:3;
+	padding:0px;
+	margin:0px;
+}
+
+ul.MenuItem:hover ul.SubMenuList {
+	display:block;
+}
+
+ul.MenuItem li.SubMenuBtn {
+	font-size:10px;
+	padding:2px 5px 7px 5px;
+	position:relative;
+	width:150px;
+	height:14px;
+	border-bottom:#7a7a7a 1px solid;
+	line-height:12px;
+}
+
+ul.MenuItem li.SubMenuBtn img {
+	position:relative;
+	top: 3px;
+}
+
+ul.MenuItem li.SubMenuBtn a {
+	color:#333355;
+	text-decoration:none;
+}
+
+ul.MenuItem li.SubMenuBtn a:hover {
+	font-weight:bold;
+	text-decoration:underline;
+}
+
+
+
+
+
+
+
+/* MODULE */
+table#ModuleTable {
+	width:100%;
+	height:100%;
+	display:none;
+}
+
+table#ModuleTable td.TopLeft {
+	width:25px;
+	height:25px;
+	background-image:url(../Kader/TopLeft.png);
+	background-repeat:no-repeat;
+}
+
+table#ModuleTable td.Top {
+	height:25px;
+	background-image:url(../Kader/Top.png);
+	background-repeat:repeat-x;
+}
+
+table#ModuleTable td.TopRight {
+	width:25px;
+	height:25px;
+	background-image:url(../Kader/TopRight.png);
+	background-repeat:no-repeat;
+}
+
+table#ModuleTable td.Left {
+	width:25px;
+	background-image:url(../Kader/Left.png);
+	background-repeat:repeat-y;
+}
+
+table#ModuleTable td.Center {
+	background-image:url(../Kader/Color.png);
+	color:#003399;
+	text-align:left;
+	vertical-align:top;
+}
+
+table#ModuleTable td.Right {
+	width:25px;
+	background-image:url(../Kader/Right.png);
+	background-repeat:repeat-y;
+}
+
+table#ModuleTable td.BottomLeft {
+	width:25px;
+	height:25px;
+	background-image:url(../Kader/BottomLeft.png);
+	background-repeat:no-repeat;
+}
+
+table#ModuleTable td.Bottom {
+	height:25px;
+	background-image:url(../Kader/Bottom.png);
+	background-repeat:repeat-x;
+}
+
+table#ModuleTable td.BottomRight {
+	width:25px;
+	height:25px;
+	background-image:url(../Kader/BottomRight.png);
+	background-repeat:no-repeat;
+}
+
+
+
+
+/* MODULETABCONTENT-CONTENT */
+div#MTCTitle {
+	font-size: 32px;
+	color:#6a6b97;
+	border-bottom:#8C8EB9 2px solid;
+	padding-bottom: 5px;
+}
+
+div#MTCDescription {
+	font-size: 10px;
+	color: #BBBBBB;
+}
+
+div#MTCContent {
+	font-size: 12px;
+	color: #999999;
+}
+
+
+
+
+
+
+
+/* MODULE-TABS */
+table#ModuleTabTable {
+	width:100%;
+	height:100%
+}
+
+td#ModuleTabMenu {
+	width:173px;
+	height:100%;
+	border-right:#6a6b97 1px solid;
+	vertical-align:top;
+}
+
+ul#ModuleTabMenuList {
+	margin:0px;
+	padding:0px;
+	list-style:none;
+	background-color:#CCCCCC;
+	border-top:#6a6b97 1px solid;
+	border-left:#6a6b97 1px solid;
+}
+
+ul#ModuleTabMenuList li {
+	height:35px;
+	text-align:center;
+	vertical-align:middle;
+	border-bottom:#6a6b97 1px solid;
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	font-size:14px;
+	font-weight:bold;
+	line-height:35px;
+	font-variant:small-caps;
+	color:#FFFFFF;
+	background:url(../Tab/btnTab.png);
+}
+
+ul#ModuleTabMenuList li a {
+	color:#FFFFFF;
+	text-decoration:none;
+}
+
+ul#ModuleTabMenuList li:hover {
+	background:url(../Tab/btnTab_hover.png);
+}
+
+ul#ModuleTabMenuList li.selected {
+	background:url(../Tab/btnTab_selected.png);
+} 
+
+ul#ModuleTabMenuList li.selected:hover {
+	background:url(../Tab/btnTab_selected_hover.png);
+}
+
+ul#ModuleTabMenuList {
+	background-color:#9999AA;
+}
+
+td#ModuleTabContent {
+	color:#666666;
+	padding:5px;
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	font-size:11px;
+	vertical-align:top;
+}
+
+
+
+
+
+
+
+/* SUCCES */
+table#SuccesTable {
+	width:100%;
+	height:100%;
+	display:none;
+}
+
+table#SuccesTable table#RoundedSuccesTable {
+	margin:auto;
+	width:980px;
+}
+
+table#SuccesTable table#RoundedSuccesTable td.TopLeft {
+	width:25px;
+	height:25px;
+	background-image:url(../Succes/TopLeft.png);
+	background-repeat:no-repeat;
+}
+
+table#SuccesTable table#RoundedSuccesTable td.Top {
+	height:25px;
+	background-image:url(../Succes/Top.png);
+	background-repeat:repeat-x;
+}
+
+table#SuccesTable table#RoundedSuccesTable td.TopRight {
+	width:25px;
+	height:25px;
+	background-image:url(../Succes/TopRight.png);
+	background-repeat:no-repeat;
+}
+
+table#SuccesTable table#RoundedSuccesTable td.Left {
+	width:25px;
+	background-image:url(../Succes/Left.png);
+	background-repeat:repeat-y;
+}
+
+table#SuccesTable table#RoundedSuccesTable td.Center {
+	background-image:url(../Succes/Color.png);
+	color:#003399;
+	text-align:left;
+	vertical-align:top;
+}
+
+table#SuccesTable table#RoundedSuccesTable td.Right {
+	width:25px;
+	background-image:url(../Succes/Right.png);
+	background-repeat:repeat-y;
+}
+
+table#SuccesTable table#RoundedSuccesTable td.BottomLeft {
+	width:25px;
+	height:25px;
+	background-image:url(../Succes/BottomLeft.png);
+	background-repeat:no-repeat;
+}
+
+table#SuccesTable table#RoundedSuccesTable td.Bottom {
+	height:25px;
+	background-image:url(../Succes/Bottom.png);
+	background-repeat:repeat-x;
+}
+
+table#SuccesTable table#RoundedSuccesTable td.BottomRight {
+	width:25px;
+	height:25px;
+	background-image:url(../Succes/BottomRight.png);
+	background-repeat:no-repeat;
+}
+
+table#SuccesTable div#RoundedSuccesTableTitle {
+	height:30px;
+	background:url(../Succes/Line.png) no-repeat bottom left;
+	color:#00CC33;
+	font-size:24px;
+	font-weight:bold;
+	letter-spacing:2px;
+}
+
+table#SuccesTable div#RoundedSuccesTableContent {
+	color:#006633;
+	margin:10px 150px 0px 20px;
+}
+
+
+
+
+
+
+/* ERROR */
+table#ErrorTable {
+	width:100%;
+	height:100%;
+	display:none;
+}
+
+table#ErrorTable table#RoundedErrorTable {
+	margin:auto;
+	width:980px;
+}
+
+table#ErrorTable table#RoundedErrorTable td.TopLeft {
+	width:25px;
+	height:25px;
+	background-image:url(../error/TopLeft.png);
+	background-repeat:no-repeat;
+}
+
+table#ErrorTable table#RoundedErrorTable td.Top {
+	height:25px;
+	background-image:url(../error/Top.png);
+	background-repeat:repeat-x;
+}
+
+table#ErrorTable table#RoundedErrorTable td.TopRight {
+	width:25px;
+	height:25px;
+	background-image:url(../error/TopRight.png);
+	background-repeat:no-repeat;
+}
+
+table#ErrorTable table#RoundedErrorTable td.Left {
+	width:25px;
+	background-image:url(../error/Left.png);
+	background-repeat:repeat-y;
+}
+
+table#ErrorTable table#RoundedErrorTable td.Center {
+	background-image:url(../error/Color.png);
+	color:#003399;
+	text-align:left;
+	vertical-align:top;
+}
+
+table#ErrorTable table#RoundedErrorTable td.Right {
+	width:25px;
+	background-image:url(../error/Right.png);
+	background-repeat:repeat-y;
+}
+
+table#ErrorTable table#RoundedErrorTable td.BottomLeft {
+	width:25px;
+	height:25px;
+	background-image:url(../error/BottomLeft.png);
+	background-repeat:no-repeat;
+}
+
+table#ErrorTable table#RoundedErrorTable td.Bottom {
+	height:25px;
+	background-image:url(../error/Bottom.png);
+	background-repeat:repeat-x;
+}
+
+table#ErrorTable table#RoundedErrorTable td.BottomRight {
+	width:25px;
+	height:25px;
+	background-image:url(../error/BottomRight.png);
+	background-repeat:no-repeat;
+}
+
+table#ErrorTable div#RoundedErrorTableTitle {
+	height:30px;
+	background:url(../error/Line.png) no-repeat bottom left;
+	color:#CC3300;
+	font-size:24px;
+	font-weight:bold;
+	letter-spacing:2px;
+}
+
+table#ErrorTable div#RoundedErrorTableContent {
+	color:#663300;
+	margin:10px 150px 0px 20px;
+}
+
+
+
+
+
+/* CONFIRM */
+table#ConfirmTable {
+	width:100%;
+	height:100%;
+	display:none;
+}
+
+table#ConfirmTable table#RoundedConfirmTable {
+	margin:auto;
+	width:980px;
+}
+
+table#ConfirmTable table#RoundedConfirmTable td.TopLeft {
+	width:25px;
+	height:25px;
+	background-image:url(../confirm/TopLeft.jpg);
+	background-repeat:no-repeat;
+}
+
+table#ConfirmTable table#RoundedConfirmTable td.Top {
+	height:25px;
+	background-image:url(../confirm/Top.jpg);
+	background-repeat:repeat-x;
+}
+
+table#ConfirmTable table#RoundedConfirmTable td.TopRight {
+	width:25px;
+	height:25px;
+	background-image:url(../confirm/TopRight.jpg);
+	background-repeat:no-repeat;
+}
+
+table#ConfirmTable table#RoundedConfirmTable td.Left {
+	width:25px;
+	background-image:url(../confirm/Left.jpg);
+	background-repeat:repeat-y;
+}
+
+table#ConfirmTable table#RoundedConfirmTable td.Center {
+	background-image:url(../confirm/Color.jpg);
+	color:#003399;
+	text-align:left;
+	vertical-align:top;
+}
+
+table#ConfirmTable table#RoundedConfirmTable td.Right {
+	width:25px;
+	background-image:url(../confirm/Right.jpg);
+	background-repeat:repeat-y;
+}
+
+table#ConfirmTable table#RoundedConfirmTable td.BottomLeft {
+	width:25px;
+	height:25px;
+	background-image:url(../confirm/BottomLeft.jpg);
+	background-repeat:no-repeat;
+}
+
+table#ConfirmTable table#RoundedConfirmTable td.Bottom {
+	height:25px;
+	background-image:url(../confirm/Bottom.jpg);
+	background-repeat:repeat-x;
+}
+
+table#ConfirmTable table#RoundedConfirmTable td.BottomRight {
+	width:25px;
+	height:25px;
+	background-image:url(../confirm/BottomRight.jpg);
+	background-repeat:no-repeat;
+}
+
+table#ConfirmTable div#RoundedConfirmTableTitle {
+	height:30px;
+	background:url(../confirm/Line.png) no-repeat bottom left;
+	color:#4433CC;
+	font-size:24px;
+	font-weight:bold;
+	letter-spacing:2px;
+}
+
+table#ConfirmTable div#RoundedConfirmTableContent {
+	color:#330066;
+	margin:10px 150px 0px 20px;
+}
+
+table#ConfirmTable div#RoundedConfirmTableButton {
+	margin:30px 150px 0px 20px;	
+}
+
+table#ConfirmTable div#RoundedConfirmTableButton button {
+	width:150px;
+}
+
+
+
+/* LOGIN */
+table#LoginTable {
+	width:100%;
+	height:100%;
+	display:none;
+}
+
+div#RoundedLoginBlock {
+	margin:auto; 
+	background:url(../Login.png) center no-repeat; 
+	width:400px; 
+	height:450px; 
+	position:relative;
+}
+
+div#RoundedLoginBlock div {
+	width:400px; 
+	position:absolute;
+}
+
+div#LoginDescField div {
+	position:relative;
+	background-color:#464C86;
+	border:#396 1px solid;
+	padding:5px;
+	margin:auto;
+	width:315px;
+	color:#EEE;
+}
+
+div#LoginDescField {
+	top:165px;
+}
+
+div#LoginUsnField {
+	top:230px;
+}
+
+div#LoginPwdField {
+	top:310px;
+}
+
+div#LoginButtonField {
+	top:395px;
+}
+
+div#RoundedLoginBlock div label {
+	position:absolute;
+	left:42px;
+	color:#FFF;
+}
+
+div#RoundedLoginBlock div input {
+	width:325px; 
+	height:45px; 
+	border:#036 2px solid; 
+	background-color:#E5E5E5;
+	font-size:38px;
+	font-family:monospace;
+	color:#669;
+	font-weight:bold;
+}
+
+div#RoundedLoginBlock div a {
+	color:#FFF;
+	font-size:14px;
+	text-decoration:none;
+	letter-spacing:5px;
+}
+
+
+
+
+
+/* LOADING */
+table#LoadingTable {
+	width:100%;
+	height:100%;
+	display:table;
+}
+
+div#LoadingField {
+	margin:auto; 
+	background:url(../Loading.png) center no-repeat; 
+	width:400px; 
+	height:110px; 
+	position:relative;
+}
