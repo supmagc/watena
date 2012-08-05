@@ -4,7 +4,7 @@ abstract class Cacheable extends Object {
 
 	/**
 	 * This method can be used to invalidate an object when loaded from cache.
-	 * This method is NAT called when newly creating an object.
+	 * This method is NOT called when newly creating an object.
 	 */
 	public function validate() {return true;}
 	

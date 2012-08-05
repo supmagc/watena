@@ -13,9 +13,18 @@ class Context extends Object {
 		foreach($aProjects as $sProject) {
 			$sProject = trim($sProject);
 			$sPath = realpath(PATH_LIBS . "/$sProject");
-			if($sPath === null) $this->getLogger()->terminate("One of the specified library-paths could not be mapped, and seems to not exist: {library}", array('library' => $sProject));
+			if($sPath === null) $this->getLogger()->warning("One of the specified library-paths could not be mapped, and seems to not exist: {library}", array('library' => $sProject));
 			else $this->m_aLibraryPaths []= $sPath;
 		}
+	}
+
+	/**
+	 * Retrieve an array with the full paths of the library folders.
+	 * 
+	 * @return array
+	 */
+	public final function getLibraryPaths() {
+		return $this->m_aLibraryPaths;
 	}
 	
 	/**
@@ -30,6 +39,7 @@ class Context extends Object {
 			foreach($this->m_aLibraryPaths as $sLibrary) {
 				$sFiltersPath = realpath($sLibrary . '/filters/');
 				if($sFiltersPath !== false) {
+					$this->getLogger()->info("Context found the filters for library \'{library}\'.", array('library' => $sLibrary));
 					$this->m_aFilterGroups []= FilterGroup::create($sFiltersPath);
 				}
 			}
@@ -126,10 +136,11 @@ class Context extends Object {
 		if($sFilePHP === false) $this->getLogger()->terminate('Unable to find a library that contains the required plugin: {plugin}', array('plugin' => $sPlugin));
 		if(!isset($this->m_aPlugins[$sKey])) {
 			$this->getLogger()->debug('Loading plugin \'{plugin}\' from \'{php}\' with \'{ini}\'', array('plugin' => $sPlugin, 'php' => $sFilePHP, 'ini' => implode(', ', $aFileINIs)));
-			include_once $sFilePHP;
+			require_once $sFilePHP;
 			$aConfig = count($aFileINIs) > 0 ? IniParser::createFromFiles($aFileINIs)->getData(parent::getWatena()->getConfig()->getConfigName()) : array();
 			$oPhpLoader = new CacheLoader($sPlugin);
 			$oPhpLoader->addPathDependencies($aFileINIs);
+			$oPhpLoader->addPathDependency($sFilePHP);
 			$oPlugin = $oPhpLoader->get($aConfig);
 			$this->m_aPlugins[$sKey] = $oPlugin;
 		}
