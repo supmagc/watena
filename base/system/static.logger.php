@@ -104,7 +104,7 @@ class Logger {
 	 * Used for debug messages when things get wrong.
 	 * These should be extended info messages (both quantity and quality)
 	 * A good measure is to use this for messages never used in production.
-	 * This means a bugreport not cotaining these should be sufficient.
+	 * This means a bugreport not containing these should be sufficient.
 	 * 
 	 * @param string $sMessage
 	 * @param array $aData

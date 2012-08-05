@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module>
+	<menu name="Dashboard">
+		<category>Main</category>
+		<description>Go back to the dashboard/home of the system.</description>
+		<defaulttab>home</defaulttab>
+		<tab name="Home">
+			<description>Home page</description>
+			<content type="text">UNDER CONSTRUCTION</content>
+		</tab>
+		<tab name="Php-Info">
+			<description>Show the default phpinfo() output for the current system.</description>
+			<content type="php">phpinfo()</content>
+		</tab>
+	</menu>
+</module>
