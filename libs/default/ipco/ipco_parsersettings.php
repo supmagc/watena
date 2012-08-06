@@ -14,12 +14,12 @@ class IPCO_ParserSettings extends IPCO_Base {
 	const FILTER_IF 			= "if(%s) {\n";
 	const FILTER_ELSEIF 		= "} else if(%s) {\n";
 	const FILTER_ELSE			= "} else {\n";
-	const FILTER_FOREACH		= "foreach(%s as %s) {parent::componentPush(%s);\n";
+	const FILTER_FOREACH		= "foreach(%s as \$_key => \$_value) {parent::indexPush(\$_key); parent::componentPush(\$_value);\n";
 	const FILTER_WHILE			= "while(%s) {\n";
 	const FILTER_REGION			= "\tprotected function callRegion__%s() {\n\t\ttry {\n\t\t\t\$_ob = array();\n";
 	
 	const FILTER_END_IF			= "}\n";
-	const FILTER_END_FOREACH	= "parent::componentPop();}\n";
+	const FILTER_END_FOREACH	= "parent::indexPop(); parent::componentPop();}\n";
 	const FILTER_END_WHILE		= "}\n";
 	const FILTER_END_REGION		= "\t\t\treturn implode('', \$_ob);\n\t\t} catch(Exception \$e) { throw new WatCeption('Unable to create template-output.', array(), null, \$e); }\n\t}\n";
 	
@@ -28,7 +28,11 @@ class IPCO_ParserSettings extends IPCO_Base {
 	const CALL_SLICE			= "parent::processMember(%s, %s)";
 	const CALL_REGION			= "\$_ob []= '' . method_exists(\$this, 'callRegion__%s') ? \$this->callRegion__%s() : '';\n";
 	const CALL_INCLUDE			= "\$_ob []= '' . parent::callInclude('%s');\n";
-
+	const CALL_KEYWORD_INDEX	= "parent::getIndex(%s)\n";
+	const CALL_KEYWORD_CURRENT	= "parent::getCurrent(%s)\n";
+	const CALL_KEYWORD_FIRST	= "parent::processFirst(%s)\n";
+	const CALL_KEYWORD_LAST		= "parent::processLast(%s)\n";
+	
 	const CONTENT				= "\$_ob []= '' . %s;\n";
 	const CONTENTPARSERPART		= "\$_ob []= '' . parent::callContentParser(%s, %s);\n";
 	const CONTENT_EMPTY_PATERN	= '\$_ob \[\]= \'\' \. \'[ \n\r\t]*\';';
@@ -60,7 +64,7 @@ class IPCO_ParserSettings extends IPCO_Base {
 	}
 	
 	public static function getFilterForeach($sCondition) {
-		return sprintf(self::FILTER_FOREACH, $sCondition, '$_comp', '$_comp');
+		return sprintf(self::FILTER_FOREACH, $sCondition);
 	}
 	
 	public static function getFilterWhile($sCondition) {
@@ -91,13 +95,32 @@ class IPCO_ParserSettings extends IPCO_Base {
 		return sprintf(self::VARIABLE, $sExpression);
 	}
 	
-	public static function getCallMethod($sName, $sParams, $sBase) {
-		return sprintf(self::CALL_METHOD, $sName, $sParams, $sBase);
+	public static function getCallArray(array $aParams) {
+		return var_export($aParams, true);
+	}
+	
+	public static function getCallMethod($sName, array $aParams, $sBase) {
+		return sprintf(self::CALL_METHOD, $sName, self::getCallArray($aParams), $sBase);
 	}
 	
 	public static function getCallMember($sName, $sBase) {
 		return sprintf(self::CALL_MEMBER, $sName, $sBase);
 	}
+	
+	public static function getCallKeyword($sName, array $aParams, $mBase) {
+		switch($sName) {
+			case 'index' :
+			case 'key' :
+				return sprintf(self::CALL_KEYWORD_INDEX, $mBase);
+			case 'current' :
+			case 'value' :
+				return sprintf(self::CALL_KEYWORD_CURRENT, $mBase);
+			case 'first' :
+				return sprintf(self::CALL_KEYWORD_FIRST, $mBase);
+			case 'last' :
+				return sprintf(self::CALL_KEYWORD_LAST, $mBase);
+		}
+	} 
 	
 	public static function getCallSlice($sSlice, $sBase) {
 		return sprintf(self::CALL_SLICE, $sSlice, $sBase);

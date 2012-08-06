@@ -11,6 +11,7 @@ class IPCO_Expression extends IPCO_Base {
 	private $m_sOriginalExpression;
 	private $m_sCleanedExpression;
 	private $m_aOperators = array(' or ', '||', '|', ' and ', '&&', '&', '<', '>', '<=', '>=', ' is not ', '!=', '<>', ' is ', '==', '=', '-', '+', '/', '*', '%', '^');
+	private $m_aKeywords = array('key', 'index', 'value', 'first', 'last');
 	
 	public function __construct($sExpression, IPCO $ipco) {
 		$this->m_sOriginalExpression = $sExpression;
@@ -170,10 +171,12 @@ class IPCO_Expression extends IPCO_Base {
 	private function _getPhpCall($sName = null, array $aParams = array(), array $aSlices = array(), $sBase = 'null') {
 		$sReturn = 'null';
 		if(isset($sName)) {
-			if(empty($aParams)) 
+			if(in_array($sName, $this->m_aKeywords))
+				$sReturn = IPCO_ParserSettings::getCallKeyword($sName, $aParams, $sBase);
+			else if(empty($aParams)) 
 				$sReturn = IPCO_ParserSettings::getCallMember($sName, $sBase);
 			else 				
-				$sReturn = IPCO_ParserSettings::getCallMethod($sName, 'array('.implode(', ', $aParams).')', $sBase);
+				$sReturn = IPCO_ParserSettings::getCallMethod($sName, $aParams, $sBase);
 		}
 		foreach($aSlices as $sSlice) {
 			$sReturn = IPCO_ParserSettings::getCallSlice($sSlice, $sReturn);
@@ -260,16 +263,20 @@ class IPCO_Expression extends IPCO_Base {
 		$nLength = Encoding::length($sExpression);
 		
 		// Edge case with empty valueexpression
+		// This happens when an unbrecognisable whitespace is found.
+		// Exmaple: double operator
 		if($nLength === 0) {
 			$this->_setError('Whitespace value detected, you might have an invalid double operator sequence.', $sExpression);
 		}
 		
-		// Edge case with single quote
+		// Edge case with single quote.
 		if($sExpression === '\'') {
 			$this->_setError('Single quote detected without meaning.', $sExpression);
 		}
 		
-		// All normal cases
+		// All 'normal' cases.
+		// By default in here we will check for primitives, strings and native arrays.
+		// If those are not found, the parser will try to figure out if the value is a call.
 		else {
 			
 			// Look for easy primitives
@@ -288,8 +295,7 @@ class IPCO_Expression extends IPCO_Base {
 			// Look for array
 			else if(Encoding::beginsWith($sExpression, '{') && Encoding::endsWith($sExpression, '}')) {
 				$aParams = $this->_parseListing(',', Encoding::substring($sExpression, 1, $nLength - 2));
-				$sParams = implode(', ', array_map(array($this, '_parseExpression'), $aParams));
-				return 'array('.$sParams.')';
+				return IPCO_ParserSettings::getCallArray(array_map(array($this, '_parseExpression'), $aParams));
 			}
 			
 			// parsing for calling stuff

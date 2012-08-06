@@ -6,6 +6,8 @@ class AdminLoader extends Plugin {
 	private $m_aWatchPaths = array();
 	
 	private $m_aMenus = array();
+	private $m_aMappings = array();
+	private $m_aCategories = array();
 	
 	public function validate() {
 		foreach($this->m_aWatchPaths as $sWatchPath) {
@@ -42,9 +44,32 @@ class AdminLoader extends Plugin {
 		}
 		
 		// Parse all the menus into a mapping retrieval listing
-		
-		dump($this->m_aMenus);
-		NYI();
+		foreach($this->m_aMenus as $oMenu) {
+			$this->m_aMappings[$oMenu->getMapping()] = $oMenu->getDefaultTab();
+			foreach($oMenu->getTabs() as $oTab) {
+				$this->m_aMappings[$oMenu->getMapping() . $oTab->GetMapping()] = $oTab;
+			}
+			array_assure($this->m_aCategories, array($oMenu->getCategory(), $oMenu->getName()), $oMenu);
+		}
+				
+		if(isset($this->m_aMappings[$this->getDefaultMapping()])) {
+			$this->m_aMappings['/'] = $this->m_aMappings[$this->getDefaultMapping()];
+		}
+		else {
+			$this->getLogger()->error('The default mapping \'{mapping}\' for the AdminLoader could not be found.', array('mapping' => $this->getDefaultMapping()));
+		}
+	}
+	
+	public function getDefaultMapping() {
+		return $this->getConfig('MAPPING_DEFAULT', '/main/dashboard');
+	}
+	
+ 	public function getCategories() {
+ 		return $this->m_aCategories;
+ 	}
+	
+	public function getMenus() {
+		return $this->m_aMenus;
 	}
 	
 	private function parseModuleFile($sFilePath) {
@@ -111,13 +136,6 @@ class AdminLoader extends Plugin {
 				return new AdminTab($sName, $sDescription, $sType, $sContent);
 			}
 		}
-	}
-	
-	public function getModules() {
-		if(count($this->m_aModuleFiles) != count($this->m_aLoadedModules)) {
-			
-		}
-		return $this->m_aLoadedModules;
 	}
 	
 	/**

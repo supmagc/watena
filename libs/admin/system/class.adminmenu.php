@@ -16,7 +16,7 @@ class AdminMenu extends Object {
 		$sDefaultTab = Encoding::toLower($sDefaultTab);
 		foreach($aTabs as $oTab) {
 			$this->m_aTabs[$oTab->getMapping()] = $oTab;
-			if($sDefaultTab == $oTab->getMapping())
+			if($sDefaultTab == Encoding::toLower($oTab->getName()))
 				$this->m_oDefaultTab = $oTab;
 		}
 	}

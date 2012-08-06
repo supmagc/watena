@@ -13,6 +13,22 @@ class AdminTab extends Object {
 		$this->m_sType = $sType;
 		$this->m_sContent = $sContent;
 	}
+
+	public function getName() {
+		return $this->m_sName;
+	}
+	
+	public function getDescription() {
+		return $this->m_sDescription;
+	}
+	
+	public function getMapping() {
+		return '/' . Encoding::toLower($this->getName());
+	}
+	
+	public function getContent() {
+		return null;
+	}
 }
 
 ?>

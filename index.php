@@ -23,7 +23,7 @@ class MyConfig extends WatenaConfig {
 	}
 	
 	public function cacheEngine($sConfigName) {
-		return 'CacheMemcache';
+		return null; //'CacheMemcache';
 	}
 	
 	public function cacheExpiration($sConfigName) {

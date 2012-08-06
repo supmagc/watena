@@ -209,7 +209,7 @@ class IPCO_Parser extends IPCO_Base {
 		$sExpectedEnding = array_pop($this->m_aEndings);
 		$sGivenEnding = Encoding::toLower(Encoding::trim($aParts));
 		if(Encoding::length($sGivenEnding) > 0 && $sExpectedEnding != $sGivenEnding) {
-			throw new IPCO_Exception('Invalid IPCO-tag nesting.', IPCO_Exception::INVALIDNESTING);
+			throw new IPCO_Exception('Invalid IPCO-tag nesting.', IPCO_Exception::INVALID_NESTING);
 		}
 		switch($sExpectedEnding) {
 			case 'if' : $this->m_oRegion->addLine($this->getDepthOffset(-1, 0) . IPCO_ParserSettings::getFilterEndIf()); break;

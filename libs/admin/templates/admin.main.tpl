@@ -14,18 +14,18 @@
 <div id="overDiv" style="position:absolute; visibility:hidden; z-index:1000;"></div>
 <div id="Container"><img src="/theme/admin/logo.png" id="LogoImg" />
 	<div id="MenuGroup">
-		<[BLOCK-MENU[
+		{{foreach getCategories()}}
 		<ul class="MenuItem" style="left:<[OFFSET]>px;">
-			<li class="MainBtn"><[TITLE]></li>
+			<li class="MainBtn">{[index]}</li>
 			<li class="SubMenuItem">
 				<ul class="SubMenuList">
-					<[BLOCK-MENUITEM[
-					<li class="SubMenuBtn" style="background-color:<[COLOR]>;" ><a href="javascript:PTM_RequestContent('<[MAPPING]>');" onMouseOver="PTM_SetHelp('<[DESCRIPTION]>');" onMmouseOut="PTM_CH();" title="<[DESCRIPTION]>"><[TITLE]></a></li>
-					]]>
+					{{foreach value}}
+					<li class="SubMenuBtn" style="background-color:<[COLOR]>;" ><a href="javascript:PTM_RequestContent('{[getMapping()]}');" onMouseOver="PTM_SetHelp('{[getDescription()]}');" onMmouseOut="PTM_CH();" title="{[getDescription()]}">{[getName()]}</a></li>
+					{{end}}
 				</ul>
 			</li>
 		</ul>
-		]]>
+		{{end}}
 	</div>
 	
 	<div id="CenterGroup">
