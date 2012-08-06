@@ -62,18 +62,38 @@ class IPCO_Compiled_d__www_watena_libs_admin_templates_admin_main_tpl extends IP
 ));
 			$_ob []= '' . '" id="LogoImg" />
 	<div id="MenuGroup">
-		<[BLOCK-MENU[
+		';
+			foreach(parent::processMember('getCategories', null) as $_key => $_value) {parent::indexPush($_key); parent::componentPush($_value);
+				$_ob []= '' . '
 		<ul class="MenuItem" style="left:<[OFFSET]>px;">
-			<li class="MainBtn"><[TITLE]></li>
+			<li class="MainBtn">';
+				$_ob []= '' . parent::getIndex(null)
+;
+				$_ob []= '' . '</li>
 			<li class="SubMenuItem">
 				<ul class="SubMenuList">
-					<[BLOCK-MENUITEM[
-					<li class="SubMenuBtn" style="background-color:<[COLOR]>;" ><a href="javascript:PTM_RequestContent(\'<[MAPPING]>\');" onMouseOver="PTM_SetHelp(\'<[DESCRIPTION]>\');" onMmouseOut="PTM_CH();" title="<[DESCRIPTION]>"><[TITLE]></a></li>
-					]]>
+					';
+				foreach(parent::getCurrent(null)
+ as $_key => $_value) {parent::indexPush($_key); parent::componentPush($_value);
+					$_ob []= '' . '
+					<li class="SubMenuBtn" style="background-color:<[COLOR]>;" ><a href="javascript:PTM_RequestContent(\'';
+					$_ob []= '' . parent::processMember('getMapping', null);
+					$_ob []= '' . '\');" onMouseOver="PTM_SetHelp(\'';
+					$_ob []= '' . parent::processMember('getDescription', null);
+					$_ob []= '' . '\');" onMmouseOut="PTM_CH();" title="';
+					$_ob []= '' . parent::processMember('getDescription', null);
+					$_ob []= '' . '">';
+					$_ob []= '' . parent::processMember('getName', null);
+					$_ob []= '' . '</a></li>
+					';
+				parent::indexPop(); parent::componentPop();}
+				$_ob []= '' . '
 				</ul>
 			</li>
 		</ul>
-		]]>
+		';
+			parent::indexPop(); parent::componentPop();}
+			$_ob []= '' . '
 	</div>
 	
 	<div id="CenterGroup">

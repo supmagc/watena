@@ -28,10 +28,13 @@ class IPCO_ParserSettings extends IPCO_Base {
 	const CALL_SLICE			= "parent::processMember(%s, %s)";
 	const CALL_REGION			= "\$_ob []= '' . method_exists(\$this, 'callRegion__%s') ? \$this->callRegion__%s() : '';\n";
 	const CALL_INCLUDE			= "\$_ob []= '' . parent::callInclude('%s');\n";
-	const CALL_KEYWORD_INDEX	= "parent::getIndex(%s)\n";
-	const CALL_KEYWORD_CURRENT	= "parent::getCurrent(%s)\n";
+	const CALL_KEYWORD_INDEX	= "parent::processIndex(%s)\n";
+	const CALL_KEYWORD_CURRENT	= "parent::processCurrent(%s)\n";
 	const CALL_KEYWORD_FIRST	= "parent::processFirst(%s)\n";
 	const CALL_KEYWORD_LAST		= "parent::processLast(%s)\n";
+	const CALL_VAR_SET			= "parent::varSet(%s, %s);\n";
+	const CALL_VAR_INCREASE		= "parent::varIncrease(%s, %s);\n";
+	const CALL_VAR_DECREASE		= "parent::varDecrease(%s, %s);\n";
 	
 	const CONTENT				= "\$_ob []= '' . %s;\n";
 	const CONTENTPARSERPART		= "\$_ob []= '' . parent::callContentParser(%s, %s);\n";
@@ -107,20 +110,21 @@ class IPCO_ParserSettings extends IPCO_Base {
 		return sprintf(self::CALL_MEMBER, $sName, $sBase);
 	}
 	
-	public static function getCallKeyword($sName, array $aParams, $mBase) {
-		switch($sName) {
-			case 'index' :
-			case 'key' :
-				return sprintf(self::CALL_KEYWORD_INDEX, $mBase);
-			case 'current' :
-			case 'value' :
-				return sprintf(self::CALL_KEYWORD_CURRENT, $mBase);
-			case 'first' :
-				return sprintf(self::CALL_KEYWORD_FIRST, $mBase);
-			case 'last' :
-				return sprintf(self::CALL_KEYWORD_LAST, $mBase);
-		}
-	} 
+	public static function getCallKeywordIndex() {
+		return sprintf(self::CALL_KEYWORD_INDEX);
+	}
+	
+	public static function getCallKeywordCurrent() {
+		return sprintf(self::CALL_KEYWORD_INDEX);
+	}
+	
+	public static function getCallKeywordFirst($mBase) {
+		return sprintf(self::CALL_KEYWORD_INDEX, $mBase);
+	}
+	
+	public static function getCallKeywordLast($mBase) {
+		return sprintf(self::CALL_KEYWORD_INDEX, $mBase);
+	}
 	
 	public static function getCallSlice($sSlice, $sBase) {
 		return sprintf(self::CALL_SLICE, $sSlice, $sBase);
@@ -132,6 +136,18 @@ class IPCO_ParserSettings extends IPCO_Base {
 
 	public static function getCallRegion($sName) {
 		return sprintf(self::CALL_REGION, $sName, $sName);
+	}
+	
+	public static function getCallVarSet($sName, $sExpression) {
+		return sprintf(self::CALL_VAR_SET, $sName, $sExpression);
+	}
+	
+	public static function getCallVarIncrease($sName, $sExpression) {
+		return sprintf(self::CALL_VAR_INCREASE, $sName, $sExpression);
+	}
+	
+	public static function getCallVarDecrease($sName, $sExpression) {
+		return sprintf(self::CALL_VAR_DECREASE, $sName, $sExpression);
 	}
 	
 	public static function getContent($sContent) {

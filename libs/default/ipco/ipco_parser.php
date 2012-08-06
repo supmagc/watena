@@ -166,6 +166,7 @@ class IPCO_Parser extends IPCO_Base {
 		$sName = array_shift($aParts);
 		switch($sName) {
 			case 'if' : $this->interpretIf(new IPCO_Expression(implode(' ', $aParts), parent::getIpco())); break;
+			case 'for' :
 			case 'foreach' : $this->interpretForeach(new IPCO_Expression(implode(' ', $aParts), parent::getIpco())); break;
 			case 'while' : $this->interpretWhile(new IPCO_Expression(implode(' ', $aParts), parent::getIpco())); break;
 			case 'else' : $this->interpretElse(); break;
@@ -174,6 +175,7 @@ class IPCO_Parser extends IPCO_Base {
 			case 'extends' : $this->interpretExtends(count($aParts) > 0 ? $aParts[0] : null); break;
 			case 'include' : $this->interpretInclude(count($aParts) > 0 ? $aParts[0] : null); break;
 			case 'region' : $this->interpretRegion($aParts); break;
+			case 'var' : $this->interpretVar($aParts); break;
 		}
 	}
 	
@@ -223,7 +225,7 @@ class IPCO_Parser extends IPCO_Base {
 		$this->m_sExtendsTemplate = Encoding::length($sName) > 0 ? $sName : null;
 		$this->m_sExtendsFilePath = $this->getIpco()->getCallbacks()->getFilePathForTemplate($this->m_sExtendsTemplate);
 		if(!file_exists($this->m_sExtendsFilePath) || !is_readable($this->m_sExtendsFilePath))
-			throw new IPCO_Exception(IPCO_Exception::FILTER_EXTENDS_INVALID_FILE);
+			throw new IPCO_Exception(IPCO_Exception::FILTER_EXTENDS_INVALIDFILE);
 	}
 	
 	public function interpretInclude($sName = null) {
@@ -237,31 +239,56 @@ class IPCO_Parser extends IPCO_Base {
 			$sName = count($aParts) > 1 ? $aParts[1] : null; 
 			if($sOperator === 'end' || $sOperator === 'close' || $sOperator === 'stop') {
 				if($sName !== null && $sName !== $this->m_oRegion->getName())
-					throw new IPCO_Exception(IPCO_Exception::FILTER_REGION_END_CURRENT_MISMATCH);
+					throw new IPCO_Exception(IPCO_Exception::FILTER_REGION_ENDCURRENTMISMATCH);
 				if($this->m_oRegion->getName() === self::REGION_MAIN)
-					throw new IPCO_Exception(IPCO_Exception::FILTER_REGION_END_NONE_CURRENT);
+					throw new IPCO_Exception(IPCO_Exception::FILTER_REGION_ENDNONECURRENT);
 				$this->m_oRegion = $this->m_aRegions[self::REGION_MAIN];
 			}
 			else if($sOperator === 'begin' || $sOperator === 'open' || $sOperator === 'start') {
 				if($this->m_oRegion->getName() !== self::REGION_MAIN)
-					throw new IPCO_Exception(IPCO_Exception::FILTER_REGION_BEGIN_HAS_CURRENT);
+					throw new IPCO_Exception(IPCO_Exception::FILTER_REGION_BEGINHASCURRENT);
 				if($sName === null)
-					throw new IPCO_Exception(IPCO_Exception::FILTER_REGION_NO_NAME);
+					throw new IPCO_Exception(IPCO_Exception::FILTER_REGION_NONAME);
 				$this->m_oRegion = new IPCO_ParserRegion($sName, parent::getIpco());
 				$this->m_aRegions[$this->m_oRegion->getName()] = $this->m_oRegion;
 			}
 			else if($sOperator === 'use' || $sOperator === 'include') {
 				if($sName === null)
-					throw new IPCO_Exception(IPCO_Exception::FILTER_REGION_NO_NAME);
+					throw new IPCO_Exception(IPCO_Exception::FILTER_REGION_NONAME);
 				$this->m_oRegion->addLine($this->getDepthOffset() . IPCO_ParserSettings::getCallRegion($sName));
 			}
 		}
 		else {
-			throw new IPCO_Exception(IPCO_Exception::FILTER_REGION_NO_TAG);
+			throw new IPCO_Exception(IPCO_Exception::FILTER_REGION_NOCOMMAND);
 		}
 	}
 	
-	private function removeWhitespaces($sContent) {
+	public function interpretVar(array $aParts) {
+		if(count($aParts) > 0) {
+			$sCommand = array_shift($aParts);
+			if(count($aParts) > 0) {
+				$sName = array_shift($aParts);
+				$oExpression = count($aParts) > 2 ? new IPCO_Expression(implode(' ', $aParts), parent::getIpco()) : null;
+				if($sCommand === 'set') {
+					$this->m_oRegion->addLine($this->getDepthOffset() . IPCO_ParserSettings::getCallVarSet($sName, $oExpression));
+				}
+				if($sCommand === 'increase') {
+					$this->m_oRegion->addLine($this->getDepthOffset() . IPCO_ParserSettings::getCallVarIncrease($sName, $oExpression));
+				}
+				if($sCommand === 'decrease') {
+					$this->m_oRegion->addLine($this->getDepthOffset() . IPCO_ParserSettings::getCallVarDecrease($sName, $oExpression));
+				}
+			}
+			else {
+				throw new IPCO_Exception(IPCO_Exception::FILTER_VAR_NONAME);
+			}
+		}
+		else {
+			throw new IPCO_Exception(IPCO_Exception::FILTER_VAR_NOCOMMAND);
+		}
+	}
+	
+	public function removeWhitespaces($sContent) {
 		switch($this->m_nWhitespaceFilter) {
 			case self::WHITESPACEFILTER_ALL : return Encoding::trim($sContent);
 			case self::WHITESPACEFILTER_SMART : return !$this->m_oRegion->hasContent() ? Encoding::trim($sContent) : $sContent;
