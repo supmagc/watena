@@ -2,6 +2,7 @@
 
 abstract class IPCO_Processor extends IPCO_Base {
 	
+	private $m_aIndices = array();
 	private $m_aComponents = array();
 	private $m_oContentParser;
 	private $m_sContent = null;
@@ -33,6 +34,18 @@ abstract class IPCO_Processor extends IPCO_Base {
 		array_pop($this->m_aComponents);
 	}
 	
+	public function indexPush($mIndex) {
+		if(!empty($mIndex)) {
+			array_push($this->m_aIndices, $mIndex);
+			return true;
+		}
+		return false;
+	}
+	
+	public function indexPop() {
+		array_pop($this->m_aIndices);
+	}
+	
 	protected final function callContentParser($sMethod, array $aParams) {
 		if($this->m_oContentParser !== null) {
 			if(!method_exists($this->m_oContentParser, $sMethod))
@@ -47,6 +60,32 @@ abstract class IPCO_Processor extends IPCO_Base {
 		$oTemplate = $this->getIpco()->getCallbacks()->getTemplateForFilePath($sFilePath);
 		$oTemplate->m_aComponents = $this->m_aComponents;
 		return $oTemplate->getContent(true);
+	}
+
+	protected final function getIndex($mBase = null) {
+		if(!empty($mBase))
+			throw new IPCO_Exception(IPCO_Exception::INVALID_KEYWORDUSAGE);
+		return array_last($this->m_aIndices);
+	}
+	
+	protected final function getCurrent($mBase = null) {
+		if(!empty($mBase))
+			throw new IPCO_Exception(IPCO_Exception::INVALID_KEYWORDUSAGE);
+		return array_last($this->m_aComponents);
+	}
+	
+	protected final function processFirst($mBase = null) {
+		$mReturn = null;
+		NYI();
+		$this->tryProcessFirst($mReturn, $mBase);
+		return $mReturn;
+	}
+	
+	protected final function processLast($mBase = null) {
+		$mReturn = null;
+		NYI();
+		$this->tryProcessLast($mReturn, $mBase);
+		return $mReturn;
 	}
 	
 	protected final function processMethod($sName, array $aParams, $mBase = null) {

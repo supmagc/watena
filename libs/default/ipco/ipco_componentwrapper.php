@@ -4,7 +4,7 @@ abstract class IPCO_ComponentWrapper extends IPCO_Base {
 	
 	public abstract function tryGetProperty(&$mValue, $sName, $bFirstCall = true);
 	public abstract function tryGetMethod(&$mValue, $sName, array $aParams, $bFirstCall = true);
-
+	
 	public static function createComponentWrapper($mComponent, IPCO $oIpco) {
 		if(is_object($mComponent)) {
 			return new IPCO_ObjectComponentWrapper($mComponent, $oIpco);
@@ -13,7 +13,7 @@ abstract class IPCO_ComponentWrapper extends IPCO_Base {
 			return new IPCO_ArrayComponentWrapper($mComponent, $oIpco);
 		}
 		else {
-			throw new IPCO_Exception('The provided component is not a valid componenttype.', IPCO_Exception::INVALIDCOMPONENTTYPE);
+			throw new IPCO_Exception('The provided component is not a valid componenttype.', IPCO_Exception::INVALID_COMPONENTTYPE);
 		}
 	}
 }
@@ -57,7 +57,7 @@ class IPCO_ObjectComponentWrapper extends IPCO_ComponentWrapper {
 	}
 }
 
-class IPCO_ArrayComponentWrapper extends IPCO_ComponentWrapper {
+class IPCO_ArrayComponentWrapper extends IPCO_ComponentWrapper implements Iterator {
 	
 	private $m_aComponent;
 	
@@ -79,6 +79,26 @@ class IPCO_ArrayComponentWrapper extends IPCO_ComponentWrapper {
 	
 	public function tryGetMethod(&$mValue, $sName, array $aParams, $bFirstCall = true) {
 		return false;
+	}
+
+	public function current() {
+		return current($this->m_aComponent);
+	}
+	
+	public function key() {
+		return key($this->m_aComponent);
+	}
+	
+	public function next() {
+		return next($this->m_aComponent);
+	}
+	
+	public function rewind() {
+		return reset($this->m_aComponent);
+	}
+	
+	public function valid() {
+		return $this->current();
 	}
 }
 
