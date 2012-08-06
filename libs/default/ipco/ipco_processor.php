@@ -62,15 +62,11 @@ abstract class IPCO_Processor extends IPCO_Base {
 		return $oTemplate->getContent(true);
 	}
 
-	protected final function getIndex($mBase = null) {
-		if(!empty($mBase))
-			throw new IPCO_Exception(IPCO_Exception::INVALID_KEYWORDUSAGE);
+	protected final function processIndex() {
 		return array_last($this->m_aIndices);
 	}
 	
-	protected final function getCurrent($mBase = null) {
-		if(!empty($mBase))
-			throw new IPCO_Exception(IPCO_Exception::INVALID_KEYWORDUSAGE);
+	protected final function processCurrent() {
 		return array_last($this->m_aComponents);
 	}
 	
