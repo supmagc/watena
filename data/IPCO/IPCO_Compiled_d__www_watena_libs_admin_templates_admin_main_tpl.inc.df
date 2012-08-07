@@ -63,17 +63,25 @@ class IPCO_Compiled_d__www_watena_libs_admin_templates_admin_main_tpl extends IP
 			$_ob []= '' . '" id="LogoImg" />
 	<div id="MenuGroup">
 		';
+			parent::processVarSet('MENU_OFFSET', 93);
+			$_ob []= '' . '
+		';
 			foreach(parent::processMember('getCategories', null) as $_key => $_value) {parent::indexPush($_key); parent::componentPush($_value);
 				$_ob []= '' . '
-		<ul class="MenuItem" style="left:<[OFFSET]>px;">
+		<ul class="MenuItem" style="left:';
+				$_ob []= '' . parent::processMember('MENU_OFFSET', null);
+				$_ob []= '' . 'px;">
+			';
+				parent::processVarIncrease('MENU_OFFSET', 110);
+				$_ob []= '' . '
 			<li class="MainBtn">';
-				$_ob []= '' . parent::getIndex(null)
+				$_ob []= '' . parent::getIndex()
 ;
 				$_ob []= '' . '</li>
 			<li class="SubMenuItem">
 				<ul class="SubMenuList">
 					';
-				foreach(parent::getCurrent(null)
+				foreach(parent::getCurrent()
  as $_key => $_value) {parent::indexPush($_key); parent::componentPush($_value);
 					$_ob []= '' . '
 					<li class="SubMenuBtn" style="background-color:<[COLOR]>;" ><a href="javascript:PTM_RequestContent(\'';

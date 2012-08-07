@@ -1,8 +1,8 @@
 <?php
-require_once dirname(__FILE__) . '/AjaxPage.php';
-require_once dirname(__FILE__) . '/Request.php';
-require_once dirname(__FILE__) . '/Client.php';
-require_once dirname(__FILE__) . '/Server.php';
-require_once dirname(__FILE__) . '/Response.php';
-require_once dirname(__FILE__) . '/Selector.php';
+//require_once dirname(__FILE__) . '/AjaxPage.php';
+require_once dirname(__FILE__) . '/ajax_request.php';
+require_once dirname(__FILE__) . '/ajax_client.php';
+require_once dirname(__FILE__) . '/ajax_server.php';
+require_once dirname(__FILE__) . '/ajax_response.php';
+require_once dirname(__FILE__) . '/ajax_selector.php';
 ?>

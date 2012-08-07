@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Class that provides the data that are uwed when requesting some TMX-data
+ * Class that provides the data that are uwed when requesting some ajax-data
  *
  * @author Voet Jelle - ToMo-design
  * @version 2.0.1 beta
@@ -19,14 +19,14 @@
  * - Added rawurlencode/encodeURIComponent
  * - Made the output somewhat smaller
  */
-class TMX_Request {
+class AJAX_Request extends Object {
 	
-	private $m_sURL;
-	private $m_PHPCallback;
-	private $m_sJSCallback;
+	private $m_sUrl;
+	private $m_cbPhp;
+	private $m_cbJs;
 	private $m_nArgCount;
 	private $m_aValues = array();
-	private $m_bVariableURL = false;
+	private $m_bVariableUrl = false;
 	
 	/**
 	 * Create a new request
@@ -36,10 +36,10 @@ class TMX_Request {
 	 * @param string $sJSCallback the javascript function that you can call on your html-page
 	 * @param int $nArgCount the number of arguments you can set in your javascript-/php-function
 	 */
-	public function __construct($sURL, $PHPCallback, $sJSCallback, $nArgCount = 0) {
-		$this->m_sURL = $sURL;
-		$this->m_PHPCallback = $PHPCallback;
-		$this->m_sJSCallback = $sJSCallback;
+	public function __construct($sUrl, $cbPhp, $cbJs, $nArgCount = 0) {
+		$this->m_sUrl = $sUrl;
+		$this->m_cbPhp = $cbPhp;
+		$this->m_cbJs = $cbJs;
 		$this->m_nArgCount = $nArgCount;
 	}
 	
@@ -47,8 +47,8 @@ class TMX_Request {
 	 * If you make the request-URL variable the first parameter when you call the JS-function should be the URL to be called
 	 * default = false
 	 */
-	public function MakeURLVariable() {
-		$this->m_bVariableURL = true;
+	public function makeURLVariable() {
+		$this->m_bVariableUrl = true;
 	}
 	
 	/**
@@ -57,11 +57,13 @@ class TMX_Request {
 	 * @param string $sName
 	 * @param string $sValue
 	 */
-	public function SetValue($sName, $sValue) {
-		if(preg_match('/^[-a-z0-9_]+$/i', $sName))
+	public function setValue($sName, $sValue) {
+		if(Encoding::regMatch('/^[-a-z0-9_]+$/i', $sName)) {
 			$this->m_aValues[$sName] = $sValue;
-		else
-			trigger_error('Invalid value-name: ' . $sName);
+		}
+		else {
+			$this->getLogger()->warning('AJAX_Request invalid value-name \'{name}\'.', array($sName));
+		}
 	}
 	
 	/**
@@ -69,7 +71,7 @@ class TMX_Request {
 	 *
 	 * @param int $nArgCount
 	 */
-	public function SetArgCount($nArgCount) {
+	public function setArgCount($nArgCount) {
 		$this->m_nArgCount = $nArgCount;
 	}
 	
@@ -79,18 +81,18 @@ class TMX_Request {
 	 * @param bool $bEcho auto-echo this request-data
 	 * @return string
 	 */
-	public function Process($bEcho = true) {
+	public function process($bEcho = true) {
 		$sRet = '';
-		$sRet .= 'function ' . $this->m_sJSCallback . '(';
-		if($this->m_bVariableURL) $sRet .= 'sPUrl' . ($this->m_nArgCount > 0 ? ', ' : '');
+		$sRet .= 'function ' . $this->m_cbJs. '(';
+		if($this->m_bVariableUrl) $sRet .= 'sPUrl' . ($this->m_nArgCount > 0 ? ', ' : '');
 		for($i=0 ; $i<$this->m_nArgCount ; ++$i) {
 			$sRet .= "_arg$i" . (($i + 1) < $this->m_nArgCount ? ', ' : '');
 		}
 		$sRet .= ") {";
 		$sRet .= "TMX_Send(";
-		if($this->m_bVariableURL) $sRet .= '(sPUrl.length > 0 ? sPUrl : "' . rawurlencode($this->m_sURL) . '")';
-		else $sRet .= '"' . rawurlencode($this->m_sURL) . '"';
-		$sRet .= ", \"" . rawurlencode(serialize($this->m_PHPCallback)) . "\", [";
+		if($this->m_bVariableUrl) $sRet .= '(sPUrl.length > 0 ? sPUrl : "' . rawurlencode($this->m_sUrl) . '")';
+		else $sRet .= '"' . rawurlencode($this->m_sUrl) . '"';
+		$sRet .= ", \"" . rawurlencode(serialize($this->m_cbPhp)) . "\", [";
 		for($i=0 ; $i<$this->m_nArgCount ; ++$i) {
 			$sRet .= ($i > 0 ? ', ' : '') . "_arg$i";
 		}

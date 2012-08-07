@@ -6,7 +6,7 @@
  * @author Voet Jelle - ToMo-design
  * @version 1.0.0 beta
  */
-class TMX_Client {
+class AJAX_Client {
 	
 	private $m_aRequests = array();
 	private $m_sPrefix = 'TMX';
@@ -29,7 +29,7 @@ class TMX_Client {
 	 *
 	 * @param TMX_Request $oRequest
 	 */
-	public function RegisterRequest(TMX_Request $oRequest) {
+	public function registerRequest(AJAX_Request $oRequest) {
 		if(!in_array($oRequest, $this->m_aRequests)) $this->m_aRequests []= $oRequest;
 	}
 	
@@ -39,7 +39,7 @@ class TMX_Client {
 	 * @param bool $bEcho choose if all data should be auto-echo-ed
 	 * @return string
 	 */
-	public function Process($bEcho = true) {
+	public function process($bEcho = true) {
 		if(!$this->m_bProcessed) $this->m_bProcessed = true;
 		else echo '<-- Unable to process the same TMX instance a second time -->';
 

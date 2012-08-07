@@ -7,7 +7,7 @@
  * @version 1.0.0 beta
  *
  */
-class TMX_Selector {
+class AJAX_Selector {
 	
 	private $m_aPath = array();
 	
