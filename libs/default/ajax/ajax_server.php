@@ -15,7 +15,7 @@
  * 30-7-2010: 1.0.0 => 2.0.0
  * - Anticipated all the changes within TMX_Request
  */
-class TMX_Server {
+class AJAX_Server {
 	
 	private $m_sPrefix = 'TMX';
 	private $m_oPage = null;
