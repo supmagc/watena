@@ -28,13 +28,13 @@ class IPCO_ParserSettings extends IPCO_Base {
 	const CALL_SLICE			= "parent::processMember(%s, %s)";
 	const CALL_REGION			= "\$_ob []= '' . method_exists(\$this, 'callRegion__%s') ? \$this->callRegion__%s() : '';\n";
 	const CALL_INCLUDE			= "\$_ob []= '' . parent::callInclude('%s');\n";
-	const CALL_KEYWORD_INDEX	= "parent::processIndex(%s)\n";
-	const CALL_KEYWORD_CURRENT	= "parent::processCurrent(%s)\n";
+	const CALL_KEYWORD_INDEX	= "parent::getIndex()\n";
+	const CALL_KEYWORD_CURRENT	= "parent::getCurrent()\n";
 	const CALL_KEYWORD_FIRST	= "parent::processFirst(%s)\n";
 	const CALL_KEYWORD_LAST		= "parent::processLast(%s)\n";
-	const CALL_VAR_SET			= "parent::varSet(%s, %s);\n";
-	const CALL_VAR_INCREASE		= "parent::varIncrease(%s, %s);\n";
-	const CALL_VAR_DECREASE		= "parent::varDecrease(%s, %s);\n";
+	const CALL_VAR_SET			= "parent::processVarSet(%s, %s);\n";
+	const CALL_VAR_INCREASE		= "parent::processVarIncrease(%s, %s);\n";
+	const CALL_VAR_DECREASE		= "parent::processVarDecrease(%s, %s);\n";
 	
 	const CONTENT				= "\$_ob []= '' . %s;\n";
 	const CONTENTPARSERPART		= "\$_ob []= '' . parent::callContentParser(%s, %s);\n";
@@ -115,7 +115,7 @@ class IPCO_ParserSettings extends IPCO_Base {
 	}
 	
 	public static function getCallKeywordCurrent() {
-		return sprintf(self::CALL_KEYWORD_INDEX);
+		return sprintf(self::CALL_KEYWORD_CURRENT);
 	}
 	
 	public static function getCallKeywordFirst($mBase) {
@@ -139,15 +139,15 @@ class IPCO_ParserSettings extends IPCO_Base {
 	}
 	
 	public static function getCallVarSet($sName, $sExpression) {
-		return sprintf(self::CALL_VAR_SET, $sName, $sExpression);
+		return sprintf(self::CALL_VAR_SET, var_export($sName, true), $sExpression);
 	}
 	
 	public static function getCallVarIncrease($sName, $sExpression) {
-		return sprintf(self::CALL_VAR_INCREASE, $sName, $sExpression);
+		return sprintf(self::CALL_VAR_INCREASE, var_export($sName, true), $sExpression);
 	}
 	
 	public static function getCallVarDecrease($sName, $sExpression) {
-		return sprintf(self::CALL_VAR_DECREASE, $sName, $sExpression);
+		return sprintf(self::CALL_VAR_DECREASE, var_export($sName, true), $sExpression);
 	}
 	
 	public static function getContent($sContent) {

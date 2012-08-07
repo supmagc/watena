@@ -1,9 +1,11 @@
 <?php
 
-abstract class IPCO_ComponentWrapper extends IPCO_Base {
+abstract class IPCO_ComponentWrapper extends IPCO_Base implements Iterator {
 	
 	public abstract function tryGetProperty(&$mValue, $sName, $bFirstCall = true);
 	public abstract function tryGetMethod(&$mValue, $sName, array $aParams, $bFirstCall = true);
+	public abstract function getFirst();
+	public abstract function getLast();
 	
 	public static function createComponentWrapper($mComponent, IPCO $oIpco) {
 		if(is_object($mComponent)) {
@@ -55,9 +57,48 @@ class IPCO_ObjectComponentWrapper extends IPCO_ComponentWrapper {
 			return $bFirstCall && count($aParams) == 0 ? self::tryGetProperty($mValue, $sName, false) : false;
 		}
 	}
+	
+	public function getFirst() {
+		if(is_a($this->m_oComponent, 'Iterator')) {
+			$this->m_oComponent->rewind();
+			return $this->m_oComponent->valid() ? $this->m_oComponent->current() : false;
+		}
+		return false;
+	}
+	
+	public function getLast() {
+		if(is_a($this->m_oComponent, 'Iterator')) {
+			$mReturn = false;
+			while($this->m_oComponent->next()) {
+				$mReturn = $this->m_oComponent->current();
+			}
+			return $mReturn;
+		}
+		return false;
+	}
+	
+	public function current() {
+		return is_a($this->m_oComponent, 'Iterator') ? $this->m_oComponent->current() : false;
+	}
+	
+	public function key() {
+		return is_a($this->m_oComponent, 'Iterator') ? $this->m_oComponent->key() : false;
+	}
+	
+	public function next() {
+		return is_a($this->m_oComponent, 'Iterator') ? $this->m_oComponent->next() : false;
+	}
+	
+	public function rewind() {
+		return is_a($this->m_oComponent, 'Iterator') ? $this->m_oComponent->rewind() : false;
+	}
+	
+	public function valid() {
+		return is_a($this->m_oComponent, 'Iterator') ? $this->m_oComponent->valid() : false;
+	}
 }
 
-class IPCO_ArrayComponentWrapper extends IPCO_ComponentWrapper implements Iterator {
+class IPCO_ArrayComponentWrapper extends IPCO_ComponentWrapper {
 	
 	private $m_aComponent;
 	
@@ -81,6 +122,14 @@ class IPCO_ArrayComponentWrapper extends IPCO_ComponentWrapper implements Iterat
 		return false;
 	}
 
+	public function getFirst() {
+		return array_first($this->m_aComponent);
+	}
+	
+	public function getLast() {
+		return array_last($this->m_aComponent);
+	}
+	
 	public function current() {
 		return current($this->m_aComponent);
 	}

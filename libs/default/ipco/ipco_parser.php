@@ -268,15 +268,15 @@ class IPCO_Parser extends IPCO_Base {
 			$sCommand = array_shift($aParts);
 			if(count($aParts) > 0) {
 				$sName = array_shift($aParts);
-				$oExpression = count($aParts) > 2 ? new IPCO_Expression(implode(' ', $aParts), parent::getIpco()) : null;
+				$sExpression = count($aParts) > 0 ? ('' . new IPCO_Expression(implode(' ', $aParts), parent::getIpco())) : 'null';
 				if($sCommand === 'set') {
-					$this->m_oRegion->addLine($this->getDepthOffset() . IPCO_ParserSettings::getCallVarSet($sName, $oExpression));
+					$this->m_oRegion->addLine($this->getDepthOffset() . IPCO_ParserSettings::getCallVarSet($sName, $sExpression));
 				}
 				if($sCommand === 'increase') {
-					$this->m_oRegion->addLine($this->getDepthOffset() . IPCO_ParserSettings::getCallVarIncrease($sName, $oExpression));
+					$this->m_oRegion->addLine($this->getDepthOffset() . IPCO_ParserSettings::getCallVarIncrease($sName, $sExpression));
 				}
 				if($sCommand === 'decrease') {
-					$this->m_oRegion->addLine($this->getDepthOffset() . IPCO_ParserSettings::getCallVarDecrease($sName, $oExpression));
+					$this->m_oRegion->addLine($this->getDepthOffset() . IPCO_ParserSettings::getCallVarDecrease($sName, $sExpression));
 				}
 			}
 			else {

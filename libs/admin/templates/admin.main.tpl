@@ -14,8 +14,10 @@
 <div id="overDiv" style="position:absolute; visibility:hidden; z-index:1000;"></div>
 <div id="Container"><img src="/theme/admin/logo.png" id="LogoImg" />
 	<div id="MenuGroup">
+		{{var set MENU_OFFSET 93}}
 		{{foreach getCategories()}}
-		<ul class="MenuItem" style="left:<[OFFSET]>px;">
+		<ul class="MenuItem" style="left:{[MENU_OFFSET]}px;">
+			{{var increase MENU_OFFSET 110}}
 			<li class="MainBtn">{[index]}</li>
 			<li class="SubMenuItem">
 				<ul class="SubMenuList">
