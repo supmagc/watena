@@ -22,7 +22,7 @@ class IpTools extends Plugin {
 		self::$s_oSingleton = $this;
 	}
 	
-	private function getGeoData($sIp) {
+	private function _getGeoData($sIp) {
 		return parent::getWatena()->getCache()->retrieve('W_IPTOOLS_GEO_'.$sIp, create_function('$sIp', '
 			$oRequest = new WebRequest($sIp);
 			$oResponse = $oRequest->send();
@@ -49,15 +49,15 @@ class IpTools extends Plugin {
 	}
 	
 	public static function getGeoCountryName($sIp) {
-		return self::$s_oSingleton->getGeoData($sIp)->country_name;
+		return self::$s_oSingleton->_getGeoData($sIp)->country_name;
 	}
 	
 	public static function getGeoCountryCode($sIp) {
-		return self::$s_oSingleton->getGeoData($sIp)->country_code;
+		return self::$s_oSingleton->_getGeoData($sIp)->country_code;
 	}
 	
 	public static function getGeoCity($sIp) {
-		return self::$s_oSingleton->getGeoData($sIp)->city;
+		return self::$s_oSingleton->_getGeoData($sIp)->city;
 	}
 	
 	/**
