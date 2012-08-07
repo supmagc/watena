@@ -108,7 +108,6 @@ abstract class IPCO_Processor extends IPCO_Base {
 	
 	protected final function processVarSet($sName, $mValue = null) {
 		$this->m_aVars[$sName] = $mValue ?: 0;
-		dump($this->m_aVars);
 	}
 	
 	protected final function processVarIncrease($sName, $mValue = null) {
