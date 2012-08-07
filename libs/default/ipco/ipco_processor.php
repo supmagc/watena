@@ -2,6 +2,7 @@
 
 abstract class IPCO_Processor extends IPCO_Base {
 	
+	private $m_aVars = array();
 	private $m_aIndices = array();
 	private $m_aComponents = array();
 	private $m_oContentParser;
@@ -46,6 +47,14 @@ abstract class IPCO_Processor extends IPCO_Base {
 		array_pop($this->m_aIndices);
 	}
 	
+	protected final function getIndex() {
+		return array_last($this->m_aIndices);
+	}
+	
+	protected final function getCurrent() {
+		return array_last($this->m_aComponents);
+	}
+	
 	protected final function callContentParser($sMethod, array $aParams) {
 		if($this->m_oContentParser !== null) {
 			if(!method_exists($this->m_oContentParser, $sMethod))
@@ -59,35 +68,59 @@ abstract class IPCO_Processor extends IPCO_Base {
 	protected final function callInclude($sFilePath) {
 		$oTemplate = $this->getIpco()->getCallbacks()->getTemplateForFilePath($sFilePath);
 		$oTemplate->m_aComponents = $this->m_aComponents;
+		$oTemplate->m_aIndices = $this->m_aIndices;
+		$oTemplate->m_aVars = $this->m_aVars;
 		return $oTemplate->getContent(true);
-	}
-
-	protected final function processIndex() {
-		return array_last($this->m_aIndices);
-	}
-	
-	protected final function processCurrent() {
-		return array_last($this->m_aComponents);
+		// TODO: should this be reverted
 	}
 	
 	protected final function processFirst($mBase = null) {
-		$mReturn = null;
-		NYI();
-		$this->tryProcessFirst($mReturn, $mBase);
-		return $mReturn;
+		if(!$mBase) 
+			$mBase = $this->getCurrent();
+		
+		if(!$mBase)
+			return null;
+		
+		if(!is_subclass_of($mBase, 'IPCO_ComponentWrapper'))
+			$mBase = IPCO_ComponentWrapper::createComponentWrapper($mBase, parent::getIpco());
+		
+		return $mBase->getFirst();
 	}
 	
 	protected final function processLast($mBase = null) {
-		$mReturn = null;
-		NYI();
-		$this->tryProcessLast($mReturn, $mBase);
-		return $mReturn;
+		if(!$mBase) 
+			$mBase = $this->getCurrent();
+		
+		if(!$mBase)
+			return null;
+		
+		if(!is_subclass_of($mBase, 'IPCO_ComponentWrapper'))
+			$mBase = IPCO_ComponentWrapper::createComponentWrapper($mBase, parent::getIpco());
+		
+		return $mBase->getLast();
 	}
 	
 	protected final function processMethod($sName, array $aParams, $mBase = null) {
 		$mReturn = null;
 		$this->tryProcessMethod($mReturn, $sName, $aParams, $mBase);
 		return $mReturn;
+	}
+	
+	protected final function processVarSet($sName, $mValue = null) {
+		$this->m_aVars[$sName] = $mValue ?: 0;
+		dump($this->m_aVars);
+	}
+	
+	protected final function processVarIncrease($sName, $mValue = null) {
+		if(!isset($this->m_aVars[$sName]))
+			$this->m_aVars[$sName] = 0;
+		$this->m_aVars[$sName] += $mValue ?: 1;
+	}
+	
+	protected final function processVarDecrease($sName, $mValue = null) {
+		if(!isset($this->m_aVars[$sName]))
+			$this->m_aVars[$sName] = 0;
+		$this->m_aVars[$sName] -= $mValue ?: 1;
 	}
 	
 	protected final function processMember($sName, $mBase = null) {
@@ -126,6 +159,10 @@ abstract class IPCO_Processor extends IPCO_Base {
 				$mBase = IPCO_ComponentWrapper::createComponentWrapper($mBase, parent::getIpco());
 			
 			return $mBase->tryGetProperty($mReturn, $sName);
+		}
+		else if(isset($this->m_aVars[$sName])) {
+			$mReturn = $this->m_aVars[$sName];
+			return true;
 		}
 		else {
 			for($i=count($this->m_aComponents) - 1 ; $i>=0 ; --$i) {

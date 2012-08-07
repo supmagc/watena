@@ -7,6 +7,7 @@ class IPCO_Expression extends IPCO_Base {
 	const ERROR_INVALIDPARENTHESES = 2;
 	const ERROR_INVALIDWHITESPACE = 3;
 	const ERROR_INVALIDQUOTE = 4;
+	const ERROR_INVALIDKEYWORD = 5;
 	
 	private $m_sOriginalExpression;
 	private $m_sCleanedExpression;
@@ -171,12 +172,24 @@ class IPCO_Expression extends IPCO_Base {
 	private function _getPhpCall($sName = null, array $aParams = array(), array $aSlices = array(), $sBase = 'null') {
 		$sReturn = 'null';
 		if(isset($sName)) {
-			if(in_array($sName, $this->m_aKeywords))
-				$sReturn = IPCO_ParserSettings::getCallKeyword($sName, $aParams, $sBase);
-			else if(empty($aParams)) 
+			if(in_array($sName, $this->m_aKeywords)) {
+				if(($sName === 'key' || $sName === 'index') && $sBase == 'null')
+					$sReturn = IPCO_ParserSettings::getCallKeywordIndex();
+				else if(($sName === 'current' || $sName === 'value') && $sBase == 'null')
+					$sReturn = IPCO_ParserSettings::getCallKeywordCurrent();
+				else if($sName === 'first')
+					$sReturn = IPCO_ParserSettings::getCallKeywordIndex($sBase);
+				else if($sName === 'last')
+					$sReturn = IPCO_ParserSettings::getCallKeywordIndex($sBase);
+				else 
+					$this->_setError(self::ERROR_INVALIDKEYWORD, $sName);
+			}
+			else if(empty($aParams)) {
 				$sReturn = IPCO_ParserSettings::getCallMember($sName, $sBase);
-			else 				
+			}
+			else {
 				$sReturn = IPCO_ParserSettings::getCallMethod($sName, $aParams, $sBase);
+			}
 		}
 		foreach($aSlices as $sSlice) {
 			$sReturn = IPCO_ParserSettings::getCallSlice($sSlice, $sReturn);

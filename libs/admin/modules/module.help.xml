@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module>
+	<menu name="About">
+		<category>Help</category>
+		<description>Global information about the system.</description>
+		<defaulttab>Version</defaulttab>
+		<tab name="Version">
+			<description>Versioning details about the system.</description>
+			<content type="text">UNDER CONSTRUCTION</content>
+		</tab>
+		<tab name="Modules">
+			<description>Show the default phpinfo() output for the current system.</description>
+			<content type="php">phpinfo()</content>
+		</tab>
+	</menu>
+</module>
