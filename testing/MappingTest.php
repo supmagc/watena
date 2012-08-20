@@ -2,40 +2,9 @@
 
 class MappingTest extends PHPUnit_Framework_TestCase {
 	
-	public function setUp() {
-		$_SERVER['HTTP_HOST'] = 'localhost';
-		$_SERVER['HTTP_USER_AGENT'] = 'PHPUnit';
-		$_SERVER['SERVER_PORT'] = 80;
-	}
-	
-	public function testLocalhostCreationNoSlash() {
-		$_SERVER['SCRIPT_NAME'] = '/index.php';
-		$_SERVER['REDIRECT_URL'] = '';
-		$oMapping = new Mapping();
-		$this->assertEquals($oMapping->getFull(), 'http://localhost');
-		$this->assertEquals($oMapping->getHost(), 'localhost');
-		$this->assertEquals($oMapping->getLocal(), '');
-		$this->assertEquals($oMapping->getOffset(), '');
-		$this->assertEquals($oMapping->getPort(), 80);
-		$this->assertEquals($oMapping->getUseragent(), 'PHPUnit');
-	}
-	
-	public function testSubDirectoryCreationNoSlash() {
-		$_SERVER['SCRIPT_NAME'] = '/watena/index.php';
-		$_SERVER['REDIRECT_URL'] = '/watena';
-		$oMapping = new Mapping();
-		$this->assertEquals($oMapping->getFull(), 'http://localhost/watena');
-		$this->assertEquals($oMapping->getHost(), 'localhost');
-		$this->assertEquals($oMapping->getLocal(), '');
-		$this->assertEquals($oMapping->getOffset(), '/watena');
-		$this->assertEquals($oMapping->getPort(), 80);
-		$this->assertEquals($oMapping->getUseragent(), 'PHPUnit');
-	}
-	
-	public function testLocalhostCreationSlash() {
-		$_SERVER['SCRIPT_NAME'] = '/index.php';
-		$_SERVER['REDIRECT_URL'] = '/';
-		$oMapping = new Mapping();
+	public function testDefault() {
+		$oMapping = watena()->getMapping();
+		$this->assertEquals($oMapping->getRoot(), 'http://localhost');
 		$this->assertEquals($oMapping->getFull(), 'http://localhost/');
 		$this->assertEquals($oMapping->getHost(), 'localhost');
 		$this->assertEquals($oMapping->getLocal(), '/');
@@ -43,21 +12,21 @@ class MappingTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($oMapping->getPort(), 80);
 		$this->assertEquals($oMapping->getUseragent(), 'PHPUnit');
 	}
-		
-	public function testSubDirectoryCreationSlash() {
-		$_SERVER['SCRIPT_NAME'] = '/watena/index.php';
-		$_SERVER['REDIRECT_URL'] = '/watena/';
-		$oMapping = new Mapping();
-		$this->assertEquals($oMapping->getFull(), 'http://localhost/watena/');
-		$this->assertEquals($oMapping->getHost(), 'localhost');
-		$this->assertEquals($oMapping->getLocal(), '/');
-		$this->assertEquals($oMapping->getOffset(), '/watena');
-		$this->assertEquals($oMapping->getPort(), 80);
-		$this->assertEquals($oMapping->getUseragent(), 'PHPUnit');
+	
+	public function testSubDirectory() {
+		$oMapping = new Mapping('/test/a/bla.mine');
+		$this->assertEquals($oMapping->getLocal(), '/test/a/bla.mine');
+		$this->assertEquals($oMapping->getPart(0), 'test');
+		$this->assertEquals($oMapping->getPart(1), 'a');
+		$this->assertEquals($oMapping->getPart(2), 'bla.mine');
+		$this->assertNull($oMapping->getPart(3));
 	}
-
-	public function testRelativeLocalCreation() {
-		
+	
+	public function testParams() {
+		$oMapping = new Mapping('helloworld?oeps=noope#linkage');
+		$this->assertEquals($oMapping->getLocal(), '/helloworld');
+		$this->assertEquals($oMapping->getPart(0), 'helloworld');
+		$this->assertNull($oMapping->getPart(1));
 	}
 }
 

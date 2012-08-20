@@ -1,15 +1,16 @@
 <?php
 
+
 class EncodingTest extends PHPUnit_Framework_TestCase {
 
 	const CHARSET = 'UTF-8';
-	const TESTER = 'Iñtërnâtiônàlizætiøn';
-	const TESTER_FIRST5 = 'Iñtër';
-	const TESTER_SECOND5 = 'nâtiô';
-	const TESTER_AFTER5 = 'nâtiônàlizætiøn';
+	const TESTER = 'IÃ±tÃ«rnÃ¢tiÃ´nÃ lizÃ¦tiÃ¸n';
+	const TESTER_FIRST5 = 'IÃ±tÃ«r';
+	const TESTER_SECOND5 = 'nÃ¢tiÃ´';
+	const TESTER_AFTER5 = 'nÃ¢tiÃ´nÃ lizÃ¦tiÃ¸n';
 	const TESTER_WHITESPACES = " \r\n\t\0";
-	const TESTER_LOWER = 'iñtërnâtiônàlizætiøn';
-	const TESTER_UPPER = 'IÑTËRNÂTIÔNÀLIZÆTIØN';
+	const TESTER_LOWER = 'iÃ±tÃ«rnÃ¢tiÃ´nÃ lizÃ¦tiÃ¸n';
+	const TESTER_UPPER = 'IÃ‘TÃ‹RNÃ‚TIÃ”NÃ€LIZÃ†TIÃ˜N';
 	
 	public function setUp()  {
 		Encoding::init(self::CHARSET);

@@ -30,8 +30,8 @@ window.tvHub = \'';
 window.tvHash = \'';
 			$_ob []= '' . parent::processMember('getHash', null);
 			$_ob []= '' . '\';
-window.tvVideo = ';
-			$_ob []= '' . !parent::processMember('isChina', null);
+window.tvChina = ';
+			$_ob []= '' . parent::processMember('isChina', null);
 			$_ob []= '' . ';
 window.tvFestival = \'';
 			$_ob []= '' . parent::processMember('getFestivalId', null);
@@ -52,7 +52,10 @@ if(typeof unityObject != "undefined") {
 	unityObject.embedUnity("unityPlayer", "';
 			$_ob []= '' . parent::processMember('getUrl', null);
 			$_ob []= '' . '/files/toevla/unity/';
-			$_ob []= '' . parent::processMethod('getConfig', array('unity', 'loader.unity3d'), null);
+			$_ob []= '' . parent::processMethod('getConfig', array (
+  0 => '\'unity\'',
+  1 => '\'loader.unity3d\'',
+), null);
 			$_ob []= '' . '", 728, 450, params);
 }
 --></script>
