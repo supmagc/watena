@@ -5,36 +5,53 @@ class Mapping extends Object {
 	private $m_aVariables = array();
 	private $m_sTotal;
 	
-	public final function __construct($sLocal = null) {
-		$this->m_aVariables['host'] = $_SERVER['SERVER_NAME'];
-		$this->m_aVariables['port'] = $_SERVER['SERVER_PORT'];
-		$this->m_aVariables['offset'] = Encoding::substring($_SERVER['SCRIPT_NAME'], 0, Encoding::length($_SERVER['SCRIPT_NAME']) - 10);
-		$this->m_aVariables['useragent'] = $_SERVER['HTTP_USER_AGENT'];
-		if($sLocal !== null && Encoding::beginsWith($sLocal, '/')) {
-			$this->m_aVariables['local'] = $sLocal;
-		}
-		else {
+	private static $s_aDefaults;
+	
+	public final function __construct($sLocal = null, array $aParams = array()) {
+		if(!is_array(self::$s_aDefaults)) {
+			self::assure();
+			self::$s_aDefaults = array();
+			self::$s_aDefaults['host'] = $_SERVER['HTTP_HOST'];
+			self::$s_aDefaults['port'] = $_SERVER['SERVER_PORT'];
+			self::$s_aDefaults['useragent'] = $_SERVER['HTTP_USER_AGENT'];
+			self::$s_aDefaults['offset'] = Encoding::substring($_SERVER['SCRIPT_NAME'], 0, -1 - Encoding::length($_SERVER['SCRIPT_FILENAME']));
+			self::$s_aDefaults['method'] = $_SERVER['REQUEST_METHOD'];
+
 			if(isset($_SERVER['REDIRECT_URL'])) {
-				$this->m_aVariables['local'] = Encoding::substring($_SERVER['REDIRECT_URL'], Encoding::length($this->m_aVariables['offset']));
+				self::$s_aDefaults['local'] = Encoding::substring($_SERVER['REDIRECT_URL'], Encoding::length(self::$s_aDefaults['offset']));
+			}
+			else if(isset($_SERVER['REQUEST_URI'])) {
+				$nLength = Encoding::contains($_SERVER['REQUEST_URI'], '?') ? Encoding::indexOf($_SERVER['REQUEST_URI'], '?') - Encoding::length($this->m_aVariables['offset']) : null;
+				self::$s_aDefaults['local'] = urldecode(Encoding::substring($_SERVER['REQUEST_URI'], Encoding::length(self::$s_aDefaults['offset']), $nLength));
 			}
 			else {
-				$nLength = Encoding::contains($_SERVER['REQUEST_URI'], '?') ? Encoding::indexOf($_SERVER['REQUEST_URI'], '?') - Encoding::length($this->m_aVariables['offset']) : null;
-				$this->m_aVariables['local'] = urldecode(Encoding::substring($_SERVER['REQUEST_URI'], Encoding::length($this->m_aVariables['offset']), $nLength));
+				self::$s_aDefaults['local'] = '/';
 			}
 			
-			if($sLocal !== null) {
-				$aParts = explode('/', $this->getWatena()->getMapping()->getLocal());
+			self::$s_aDefaults['parts'] = explode_trim('/', self::$s_aDefaults['local']);		
+			self::$s_aDefaults['root'] = 'http://' . self::$s_aDefaults['host'] . (self::$s_aDefaults['port'] != 80 ? ':'.self::$s_aDefaults['port'] : '') . self::$s_aDefaults['offset'];
+			self::$s_aDefaults['full'] = self::$s_aDefaults['root'] . self::$s_aDefaults['local'];
+		}
+		
+		$this->m_aVariables = self::$s_aDefaults;
+		
+		if($sLocal) {
+			if(($nIndex = Encoding::indexOf($sLocal, '?'))) {
+				
+			}
+			
+			if(Encoding::beginsWith($sLocal, '/')) {
+				$this->m_aVariables['local'] = $sLocal;
+				$this->m_aVariables['parts'] = explode_trim('/', $sLocal);		
+			}
+			else {			
+				$aParts = self::$s_aDefaults['parts'];
 				array_pop($aParts);
 				array_push($aParts, $sLocal);
-				$this->m_aVariables['local'] = implode('/', $aParts);
+				$this->m_aVariables['local'] = '/' . implode('/', $aParts);
+				$this->m_aVariables['parts'] = $aParts;
 			}
-		}
-		// SPlit the localpart
-		$this->m_aVariables['parts'] = explode_trim('/', $this->m_aVariables['local']);
-		
-		// Save main as it's used a lot
-		$this->m_aVariables['root'] = 'http://' . $this->m_aVariables['host'] . ($this->m_aVariables['port'] != 80 ? ':'.$this->m_aVariables['port'] : '') . $this->m_aVariables['offset'];
-		$this->m_aVariables['full'] =  $this->m_aVariables['root'] . $this->m_aVariables['local'];
+		}		
 	}
 	
 	/**
@@ -117,7 +134,7 @@ class Mapping extends Object {
 	 */
 	public final function getPart($nIndex) {
 		$aParts = $this->getVariable('parts');
-		return $nIndex < count($aParts) ? $aParts[$nIndex] : false;
+		return $nIndex < count($aParts) ? $aParts[$nIndex] : null;
 	}
 	
 	/**
@@ -168,8 +185,9 @@ class Mapping extends Object {
 		if(!isset($_SERVER['HTTP_HOST'])) throw new AssureException("Make sure \$_SERVER['HTTP_HOST'] is set!");
 		if(!isset($_SERVER['SERVER_PORT'])) throw new AssureException("Make sure \$_SERVER['SERVER_PORT'] is set!");
 		if(!isset($_SERVER['SCRIPT_NAME'])) throw new AssureException("Make sure \$_SERVER['SCRIPT_NAME'] is set!");
+		if(!isset($_SERVER['SCRIPT_FILENAME'])) throw new AssureException("Make sure \$_SERVER['SCRIPT_FILENAME'] is set!");
 		if(!isset($_SERVER['HTTP_USER_AGENT'])) throw new AssureException("Make sure \$_SERVER['HTTP_USER_AGENT'] is set!");
-		if(!isset($_SERVER['REDIRECT_URL']) && !isset($_SERVER['REQUEST_URI'])) throw new AssureException("Make sure \$_SERVER['REDIRECT_URL'] or \$_SERVER['REQUEST_URI'] are set!");
+		if(!isset($_SERVER['REQUEST_METHOD'])) throw new AssureException("Make sure \$_SERVER['REQUEST_METHOD'] is set!");
 		return true;
 	}
 }
