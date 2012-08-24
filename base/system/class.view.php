@@ -30,7 +30,7 @@ abstract class View extends CacheableData {
 			return true;
 		}
 		else {
-			$this->getLogger()->warning('Headers are allready sent at {file} (line: {line}.', array('file' => $sFile, 'line' => $nLine));
+			$this->getLogger()->warning('Headers are allready sent at {file} (line: {line})', array('file' => $sFile, 'line' => $nLine));
 		}
 		return false;
 	}

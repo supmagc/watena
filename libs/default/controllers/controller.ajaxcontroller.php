@@ -1,4 +1,5 @@
 <?php
+require_plugin('ajax');
 
 class AjaxController extends Controller {
 	
@@ -12,7 +13,7 @@ class AjaxController extends Controller {
 		else if(!isset($_POST['callback'])) {
 			
 		}
-		else if(method_exists($this, $_POST['callback'])) {
+		else if(!method_exists($this, $_POST['callback'])) {
 			
 		}
 		else {

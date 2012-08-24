@@ -120,7 +120,7 @@ function require_model($mName) {
 	if(is_array($mName)) return array_all('require_model', $mName);
 	else {
 		if($sPath = watena()->getContext()->getLibraryFilePath('models', 'model.'.Encoding::toLower($mName).'.php')) {
-			@include_once $sPath;
+			include_once $sPath;
 			return class_exists($mName) || require_error(REQERROR_MODELUNLOADABLE, $mName);
 		}
 		else return require_error(REQERROR_MODELNOTFOUND, $mName);

@@ -30,7 +30,8 @@ class HtmlTemplateView extends View implements IPCO_IContentParser {
 
 	private $m_oHtmlModel;
 	
-	private $m_sHeadFilter = 'head';
+	private $m_sHeadFilter = '</head>';
+	private $m_sBodyFilter = '</body>';
 	private $m_aLinkFilters = array(
 		'a' => 'href', 
 		'link' => 'href',
@@ -61,10 +62,15 @@ class HtmlTemplateView extends View implements IPCO_IContentParser {
 		return $this->m_oHtmlModel ? $this->m_oHtmlModel->getHead() : '';
 	}
 	
+	public function addBody() {
+		return $this->m_oHtmlModel ? $this->m_oHtmlModel->getBody() : '';
+	}
+	
 	public function parseContent(&$sContent) {
 		$nLength = Encoding::length($sContent);
 		$nState = self::STATE_NORMAL;
 		$aParts = array();
+		$nBegin = 0;
 		$nMarker = 0;
 		$sElement = '';
 		$sAttribute = '';
@@ -75,6 +81,7 @@ class HtmlTemplateView extends View implements IPCO_IContentParser {
 			switch($nState) {
 				case self::STATE_NORMAL:
 					if($sChar === self::CHAR_ELEMENT_BEGIN) {
+						$nBegin = $i;
 						$nIndex = $i;
 						$nIndex = self::_findAndGoPassed($sContent, $nIndex, self::CHAR_CDATA_BEGIN, self::CHAR_CDATA_END);
 						$nIndex = self::_findAndGoPassed($sContent, $nIndex, self::CHAR_COMMENT_BEGIN, self::CHAR_COMMENT_END);
@@ -83,14 +90,12 @@ class HtmlTemplateView extends View implements IPCO_IContentParser {
 							$i = $nIndex;
 						else {
 							$sNextChar = Encoding::substring($sContent, ++$i, 1);
-							if($sNextChar === self::CHAR_ELEMENT_CLOSE) {
+							if($sNextChar === self::CHAR_ELEMENT_CLOSE)
 								$nState = self::STATE_ELEMENT_CLOSURE;
-								$nMarker = $i + 1;
-							}
 							else if($this->_isHtmlNameCharacter($sNextChar)) {
 								$nState = self::STATE_ELEMENT_NAME;
 								$nMarker = $i;
-							}							
+							}
 						}
 					}
 					break;
@@ -157,9 +162,12 @@ class HtmlTemplateView extends View implements IPCO_IContentParser {
 					
 				case self::STATE_ELEMENT_CLOSURE:
 					if($sChar === self::CHAR_ELEMENT_END) {
-						$sElement = Encoding::toLower(Encoding::trim(Encoding::substring($sContent, $nMarker, $i - $nMarker)));
-						if($sElement == $this->m_sHeadFilter) {
-							$aParts []= new IPCO_ContentParserPart($nMarker - 2, 0, 'addHead');
+						$sEnd = Encoding::toLower(Encoding::trim(Encoding::substring($sContent, $nBegin, $i - $nBegin + 1)));
+						if($sEnd == $this->m_sHeadFilter) {
+							$aParts []= new IPCO_ContentParserPart($nBegin - 1, 0, 'addHead');
+						}
+						if($sEnd == $this->m_sBodyFilter) {
+							$aParts []= new IPCO_ContentParserPart($nBegin - 1, 0, 'addBody');
 						}
 						$nState = self::STATE_NORMAL;
 					}
