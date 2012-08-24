@@ -9,6 +9,7 @@
 <script type="text/javascript" src="/theme/admin/js/overlib_shadow.js"></script>
 <script type="text/javascript" src="/theme/admin/js/admin_logic.js"></script>
 <title>Watena - {[getTitle()]}</title>
+{[getAjax()]}
 </head>
 <body onload="PTM_Init();">
 <div id="overDiv" style="position:absolute; visibility:hidden; z-index:1000;"></div>

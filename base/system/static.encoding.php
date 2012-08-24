@@ -100,6 +100,15 @@ class Encoding {
 		}
 	}
 	
+	public static function lastIndexOf($sData, $sSearch, $nOffset = 0, $bCaseInsensitive = false, $sEncoding = null) {
+		if($bCaseInsensitive) {
+			return mb_strripos($sData, $sSearch, $nOffset, $sEncoding === null ? self::$s_sEncoding : $sEncoding);
+		}
+		else {
+			return mb_strrpos($sData, $sSearch, $nOffset, $sEncoding === null ? self::$s_sEncoding : $sEncoding);
+		}
+	}
+	
 	public static function length($sData, $sEncoding = null) {
 		return mb_strlen($sData, $sEncoding === null ? self::$s_sEncoding : $sEncoding);
 	}

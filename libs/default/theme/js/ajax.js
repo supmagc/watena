@@ -1,35 +1,35 @@
-var TMX_aRequest = new Array();
-var TMX_oRequest = null;
-var TMX_sPrefix = 'TMX';
-var TMX_nSendIndex = 0;
-var TMX_nReceiveIndex = 0;
+var AJAX_aRequest = new Array();
+var AJAX_oRequest = null;
+var AJAX_sPrefix = 'AJAX';
+var AJAX_nSendIndex = 0;
+var AJAX_nReceiveIndex = 0;
 
 // debug-function
-function TMX_Error(sMessage) {
+function AJAX_Error(sMessage) {
 	alert(sMessage);
 }
 
 // set the prefix needed for the POST-data
-function TMX_SetPrefix(sPrefix) {
-	TMX_sPrefix = sPrefix;
+function AJAX_SetPrefix(sPrefix) {
+	AJAX_sPrefix = sPrefix;
 }
 
-// parse the resônse-code for client-sided awareness when a server-error occured
-function TMX_ParseResponseCode(sResponse) {
+// parse the resï¿½nse-code for client-sided awareness when a server-error occured
+function AJAX_ParseResponseCode(sResponse) {
 	if(sResponse.substring(0, 1).length == 1) {
 		nCode = parseInt(sResponse.substring(0, 1));
 		if(nCode == 1) {return true;}
-		if(nCode == 2) TMX_Error('Serversided PHP error: ' + sResponse.substring(1));
-		if(nCode == 3) TMX_Error('Problem with POST-values: ' + sResponse.substring(1));
-		if(nCode == 4) TMX_Error('Problem setting TMX-Response object: ' + sResponse.substring(1));
+		if(nCode == 2) AJAX_Error('Serversided PHP error: ' + sResponse.substring(1));
+		if(nCode == 3) AJAX_Error('Problem with POST-values: ' + sResponse.substring(1));
+		if(nCode == 4) AJAX_Error('Problem setting AJAX-Response object: ' + sResponse.substring(1));
 	}
-	TMX_Error('No valid TMX-response-code found: ' + sResponse);
+	AJAX_Error('No valid AJAX-response-code found: ' + sResponse);
 	return false;
 }
 
 // parse the response
-function TMX_ParseResponse(sResponse) {
-	if(TMX_ParseResponseCode(sResponse)) {
+function AJAX_ParseResponse(sResponse) {
+	if(AJAX_ParseResponseCode(sResponse)) {
 		var oReg = new RegExp(/<script(.*?)>(.*?)<\/script>/);
 		var aMatches = "";
 		while((aMatches = oReg.exec(sResponse)) != null) {
@@ -59,7 +59,7 @@ function TMX_ParseResponse(sResponse) {
 }
 
 // create an element reference to load extrenal files in
-function TMX_GetExternalFileElementTag(sFile, bJS) {
+function AJAX_GetExternalFileElementTag(sFile, bJS) {
 	var oFileref = document.createElement(bJS ? 'script' : 'link');
 	if(bJS) {
 		oFileref.setAttribute("type","text/javascript");
@@ -74,22 +74,22 @@ function TMX_GetExternalFileElementTag(sFile, bJS) {
 }
 
 // Add a external file
-function TMX_AddExternalFile(sNewFile, bJS) {
-	var aList = document.getElementsByTagName('head').item(0).appendChild(TMX_GetExternalFileElementTag(sNewFile, bJS));
+function AJAX_AddExternalFile(sNewFile, bJS) {
+	var aList = document.getElementsByTagName('head').item(0).appendChild(AJAX_GetExternalFileElementTag(sNewFile, bJS));
 }
 
 // Replace a loaded external file
-function TMX_ReplaceExternalFile(sOldFile, sNewFile, bJS) {
+function AJAX_ReplaceExternalFile(sOldFile, sNewFile, bJS) {
 	var aList = document.getElementsByTagName(bJS ? 'script' : 'link');
 	for(var i=aList.length; i>=0; --i) {
 		if(aList[i] && aList[i].getAttribute(bJS ? 'src' : 'href') != null && aList[i].getAttribute(bJS ? 'src' : 'href').indexOf(sOldFile)!=-1) {
-			aList[i].parentNode.replaceChild(TMX_GetExternalFileElementTag(sNewFile, bJS), aList[i]);
+			aList[i].parentNode.replaceChild(AJAX_GetExternalFileElementTag(sNewFile, bJS), aList[i]);
  		}
 	}
 }
 
 // Remove a loaded external file
-function TMX_RemoveExternalFile(sOldFile, bJS) {
+function AJAX_RemoveExternalFile(sOldFile, bJS) {
 	var aList = document.getElementsByTagName(bJS ? 'script' : 'link');
 	for(var i=aList.length; i>=0; --i) {
 		if(aList[i] && aList[i].getAttribute(bJS ? 'src' : 'href') != null && aList[i].getAttribute(bJS ? 'src' : 'href').indexOf(sOldFile)!=-1) {
@@ -98,8 +98,8 @@ function TMX_RemoveExternalFile(sOldFile, bJS) {
 	}
 }
 
-// structure that represents a TMX-request (on the client)
-function TMX_Request(oRequest, sURL, PHPCallback, aArgs, aValues) {
+// structure that represents a AJAX-request (on the client)
+function AJAX_Request(oRequest, sURL, PHPCallback, aArgs, aValues) {
 	this.m_oRequest = oRequest;
 	this.m_sURL = sURL;
 	this.m_PHPCallback = PHPCallback;
@@ -107,7 +107,7 @@ function TMX_Request(oRequest, sURL, PHPCallback, aArgs, aValues) {
 	this.m_aValues = aValues;
 	
 	this.GetSendString = function(sPrefix) {
-		var sTmp = sPrefix+'_PHPCallback='+this.m_PHPCallback+'&';
+		var sTmp = 'callback='+this.m_PHPCallback+'&';
 
 		sTmp += sPrefix+'_nArg_Count='+this.m_aArgs.length+'&';
 		for(var i in this.m_aArgs) sTmp += sPrefix+'_sArg_'+i+'='+escape(this.m_aArgs[i])+'&';
@@ -127,7 +127,7 @@ function TMX_Request(oRequest, sURL, PHPCallback, aArgs, aValues) {
 	}
 }
 
-function TMX_CreateRequest() {
+function AJAX_CreateRequest() {
     var request = false;
     try {
     	request = new ActiveXObject('Msxml2.XMLHTTP');
@@ -149,51 +149,51 @@ function TMX_CreateRequest() {
 }
 
 // if a request exists is queued and at the current moment no other request is processed, call the next one
-function TMX_Dispatch() {
-	if(TMX_oRequest == null && TMX_aRequest.length > 0) {
-		setTimeout("TMX_ProcessCountdown(" + (++TMX_nSendIndex) + ");", 30000);
-		var oRequest = TMX_aRequest.shift();
-		TMX_oRequest = oRequest.m_oRequest;
-		TMX_oRequest.open("POST", oRequest.m_sURL, true);
-		TMX_oRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-		TMX_oRequest.setRequestHeader("Content-length", oRequest.GetParamCount());
-		TMX_oRequest.setRequestHeader("Connection", "close");
-		TMX_oRequest.onreadystatechange = TMX_StateChange;
-		TMX_oRequest.send(oRequest.GetSendString(TMX_sPrefix));
+function AJAX_Dispatch() {
+	if(AJAX_oRequest == null && AJAX_aRequest.length > 0) {
+		setTimeout("AJAX_ProcessCountdown(" + (++AJAX_nSendIndex) + ");", 30000);
+		var oRequest = AJAX_aRequest.shift();
+		AJAX_oRequest = oRequest.m_oRequest;
+		AJAX_oRequest.open("POST", oRequest.m_sURL, true);
+		AJAX_oRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		AJAX_oRequest.setRequestHeader("Content-length", oRequest.GetParamCount());
+		AJAX_oRequest.setRequestHeader("Connection", "close");
+		AJAX_oRequest.onreadystatechange = AJAX_StateChange;
+		AJAX_oRequest.send(oRequest.GetSendString(AJAX_sPrefix));
 	}
 	return true;
 }
 
 // add a request to the queue
-function TMX_Send(sURL, PHPCallback, aArgs, aValues) {
-	oRequest = TMX_CreateRequest();
+function AJAX_Send(sURL, PHPCallback, aArgs, aValues) {
+	oRequest = AJAX_CreateRequest();
 	if(oRequest) {
-		TMX_aRequest.push(new TMX_Request(oRequest, sURL, PHPCallback, aArgs, aValues));
-		return TMX_Dispatch();
+		AJAX_aRequest.push(new AJAX_Request(oRequest, sURL, PHPCallback, aArgs, aValues));
+		return AJAX_Dispatch();
 	}
 	else {
-		TMX_Error("Your browser does not support XMLHTTP.");
+		AJAX_Error("Your browser does not support XMLHTTP.");
 		return false;
 	}
 }
 
 // callback function when a request-state changes
-function TMX_StateChange() {
-	if(this != null && this == TMX_oRequest && this.readyState == 4) {
+function AJAX_StateChange() {
+	if(this != null && this == AJAX_oRequest && this.readyState == 4) {
 		if(this.status == 200) {
-			++TMX_nReceiveIndex;
-    		TMX_ParseResponse(this.responseText);
+			++AJAX_nReceiveIndex;
+    		AJAX_ParseResponse(this.responseText);
     	}
   		else {
-    		TMX_Error("Problem retrieving data:" + this.statusText);
+    		AJAX_Error("Problem retrieving data:" + this.statusText);
     	}
-    	TMX_oRequest = null;
-  		TMX_Dispatch();
+    	AJAX_oRequest = null;
+  		AJAX_Dispatch();
   	}
 }
 
-function TMX_ProcessCountdown(nIndex) {
-	if(nIndex > TMX_nReceiveIndex) {
-		TMX_Error("Unable to process the dynamic request, check your connection.");
+function AJAX_ProcessCountdown(nIndex) {
+	if(nIndex > AJAX_nReceiveIndex) {
+		AJAX_Error("Unable to process the dynamic request, check your connection.");
 	}
 }

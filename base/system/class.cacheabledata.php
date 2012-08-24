@@ -1,6 +1,5 @@
 <?php
 
-
 class CacheableData extends Cacheable {
 
 	public static function create(array $aMembers, array $aConfig = array()) {

@@ -14,7 +14,7 @@ class Mapping extends Object {
 			self::$s_aDefaults['host'] = $_SERVER['HTTP_HOST'];
 			self::$s_aDefaults['port'] = $_SERVER['SERVER_PORT'];
 			self::$s_aDefaults['useragent'] = $_SERVER['HTTP_USER_AGENT'];
-			self::$s_aDefaults['offset'] = Encoding::substring($_SERVER['SCRIPT_NAME'], 0, -1 - Encoding::length($_SERVER['SCRIPT_FILENAME']));
+			self::$s_aDefaults['offset'] = Encoding::substring($_SERVER['SCRIPT_NAME'], 0, Encoding::lastIndexOf($_SERVER['SCRIPT_NAME'], '/'));
 			self::$s_aDefaults['method'] = $_SERVER['REQUEST_METHOD'];
 
 			if(isset($_SERVER['REDIRECT_URL'])) {

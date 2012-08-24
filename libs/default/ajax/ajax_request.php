@@ -21,12 +21,11 @@
  */
 class AJAX_Request extends Object {
 	
-	private $m_sUrl;
-	private $m_cbPhp;
-	private $m_cbJs;
-	private $m_nArgCount;
+	private $m_sUrl = null;
+	private $m_sFunction = null;
+	private $m_sCallback = null;
+	private $m_nArgCount = 0;
 	private $m_aValues = array();
-	private $m_bVariableUrl = false;
 	
 	/**
 	 * Create a new request
@@ -36,19 +35,34 @@ class AJAX_Request extends Object {
 	 * @param string $sJSCallback the javascript function that you can call on your html-page
 	 * @param int $nArgCount the number of arguments you can set in your javascript-/php-function
 	 */
-	public function __construct($sUrl, $cbPhp, $cbJs, $nArgCount = 0) {
-		$this->m_sUrl = $sUrl;
-		$this->m_cbPhp = $cbPhp;
-		$this->m_cbJs = $cbJs;
+	public function __construct($sFunction, $nArgCount = 0) {
+		$this->m_sFunction = $sFunction;
 		$this->m_nArgCount = $nArgCount;
 	}
 	
+	public function getFunction() {
+		return $this->m_sFunction;
+	}
+	
 	/**
-	 * If you make the request-URL variable the first parameter when you call the JS-function should be the URL to be called
-	 * default = false
+	 * Set a fixed url that will be called when the function is invoked.
+	 * 
+	 * @param string $sUrl
 	 */
-	public function makeURLVariable() {
-		$this->m_bVariableUrl = true;
+	public function setUrl($sUrl) {
+		$this->m_sUrl = '' . $sUrl;
+	}
+	
+	public function getUrl() {
+		return $this->m_sUrl;
+	}
+	
+	public function setCallback($sCallback) {
+		$this->m_sCallback = $sCallback;
+	}
+	
+	public function getCallback() {
+		return $this->m_sCallback;
 	}
 	
 	/**
@@ -78,28 +92,26 @@ class AJAX_Request extends Object {
 	/**
 	 * Process this request-data
 	 *
-	 * @param bool $bEcho auto-echo this request-data
 	 * @return string
 	 */
-	public function process($bEcho = true) {
+	public function getOutput() {
 		$sRet = '';
-		$sRet .= 'function ' . $this->m_cbJs. '(';
-		if($this->m_bVariableUrl) $sRet .= 'sPUrl' . ($this->m_nArgCount > 0 ? ', ' : '');
+		$sRet .= 'function ' . $this->getFunction() . '(';
+		if(!$this->getUrl()) $sRet .= 'sUrl' . ($this->m_nArgCount > 0 ? ', ' : '');
 		for($i=0 ; $i<$this->m_nArgCount ; ++$i) {
 			$sRet .= "_arg$i" . (($i + 1) < $this->m_nArgCount ? ', ' : '');
 		}
 		$sRet .= ") {";
 		$sRet .= "TMX_Send(";
-		if($this->m_bVariableUrl) $sRet .= '(sPUrl.length > 0 ? sPUrl : "' . rawurlencode($this->m_sUrl) . '")';
-		else $sRet .= '"' . rawurlencode($this->m_sUrl) . '"';
-		$sRet .= ", \"" . rawurlencode(serialize($this->m_cbPhp)) . "\", [";
+		if($this->getUrl()) $sRet .= '(sUrl.length > 0 ? sUrl : "' . rawurlencode($this->getUrl()) . '")';
+		else $sRet .= '"' . rawurlencode($this->getUrl()) . '"';
+		$sRet .= ", \"" . $this->getCallback() . "\", [";
 		for($i=0 ; $i<$this->m_nArgCount ; ++$i) {
 			$sRet .= ($i > 0 ? ', ' : '') . "_arg$i";
 		}
 		$sRet .= "], \"" . rawurlencode(json_encode($this->m_aValues)) . "\");";
 		$sRet .= "}\n";
 		
-		if($bEcho) echo $sRet;
 		return $sRet;
 	}
 }

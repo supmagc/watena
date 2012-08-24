@@ -39,11 +39,11 @@ class AJAX_Client {
 	 * @param bool $bEcho choose if all data should be auto-echo-ed
 	 * @return string
 	 */
-	public function __toString() {
+	public function getOutput() {
 		$sRet = '';
 		$sRet .= '<script language="javascript 1.8" type="text/javascript" src="'.$this->m_sJSFile.'"></script><script language="javascript 1.8" type="text/javascript">TMX_sPrefix = "'.$this->m_sPrefix.'"' . "\n";
 		foreach($this->m_aRequests as $oReq) {
-			$sRet .= $oReq->Process(false);
+			$sRet .= $oReq->getOutput(false);
 		}
 		$sRet .= '</script>';		
 		return $sRet;

@@ -8,6 +8,7 @@ class HtmlModel extends Model {
 	private $m_sDescription = null;
 	private $m_aKeywords = null;
 	private $m_aHeads = array();
+	private $m_aBodies = array();
 	
 	public function getRoot() {
 		return $this->getWatena()->getMapping()->getRoot();
@@ -36,6 +37,23 @@ class HtmlModel extends Model {
 	
 	public function clearHead() {
 		$this->m_aHeads = array();
+	}
+	
+	public function addBody($mContent) {
+		$this->clearBody();
+		$this->addBody($mContent);
+	}
+	
+	public function setBody($mContent) {
+		$this->m_aBodies = array('' . $mContent);
+	}
+	
+	public function getBody() {
+		return implode("\n", $this->m_aBodies);
+	}
+	
+	public function clearBody() {
+		$this->m_aBodies = array();
 	}
 	
 	public function setTitle($sTitle) {
