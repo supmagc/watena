@@ -39,20 +39,13 @@ class AJAX_Client {
 	 * @param bool $bEcho choose if all data should be auto-echo-ed
 	 * @return string
 	 */
-	public function process($bEcho = true) {
-		if(!$this->m_bProcessed) $this->m_bProcessed = true;
-		else echo '<-- Unable to process the same TMX instance a second time -->';
-
+	public function __toString() {
 		$sRet = '';
-		if($bEcho) echo '<script language="javascript 1.8" type="text/javascript" src="'.$this->m_sJSFile.'"></script><script language="javascript 1.8" type="text/javascript">TMX_sPrefix = "'.$this->m_sPrefix.'"' . "\n";
-		else $sRet .= '<script language="javascript 1.8" type="text/javascript" src="'.$this->m_sJSFile.'"></script><script language="javascript 1.8" type="text/javascript">TMX_sPrefix = "'.$this->m_sPrefix.'"' . "\n";
+		$sRet .= '<script language="javascript 1.8" type="text/javascript" src="'.$this->m_sJSFile.'"></script><script language="javascript 1.8" type="text/javascript">TMX_sPrefix = "'.$this->m_sPrefix.'"' . "\n";
 		foreach($this->m_aRequests as $oReq) {
-			if($bEcho) $oReq->Process(true);
 			$sRet .= $oReq->Process(false);
 		}
-		if($bEcho) echo '</script>';
-		else $sRet .= '</script>';
-		
+		$sRet .= '</script>';		
 		return $sRet;
 	}
 }

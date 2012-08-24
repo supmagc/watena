@@ -7,6 +7,7 @@ class HtmlModel extends Model {
 	private $m_sTitle = null;
 	private $m_sDescription = null;
 	private $m_aKeywords = null;
+	private $m_aHeads = array();
 	
 	public function getRoot() {
 		return $this->getWatena()->getMapping()->getRoot();
@@ -18,6 +19,23 @@ class HtmlModel extends Model {
 	
 	public function getLocal() {
 		return $this->getWatena()->getMapping()->getLocal();
+	}
+	
+	public function addHead($mContent) {
+		$this->clearHead();
+		$this->addHead($mContent);
+	}
+	
+	public function setHead($mContent) {
+		$this->m_aHeads = array('' . $mContent);
+	}
+	
+	public function getHead() {
+		return implode("\n", $this->m_aHeads);
+	}
+	
+	public function clearHead() {
+		$this->m_aHeads = array();
 	}
 	
 	public function setTitle($sTitle) {

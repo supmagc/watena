@@ -27,7 +27,10 @@ class HtmlTemplateView extends View implements IPCO_IContentParser {
 	const STATE_ATTRIBUTE_VALUE = 7;
 	const STATE_ATTRIBUTE_VALUE_ESCAPED = 7;
 	const STATE_DOCTYPE = 8;
+
+	private $m_oHtmlModel;
 	
+	private $m_sHeadFilter = 'head';
 	private $m_aLinkFilters = array(
 		'a' => 'href', 
 		'link' => 'href',
@@ -42,6 +45,7 @@ class HtmlTemplateView extends View implements IPCO_IContentParser {
 	}
 	
 	public function render(Model $oModel = null) {
+		if(is_a($oModel, 'HtmlModel')) $this->m_oHtmlModel = $oModel;
 		$oPlugin = parent::getWatena()->getContext()->getPlugin('TemplateLoader');
 		$oGenerator = $oPlugin->load(parent::getConfig('template', 'index.tpl'), $this);
 		$oGenerator->componentPush($oModel);
@@ -49,7 +53,12 @@ class HtmlTemplateView extends View implements IPCO_IContentParser {
 	}
 	
 	public function addMappingRoot($sElement, $sAttribute, $sValue) {
+		// TODO: discover files !!
 		return parent::getWatena()->getMapping()->getRoot() . $sValue;
+	}
+	
+	public function addHead() {
+		return $this->m_oHtmlModel ? $this->m_oHtmlModel->getHead() : '';
 	}
 	
 	public function parseContent(&$sContent) {
@@ -74,8 +83,10 @@ class HtmlTemplateView extends View implements IPCO_IContentParser {
 							$i = $nIndex;
 						else {
 							$sNextChar = Encoding::substring($sContent, ++$i, 1);
-							if($sNextChar === self::CHAR_ELEMENT_CLOSE)
+							if($sNextChar === self::CHAR_ELEMENT_CLOSE) {
 								$nState = self::STATE_ELEMENT_CLOSURE;
+								$nMarker = $i + 1;
+							}
 							else if($this->_isHtmlNameCharacter($sNextChar)) {
 								$nState = self::STATE_ELEMENT_NAME;
 								$nMarker = $i;
@@ -92,7 +103,7 @@ class HtmlTemplateView extends View implements IPCO_IContentParser {
 							$nState = self::STATE_NORMAL;
 						else if(is_whitespace($sChar))
 							$nState = self::STATE_ELEMENT_ATTRIBUTES;
-						$sElement = Encoding::substring($sContent, $nMarker, $i - $nMarker);
+						$sElement = Encoding::toLower(Encoding::substring($sContent, $nMarker, $i - $nMarker));
 					}
 					break;
 					
@@ -110,7 +121,7 @@ class HtmlTemplateView extends View implements IPCO_IContentParser {
 				case self::STATE_ATTRIBUTE_NAME:
 					if(!$this->_isHtmlNameCharacter($sChar)) {
 						$nState = self::STATE_ATTRIBUTE_QUOTE;
-						$sAttribute = Encoding::substring($sContent, $nMarker, $i - $nMarker);
+						$sAttribute = Encoding::toLower(Encoding::substring($sContent, $nMarker, $i - $nMarker));
 					}
 					break;
 					
@@ -145,8 +156,13 @@ class HtmlTemplateView extends View implements IPCO_IContentParser {
 					break;
 					
 				case self::STATE_ELEMENT_CLOSURE:
-					if($sChar === self::CHAR_ELEMENT_END)
+					if($sChar === self::CHAR_ELEMENT_END) {
+						$sElement = Encoding::toLower(Encoding::trim(Encoding::substring($sContent, $nMarker, $i - $nMarker)));
+						if($sElement == $this->m_sHeadFilter) {
+							$aParts []= new IPCO_ContentParserPart($nMarker - 2, 0, 'addHead');
+						}
 						$nState = self::STATE_NORMAL;
+					}
 					break;
 					
 				case self::STATE_DOCTYPE:

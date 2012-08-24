@@ -51,7 +51,10 @@ class IPCO_Compiled_d__www_watena_libs_admin_templates_admin_main_tpl extends IP
 <title>Watena - ';
 			$_ob []= '' . parent::processMember('getTitle', null);
 			$_ob []= '' . '</title>
-</head>
+';
+			$_ob []= '' . parent::callContentParser('addHead', array (
+));
+			$_ob []= '' . '</head>
 <body onload="PTM_Init();">
 <div id="overDiv" style="position:absolute; visibility:hidden; z-index:1000;"></div>
 <div id="Container"><img src="';
