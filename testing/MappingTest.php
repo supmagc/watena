@@ -4,11 +4,11 @@ class MappingTest extends PHPUnit_Framework_TestCase {
 	
 	public function testDefault() {
 		$oMapping = watena()->getMapping();
-		$this->assertEquals($oMapping->getRoot(), 'http://localhost');
-		$this->assertEquals($oMapping->getFull(), 'http://localhost/');
+		$this->assertEquals($oMapping->getRoot(), 'http://localhost/watena');
+		$this->assertEquals($oMapping->getFull(), 'http://localhost/watena/');
 		$this->assertEquals($oMapping->getHost(), 'localhost');
 		$this->assertEquals($oMapping->getLocal(), '/');
-		$this->assertEquals($oMapping->getOffset(), '');
+		$this->assertEquals($oMapping->getOffset(), '/watena');
 		$this->assertEquals($oMapping->getPort(), 80);
 		$this->assertEquals($oMapping->getUseragent(), 'PHPUnit');
 	}
