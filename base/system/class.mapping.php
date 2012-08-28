@@ -10,13 +10,14 @@ class Mapping extends Object {
 	public final function __construct($sLocal = null, array $aParams = array()) {
 		if(!is_array(self::$s_aDefaults)) {
 			self::assure();
+			dump($_SERVER);
 			self::$s_aDefaults = array();
 			self::$s_aDefaults['host'] = $_SERVER['HTTP_HOST'];
 			self::$s_aDefaults['port'] = $_SERVER['SERVER_PORT'];
+			self::$s_aDefaults['method'] = $_SERVER['REQUEST_METHOD'];
 			self::$s_aDefaults['useragent'] = $_SERVER['HTTP_USER_AGENT'];
 			self::$s_aDefaults['offset'] = Encoding::substring($_SERVER['SCRIPT_NAME'], 0, Encoding::lastIndexOf($_SERVER['SCRIPT_NAME'], '/'));
-			self::$s_aDefaults['method'] = $_SERVER['REQUEST_METHOD'];
-
+			
 			if(isset($_SERVER['REDIRECT_URL'])) {
 				self::$s_aDefaults['local'] = Encoding::substring($_SERVER['REDIRECT_URL'], Encoding::length(self::$s_aDefaults['offset']));
 			}
@@ -27,7 +28,7 @@ class Mapping extends Object {
 			else {
 				self::$s_aDefaults['local'] = '/';
 			}
-			
+				
 			self::$s_aDefaults['parts'] = explode_trim('/', self::$s_aDefaults['local']);		
 			self::$s_aDefaults['root'] = 'http://' . self::$s_aDefaults['host'] . (self::$s_aDefaults['port'] != 80 ? ':'.self::$s_aDefaults['port'] : '') . self::$s_aDefaults['offset'];
 			self::$s_aDefaults['full'] = self::$s_aDefaults['root'] . self::$s_aDefaults['local'];
@@ -182,12 +183,15 @@ class Mapping extends Object {
 	}
 	
 	public final static function assure() {
-		if(!isset($_SERVER['HTTP_HOST'])) throw new AssureException("Make sure \$_SERVER['HTTP_HOST'] is set!");
-		if(!isset($_SERVER['SERVER_PORT'])) throw new AssureException("Make sure \$_SERVER['SERVER_PORT'] is set!");
-		if(!isset($_SERVER['SCRIPT_NAME'])) throw new AssureException("Make sure \$_SERVER['SCRIPT_NAME'] is set!");
-		if(!isset($_SERVER['SCRIPT_FILENAME'])) throw new AssureException("Make sure \$_SERVER['SCRIPT_FILENAME'] is set!");
-		if(!isset($_SERVER['HTTP_USER_AGENT'])) throw new AssureException("Make sure \$_SERVER['HTTP_USER_AGENT'] is set!");
-		if(!isset($_SERVER['REQUEST_METHOD'])) throw new AssureException("Make sure \$_SERVER['REQUEST_METHOD'] is set!");
+		if(!defined('PATH_ROOT')) throw new AssureException("Assure PATH_ROOT is set!");
+		if(!isset($_SERVER['HTTP_HOST'])) throw new AssureException("Assure \$_SERVER['HTTP_HOST'] is set!");
+		if(!isset($_SERVER['SERVER_PORT'])) throw new AssureException("Assure \$_SERVER['SERVER_PORT'] is set!");
+		if(!isset($_SERVER['SCRIPT_NAME']) ) throw new AssureException("Assure \$_SERVER['SCRIPT_NAME'] is set!");
+		if(!isset($_SERVER['REQUEST_METHOD'])) throw new AssureException("Assure \$_SERVER['REQUEST_METHOD'] is set!");
+		if(!isset($_SERVER['SCRIPT_FILENAME'])) throw new AssureException("Assure \$_SERVER['SCRIPT_FILENAME'] is set!");
+		if(!isset($_SERVER['HTTP_USER_AGENT'])) throw new AssureException("Assure \$_SERVER['HTTP_USER_AGENT'] is set!");
+		if(!Encoding::endsWith($_SERVER['SCRIPT_FILENAME'], $_SERVER['SCRIPT_NAME'])) throw new AssureException("Assure \$_SERVER['SCRIPT_FILENAME'] ends with \$_SERVER['SCRIPT_NAME']!");
+		if(realpath($_SERVER['SCRIPT_FILENAME']) !== realpath(PATH_ROOT . '/index.php')) throw new AssureException("Assure \$_SERVER['SCRIPT_FILENAME'] points to index.php in the root!");
 		return true;
 	}
 }
