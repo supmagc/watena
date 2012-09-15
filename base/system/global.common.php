@@ -31,7 +31,7 @@ function dump($mVar) {
  * If an none existing key is found, it's created and set to the value
  * The default behaviour sets the ending index to the provided value
  * If you only want to assure this valkue is set, even with an existing value
- * you need to specify the $bOverwrite flag as true
+ * you need to specify the $bOverwrite flag. (default: true)
  * 
  * @param array $arr
  * @param array $aKeys
@@ -71,7 +71,7 @@ function array_assure(array &$arr, array $aKeys, $mValue = array(), $bOverwrite 
  * Retrieve the values within the given array structure
  * The value lookup happens as defined by the keys array
  * If the key mapping cannot proceed (as readonly) the function
- * returns a default value.
+ * returns a default value. (default: null)
  * This value can be specified as a third optional parameter
  * 
  * @param array $arr
