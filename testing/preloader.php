@@ -1,13 +1,6 @@
 <?php
 require_once realpath(dirname(__FILE__) . '/../base/watena.php');
 
-$_SERVER['HTTP_HOST'] = 'localhost';
-$_SERVER['HTTP_USER_AGENT'] = 'PHPUnit';
-$_SERVER['REQUEST_METHOD'] = 'GET';
-$_SERVER['SERVER_PORT'] = 80;
-$_SERVER['SCRIPT_FILENAME'] = str_replace('\\', '/', realpath(dirname(__FILE__) . '/../index.php'));
-$_SERVER['SCRIPT_NAME'] = '/watena/index.php';
-
 class TestConfig extends WatenaConfig {
 
 	public function libraries($sConfigName) {

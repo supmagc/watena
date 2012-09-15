@@ -84,6 +84,12 @@ class WebResponse extends Object {
 	public function makeCookies() {
 		NYI();
 	}
+	
+	public function saveToFile($sFilePath) {
+		$fp = fopen($sFilePath, 'wb');
+		fwrite($fp, $this->getContent());
+		fclose($fp);
+	}
 
 	public function getHeader($sKey) {
 		return isset($this->m_aHeaders[$sKey]) ? $this->m_aHeaders[$sKey] : false;
