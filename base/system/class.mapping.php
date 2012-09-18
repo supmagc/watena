@@ -97,17 +97,7 @@ class Mapping extends Object {
 	 * @return string
 	 */
 	public final function getBase() {
-		
-	}
-	
-	/**
-	 * example: https://subdomain.example.org[:80]/path-to-site/directory/script.php?name=value
-	 * => https://subdomain.example.org[:80]/path-to-site
-	 * 
-	 * @return string
-	 */
-	public final function getRoot() {
-		return $this->getVariable('root');
+		return $this->getVariable('host');
 	}
 	
 	/**
@@ -128,6 +118,16 @@ class Mapping extends Object {
 	 */
 	public final function getOffset() {
 		return $this->getVariable('offset');
+	}
+	
+	/**
+	* example: https://subdomain.example.org[:80]/path-to-site/directory/script.php?name=value
+	* => https://subdomain.example.org[:80]/path-to-site
+	*
+	* @return string
+	*/
+	public final function getRoot() {
+		return $this->getVariable('root');
 	}
 	
 	/**
