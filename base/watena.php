@@ -98,7 +98,6 @@ class WatenaLoader {
 		require_once PATH_BASE . '/system/exception.filepermissionexception.php';
 		require_once PATH_BASE . '/system/class.object.php';
 		require_once PATH_BASE . '/system/class.echolog.php';
-//		require_once PATH_BASE . '/system/class.configurable.php';
 		require_once PATH_BASE . '/system/class.cacheable.php';
 		require_once PATH_BASE . '/system/class.cacheablefile.php';
 		require_once PATH_BASE . '/system/class.cacheabledirectory.php';

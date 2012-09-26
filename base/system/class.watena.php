@@ -22,7 +22,7 @@ class Watena extends Object {
 		$this->m_oTime = new Time();
 		$this->m_oCache = new CacheEmpty();
 		$this->m_oContext = new Context();
-		$this->m_oMapping = new Mapping();
+		$this->m_oMapping = new Mapping(null, $_GET);
 		
 		// Load all specified logProcessors
 		Logger::setDefaultFilterLevel($this->getConfig()->getLoggerLevel());
@@ -163,6 +163,7 @@ class Watena extends Object {
 	 */
 	public final function assureEnvironment() {
 		//set_include_path(get_include_path() . PATH_SEPARATOR . str_replace(',', PATH_SEPARATOR, self::getConfig('INCLUDE', '')));
+		Mapping::init();
 		Encoding::init($this->getConfig()->getCharset());
 		Time::init($this->getConfig()->getTimeZone(), $this->getConfig()->getTimeFormat());
 		if(!is_writable(PATH_DATA)) die('Data path is not writeable.');
