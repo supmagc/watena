@@ -4,7 +4,7 @@ abstract class WatenaConfig {
 
 	private $m_sConfigName;
 	
-	public final function __construct($sConfigName) {
+	public final function __construct($sConfigName = null) {
 		$this->m_sConfigName = $sConfigName;
 	}
 	
@@ -61,7 +61,7 @@ abstract class WatenaConfig {
 
 class WatenaLoader {
 	
-	public static function run($sConfigClass, $sConfigName) {
+	public static function run($sConfigClass, $sConfigName = null) {
 		if(!defined('PATH_BASE')) define('PATH_BASE', realpath(dirname(__FILE__)));
 		if(!defined('PATH_DATA')) define('PATH_DATA', realpath(dirname(__FILE__) . '/../data'));
 		if(!defined('PATH_LIBS')) define('PATH_LIBS', realpath(dirname(__FILE__) . '/../libs'));

@@ -2,6 +2,10 @@
 
 class MappingTest extends PHPUnit_Framework_TestCase {
 	
+	public function setUp() {
+		
+	}
+	
 	public function testDefault() {
 		$oMapping = watena()->getMapping();
 		$this->assertEquals('http://unknown', $oMapping->getRoot());
@@ -42,6 +46,10 @@ class MappingTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals('http://unknown/helloworld?oeps=noope#linkage', $oMapping->getFull());
 		$this->assertNull($oMapping->getParam('unknown'));
 		$this->assertNull($oMapping->getPart(1));
+	}
+	
+	public function tearDown() {
+		
 	}
 }
 
