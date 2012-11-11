@@ -2,8 +2,9 @@
 
 class WebRequest extends Object {
 
-	private $m_sScheme;
 	private $m_sUrl;
+	private $m_sHost;
+	private $m_sScheme;
 	private $m_sMethod;
 	private $m_oCurl = null;
 	private $m_aOptions = array();
@@ -43,9 +44,17 @@ class WebRequest extends Object {
 	public final function getCurl() {
 		return $this->m_oCurl;
 	}
+	
+	public function setUrl($sUrl) {
+		$aData = parse_url($sUrl);
+		$this->m_sScheme = '';
+		$this->m_sHost = '';
+		$this->m_nPort = '';
+		$this->m_sPath = '';
+	}
 
 	public final function getUrl() {
-		return $this->m_sUrl;
+		return $this->getScheme() . '://' . $this->getHost() . ($this->m_nPort != 80 ? ":{$this->m_nPort}" : '') . $this->m_sPath;
 	}
 
 	public final function getScheme() {
@@ -77,6 +86,14 @@ class WebRequest extends Object {
 	public final function addFields(array $aFields) {
 		$this->m_aFields = array_merge($this->m_aFields, $aFields);
 	}
+	
+	public final function getFields() {
+		return $this->m_aFields;
+	}
+	
+	public final function getFieldsAsString() {
+		
+	} 
 
 	public final function addHeader($sKey, $mValue) {
 		$this->m_aHeaders[$sKey] = $mValue;
@@ -86,12 +103,32 @@ class WebRequest extends Object {
 		$this->m_aHeaders = array_merge($this->m_aHeaders, $aHeaders);
 	}
 	
+	public final function getHeaders() {
+		return $this->m_aHeaders;
+	}
+	
+	public final function getHeadersAsList() {
+		return array_map(create_function('$a, $b', 'return $a.\': \'.$b;'), array_keys($this->m_aHeaders), array_values($this->m_aHeaders));
+	}
+	
+	public final function getHeadersAsString() {
+		return implode("\r\n", $this->getHeadersAsList());
+	}
+	
 	public final function addCookie($sKey, $mValue) {
 		$this->m_aCookies[$sKey] = $mValue;
 	}
 	
-	public final function addCookies($aCookies) {
+	public final function addCookies(array $aCookies) {
 		$this->m_aCookies = array_merge($this->m_aCookies, $aCookies);
+	}
+	
+	public final function getCookies() {
+		return $this->m_aCookies;
+	}
+	
+	public final function getCookiesAsString() {
+		return http_build_query($this->m_aCookies, null, '; ');
 	}
 	
 	public final function takeCookies() {
@@ -99,10 +136,8 @@ class WebRequest extends Object {
 	}
 	
 	public final function send() {
-		$aHeaders = array_map(create_function('$a, $b', 'return $a.\': \'.$b;'), array_keys($this->m_aHeaders), array_values($this->m_aHeaders));
-		$sCookies = http_build_query($this->m_aCookies, null, '; ');
-		curl_setopt($this->m_oCurl, CURLOPT_HTTPHEADER, $aHeaders);
-		curl_setopt($this->m_oCurl, CURLOPT_COOKIE, $sCookies);
+		curl_setopt($this->m_oCurl, CURLOPT_HTTPHEADER, $this->getHeadersAsList());
+		curl_setopt($this->m_oCurl, CURLOPT_COOKIE, $this->getCookiesAsString());
 		curl_setopt_array($this->m_oCurl, $this->m_aOptions);
 
 		// Add fields and method !!

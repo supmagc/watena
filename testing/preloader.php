@@ -46,5 +46,6 @@ class TestConfig extends WatenaConfig {
 	}
 }
 
+define('NMVC', true);
 WatenaLoader::run('TestConfig', 'testing');
 ?>
