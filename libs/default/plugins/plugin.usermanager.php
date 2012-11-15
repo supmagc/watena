@@ -22,6 +22,10 @@ class UserManager extends Plugin {
 	public function init() {
 		self::$s_oSingleton = $this;
 	}
+
+	public static function setDatabaseConnection(DbConnection $oConnection) {
+		self::$s_oSingleton->m_oDatabaseConnection = $oConnection;
+	}
 	
 	/**
 	 * @return DbConnection

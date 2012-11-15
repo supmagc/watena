@@ -78,7 +78,10 @@ function array_assure(array &$arr, array $aKeys, $mValue = array(), $bOverwrite 
  * @param array $aKeys
  * @param mixed $mDefault
  */
-function array_value(array &$arr, array $aKeys, $mDefault = null) {
+function array_value(array &$arr, $aKeys, $mDefault = null) {
+	// Make sure keys is an array, even when single value
+	if(!is_array($aKeys)) $aKeys = array($aKeys);
+	
 	// Copy a reference to the array for internal usage
 	// In contrast to array_assure, we use this reference as a helper
 	// This optimisation saves us a couple lines
