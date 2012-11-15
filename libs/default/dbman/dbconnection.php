@@ -48,7 +48,7 @@ class DbConnection {
 		if($this->m_oConnection === null) {
 			$this->m_oConnection = new PDO($this->getDsn(), $this->getUser(), $this->getPass(), array(
 				PDO::ATTR_PERSISTENT => false, 
-				PDO::ATTR_ERRMODE => PDO::ERRMODE_WARNING
+				PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
 			));
 			$this->m_oConnection->query('SET names '.Encoding::replace('-', '', Encoding::charset()).';'); // Set to UTC
 			$this->m_oConnection->query('SET time_zone = \''.date('P').'\';'); // Set to UTC

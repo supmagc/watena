@@ -66,7 +66,7 @@ class User extends UserVerifiable {
 	}
 	
 	public function setBirthday($mValue) {
-		if(Encoding::regMatch('[0-9]{1,2}/[0-9]{1,2}/[0-9]{4}', $sData)) {
+		if(Encoding::regMatch('[0-9]{1,2}/[0-9]{1,2}/[0-9]{4}', '' . $mValue)) {
 			$this->setDataValue('birthday', $mValue);
 			return true;
 		}

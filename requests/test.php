@@ -2,13 +2,61 @@
 define('NMVC', true);
 include '../index.php';
 set_time_limit(600);
+ini_set('memory_limit', '256M');
 
-for($i = 0 ; $i<500 ; ++$i) {
-	$oRequest = new WebRequest("http://www.oohfoto.be/ana%C3%AFs/images/anai_s_{$i}_1.jpg");
-	$oResponse = $oRequest->send();
-	if($oResponse->getContentSize() > 0 && $oResponse->getHttpCode() == 200 && !Encoding::contains($oResponse->getContent(), 'Not Found')) {
-		file_put_contents("D:/www/Anais/{$i}_1.jpg", file_get_contents("http://www.oohfoto.be/ana%C3%AFs/images/anai_s_{$i}_1.jpg"));
-		echo "http://www.oohfoto.be/ana%C3%AFs/images/anai_s_{$i}.jpg => D:/www/Anais/$i.jpg";
+require_plugin('DatabaseManager');
+require_plugin('UserManager');
+
+
+include 'export.php';
+//$oConnection = DatabaseManager::getConnection('toevla');
+$oConnection = new DbConnection('mysql:host=flandersisafestival.com;port=3306;dbname=toevla;charset=UTF-8;', 'remote', 'UNDERd0g');
+//$oConnection = new DbConnection('mysql:host=online-3d-games.com;port=3306;dbname=toevla;charset=UTF-8;', 'remote', 'UNDERd0g');
+UserManager::setDatabaseConnection($oConnection);
+$sTokens = 'AAABuTmZApA3oBAMBYZCiwE1RXbfOspwZB9ZC5lREdWsJANw44yQDlf2ajruurwSHalStBzSde4wK3ZBEtZBuljXd170xUxJ9QNpEnKNHxZAxAZDZD';
+$nTimeStart = Time() - 60*60*24*30*4.5;
+$nTimeStop = Time();
+
+$nCount = 0;
+
+foreach($aData as $aRow) {
+
+	if($nCount++ < 3600) continue;
+	
+	$aRow = json_decode($aRow['facebookData'], true);
+	$nId = array_value($aRow, 'id');
+	$sUserName = array_value($aRow, 'username');
+	$sGender = array_value($aRow, 'gender');
+	$sBirthday = array_value($aRow, 'birthday');
+	$sFirstName = array_value($aRow, 'first_name');
+	$sLastName = array_value($aRow, 'last_name');
+	$sLocale = array_value($aRow, 'locale');
+	$sTimezone = array_value($aRow, 'timezone');
+	$sTimestamp = date('Y-m-d h:i:s', rand($nTimeStart, $nTimeStop));
+	
+	if($sUserName && $nId) {
+		try {
+			$oUser = User::create($sUserName);
+			$oUser->setGender($sGender);
+			$oUser->setBirthday($sBirthday);
+			$oUser->setFirstname($sFirstName);
+			$oUser->setLastname($sLastName);
+			$oUser->setTimezone($sTimezone);
+			$oUser->setLocale($sLocale);
+			
+			$oConnection->query('UPDATE `user` SET `timestamp` = :t WHERE `ID` = :i', array('t' => $sTimestamp, 'i' => $oUser->getId()));
+			$oConnection->insert('user_connection', array(
+				'userId' => $oUser->getId(),
+				'provider' => 'ProviderFacebook',
+				'connectionId' => $nId,
+				'connectionData' => json_encode($aRow),
+				'connectionTokens' => json_encode(str_shuffle($sTokens)),
+				'timestamp' => $sTimestamp
+			));
+		}
+		catch(Exception $e) {
+			echo $e . "<br />\n";
+		}
 	}
 }
 ?>

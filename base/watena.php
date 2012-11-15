@@ -111,6 +111,7 @@ class WatenaLoader {
 		require_once PATH_BASE . '/system/class.filter.php';
 		require_once PATH_BASE . '/system/class.filtergroup.php';
 		require_once PATH_BASE . '/system/class.plugin.php';
+		require_once PATH_BASE . '/system/class.url.php';
 		require_once PATH_BASE . '/system/class.mapping.php';
 		require_once PATH_BASE . '/system/class.model.php';
 		require_once PATH_BASE . '/system/class.view.php';
