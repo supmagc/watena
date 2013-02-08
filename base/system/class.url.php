@@ -120,13 +120,13 @@ class Url extends Object {
 	public function toString() {
 		$sReturn = "{$this->m_sScheme}://";
 		if($this->hasAuthentication()) {
-			$sReturn .= rawurlencode($this->m_sUser) . ':' . rawurlencode($this->m_sPass);
+			$sReturn .= rawurlencode($this->m_sUser) . ':' . rawurlencode($this->m_sPass) . '@';
 		}
 		$sReturn .= $this->m_sHost;
 		if($this->m_nPort != 80) {
 			$sReturn .= ":{$this->m_nPort}";
 		}
-		$sReturn .= rawurlencode($this->m_sPath);
+		$sReturn .= $this->m_sPath;
 		if($this->hasParameters()) {
 			$sReturn .= '?' . http_build_query($this->m_aParams, null, '&');
 		}

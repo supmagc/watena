@@ -1,8 +1,5 @@
 <?php
 
-require_once PATH_BASE . '/system/static.encoding.php';
-require_once PATH_BASE . '/system/static.logger.php';
-
 function NYI() {
 	terminate('NYI');
 }
