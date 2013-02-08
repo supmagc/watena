@@ -1,6 +1,6 @@
 <?php
 
-class WebRequestTest extends PHPUnit_Framework_TestCase {
+class TestWebRequest extends PHPUnit_Framework_TestCase {
 	
 	public function setUp() {
 	}

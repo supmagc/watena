@@ -88,7 +88,9 @@ class WatenaLoader {
 		// ############################################################
 		require_once PATH_BASE . '/system/global.common.php';
 		require_once PATH_BASE . '/system/global.requirements.php';
+		require_once PATH_BASE . '/system/static.encoding.php';
 		require_once PATH_BASE . '/system/static.logger.php';
+		require_once PATH_BASE . '/system/static.request.php';
 		require_once PATH_BASE . '/system/interface.ilogprocessor.php';
 		require_once PATH_BASE . '/system/interface.ilogfilter.php';
 		require_once PATH_BASE . '/system/interface.icache.php';

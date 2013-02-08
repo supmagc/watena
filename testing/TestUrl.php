@@ -1,6 +1,6 @@
 <?php
 
-class UrlTest extends PHPUnit_Framework_TestCase {
+class TestUrl extends PHPUnit_Framework_TestCase {
 	
 	const URL = 'proto://user:pass@example.com:123/path/dir/file.xs?myStr=test&myVal=123#placeHolder';
 	
@@ -28,25 +28,26 @@ class UrlTest extends PHPUnit_Framework_TestCase {
 		$oUrl->setScheme('ftp');
 		$this->assertEquals('ftp', $oUrl->getScheme());
 		
-		$oUrl->setUserName('Jelle Voet');
-		$this->assertEquals('Jelle Voet', $oUrl->getUserName());
+		$oUrl->setUserName('Jelle Voet@me.io');
+		$this->assertEquals('Jelle Voet@me.io', $oUrl->getUserName());
 		
-		$oUrl->setUserName('Jelle Voet');
-		$this->assertEquals('Jelle Voet', $oUrl->getUserName());
+		$oUrl->setPassword('zer$://sdc');
+		$this->assertEquals('zer$://sdc', $oUrl->getPassword());
 		
-		$oUrl->setUserName('Jelle Voet');
-		$this->assertEquals('Jelle Voet', $oUrl->getUserName());
+		$oUrl->setHost('127.0.0.1');
+		$this->assertEquals('127.0.0.1', $oUrl->getHost());
 		
-		$oUrl->setUserName('Jelle Voet');
-		$this->assertEquals('Jelle Voet', $oUrl->getUserName());
+		$oUrl->setPort('91');
+		$this->assertEquals(91, $oUrl->getPort());
 		
-		$oUrl->setUserName('Jelle Voet');
-		$this->assertEquals('Jelle Voet', $oUrl->getUserName());
+		$oUrl->setPath('mine/test');
+		$this->assertEquals('/mine/test', $oUrl->getPath());
 		
-		$oUrl->setUserName('Jelle Voet');
-		$this->assertEquals('Jelle Voet', $oUrl->getUserName());
+		$oUrl->setAnchor('page-link 12');
+		$this->assertEquals('page-link 12', $oUrl->getAnchor());
 		
-		$this->assertEquals('ftp://Jelle', $oUrl->toString());
+		$oUrl->setParameters(array());
+		$this->assertEquals('ftp://Jelle%20Voet%40me.io:zer%24%3A%2F%2Fsdc@127.0.0.1:91/mine/test#page-link%2012', $oUrl->toString());
 	}
 	
 	public function tearDown() {

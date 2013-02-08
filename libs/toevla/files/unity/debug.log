@@ -1332,3 +1332,9 @@ Request-error: Failed downloading http://farm7.staticflickr.com/6236/6329013582_
 2012/07/06 08:16:05	127.0.0.1	InvalidProgramException: Unable to prefetch the crossdomain.xml from 127.0.0.1 at:
 	SmartFoxInterface.Connect ()
 	LoginHelper+<Login_Asyn>c__Iterator8.MoveNext ()
+2012/07/31 23:53:40	127.0.0.1	InvalidProgramException: Unable to prefetch the crossdomain.xml from 127.0.0.1 at:
+	SmartFoxInterface.Connect ()
+	LoginHelper+<Login_Asyn>c__Iterator7.MoveNext ()
+	UnityEngine.MonoBehaviour:StartCoroutine(IEnumerator)
+	LoginHelper:Login(String)
+	ToeVlaLoginProceed:OnGUI()
