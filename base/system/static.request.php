@@ -47,12 +47,12 @@ class Request {
 	
 	/**
 	 * Retrieve the portnumber as integer of the current request.
-	 * If no port is specified, this will default to 80.
+	 * If no port is specified, this will default to 80 for http and 443 for https.
 	 *
 	 * @return int
 	 */
 	public final static function port() {
-		return !empty($_SERVER['SERVER_PORT']) ? $_SERVER['SERVER_PORT'] : 80;
+		return !empty($_SERVER['SERVER_PORT']) ? $_SERVER['SERVER_PORT'] : (self::isHttps() ? 443 : 80);
 	}
 	
 	/**
@@ -87,11 +87,34 @@ class Request {
 	}
 	
 	public final static function path() {
-		
+		$sPath = '';
+		if(isset($_SERVER['REDIRECT_URL'])) {
+			$sPath = $_SERVER['REDIRECT_URL'];
+		}
+		else if(isset($_SERVER['PHP_SELF'])) {
+			$sPath = $_SERVER['PHP_SELF'];
+		}
+		return Encoding::substring($sPath, Encoding::length(self::offset()));
 	}
 	
 	public final static function url() {
-		return self::base() . self::path();
+		return self::root() . self::path();
+	}
+	
+	public final static function get($mIndex, $mDefault = null) {
+		return array_value($_GET, $mIndex, $mDefault);
+	} 
+
+	public final static function post($mIndex, $mDefault = null) {
+		return array_value($_POST, $mIndex, $mDefault);
+	}
+
+	public final static function session($mIndex, $mDefault = null) {
+		return array_value($_SESSION, $mIndex, $mDefault);
+	}
+
+	public final static function cookie($mIndex, $mDefault = null) {
+		return array_value($_COOKIE, $mIndex, $mDefault);
 	}
 	
 	/**
