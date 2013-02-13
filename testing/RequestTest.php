@@ -2,6 +2,10 @@
 
 class RequestTest extends PHPUnit_Framework_TestCase {
 	
+	public function setup() {
+		print_r($_SERVER);
+	}
+	
 	public function testIsHttps() {
 		$this->assertFalse(Request::isHttps());
 	}
@@ -19,7 +23,7 @@ class RequestTest extends PHPUnit_Framework_TestCase {
 	}
 	
 	public function testBase() {
-		
+		$this->assertEquals('http://localhost', Request::base());
 	}
 	
 	public function testOffset() {
@@ -27,11 +31,15 @@ class RequestTest extends PHPUnit_Framework_TestCase {
 	}
 	
 	public function testRoot() {
-		
+		$this->assertEquals('http://localhost', Request::root());
+	}
+
+	public function testPath() {
+		$this->assertEquals('/', Request::offset());
 	}
 	
 	public function testUrl() {
-		
+		$this->assertEquals('http://localhost/', Request::url());
 	}
 
 	public function testMethod() {
