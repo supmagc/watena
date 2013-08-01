@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<filter name="ToeVla festival filter" order="21">
-	<controller name="FestivalController">
-	</controller>
-	<rules>
-		<rule type="mapping" variable="local">^/festival</rule>
-	</rules>
-</filter>
