@@ -1,6 +1,20 @@
 <?php
 include 'base/watena.php';
 
+$conf = array();
+$conf['default'] = array();
+
+$conf['default']['libraries'] = array('admin', 'default');
+$conf['default']['charset'] = 'UTF-8';
+$conf['default']['timezone'] = 'UTC';
+$conf['default']['timeformat'] = 'Y/m/d H:i:s';
+$conf['default']['cachengine'] = 'CacheMemcache';
+$conf['default']['cachexpiration'] = 30;
+$conf['default']['loglevel'] = 'WARNING';
+$conf['default']['logprocessors'] = array();
+$conf['default']['webroot'] = 'watena';
+$conf['default']['version'] = '0.1.2-dev [Dusty]';
+
 class MyConfig extends WatenaConfig {
 	
 	public function libraries($sConfigName) {
