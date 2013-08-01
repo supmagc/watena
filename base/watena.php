@@ -66,6 +66,7 @@ class WatenaLoader {
 		if(!defined('PATH_DATA')) define('PATH_DATA', realpath(dirname(__FILE__) . '/../data'));
 		if(!defined('PATH_LIBS')) define('PATH_LIBS', realpath(dirname(__FILE__) . '/../libs'));
 		if(!defined('PATH_ROOT')) define('PATH_ROOT', realpath(dirname(__FILE__) . '/..'));
+		if(!defined('PATH_CONF')) define('PATH_CONF', is_readable(PATH_BASE . '/../config.php') ? realpath(PATH_BASE . '/../config.php') : (is_readable('/etc/watena/config.php') ? '/etc/watena/config.php' : false));
 		
 		if(!PATH_BASE || !PATH_DATA || !PATH_LIBS || !PATH_ROOT) {
 			die('Not all path-constants are defined.');
@@ -99,6 +100,7 @@ class WatenaLoader {
 		require_once PATH_BASE . '/system/exception.assureexception.php';
 		require_once PATH_BASE . '/system/exception.filepermissionexception.php';
 		require_once PATH_BASE . '/system/class.object.php';
+		require_once PATH_BASE . '/system/class.configuration.php';
 		require_once PATH_BASE . '/system/class.echolog.php';
 		require_once PATH_BASE . '/system/class.cacheable.php';
 		require_once PATH_BASE . '/system/class.cacheablefile.php';
