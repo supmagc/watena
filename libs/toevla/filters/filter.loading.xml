@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<filter name="ToeVla login filter" order="16">
-	<view name="HtmlTemplateView">
-		<param name="template">popup.loading.tpl</param>
-	</view>
-	<rules>
-		<rule type="mapping" variable="local">^/loading</rule>
-	</rules>
-</filter>

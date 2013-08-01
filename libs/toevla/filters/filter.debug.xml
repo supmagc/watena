@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<filter name="ToeVla debug filter" order="101">
-	<controller name="DebugController">
-	</controller>
-	<rules>
-		<rule type="mapping" variable="local">^/debug</rule>
-	</rules>
-</filter>
