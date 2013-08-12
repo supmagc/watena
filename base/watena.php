@@ -1,72 +1,24 @@
 <?php
 
-abstract class WatenaConfig {
-
-	private $m_sConfigName;
-	
-	public final function __construct($sConfigName = null) {
-		$this->m_sConfigName = $sConfigName;
-	}
-	
-	public final function getConfigName() {
-		return $this->m_sConfigName;
-	}
-	
-	public final function getLibraries() {
-		return $this->libraries($this->getConfigName());
-	}
-	
-	public final function getCharset() {
-		return $this->charset($this->getConfigName());
-	}
-	
-	public final function getTimeZone() {
-		return $this->timeZone($this->getConfigName());
-	}
-	
-	public final function getTimeFormat() {
-		return $this->timeFormat($this->getConfigName());
-	}
-	
-	public final function getCacheEngine() {
-		return $this->cacheEngine($this->getConfigName());
-	}
-	
-	public final function getCacheExpiration() {
-		return $this->cacheExpiration($this->getConfigName());
-	}
-	
-	public final function getLoggerLevel() {
-		return $this->loggerLevel($this->getConfigName());
-	}
-	
-	public final function getLoggerProcessors() {
-		return $this->loggerProcessors($this->getConfigName());
-	}
-	
-	public final function getVersion() {
-		return $this->version($this->getConfigName());
-	}
-	
-	public abstract function libraries($sConfigName);
-	public abstract function charset($sConfigName);
-	public abstract function timeZone($sConfigName);
-	public abstract function timeFormat($sConfigName);
-	public abstract function cacheEngine($sConfigName);
-	public abstract function cacheExpiration($sConfigName);
-	public abstract function loggerLevel($sConfigName);
-	public abstract function loggerProcessors($sConfigName);
-	public abstract function version($sConfigName);
-}
-
 class WatenaLoader {
 	
-	public static function run($sConfigClass, $sConfigName = null) {
+	private static function getConfig() {
+		if(($sPath = getcwd() . DIRECTORY_SEPARATOR . 'config.php') && is_readable($sPath)) {}
+		else if(($sPath = '/etc/watena/config.php') && is_readable($sPath)) {}
+		else if(($sPath = 'C:\\Windows\\watena.php') && is_readable($sPath)) {}
+		else if(($sPath = realpath(dirname(__FILE__) . '/../config.php')) && is_readable($sPath)) {}
+		
+		if(!empty($sPath)) include $sPath;
+		if(!isset($config)) $config = array();
+		if(!isset($name)) $name = WatenaConfig::CONFIGNAME_DEFAULT;
+		return new WatenaConfig($config, $name);
+	}
+	
+	public static function run() {
 		if(!defined('PATH_BASE')) define('PATH_BASE', realpath(dirname(__FILE__)));
 		if(!defined('PATH_DATA')) define('PATH_DATA', realpath(dirname(__FILE__) . '/../data'));
 		if(!defined('PATH_LIBS')) define('PATH_LIBS', realpath(dirname(__FILE__) . '/../libs'));
 		if(!defined('PATH_ROOT')) define('PATH_ROOT', realpath(dirname(__FILE__) . '/..'));
-		if(!defined('PATH_CONF')) define('PATH_CONF', is_readable(PATH_BASE . '/../config.php') ? realpath(PATH_BASE . '/../config.php') : (is_readable('/etc/watena/config.php') ? '/etc/watena/config.php' : false));
 		
 		if(!PATH_BASE || !PATH_DATA || !PATH_LIBS || !PATH_ROOT) {
 			die('Not all path-constants are defined.');
@@ -74,14 +26,6 @@ class WatenaLoader {
 		
 		if(function_exists('__autoload')) {
 			die('You are not allowed to define __autoload(); since a part of the framework depends on it.');
-		}
-		
-		if(!class_exists($sConfigClass)) {
-			die('The config-class you specified does not exists.');
-		}
-		
-		if(!in_array('WatenaConfig', class_parents($sConfigClass))) {
-			die('The config-class you specified does not implement WatenaConfig.');
 		}
 				
 		// ############################################################
@@ -100,7 +44,7 @@ class WatenaLoader {
 		require_once PATH_BASE . '/system/exception.assureexception.php';
 		require_once PATH_BASE . '/system/exception.filepermissionexception.php';
 		require_once PATH_BASE . '/system/class.object.php';
-		require_once PATH_BASE . '/system/class.configuration.php';
+		require_once PATH_BASE . '/system/class.watenaconfig.php';
 		require_once PATH_BASE . '/system/class.echolog.php';
 		require_once PATH_BASE . '/system/class.cacheable.php';
 		require_once PATH_BASE . '/system/class.cacheablefile.php';
@@ -133,6 +77,9 @@ class WatenaLoader {
 		require_once PATH_BASE . '/system/class.mail.php';
 		require_once PATH_BASE . '/system/class.html2text.php';
 		
+		// Get configuration object
+		$oConf = self::getConfig();
+		
 		if(!defined('NSESSION')) {
 			define('SESSION', true);
 			session_start();
@@ -148,7 +95,7 @@ class WatenaLoader {
 		if(!defined('NWATENA')) {
 			define('WATENA', true);
 			function watena() {return Watena::getWatena();}
-			new Watena(new $sConfigClass($sConfigName), !defined('NMVC'));
+			new Watena($oConf, !defined('NMVC'));
 		}
 	}
 }

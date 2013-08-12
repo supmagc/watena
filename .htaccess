@@ -6,19 +6,19 @@
 
 #Security options:
 Options +FollowSymLinks
-Options -Indexes
 Options -MultiViews
+Options -Indexes
 
 #Redirect all errors
-ErrorDocument 400 /index.php?w_error=400
-ErrorDocument 401 /index.php?w_error=401
-ErrorDocument 401 /index.php?w_error=402
-ErrorDocument 403 /index.php?w_error=403
-ErrorDocument 404 /index.php?w_error=404
-ErrorDocument 500 /index.php?w_error=500
-ErrorDocument 501 /index.php?w_error=501
-ErrorDocument 502 /index.php?w_error=502
-ErrorDocument 503 /index.php?w_error=503
+ErrorDocument 400 /400.error
+ErrorDocument 401 /401.error
+ErrorDocument 401 /402.error
+ErrorDocument 403 /403.error
+ErrorDocument 404 /404.error
+ErrorDocument 500 /500.error
+ErrorDocument 501 /501.error
+ErrorDocument 502 /502.error
+ErrorDocument 503 /503.error
 
 ############ Rewrite Engine ##############
 <IfModule rewrite_module>
@@ -27,15 +27,17 @@ ErrorDocument 503 /index.php?w_error=503
   # Fix the following directive if you experience problems with url redirections:
   # RewriteBase /base/url/to/your/application
 
-  # Url's pointing to index.php are allways priority
-  RewriteRule ^index.php - [QSA,L]
+  # URL's shouldn't be redirected more than once
+  # This rule will block subsequent requests
+  RewriteCond %{ENV:REDIRECT_STATUS} !^$
+  RewriteRule .* - [L]
   
   # Url's pointing to raw theme/files are allowed
   RewriteRule ^(files|theme)/([^/]+)/(.*) libs/$2/$1/$3 [QSA,DPI]
   RewriteCond %{REQUEST_FILENAME} -f
   RewriteRule ^libs/([^/]+)/(files|theme)/ - [QSA,L]
   RewriteCond %{REQUEST_FILENAME} !-f
-  RewriteRule ^libs/([^/]+)/(files|theme)/ - [QSA,R=404]
+  RewriteRule ^libs/([^/]+)/(files|theme)/ - [QSA,L,R=404]
 
   # When a url can qualify as a requests/-page, redirect it  
   RewriteRule ^([^/]+\.(php|xml|txt|ico|png|jpg|gif)) requests/$1 [QSA,L,NC]
@@ -43,7 +45,6 @@ ErrorDocument 503 /index.php?w_error=503
   # Redirect the rest of requests to the index.php
   # This is the fallthrough for most requests.
   # This rule will only be triggered on original requests
-  RewriteCond %{ENV:REDIRECT_STATUS} ^$
   RewriteRule ^(.*)$ index.php?w_page=$1 [QSA]
 </IfModule>
 

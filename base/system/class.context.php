@@ -9,7 +9,7 @@ class Context extends Object {
 	private $m_bRequirementWatchdog = false;
 	
 	public function __construct() {
-		$aProjects = parent::getWatena()->getConfig()->getLibraries();
+		$aProjects = parent::getWatena()->getConfig()->libraries();
 		foreach($aProjects as $sProject) {
 			$sProject = trim($sProject);
 			$sPath = realpath(PATH_LIBS . "/$sProject");
@@ -137,7 +137,7 @@ class Context extends Object {
 		if(!isset($this->m_aPlugins[$sKey])) {
 			$this->getLogger()->debug('Loading plugin \'{plugin}\' from \'{php}\' with \'{ini}\'', array('plugin' => $sPlugin, 'php' => $sFilePHP, 'ini' => implode(', ', $aFileINIs)));
 			require_once $sFilePHP;
-			$aConfig = count($aFileINIs) > 0 ? IniParser::createFromFiles($aFileINIs)->getData(parent::getWatena()->getConfig()->getConfigName()) : array();
+			$aConfig = count($aFileINIs) > 0 ? IniParser::createFromFiles($aFileINIs)->getData(parent::getWatena()->getConfig()->configName()) : array();
 			$oPhpLoader = new CacheLoader($sPlugin);
 			$oPhpLoader->addPathDependencies($aFileINIs);
 			$oPhpLoader->addPathDependency($sFilePHP);
