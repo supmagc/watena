@@ -25,8 +25,8 @@ class Watena extends Object {
 		$this->m_oMapping = new Mapping(null, $_GET);
 		
 		// Load all specified logProcessors
-		Logger::setDefaultFilterLevel($this->getConfig()->getLoggerLevel());
-		$aLogProcessors = $this->getConfig()->getLoggerProcessors();
+		Logger::setDefaultFilterLevel($this->getConfig()->loggerLevel());
+		$aLogProcessors = $this->getConfig()->loggerProcessors();
 		foreach($aLogProcessors as $sProcessor) {
 			if($this->m_oContext->loadPlugin($sProcessor)) {
 				$oProcessor = $this->m_oContext->getPlugin($sProcessor, 'ILogProcessor');
@@ -35,7 +35,7 @@ class Watena extends Object {
 		}
 				
 		// Load the specified cachingengine
-		$sCachePlugin = $this->getConfig()->getCacheEngine();
+		$sCachePlugin = $this->getConfig()->cacheEngine();
 		if($sCachePlugin) {
 			$this->m_oContext->loadPlugin($sCachePlugin);
 			$this->m_oCache = $this->m_oContext->GetPlugin($sCachePlugin, 'ICache');
@@ -163,9 +163,10 @@ class Watena extends Object {
 	 */
 	public final function assureEnvironment() {
 		//set_include_path(get_include_path() . PATH_SEPARATOR . str_replace(',', PATH_SEPARATOR, self::getConfig('INCLUDE', '')));
+		Encoding::init($this->getConfig()->charset());
+		Request::init();
 		Mapping::init();
-		Encoding::init($this->getConfig()->getCharset());
-		Time::init($this->getConfig()->getTimeZone(), $this->getConfig()->getTimeFormat());
+		Time::init($this->getConfig()->timeZone(), $this->getConfig()->timeFormat());
 		if(!is_writable(PATH_DATA)) die('Data path is not writeable.');
 	}
 	
