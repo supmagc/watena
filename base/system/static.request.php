@@ -101,15 +101,31 @@ class Request {
 	}
 
 	/**
-	 * Determine if the current request uses a secured protocol.
-	 * The return value is purely based on the value of $_SERVER['HTTPS']
+	 * Determine if the current request is not using a secured protocol.
+	 * This method is the opposite of Request::isHttps().
+	 * The return value is based on $_SERVER['HTTPS'] and will influence
+	 * the behaviour of Request::protocol() and Request::port().
 	 * 
-	 * @return boolean
+	 * @see Request::isHttps()
+	 * @see Request::protocol()
+	 * @see Request::port()
+	 * @return boolean (default: true)
 	 */
 	public final static function isHttp() {
 		return self::$s_aData['http'];
 	}
 	
+	/**
+	 * Determine if the current request is using a secured protocol.
+	 * This method is the opposite of Request::isHttp().
+	 * The return value is based on $_SERVER['HTTPS'] and will influence
+	 * the behaviour of Request::protocol() and Request::port().
+	 * 
+	 * @see Request::isHttps()
+	 * @see Request::protocol()
+	 * @see Request::port()
+	 * @return boolean (default: false)
+	 */
 	public final static function isHttps() {
 		return self::$s_aData['https'];
 	}
@@ -117,40 +133,49 @@ class Request {
 	/**
 	 * Retrieve the scheme/protocol of the current request.
 	 * Currently the only two protocols supported are 'http' and 'https'.
-	 * The return value of this method is determined from Request::isHttps().
+	 * The return value is based on Request::isHttp() and Request::isHttps().
 	 * 
+	 * @see Request::isHttp()
 	 * @see Request::isHttps()
-	 * @return string Return value should be 'http' or 'https'.
+	 * @return string Return value should be 'http' or 'https'. (default: 'http')
 	 */
 	public final static function protocol() {
 		return self::$s_aData['protocol'];
 	} 
 	
 	/**
-	 * Retrieve the hostname of the current request is lowercase.
-	 * Optionally you can try to retrieve the actual server-name as specified on the server config.
-	 * If not requested, the value returned will be the host-portion of the request.
-	 * The return value will be based on $_SERVER['SERVER_NAME'] or $_SERVER['HTTP_POST'].
-	 * Should these two variables not be available, the return value will be 'localhost'.
+	 * Retrieve the lowercase hostname of the current request.
+	 * Optionally you can try to retrieve the actual server-name as 
+	 * specified on the server config. If not required, the value returned 
+	 * will be the host-portion of the request.
+	 * The return value is based on $_SERVER['SERVER_NAME'] or $_SERVER['HTTP_POST'].
 	 *
-	 * @return string
+	 * @return string Returns lowercase $_SERVER[HTTP_HOST], $_SERVER[SERVER_NAME]. (default: localhost)
 	 */
 	public final static function host($bServer = false) {
 		return $bServer ? self::$s_aData['host_server'] : self::$s_aData['host_http'];
 	}
 	
 	/**
-	 * Retrieve the portnumber as integer of the current request.
+	 * Retrieve the portnumber of the current request.
+	 * The return value is based on $_SERVER[SERVER_PORT].
 	 * If no port is specified, this will default to 80 for http and 443 for https.
 	 *
-	 * @return int
+	 * @see Request::isHttp()
+	 * @see Request::isHttps()
+	 * @return int The requests port-number. (default based on protocol: 80 or 443)
 	 */
 	public final static function port() {
 		return self::$s_aData['port'];
 	}
 	
 	/**
+	 * Retrieve the base-portion of the current request.
 	 * 
+	 * @see Request::protocol()
+	 * @see Request::host()
+	 * @see Request::port()
+	 * @example http://[user[:pass]@]example.com[:80]
 	 * @return string
 	 */
 	public final static function base() {
@@ -159,14 +184,21 @@ class Request {
 
 	/**
 	 * Retrieve the offset of the current request.
-	 * The offset is the mapping from the host to the root (index.php and .htaccess) of the framework.
+	 * The offset is defined as the difference between the base and the root url
+	 * for the current request and is not fixed 'per install'.
 	 *
+	 * @example /path-to-install
 	 * @return string
 	 */
 	public final static function offset() {
 		return self::$s_aData['offset'];
 	}
-	
+
+	/**
+	 * Retrieve the root portion of the current request.
+	 * 
+	 * @return multitype:string boolean number multitype:
+	 */
 	public final static function root() {
 		return self::$s_aData['root'];
 	}
@@ -177,22 +209,6 @@ class Request {
 	
 	public final static function url() {
 		return self::$s_aData['url'];
-	}
-	
-	public final static function get($mIndex, $mDefault = null) {
-		return array_value($_GET, $mIndex, $mDefault);
-	} 
-
-	public final static function post($mIndex, $mDefault = null) {
-		return array_value($_POST, $mIndex, $mDefault);
-	}
-
-	public final static function session($mIndex, $mDefault = null) {
-		return array_value($_SESSION, $mIndex, $mDefault);
-	}
-
-	public final static function cookie($mIndex, $mDefault = null) {
-		return array_value($_COOKIE, $mIndex, $mDefault);
 	}
 	
 	/**
@@ -215,6 +231,22 @@ class Request {
 	 */
 	public final static function userAgent() {
 		return self::$s_aData['useragent'];
+	}
+	
+	public final static function get($mIndex, $mDefault = null) {
+		return array_value($_GET, $mIndex, $mDefault);
+	} 
+
+	public final static function post($mIndex, $mDefault = null) {
+		return array_value($_POST, $mIndex, $mDefault);
+	}
+
+	public final static function session($mIndex, $mDefault = null) {
+		return array_value($_SESSION, $mIndex, $mDefault);
+	}
+
+	public final static function cookie($mIndex, $mDefault = null) {
+		return array_value($_COOKIE, $mIndex, $mDefault);
 	}
 }
 
