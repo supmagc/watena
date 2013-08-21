@@ -42,6 +42,14 @@ class Request {
 			self::$s_aData['port'] = 443;
 		}
 		
+		if(!empty($_SERVER['PHP_AUTH_USER'])) {
+			self::$s_aData['user'] = $_SERVER['PHP_AUTH_USER'];
+		}
+		
+		if(!empty($_SERVER['PHP_AUTH_PW'])) {
+			self::$s_aData['user'] = $_SERVER['PHP_AUTH_PW'];
+		}
+		
 		if(!empty($_SERVER['HTTP_HOST'])) {
 			self::$s_aData['host_http'] = $_SERVER['HTTP_HOST'];
 			if(empty( $_SERVER['SERVER_NAME']))
@@ -141,12 +149,24 @@ class Request {
 	 */
 	public final static function protocol() {
 		return self::$s_aData['protocol'];
-	} 
-	
+	}
+
+	/**
+	 * Retrieve the http-authentication user of the current request.
+	 * The return value is based on $_SERVER[PHP_AUTH_USER]?
+	 * 
+	 * @return string The 'user'-part. (default: '')
+	 */
 	public final static function user() {
 		return self::$s_aData['user'];
 	}
 
+	/**
+	 * Retrievethe http-authentication password of the current request.
+	 * The return value is based on $_SERVER[[PHP_AUTH_PASS].
+	 * 
+	 * @return string the 'password'-part. (default: '')
+	 */
 	public final static function password() {
 		return self::$s_aData['password'];
 	}
@@ -158,7 +178,8 @@ class Request {
 	 * will be the host-portion of the request.
 	 * The return value is based on $_SERVER['SERVER_NAME'] or $_SERVER['HTTP_POST'].
 	 *
-	 * @return string Returns lowercase $_SERVER[HTTP_HOST], $_SERVER[SERVER_NAME]. (default: localhost)
+	 * @param boolean $bServer Set to true if you want the internal server-name.
+	 * @return string Returns lowercase $_SERVER[HTTP_HOST] or $_SERVER[SERVER_NAME]. (default: localhost)
 	 */
 	public final static function host($bServer = false) {
 		return $bServer ? self::$s_aData['host_server'] : self::$s_aData['host_http'];
