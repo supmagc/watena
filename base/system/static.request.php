@@ -18,7 +18,7 @@ class Request {
 		'mapping' => array(),
 		'base' => 'http://localhost',
 		'root' => 'http://localhost',
-		'url' => 'http://localhost',
+		'url' => 'http://localhost/',
 		'detail' => '[GET] http://localhost',
 	);
 	
@@ -96,7 +96,7 @@ class Request {
 		$sBuilder .= self::$s_aData['path'];
 		self::$s_aData['url'] = $sBuilder;
 		
-		$sBuilder = '[' . self::$s_aData['method'] . ']' . $sBuilder;
+		$sBuilder = '[' . self::$s_aData['method'] . ']' . $sBuilder . '?' . http_build_query($_GET, null, '&');
 		self::$s_aData['detail'] = $sBuilder;
 	}
 
@@ -142,6 +142,14 @@ class Request {
 	public final static function protocol() {
 		return self::$s_aData['protocol'];
 	} 
+	
+	public final static function user() {
+		return self::$s_aData['user'];
+	}
+
+	public final static function password() {
+		return self::$s_aData['password'];
+	}
 	
 	/**
 	 * Retrieve the lowercase hostname of the current request.
