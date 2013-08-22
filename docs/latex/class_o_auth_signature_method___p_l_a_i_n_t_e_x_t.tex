@@ -1,0 +1,42 @@
+\hypertarget{class_o_auth_signature_method___p_l_a_i_n_t_e_x_t}{\section{O\-Auth\-Signature\-Method\-\_\-\-P\-L\-A\-I\-N\-T\-E\-X\-T Class Reference}
+\label{class_o_auth_signature_method___p_l_a_i_n_t_e_x_t}\index{O\-Auth\-Signature\-Method\-\_\-\-P\-L\-A\-I\-N\-T\-E\-X\-T@{O\-Auth\-Signature\-Method\-\_\-\-P\-L\-A\-I\-N\-T\-E\-X\-T}}
+}
+Inheritance diagram for O\-Auth\-Signature\-Method\-\_\-\-P\-L\-A\-I\-N\-T\-E\-X\-T\-:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_o_auth_signature_method___p_l_a_i_n_t_e_x_t}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_o_auth_signature_method___p_l_a_i_n_t_e_x_t_ab1140b04de8f27425d3bedfde97ac2a0}{build\-Signature} (O\-Auth\-Request \$o\-Request, O\-Auth\-Consumer \$o\-Consumer, O\-Auth\-Token \$o\-Token=null)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+The P\-L\-A\-I\-N\-T\-E\-X\-T method does not provide any security protection and S\-H\-O\-U\-L\-D only be used over a secure channel such as H\-T\-T\-P\-S. It does not use the Signature Base String.
+\begin{DoxyItemize}
+\item Chapter 9.\-4 (\char`\"{}\-P\-L\-A\-I\-N\-T\-E\-X\-T\char`\"{}) 
+\end{DoxyItemize}
+
+\subsection{Member Function Documentation}
+\hypertarget{class_o_auth_signature_method___p_l_a_i_n_t_e_x_t_ab1140b04de8f27425d3bedfde97ac2a0}{\index{O\-Auth\-Signature\-Method\-\_\-\-P\-L\-A\-I\-N\-T\-E\-X\-T@{O\-Auth\-Signature\-Method\-\_\-\-P\-L\-A\-I\-N\-T\-E\-X\-T}!build\-Signature@{build\-Signature}}
+\index{build\-Signature@{build\-Signature}!OAuthSignatureMethod_PLAINTEXT@{O\-Auth\-Signature\-Method\-\_\-\-P\-L\-A\-I\-N\-T\-E\-X\-T}}
+\subsubsection[{build\-Signature}]{\setlength{\rightskip}{0pt plus 5cm}O\-Auth\-Signature\-Method\-\_\-\-P\-L\-A\-I\-N\-T\-E\-X\-T\-::build\-Signature (
+\begin{DoxyParamCaption}
+\item[{O\-Auth\-Request}]{\$o\-Request, }
+\item[{O\-Auth\-Consumer}]{\$o\-Consumer, }
+\item[{O\-Auth\-Token}]{\$o\-Token = {\ttfamily null}}
+\end{DoxyParamCaption}
+)}}\label{class_o_auth_signature_method___p_l_a_i_n_t_e_x_t_ab1140b04de8f27425d3bedfde97ac2a0}
+oauth\-\_\-signature is set to the concatenated encoded values of the Consumer Secret and Token Secret, separated by a '\&' character (A\-S\-C\-I\-I code 38), even if either secret is empty. The result M\-U\-S\-T be encoded again.
+\begin{DoxyItemize}
+\item Chapter 9.\-4.\-1 (\char`\"{}\-Generating Signatures\char`\"{})
+\end{DoxyItemize}
+
+Please note that the second encoding M\-U\-S\-T N\-O\-T happen in the Signature\-Method, as O\-Auth\-Request handles this! 
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+oauth\-\_\-signatureproviders.\-php\end{DoxyCompactItemize}

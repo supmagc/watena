@@ -1,0 +1,435 @@
+\hypertarget{class_logger}{\section{Logger Class Reference}
+\label{class_logger}\index{Logger@{Logger}}
+}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_logger_a54e5e4ead59460c6345d38ed4385e3fc}{set\-Filter} (\hyperlink{interface_i_log_filter}{I\-Log\-Filter} \$o\-Filter)
+\item 
+\hyperlink{class_logger_a71d1988b4a05424766640f00cc0c5ec4}{get\-Filter} ()
+\item 
+\hyperlink{class_logger_ad960882fc5dd94fe18c9d0417c3985f2}{set\-Filter\-Level} (\$n\-Level)
+\item 
+\hyperlink{class_logger_aaffe36d440a09bceb9f27f7667fd7625}{get\-Filter\-Level} ()
+\item 
+\hyperlink{class_logger_abd297d3ef221a659a8d045a32d068959}{approve\-Filter\-Level} (\$n\-Level)
+\item 
+\hyperlink{class_logger_a4048fbdd126bfa83c8055b56647c226e}{get\-Identifier} ()
+\item 
+\hyperlink{class_logger_ad978807155d0ef809516b07e6a9c8038}{debug} (\$s\-Message, \$a\-Data=array())
+\item 
+\hyperlink{class_logger_a7f5530064ae6bc2f1cc65c602e0d817b}{info} (\$s\-Message, \$a\-Data=array())
+\item 
+\hyperlink{class_logger_ae7113cceb70aca732f04eb561ca46234}{warning} (\$s\-Message, \$a\-Data=array())
+\item 
+\hyperlink{class_logger_a72684fdf8f0b376067092d448c627b41}{error} (\$s\-Message, \$a\-Data=array())
+\item 
+\hyperlink{class_logger_a902fc7ccc16f872126f96c5f1c459193}{exception} (Exception \$o\-Exception)
+\item 
+\hyperlink{class_logger_ad2c4a0987a107ccdfe2676d5c7daa0c6}{terminate} (\$s\-Message, \$a\-Data=array())
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \hyperlink{class_logger_aed3978ed47955016b1f2e36fa9242495}{get\-Instance} (\$s\-Identifier)
+\item 
+static \hyperlink{class_logger_ab19e37ceb28c720c85dbd1190247f094}{process\-Error} (\$n\-Code, \$s\-Message, \$s\-File, \$n\-Line)
+\item 
+static \hyperlink{class_logger_ab6ff3cbd5cae35325708da45422f9ddb}{process\-Exception} (Exception \$o\-Exception)
+\item 
+static \hyperlink{class_logger_adabe3643869b619254f23b0ff7a8d9d0}{init} (\$n\-Defaultfilter\-Level)
+\item 
+static \hyperlink{class_logger_a3af4a199ee9ff77080b287d445fd7258}{get\-Default\-Filter\-Level} ()
+\item 
+static \hyperlink{class_logger_a7af0235d7605c027e8fc05014c5e8a02}{set\-Default\-Filter\-Level} (\$m\-Level)
+\item 
+static \hyperlink{class_logger_a67f68a274b78033665beb7e42c3367ad}{register\-Processor} (\hyperlink{interface_i_log_processor}{I\-Log\-Processor} \$o\-Processor)
+\item 
+static \hyperlink{class_logger_a7cd51ad43efe88cfde3c1ebdc988940b}{get\-Generic\-Instance} ()
+\item 
+static \hyperlink{class_logger_a01709c6e4bc16337f430ab0d657f187f}{get\-Level\-Name} (\$n\-Level)
+\item 
+static \hyperlink{class_logger_aba0511b6a8e0338bfe1edf5fb6eb4b59}{get\-Level\-Constant} (\$s\-Level)
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_logger_a7d7bfc072f31d89d47f0b66159d5e385}{const {\bfseries I\-N\-H\-E\-R\-I\-T} = -\/1}\label{class_logger_a7d7bfc072f31d89d47f0b66159d5e385}
+
+\item 
+\hypertarget{class_logger_add9d10860e1347360209a2f2b4a90a9a}{const {\bfseries A\-L\-W\-A\-Y\-S} = 0}\label{class_logger_add9d10860e1347360209a2f2b4a90a9a}
+
+\item 
+\hypertarget{class_logger_a7c7cc48e943eaf5fdfac82539bdb7ea7}{const {\bfseries D\-E\-B\-U\-G} = 1}\label{class_logger_a7c7cc48e943eaf5fdfac82539bdb7ea7}
+
+\item 
+\hypertarget{class_logger_a3b8292b16f7a7c154f9a8fba73be77bb}{const {\bfseries I\-N\-F\-O} = 2}\label{class_logger_a3b8292b16f7a7c154f9a8fba73be77bb}
+
+\item 
+\hypertarget{class_logger_a2b8319ace5692281cc34a1b5d6dcc771}{const {\bfseries E\-X\-C\-E\-P\-T\-I\-O\-N} = 3}\label{class_logger_a2b8319ace5692281cc34a1b5d6dcc771}
+
+\item 
+\hypertarget{class_logger_ad3aeb7e34220e61e1b00a84db7655c30}{const {\bfseries W\-A\-R\-N\-I\-N\-G} = 4}\label{class_logger_ad3aeb7e34220e61e1b00a84db7655c30}
+
+\item 
+\hypertarget{class_logger_aa34a753ba42f06c914708eca2098e235}{const {\bfseries E\-R\-R\-O\-R} = 5}\label{class_logger_aa34a753ba42f06c914708eca2098e235}
+
+\item 
+\hypertarget{class_logger_a338704427ea36e3d8499d65aa09b951e}{const {\bfseries T\-E\-R\-M\-I\-N\-A\-T\-E} = 6}\label{class_logger_a338704427ea36e3d8499d65aa09b951e}
+
+\item 
+\hypertarget{class_logger_a6700e6d77288e3695320b4078e304b6f}{const {\bfseries N\-O\-N\-E} = 7}\label{class_logger_a6700e6d77288e3695320b4078e304b6f}
+
+\item 
+\hypertarget{class_logger_ace35692bcef5bca786f7ad6111bf0d0d}{const {\bfseries G\-E\-N\-E\-R\-I\-C\-\_\-\-I\-D\-E\-N\-T\-I\-F\-I\-E\-R} = 'G\-L\-O\-B\-A\-L'}\label{class_logger_ace35692bcef5bca786f7ad6111bf0d0d}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_logger_abd297d3ef221a659a8d045a32d068959}{\index{Logger@{Logger}!approve\-Filter\-Level@{approve\-Filter\-Level}}
+\index{approve\-Filter\-Level@{approve\-Filter\-Level}!Logger@{Logger}}
+\subsubsection[{approve\-Filter\-Level}]{\setlength{\rightskip}{0pt plus 5cm}Logger\-::approve\-Filter\-Level (
+\begin{DoxyParamCaption}
+\item[{}]{\$n\-Level}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [final]}}}\label{class_logger_abd297d3ef221a659a8d045a32d068959}
+Check if the given filter-\/level would pass the settings of this logger. The result is influenced by the \hyperlink{class_logger_aaffe36d440a09bceb9f27f7667fd7625}{get\-Filter\-Level()} and possibly \hyperlink{class_logger_a3af4a199ee9ff77080b287d445fd7258}{Logger\-::get\-Default\-Filter\-Level()} results.
+
+
+\begin{DoxyParams}[1]{Parameters}
+int & {\em \$n\-Level} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+bool 
+\end{DoxyReturn}
+\hypertarget{class_logger_ad978807155d0ef809516b07e6a9c8038}{\index{Logger@{Logger}!debug@{debug}}
+\index{debug@{debug}!Logger@{Logger}}
+\subsubsection[{debug}]{\setlength{\rightskip}{0pt plus 5cm}Logger\-::debug (
+\begin{DoxyParamCaption}
+\item[{}]{\$s\-Message, }
+\item[{}]{\$a\-Data = {\ttfamily array()}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [final]}}}\label{class_logger_ad978807155d0ef809516b07e6a9c8038}
+Used for debug messages when things get wrong. These should be extended info messages (both quantity and quality) A good measure is to use this for messages never used in production. This means a bugreport not containing these should be sufficient.
+
+
+\begin{DoxyParams}[1]{Parameters}
+string & {\em \$s\-Message} & \\
+\hline
+array & {\em \$a\-Data} & \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_logger_a72684fdf8f0b376067092d448c627b41}{\index{Logger@{Logger}!error@{error}}
+\index{error@{error}!Logger@{Logger}}
+\subsubsection[{error}]{\setlength{\rightskip}{0pt plus 5cm}Logger\-::error (
+\begin{DoxyParamCaption}
+\item[{}]{\$s\-Message, }
+\item[{}]{\$a\-Data = {\ttfamily array()}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [final]}}}\label{class_logger_a72684fdf8f0b376067092d448c627b41}
+Used for error messages when something goes wrong. Most of the time, the code will continue to run, but you'll encounter some problems due to this error later on. You should look into this as soon as possible, and fix it!
+
+
+\begin{DoxyParams}[1]{Parameters}
+string & {\em \$s\-Message} & \\
+\hline
+array & {\em \$a\-Data} & \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_logger_a902fc7ccc16f872126f96c5f1c459193}{\index{Logger@{Logger}!exception@{exception}}
+\index{exception@{exception}!Logger@{Logger}}
+\subsubsection[{exception}]{\setlength{\rightskip}{0pt plus 5cm}Logger\-::exception (
+\begin{DoxyParamCaption}
+\item[{Exception}]{\$o\-Exception}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [final]}}}\label{class_logger_a902fc7ccc16f872126f96c5f1c459193}
+Used for logging an exception as critical when not being correctly catched. This will terminate your code as expected from an uncatched exception. You should mostly onlu use this with ugly external libraries, or when you're to lasy to write an approriate try-\/catch.
+
+
+\begin{DoxyParams}[1]{Parameters}
+Exception & {\em \$o\-Exception} & \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_logger_a3af4a199ee9ff77080b287d445fd7258}{\index{Logger@{Logger}!get\-Default\-Filter\-Level@{get\-Default\-Filter\-Level}}
+\index{get\-Default\-Filter\-Level@{get\-Default\-Filter\-Level}!Logger@{Logger}}
+\subsubsection[{get\-Default\-Filter\-Level}]{\setlength{\rightskip}{0pt plus 5cm}static Logger\-::get\-Default\-Filter\-Level (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [final]}}}\label{class_logger_a3af4a199ee9ff77080b287d445fd7258}
+Get the default filter level. This setting is originally retrieved form the watena-\/configuration, and is used for loggers who have their filter-\/level set to Logger\-::\-I\-N\-H\-E\-R\-I\-T.
+
+\begin{DoxyReturn}{Returns}
+int 
+\end{DoxyReturn}
+\hypertarget{class_logger_a71d1988b4a05424766640f00cc0c5ec4}{\index{Logger@{Logger}!get\-Filter@{get\-Filter}}
+\index{get\-Filter@{get\-Filter}!Logger@{Logger}}
+\subsubsection[{get\-Filter}]{\setlength{\rightskip}{0pt plus 5cm}Logger\-::get\-Filter (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [final]}}}\label{class_logger_a71d1988b4a05424766640f00cc0c5ec4}
+Get the optional \hyperlink{interface_i_log_filter}{I\-Log\-Filter} object or null when none is set.
+
+\begin{DoxyReturn}{Returns}
+\hyperlink{interface_i_log_filter}{I\-Log\-Filter} $|$ null 
+\end{DoxyReturn}
+\hypertarget{class_logger_aaffe36d440a09bceb9f27f7667fd7625}{\index{Logger@{Logger}!get\-Filter\-Level@{get\-Filter\-Level}}
+\index{get\-Filter\-Level@{get\-Filter\-Level}!Logger@{Logger}}
+\subsubsection[{get\-Filter\-Level}]{\setlength{\rightskip}{0pt plus 5cm}Logger\-::get\-Filter\-Level (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [final]}}}\label{class_logger_aaffe36d440a09bceb9f27f7667fd7625}
+Get the actual filter-\/level for this logger. For more information on the available levels, have a look at the class constants.
+
+\begin{DoxyReturn}{Returns}
+int 
+\end{DoxyReturn}
+\hypertarget{class_logger_a7cd51ad43efe88cfde3c1ebdc988940b}{\index{Logger@{Logger}!get\-Generic\-Instance@{get\-Generic\-Instance}}
+\index{get\-Generic\-Instance@{get\-Generic\-Instance}!Logger@{Logger}}
+\subsubsection[{get\-Generic\-Instance}]{\setlength{\rightskip}{0pt plus 5cm}static Logger\-::get\-Generic\-Instance (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [final]}}}\label{class_logger_a7cd51ad43efe88cfde3c1ebdc988940b}
+Get the generic logger instance.
+
+\begin{DoxyReturn}{Returns}
+\hyperlink{class_logger}{Logger} 
+\end{DoxyReturn}
+\hypertarget{class_logger_a4048fbdd126bfa83c8055b56647c226e}{\index{Logger@{Logger}!get\-Identifier@{get\-Identifier}}
+\index{get\-Identifier@{get\-Identifier}!Logger@{Logger}}
+\subsubsection[{get\-Identifier}]{\setlength{\rightskip}{0pt plus 5cm}Logger\-::get\-Identifier (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [final]}}}\label{class_logger_a4048fbdd126bfa83c8055b56647c226e}
+Get the identifier of thgis logger. Mostly this represents the class to which the logger is linked, or it's the name of a custom created logger. (ex\-: the requirements)
+
+\begin{DoxyReturn}{Returns}
+string 
+\end{DoxyReturn}
+\hypertarget{class_logger_aed3978ed47955016b1f2e36fa9242495}{\index{Logger@{Logger}!get\-Instance@{get\-Instance}}
+\index{get\-Instance@{get\-Instance}!Logger@{Logger}}
+\subsubsection[{get\-Instance}]{\setlength{\rightskip}{0pt plus 5cm}static Logger\-::get\-Instance (
+\begin{DoxyParamCaption}
+\item[{}]{\$s\-Identifier}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [final]}}}\label{class_logger_aed3978ed47955016b1f2e36fa9242495}
+Retrieve the specified logger-\/instance. If none exists, create one.
+
+
+\begin{DoxyParams}[1]{Parameters}
+string & {\em \$s\-Identifier} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\hyperlink{class_logger}{Logger} 
+\end{DoxyReturn}
+\hypertarget{class_logger_aba0511b6a8e0338bfe1edf5fb6eb4b59}{\index{Logger@{Logger}!get\-Level\-Constant@{get\-Level\-Constant}}
+\index{get\-Level\-Constant@{get\-Level\-Constant}!Logger@{Logger}}
+\subsubsection[{get\-Level\-Constant}]{\setlength{\rightskip}{0pt plus 5cm}static Logger\-::get\-Level\-Constant (
+\begin{DoxyParamCaption}
+\item[{}]{\$s\-Level}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [final]}}}\label{class_logger_aba0511b6a8e0338bfe1edf5fb6eb4b59}
+Get the filter level class constant based on a given string representation.
+
+
+\begin{DoxyParams}[1]{Parameters}
+string & {\em \$s\-Level} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+int 
+\end{DoxyReturn}
+\hypertarget{class_logger_a01709c6e4bc16337f430ab0d657f187f}{\index{Logger@{Logger}!get\-Level\-Name@{get\-Level\-Name}}
+\index{get\-Level\-Name@{get\-Level\-Name}!Logger@{Logger}}
+\subsubsection[{get\-Level\-Name}]{\setlength{\rightskip}{0pt plus 5cm}static Logger\-::get\-Level\-Name (
+\begin{DoxyParamCaption}
+\item[{}]{\$n\-Level}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [final]}}}\label{class_logger_a01709c6e4bc16337f430ab0d657f187f}
+Get the filter level string representation based on a given class constant.
+
+
+\begin{DoxyParams}[1]{Parameters}
+int & {\em \$n\-Level} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+string 
+\end{DoxyReturn}
+\hypertarget{class_logger_a7f5530064ae6bc2f1cc65c602e0d817b}{\index{Logger@{Logger}!info@{info}}
+\index{info@{info}!Logger@{Logger}}
+\subsubsection[{info}]{\setlength{\rightskip}{0pt plus 5cm}Logger\-::info (
+\begin{DoxyParamCaption}
+\item[{}]{\$s\-Message, }
+\item[{}]{\$a\-Data = {\ttfamily array()}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [final]}}}\label{class_logger_a7f5530064ae6bc2f1cc65c602e0d817b}
+Used for information messages about the processing of the request. These should be very specific messages when things get processed. Based on this information you should be able to trace what happened.
+
+
+\begin{DoxyParams}[1]{Parameters}
+string & {\em \$s\-Message} & \\
+\hline
+array & {\em \$a\-Data} & \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_logger_adabe3643869b619254f23b0ff7a8d9d0}{\index{Logger@{Logger}!init@{init}}
+\index{init@{init}!Logger@{Logger}}
+\subsubsection[{init}]{\setlength{\rightskip}{0pt plus 5cm}static Logger\-::init (
+\begin{DoxyParamCaption}
+\item[{}]{\$n\-Defaultfilter\-Level}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [final]}}}\label{class_logger_adabe3643869b619254f23b0ff7a8d9d0}
+Initialize the \hyperlink{class_logger}{Logger} system. This is not inforced to be called before using anything else, bit is highly recommended. It sets the error-\/reporting to cancel out P\-H\-P's settings, and it registers the P\-H\-P error and exception catchers and sets the initial default filter level.
+
+
+\begin{DoxyParams}[1]{Parameters}
+int & {\em \$n\-Defaultfilter\-Level} & \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_logger_ab19e37ceb28c720c85dbd1190247f094}{\index{Logger@{Logger}!process\-Error@{process\-Error}}
+\index{process\-Error@{process\-Error}!Logger@{Logger}}
+\subsubsection[{process\-Error}]{\setlength{\rightskip}{0pt plus 5cm}static Logger\-::process\-Error (
+\begin{DoxyParamCaption}
+\item[{}]{\$n\-Code, }
+\item[{}]{\$s\-Message, }
+\item[{}]{\$s\-File, }
+\item[{}]{\$n\-Line}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [final]}}}\label{class_logger_ab19e37ceb28c720c85dbd1190247f094}
+P\-H\-P error catcher. This will create an exception, based on the error, and throw it. The design principle here is, make your code safe ! If it doesn't compile, or generates php-\/errors at runtime you're doing it wrong and you should look into it!
+
+
+\begin{DoxyParams}[1]{Parameters}
+int & {\em \$n\-Code} & \\
+\hline
+string & {\em \$s\-Message} & \\
+\hline
+string & {\em \$s\-File} & \\
+\hline
+int & {\em \$n\-Line} & \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em Error\-Exception} & \\
+\hline
+\end{DoxyExceptions}
+\hypertarget{class_logger_ab6ff3cbd5cae35325708da45422f9ddb}{\index{Logger@{Logger}!process\-Exception@{process\-Exception}}
+\index{process\-Exception@{process\-Exception}!Logger@{Logger}}
+\subsubsection[{process\-Exception}]{\setlength{\rightskip}{0pt plus 5cm}static Logger\-::process\-Exception (
+\begin{DoxyParamCaption}
+\item[{Exception}]{\$o\-Exception}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [final]}}}\label{class_logger_ab6ff3cbd5cae35325708da45422f9ddb}
+P\-H\-P exception catcher. This function will try to redirect the exception to its rightfull owner/logger, and will try to create a log entry for the provided data. The log-\/creation/-\/processing will be done in all registered \hyperlink{interface_i_log_processor}{I\-Log\-Processor}'s. Make sure nothing can go wrong in those, as otherwise the behaviour is undefined.
+
+
+\begin{DoxyParams}[1]{Parameters}
+Exception & {\em \$o\-Exception} & \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_logger_a67f68a274b78033665beb7e42c3367ad}{\index{Logger@{Logger}!register\-Processor@{register\-Processor}}
+\index{register\-Processor@{register\-Processor}!Logger@{Logger}}
+\subsubsection[{register\-Processor}]{\setlength{\rightskip}{0pt plus 5cm}static Logger\-::register\-Processor (
+\begin{DoxyParamCaption}
+\item[{{\bf I\-Log\-Processor}}]{\$o\-Processor}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [final]}}}\label{class_logger_a67f68a274b78033665beb7e42c3367ad}
+Register a given \hyperlink{interface_i_log_processor}{I\-Log\-Processor}. These will process and dispatch all received logger messages.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\hyperlink{interface_i_log_processor}{I\-Log\-Processor} & {\em \$o\-Processor} & \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_logger_a7af0235d7605c027e8fc05014c5e8a02}{\index{Logger@{Logger}!set\-Default\-Filter\-Level@{set\-Default\-Filter\-Level}}
+\index{set\-Default\-Filter\-Level@{set\-Default\-Filter\-Level}!Logger@{Logger}}
+\subsubsection[{set\-Default\-Filter\-Level}]{\setlength{\rightskip}{0pt plus 5cm}static Logger\-::set\-Default\-Filter\-Level (
+\begin{DoxyParamCaption}
+\item[{}]{\$m\-Level}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [final]}}}\label{class_logger_a7af0235d7605c027e8fc05014c5e8a02}
+Sets the default filter level. This can be a integer value (see the class constants) or can be a string representation of one of the class constants.
+
+
+\begin{DoxyParams}[1]{Parameters}
+mixed & {\em \$m\-Level} & \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_logger_a54e5e4ead59460c6345d38ed4385e3fc}{\index{Logger@{Logger}!set\-Filter@{set\-Filter}}
+\index{set\-Filter@{set\-Filter}!Logger@{Logger}}
+\subsubsection[{set\-Filter}]{\setlength{\rightskip}{0pt plus 5cm}Logger\-::set\-Filter (
+\begin{DoxyParamCaption}
+\item[{{\bf I\-Log\-Filter}}]{\$o\-Filter}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [final]}}}\label{class_logger_a54e5e4ead59460c6345d38ed4385e3fc}
+Set an optional filter (object implementing I\-L\-Og\-Filter) to verify and adapt log messages and calls. It to provides the means to change the data before being logged, thus enabling external log-\/control.
+
+Only one filter for each logger can be active at any given time. If during the filtering, the filter would be changed, the behaviour is undefined.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\hyperlink{interface_i_log_filter}{I\-Log\-Filter} & {\em \$o\-Filter} & \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_logger_ad960882fc5dd94fe18c9d0417c3985f2}{\index{Logger@{Logger}!set\-Filter\-Level@{set\-Filter\-Level}}
+\index{set\-Filter\-Level@{set\-Filter\-Level}!Logger@{Logger}}
+\subsubsection[{set\-Filter\-Level}]{\setlength{\rightskip}{0pt plus 5cm}Logger\-::set\-Filter\-Level (
+\begin{DoxyParamCaption}
+\item[{}]{\$n\-Level}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [final]}}}\label{class_logger_ad960882fc5dd94fe18c9d0417c3985f2}
+Set the filter-\/level for this logger. For more information on the available levels, have a look at the class constants. Defaults to Logger\-::\-I\-N\-H\-E\-R\-I\-T which takes the \hyperlink{class_logger_a3af4a199ee9ff77080b287d445fd7258}{Logger\-::get\-Default\-Filter\-Level()}.
+
+
+\begin{DoxyParams}[1]{Parameters}
+int & {\em \$n\-Level} & \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_logger_ad2c4a0987a107ccdfe2676d5c7daa0c6}{\index{Logger@{Logger}!terminate@{terminate}}
+\index{terminate@{terminate}!Logger@{Logger}}
+\subsubsection[{terminate}]{\setlength{\rightskip}{0pt plus 5cm}Logger\-::terminate (
+\begin{DoxyParamCaption}
+\item[{}]{\$s\-Message, }
+\item[{}]{\$a\-Data = {\ttfamily array()}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [final]}}}\label{class_logger_ad2c4a0987a107ccdfe2676d5c7daa0c6}
+Used to terminate the system with a logger message. Call this when to prevent actions that could affect the stability of the system.
+
+
+\begin{DoxyParams}[1]{Parameters}
+string & {\em \$s\-Message} & \\
+\hline
+array & {\em \$a\-Data} & \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_logger_ae7113cceb70aca732f04eb561ca46234}{\index{Logger@{Logger}!warning@{warning}}
+\index{warning@{warning}!Logger@{Logger}}
+\subsubsection[{warning}]{\setlength{\rightskip}{0pt plus 5cm}Logger\-::warning (
+\begin{DoxyParamCaption}
+\item[{}]{\$s\-Message, }
+\item[{}]{\$a\-Data = {\ttfamily array()}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [final]}}}\label{class_logger_ae7113cceb70aca732f04eb561ca46234}
+Used for warning messages when things happen that should be fixed or clarified. The system is capable to continue working, but the results might not be what you expected. Idealy, the message should contain some hints on how to improve.
+
+
+\begin{DoxyParams}[1]{Parameters}
+string & {\em \$s\-Message} & \\
+\hline
+array & {\em \$a\-Data} & \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+D\-:/www/watena/base/system/static.\-logger.\-php\end{DoxyCompactItemize}

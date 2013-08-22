@@ -1,0 +1,110 @@
+\hypertarget{class_db_multi_table}{\section{Db\-Multi\-Table Class Reference}
+\label{class_db_multi_table}\index{Db\-Multi\-Table@{Db\-Multi\-Table}}
+}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_db_multi_table_a4167f1c8c738bad8d47362ae16cae653}{{\bfseries \-\_\-\-\_\-construct} (\hyperlink{class_db_connection}{Db\-Connection} \$o\-Connection, \$s\-Table, array \$a\-Id\-Fields, \$s\-Concatenation)}\label{class_db_multi_table_a4167f1c8c738bad8d47362ae16cae653}
+
+\item 
+\hypertarget{class_db_multi_table_a29fef477cc57c09cc6590e7990bf2413}{{\bfseries \-\_\-\-\_\-sleep} ()}\label{class_db_multi_table_a29fef477cc57c09cc6590e7990bf2413}
+
+\item 
+\hypertarget{class_db_multi_table_a087ba5bc48843b12f16fb61fb2e02c07}{{\bfseries \-\_\-\-\_\-wakeup} ()}\label{class_db_multi_table_a087ba5bc48843b12f16fb61fb2e02c07}
+
+\item 
+\hyperlink{class_db_multi_table_a03eb573ad50f1efe1605fb6d38ea8c5f}{get\-Connection} ()
+\item 
+\hyperlink{class_db_multi_table_ab2315d078fcfbc53238517f49754e919}{get\-Table} ()
+\item 
+\hyperlink{class_db_multi_table_af84a3c49cb55982e2009e4b88bdc8d60}{get\-Id\-Fields} ()
+\item 
+\hyperlink{class_db_multi_table_a50091e38487d82c2b79bb45150cbc877}{get\-Concatenation} ()
+\item 
+\hyperlink{class_db_multi_table_a6b22f33590dd9ffd5e71b2420067a44c}{is\-Valid\-Id} (array \$a\-Ids)
+\item 
+\hypertarget{class_db_multi_table_a4f5cbfecfc11b9a87d0850994e42f356}{{\bfseries select} (array \$a\-Ids=array())}\label{class_db_multi_table_a4f5cbfecfc11b9a87d0850994e42f356}
+
+\item 
+\hypertarget{class_db_multi_table_a51183054b9b8ab246bbdc653bd415aee}{{\bfseries insert} (array \$a\-Values)}\label{class_db_multi_table_a51183054b9b8ab246bbdc653bd415aee}
+
+\item 
+\hypertarget{class_db_multi_table_a47796e7910bbdd8a19c5eb76309344cf}{{\bfseries update} (array \$a\-Values, array \$a\-Ids)}\label{class_db_multi_table_a47796e7910bbdd8a19c5eb76309344cf}
+
+\item 
+\hypertarget{class_db_multi_table_ad61946bc4775e6093c5a12d7e065f1ff}{{\bfseries delete} (array \$a\-Ids)}\label{class_db_multi_table_ad61946bc4775e6093c5a12d7e065f1ff}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_db_multi_table_a50091e38487d82c2b79bb45150cbc877}{\index{Db\-Multi\-Table@{Db\-Multi\-Table}!get\-Concatenation@{get\-Concatenation}}
+\index{get\-Concatenation@{get\-Concatenation}!DbMultiTable@{Db\-Multi\-Table}}
+\subsubsection[{get\-Concatenation}]{\setlength{\rightskip}{0pt plus 5cm}Db\-Multi\-Table\-::get\-Concatenation (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_db_multi_table_a50091e38487d82c2b79bb45150cbc877}
+Retrieve the internal concatenation-\/string
+
+\begin{DoxyReturn}{Returns}
+string 
+\end{DoxyReturn}
+\hypertarget{class_db_multi_table_a03eb573ad50f1efe1605fb6d38ea8c5f}{\index{Db\-Multi\-Table@{Db\-Multi\-Table}!get\-Connection@{get\-Connection}}
+\index{get\-Connection@{get\-Connection}!DbMultiTable@{Db\-Multi\-Table}}
+\subsubsection[{get\-Connection}]{\setlength{\rightskip}{0pt plus 5cm}Db\-Multi\-Table\-::get\-Connection (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_db_multi_table_a03eb573ad50f1efe1605fb6d38ea8c5f}
+Retrieve the internal \hyperlink{class_db_connection}{Db\-Connection}.
+
+\begin{DoxyReturn}{Returns}
+\hyperlink{class_db_connection}{Db\-Connection} 
+\end{DoxyReturn}
+\hypertarget{class_db_multi_table_af84a3c49cb55982e2009e4b88bdc8d60}{\index{Db\-Multi\-Table@{Db\-Multi\-Table}!get\-Id\-Fields@{get\-Id\-Fields}}
+\index{get\-Id\-Fields@{get\-Id\-Fields}!DbMultiTable@{Db\-Multi\-Table}}
+\subsubsection[{get\-Id\-Fields}]{\setlength{\rightskip}{0pt plus 5cm}Db\-Multi\-Table\-::get\-Id\-Fields (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_db_multi_table_af84a3c49cb55982e2009e4b88bdc8d60}
+Retrieve the internal array with id-\/field-\/names.
+
+\begin{DoxyReturn}{Returns}
+array 
+\end{DoxyReturn}
+\hypertarget{class_db_multi_table_ab2315d078fcfbc53238517f49754e919}{\index{Db\-Multi\-Table@{Db\-Multi\-Table}!get\-Table@{get\-Table}}
+\index{get\-Table@{get\-Table}!DbMultiTable@{Db\-Multi\-Table}}
+\subsubsection[{get\-Table}]{\setlength{\rightskip}{0pt plus 5cm}Db\-Multi\-Table\-::get\-Table (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_db_multi_table_ab2315d078fcfbc53238517f49754e919}
+Retrieve the internal table-\/name
+
+\begin{DoxyReturn}{Returns}
+string 
+\end{DoxyReturn}
+\hypertarget{class_db_multi_table_a6b22f33590dd9ffd5e71b2420067a44c}{\index{Db\-Multi\-Table@{Db\-Multi\-Table}!is\-Valid\-Id@{is\-Valid\-Id}}
+\index{is\-Valid\-Id@{is\-Valid\-Id}!DbMultiTable@{Db\-Multi\-Table}}
+\subsubsection[{is\-Valid\-Id}]{\setlength{\rightskip}{0pt plus 5cm}Db\-Multi\-Table\-::is\-Valid\-Id (
+\begin{DoxyParamCaption}
+\item[{array}]{\$a\-Ids}
+\end{DoxyParamCaption}
+)}}\label{class_db_multi_table_a6b22f33590dd9ffd5e71b2420067a44c}
+Check if the given id is valid for this table's id-\/field
+
+
+\begin{DoxyParams}[1]{Parameters}
+mixed & {\em \$m\-Id} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+bool 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+D\-:/www/watena/libs/default/dbman/dbmultitable.\-php\end{DoxyCompactItemize}

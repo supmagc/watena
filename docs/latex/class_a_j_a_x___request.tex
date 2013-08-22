@@ -1,0 +1,135 @@
+\hypertarget{class_a_j_a_x___request}{\section{A\-J\-A\-X\-\_\-\-Request Class Reference}
+\label{class_a_j_a_x___request}\index{A\-J\-A\-X\-\_\-\-Request@{A\-J\-A\-X\-\_\-\-Request}}
+}
+
+
+Inherits Object.
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_a_j_a_x___request_ac2740cb109bab254475f45cde36a7c51}{\-\_\-\-\_\-construct} (\$s\-Function, \$n\-Arg\-Count=0)
+\item 
+\hyperlink{class_a_j_a_x___request_a46eda702ebc8b0c5b40582faa54d4430}{set\-Url} (\$s\-Url)
+\item 
+\hyperlink{class_a_j_a_x___request_a155a570af13c465ce28a1db0600a15ed}{set\-Value} (\$s\-Name, \$s\-Value)
+\item 
+\hyperlink{class_a_j_a_x___request_a18241531ebf16a4314b84e3e6c59b807}{set\-Arg\-Count} (\$n\-Arg\-Count)
+\item 
+\hyperlink{class_a_j_a_x___request_a56516da4748a2fb29e8043fa05727ff0}{get\-Output} ()
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+Class that provides the data that are uwed when requesting some ajax-\/data
+
+\begin{DoxyAuthor}{Author}
+Voet Jelle -\/ To\-Mo-\/design 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+2.\-0.\-1 beta
+\end{DoxyVersion}
+\subsubsection*{V\-E\-R\-S\-I\-O\-N-\/\-L\-O\-G }
+
+1-\/8-\/2010\-: 2.\-0.\-0 =$>$ 2.\-0.\-1
+\begin{DoxyItemize}
+\item Made the generated javascript-\/function call a bit smaller
+\item Fixed a possible bug when using a variable U\-R\-L
+\end{DoxyItemize}
+
+30-\/7-\/2010\-: 1.\-0.\-0 =$>$ 2.\-0.\-0
+\begin{DoxyItemize}
+\item Revamped the processed output
+\item Added J\-S\-O\-N
+\item Added rawurlencode/encode\-U\-R\-I\-Component
+\item Made the output somewhat smaller 
+\end{DoxyItemize}
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_a_j_a_x___request_ac2740cb109bab254475f45cde36a7c51}{\index{A\-J\-A\-X\-\_\-\-Request@{A\-J\-A\-X\-\_\-\-Request}!\-\_\-\-\_\-construct@{\-\_\-\-\_\-construct}}
+\index{\-\_\-\-\_\-construct@{\-\_\-\-\_\-construct}!AJAX_Request@{A\-J\-A\-X\-\_\-\-Request}}
+\subsubsection[{\-\_\-\-\_\-construct}]{\setlength{\rightskip}{0pt plus 5cm}A\-J\-A\-X\-\_\-\-Request\-::\-\_\-\-\_\-construct (
+\begin{DoxyParamCaption}
+\item[{}]{\$s\-Function, }
+\item[{}]{\$n\-Arg\-Count = {\ttfamily 0}}
+\end{DoxyParamCaption}
+)}}\label{class_a_j_a_x___request_ac2740cb109bab254475f45cde36a7c51}
+Create a new request
+
+
+\begin{DoxyParams}[1]{Parameters}
+string & {\em \$s\-U\-R\-L} & the request \hyperlink{class_u_r_i}{U\-R\-I} \\
+\hline
+mixed & {\em \$\-P\-H\-P\-Callback} & the php function to be called on the server to process the request \\
+\hline
+string & {\em \$s\-J\-S\-Callback} & the javascript function that you can call on your html-\/page \\
+\hline
+int & {\em \$n\-Arg\-Count} & the number of arguments you can set in your javascript-\//php-\/function \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_a_j_a_x___request_a56516da4748a2fb29e8043fa05727ff0}{\index{A\-J\-A\-X\-\_\-\-Request@{A\-J\-A\-X\-\_\-\-Request}!get\-Output@{get\-Output}}
+\index{get\-Output@{get\-Output}!AJAX_Request@{A\-J\-A\-X\-\_\-\-Request}}
+\subsubsection[{get\-Output}]{\setlength{\rightskip}{0pt plus 5cm}A\-J\-A\-X\-\_\-\-Request\-::get\-Output (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_a_j_a_x___request_a56516da4748a2fb29e8043fa05727ff0}
+Process this request-\/data
+
+\begin{DoxyReturn}{Returns}
+string 
+\end{DoxyReturn}
+\hypertarget{class_a_j_a_x___request_a18241531ebf16a4314b84e3e6c59b807}{\index{A\-J\-A\-X\-\_\-\-Request@{A\-J\-A\-X\-\_\-\-Request}!set\-Arg\-Count@{set\-Arg\-Count}}
+\index{set\-Arg\-Count@{set\-Arg\-Count}!AJAX_Request@{A\-J\-A\-X\-\_\-\-Request}}
+\subsubsection[{set\-Arg\-Count}]{\setlength{\rightskip}{0pt plus 5cm}A\-J\-A\-X\-\_\-\-Request\-::set\-Arg\-Count (
+\begin{DoxyParamCaption}
+\item[{}]{\$n\-Arg\-Count}
+\end{DoxyParamCaption}
+)}}\label{class_a_j_a_x___request_a18241531ebf16a4314b84e3e6c59b807}
+Set the number of arguments you can set for your javascript-\//php-\/function
+
+
+\begin{DoxyParams}[1]{Parameters}
+int & {\em \$n\-Arg\-Count} & \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_a_j_a_x___request_a46eda702ebc8b0c5b40582faa54d4430}{\index{A\-J\-A\-X\-\_\-\-Request@{A\-J\-A\-X\-\_\-\-Request}!set\-Url@{set\-Url}}
+\index{set\-Url@{set\-Url}!AJAX_Request@{A\-J\-A\-X\-\_\-\-Request}}
+\subsubsection[{set\-Url}]{\setlength{\rightskip}{0pt plus 5cm}A\-J\-A\-X\-\_\-\-Request\-::set\-Url (
+\begin{DoxyParamCaption}
+\item[{}]{\$s\-Url}
+\end{DoxyParamCaption}
+)}}\label{class_a_j_a_x___request_a46eda702ebc8b0c5b40582faa54d4430}
+Set a fixed url that will be called when the function is invoked.
+
+
+\begin{DoxyParams}[1]{Parameters}
+string & {\em \$s\-Url} & \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_a_j_a_x___request_a155a570af13c465ce28a1db0600a15ed}{\index{A\-J\-A\-X\-\_\-\-Request@{A\-J\-A\-X\-\_\-\-Request}!set\-Value@{set\-Value}}
+\index{set\-Value@{set\-Value}!AJAX_Request@{A\-J\-A\-X\-\_\-\-Request}}
+\subsubsection[{set\-Value}]{\setlength{\rightskip}{0pt plus 5cm}A\-J\-A\-X\-\_\-\-Request\-::set\-Value (
+\begin{DoxyParamCaption}
+\item[{}]{\$s\-Name, }
+\item[{}]{\$s\-Value}
+\end{DoxyParamCaption}
+)}}\label{class_a_j_a_x___request_a155a570af13c465ce28a1db0600a15ed}
+Set a static value to be processed by this request
+
+
+\begin{DoxyParams}[1]{Parameters}
+string & {\em \$s\-Name} & \\
+\hline
+string & {\em \$s\-Value} & \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+ajax\-\_\-request.\-php\end{DoxyCompactItemize}

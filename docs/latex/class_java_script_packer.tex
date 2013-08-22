@@ -1,0 +1,122 @@
+\hypertarget{class_java_script_packer}{\section{Java\-Script\-Packer Class Reference}
+\label{class_java_script_packer}\index{Java\-Script\-Packer@{Java\-Script\-Packer}}
+}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_java_script_packer_af7aa7792227ab2d075c8afc86c237903}{{\bfseries \-\_\-\-\_\-construct} (\$\-\_\-script, \$\-\_\-encoding=62, \$\-\_\-fast\-Decode=true, \$\-\_\-special\-Chars=false)}\label{class_java_script_packer_af7aa7792227ab2d075c8afc86c237903}
+
+\item 
+\hypertarget{class_java_script_packer_afc8fde5237ea0f00405a860b202a81c4}{{\bfseries pack} ()}\label{class_java_script_packer_afc8fde5237ea0f00405a860b202a81c4}
+
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_java_script_packer_aa29c300dc97ed8c72a5f9f40f9ef24c3}{const {\bfseries I\-G\-N\-O\-R\-E} = '\$1'}\label{class_java_script_packer_aa29c300dc97ed8c72a5f9f40f9ef24c3}
+
+\item 
+const {\bfseries J\-S\-F\-U\-N\-C\-T\-I\-O\-N\-\_\-unpack}
+\item 
+const {\bfseries J\-S\-F\-U\-N\-C\-T\-I\-O\-N\-\_\-decode\-Body}
+\item 
+const {\bfseries J\-S\-F\-U\-N\-C\-T\-I\-O\-N\-\_\-encode10}
+\item 
+const {\bfseries J\-S\-F\-U\-N\-C\-T\-I\-O\-N\-\_\-encode36}
+\item 
+const {\bfseries J\-S\-F\-U\-N\-C\-T\-I\-O\-N\-\_\-encode62}
+\item 
+const {\bfseries J\-S\-F\-U\-N\-C\-T\-I\-O\-N\-\_\-encode95}
+\end{DoxyCompactItemize}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{class_java_script_packer_a3de990dd54f421396a9aa963c7399718}{\index{Java\-Script\-Packer@{Java\-Script\-Packer}!J\-S\-F\-U\-N\-C\-T\-I\-O\-N\-\_\-decode\-Body@{J\-S\-F\-U\-N\-C\-T\-I\-O\-N\-\_\-decode\-Body}}
+\index{J\-S\-F\-U\-N\-C\-T\-I\-O\-N\-\_\-decode\-Body@{J\-S\-F\-U\-N\-C\-T\-I\-O\-N\-\_\-decode\-Body}!JavaScriptPacker@{Java\-Script\-Packer}}
+\subsubsection[{J\-S\-F\-U\-N\-C\-T\-I\-O\-N\-\_\-decode\-Body}]{\setlength{\rightskip}{0pt plus 5cm}const Java\-Script\-Packer\-::\-J\-S\-F\-U\-N\-C\-T\-I\-O\-N\-\_\-decode\-Body}}\label{class_java_script_packer_a3de990dd54f421396a9aa963c7399718}
+{\bfseries Initial value\-:}
+\begin{DoxyCode}
+=
+
+
+
+
+\textcolor{stringliteral}{'    if (!\(\backslash\)'\(\backslash\)'.replace(/^/, String)) \{}
+\textcolor{stringliteral}{        // decode all the values we need}
+\textcolor{stringliteral}{        while ($count--) \{}
+\textcolor{stringliteral}{            $decode[$encode($count)] = $keywords[$count] || $encode($count);}
+\textcolor{stringliteral}{        \}}
+\textcolor{stringliteral}{        // global replacement function}
+\textcolor{stringliteral}{        $keywords = [function ($encoded) \{return $decode[$encoded]\}];}
+\textcolor{stringliteral}{        // generic match}
+\textcolor{stringliteral}{        $encode = function () \{return \(\backslash\)'\(\backslash\)\(\backslash\)\(\backslash\)\(\backslash\)w+\(\backslash\)'\};}
+\textcolor{stringliteral}{        // reset the loop counter -  we are now doing a global replace}
+\textcolor{stringliteral}{        $count = 1;}
+\textcolor{stringliteral}{    \}}
+\textcolor{stringliteral}{'}
+\end{DoxyCode}
+\hypertarget{class_java_script_packer_a4564f6cfcf6249de0a4da5362249dd53}{\index{Java\-Script\-Packer@{Java\-Script\-Packer}!J\-S\-F\-U\-N\-C\-T\-I\-O\-N\-\_\-encode10@{J\-S\-F\-U\-N\-C\-T\-I\-O\-N\-\_\-encode10}}
+\index{J\-S\-F\-U\-N\-C\-T\-I\-O\-N\-\_\-encode10@{J\-S\-F\-U\-N\-C\-T\-I\-O\-N\-\_\-encode10}!JavaScriptPacker@{Java\-Script\-Packer}}
+\subsubsection[{J\-S\-F\-U\-N\-C\-T\-I\-O\-N\-\_\-encode10}]{\setlength{\rightskip}{0pt plus 5cm}const Java\-Script\-Packer\-::\-J\-S\-F\-U\-N\-C\-T\-I\-O\-N\-\_\-encode10}}\label{class_java_script_packer_a4564f6cfcf6249de0a4da5362249dd53}
+{\bfseries Initial value\-:}
+\begin{DoxyCode}
+=
+\textcolor{stringliteral}{'function($charCode) \{}
+\textcolor{stringliteral}{    return $charCode;}
+\textcolor{stringliteral}{\}'}
+\end{DoxyCode}
+\hypertarget{class_java_script_packer_ad6938958b7f7152951ecf4d2654e820b}{\index{Java\-Script\-Packer@{Java\-Script\-Packer}!J\-S\-F\-U\-N\-C\-T\-I\-O\-N\-\_\-encode36@{J\-S\-F\-U\-N\-C\-T\-I\-O\-N\-\_\-encode36}}
+\index{J\-S\-F\-U\-N\-C\-T\-I\-O\-N\-\_\-encode36@{J\-S\-F\-U\-N\-C\-T\-I\-O\-N\-\_\-encode36}!JavaScriptPacker@{Java\-Script\-Packer}}
+\subsubsection[{J\-S\-F\-U\-N\-C\-T\-I\-O\-N\-\_\-encode36}]{\setlength{\rightskip}{0pt plus 5cm}const Java\-Script\-Packer\-::\-J\-S\-F\-U\-N\-C\-T\-I\-O\-N\-\_\-encode36}}\label{class_java_script_packer_ad6938958b7f7152951ecf4d2654e820b}
+{\bfseries Initial value\-:}
+\begin{DoxyCode}
+=
+\textcolor{stringliteral}{'function($charCode) \{}
+\textcolor{stringliteral}{    return $charCode.toString(36);}
+\textcolor{stringliteral}{\}'}
+\end{DoxyCode}
+\hypertarget{class_java_script_packer_a55e44efe44ba636f46a38d558003d128}{\index{Java\-Script\-Packer@{Java\-Script\-Packer}!J\-S\-F\-U\-N\-C\-T\-I\-O\-N\-\_\-encode62@{J\-S\-F\-U\-N\-C\-T\-I\-O\-N\-\_\-encode62}}
+\index{J\-S\-F\-U\-N\-C\-T\-I\-O\-N\-\_\-encode62@{J\-S\-F\-U\-N\-C\-T\-I\-O\-N\-\_\-encode62}!JavaScriptPacker@{Java\-Script\-Packer}}
+\subsubsection[{J\-S\-F\-U\-N\-C\-T\-I\-O\-N\-\_\-encode62}]{\setlength{\rightskip}{0pt plus 5cm}const Java\-Script\-Packer\-::\-J\-S\-F\-U\-N\-C\-T\-I\-O\-N\-\_\-encode62}}\label{class_java_script_packer_a55e44efe44ba636f46a38d558003d128}
+{\bfseries Initial value\-:}
+\begin{DoxyCode}
+=
+\textcolor{stringliteral}{'function($charCode) \{}
+\textcolor{stringliteral}{    return ($charCode < \_encoding ? \(\backslash\)'\(\backslash\)' : arguments.callee(parseInt($charCode / \_encoding))) +}
+\textcolor{stringliteral}{    (($charCode = $charCode % \_encoding) > 35 ? String.fromCharCode($charCode + 29) :
+       $charCode.toString(36));}
+\textcolor{stringliteral}{\}'}
+\end{DoxyCode}
+\hypertarget{class_java_script_packer_acae155191dc04b23561760a2bc005635}{\index{Java\-Script\-Packer@{Java\-Script\-Packer}!J\-S\-F\-U\-N\-C\-T\-I\-O\-N\-\_\-encode95@{J\-S\-F\-U\-N\-C\-T\-I\-O\-N\-\_\-encode95}}
+\index{J\-S\-F\-U\-N\-C\-T\-I\-O\-N\-\_\-encode95@{J\-S\-F\-U\-N\-C\-T\-I\-O\-N\-\_\-encode95}!JavaScriptPacker@{Java\-Script\-Packer}}
+\subsubsection[{J\-S\-F\-U\-N\-C\-T\-I\-O\-N\-\_\-encode95}]{\setlength{\rightskip}{0pt plus 5cm}const Java\-Script\-Packer\-::\-J\-S\-F\-U\-N\-C\-T\-I\-O\-N\-\_\-encode95}}\label{class_java_script_packer_acae155191dc04b23561760a2bc005635}
+{\bfseries Initial value\-:}
+\begin{DoxyCode}
+=
+\textcolor{stringliteral}{'function($charCode) \{}
+\textcolor{stringliteral}{    return ($charCode < \_encoding ? \(\backslash\)'\(\backslash\)' : arguments.callee($charCode / \_encoding)) +}
+\textcolor{stringliteral}{        String.fromCharCode($charCode % \_encoding + 161);}
+\textcolor{stringliteral}{\}'}
+\end{DoxyCode}
+\hypertarget{class_java_script_packer_af8a45cdab051ad7bea7606ca76ab25dc}{\index{Java\-Script\-Packer@{Java\-Script\-Packer}!J\-S\-F\-U\-N\-C\-T\-I\-O\-N\-\_\-unpack@{J\-S\-F\-U\-N\-C\-T\-I\-O\-N\-\_\-unpack}}
+\index{J\-S\-F\-U\-N\-C\-T\-I\-O\-N\-\_\-unpack@{J\-S\-F\-U\-N\-C\-T\-I\-O\-N\-\_\-unpack}!JavaScriptPacker@{Java\-Script\-Packer}}
+\subsubsection[{J\-S\-F\-U\-N\-C\-T\-I\-O\-N\-\_\-unpack}]{\setlength{\rightskip}{0pt plus 5cm}const Java\-Script\-Packer\-::\-J\-S\-F\-U\-N\-C\-T\-I\-O\-N\-\_\-unpack}}\label{class_java_script_packer_af8a45cdab051ad7bea7606ca76ab25dc}
+{\bfseries Initial value\-:}
+\begin{DoxyCode}
+=
+
+\textcolor{stringliteral}{'function($packed, $ascii, $count, $keywords, $encode, $decode) \{}
+\textcolor{stringliteral}{    while ($count--) \{}
+\textcolor{stringliteral}{        if ($keywords[$count]) \{}
+\textcolor{stringliteral}{            $packed = $packed.replace(new RegExp(\(\backslash\)'\(\backslash\)\(\backslash\)\(\backslash\)\(\backslash\)b\(\backslash\)' + $encode($count) + \(\backslash\)'\(\backslash\)\(\backslash\)\(\backslash\)\(\backslash\)b\(\backslash\)', \(\backslash\)'g\(\backslash\)'),
+       $keywords[$count]);}
+\textcolor{stringliteral}{        \}}
+\textcolor{stringliteral}{    \}}
+\textcolor{stringliteral}{    return $packed;}
+\textcolor{stringliteral}{\}'}
+\end{DoxyCode}
+
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+D\-:/www/watena/libs/default/ajax/class.\-Java\-Script\-Packer.\-php\end{DoxyCompactItemize}

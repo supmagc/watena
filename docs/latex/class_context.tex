@@ -1,0 +1,264 @@
+\hypertarget{class_context}{\section{Context Class Reference}
+\label{class_context}\index{Context@{Context}}
+}
+Inheritance diagram for Context\-:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_context}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_context_a25027250a19c6c7f858fdc6a15ccc6fd}{get\-Library\-Paths} ()
+\item 
+\hyperlink{class_context_a88b3fae4b81660b705dd86053f15faaf}{get\-Filter\-Groups} ()
+\item 
+\hyperlink{class_context_af46f99c62638d7ff147a02a5be033762}{get\-Library\-File\-Path} (\$s\-Directory, \$s\-File, \$b\-All\-Of\-Them=false, \$s\-Preferred\-Library=null)
+\item 
+\hyperlink{class_context_a4a43e37a10bf6fa9f0533331517d8072}{get\-Plugin} (\$s\-Plugin, \$s\-Implements=null)
+\item 
+\hyperlink{class_context_ab9c91486c1ef629018b9064b8fa2e8c4}{load\-Plugins} (array \$a\-Plugins, \$b\-Terminate=true)
+\item 
+\hyperlink{class_context_a4842e2aeb71bfa7e01102b5625636784}{load\-Plugin} (\$s\-Plugin)
+\item 
+\hyperlink{class_context_aa24e565ad92a8b25d966b599cad64fa0}{load\-Model} (\$s\-Name, array \$a\-Params=array())
+\item 
+\hyperlink{class_context_a93b8171f08dc553101d04295a559d48d}{load\-View} (\$s\-Name, array \$a\-Params=array())
+\item 
+\hyperlink{class_context_a2f71ab4bef9ba87fa2a43e155d982bfe}{load\-Controller} (\$s\-Name, array \$a\-Params=array())
+\item 
+\hyperlink{class_context_a4f2a03faa65ed2ce9b5d80aab0b0c4cd}{load\-Object\-And\-Requirements} (\$s\-Object\-Name, array \$a\-Params=array(), \$s\-Include\-File=null, \$s\-Extends=null, array \$a\-Implements=array())
+\item 
+\hyperlink{class_context_a1ec2325ed7bf9ffc92c28f111b194578}{get\-M\-V\-C} (\hyperlink{class_mapping}{Mapping} \$o\-Mapping)
+\item 
+\hyperlink{class_context_ae30a1958aa6091697e954ccd45cfc406}{get\-Data\-File} (\$s\-Path)
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_context_ae30a1958aa6091697e954ccd45cfc406}{\index{Context@{Context}!get\-Data\-File@{get\-Data\-File}}
+\index{get\-Data\-File@{get\-Data\-File}!Context@{Context}}
+\subsubsection[{get\-Data\-File}]{\setlength{\rightskip}{0pt plus 5cm}Context\-::get\-Data\-File (
+\begin{DoxyParamCaption}
+\item[{}]{\$s\-Path}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [final]}}}\label{class_context_ae30a1958aa6091697e954ccd45cfc406}
+Retrieve a linked datafile-\/object
+
+
+\begin{DoxyParams}[1]{Parameters}
+\hyperlink{class_data_file}{Data\-File} & {\em \$s\-Path} & \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_context_a88b3fae4b81660b705dd86053f15faaf}{\index{Context@{Context}!get\-Filter\-Groups@{get\-Filter\-Groups}}
+\index{get\-Filter\-Groups@{get\-Filter\-Groups}!Context@{Context}}
+\subsubsection[{get\-Filter\-Groups}]{\setlength{\rightskip}{0pt plus 5cm}Context\-::get\-Filter\-Groups (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [final]}}}\label{class_context_a88b3fae4b81660b705dd86053f15faaf}
+Retrieve a list with all filtergroups found on the system. Since the groups are not loaded by default, this function handles the caching.
+
+return array \hypertarget{class_context_af46f99c62638d7ff147a02a5be033762}{\index{Context@{Context}!get\-Library\-File\-Path@{get\-Library\-File\-Path}}
+\index{get\-Library\-File\-Path@{get\-Library\-File\-Path}!Context@{Context}}
+\subsubsection[{get\-Library\-File\-Path}]{\setlength{\rightskip}{0pt plus 5cm}Context\-::get\-Library\-File\-Path (
+\begin{DoxyParamCaption}
+\item[{}]{\$s\-Directory, }
+\item[{}]{\$s\-File, }
+\item[{}]{\$b\-All\-Of\-Them = {\ttfamily false}, }
+\item[{}]{\$s\-Preferred\-Library = {\ttfamily null}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [final]}}}\label{class_context_af46f99c62638d7ff147a02a5be033762}
+Retrieve the path of the specified file on the system Their is an order of presedence\-: 1) Check base path 2) Check if file has a library prepending (lib\$file) 3) If a preferred library is set, check it 4) Check all libraries on the system
+
+
+\begin{DoxyParams}[1]{Parameters}
+string & {\em \$s\-Directory} & \\
+\hline
+string & {\em \$s\-File} & \\
+\hline
+string & {\em \$s\-Preferred\-Library} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+string (or false) 
+\end{DoxyReturn}
+\hypertarget{class_context_a25027250a19c6c7f858fdc6a15ccc6fd}{\index{Context@{Context}!get\-Library\-Paths@{get\-Library\-Paths}}
+\index{get\-Library\-Paths@{get\-Library\-Paths}!Context@{Context}}
+\subsubsection[{get\-Library\-Paths}]{\setlength{\rightskip}{0pt plus 5cm}Context\-::get\-Library\-Paths (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [final]}}}\label{class_context_a25027250a19c6c7f858fdc6a15ccc6fd}
+Retrieve an array with the full paths of the library folders.
+
+\begin{DoxyReturn}{Returns}
+array 
+\end{DoxyReturn}
+\hypertarget{class_context_a1ec2325ed7bf9ffc92c28f111b194578}{\index{Context@{Context}!get\-M\-V\-C@{get\-M\-V\-C}}
+\index{get\-M\-V\-C@{get\-M\-V\-C}!Context@{Context}}
+\subsubsection[{get\-M\-V\-C}]{\setlength{\rightskip}{0pt plus 5cm}Context\-::get\-M\-V\-C (
+\begin{DoxyParamCaption}
+\item[{{\bf Mapping}}]{\$o\-Mapping}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [final]}}}\label{class_context_a1ec2325ed7bf9ffc92c28f111b194578}
+Get an array with respectibly the M\-V\-C components for the given mapping
+
+
+\begin{DoxyParams}[1]{Parameters}
+\hyperlink{class_mapping}{Mapping} & {\em \$o\-Mapping} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+array(\-Model, View, Controller) 
+\end{DoxyReturn}
+\hypertarget{class_context_a4a43e37a10bf6fa9f0533331517d8072}{\index{Context@{Context}!get\-Plugin@{get\-Plugin}}
+\index{get\-Plugin@{get\-Plugin}!Context@{Context}}
+\subsubsection[{get\-Plugin}]{\setlength{\rightskip}{0pt plus 5cm}Context\-::get\-Plugin (
+\begin{DoxyParamCaption}
+\item[{}]{\$s\-Plugin, }
+\item[{}]{\$s\-Implements = {\ttfamily null}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [final]}}}\label{class_context_a4a43e37a10bf6fa9f0533331517d8072}
+Try to retrieve a plugin based on its name. It's possible to check if the class implements a specified interface. !!! W\-A\-R\-N\-I\-N\-G !!! This does not automatically loads the plugin !!!
+
+
+\begin{DoxyParams}[1]{Parameters}
+string & {\em \$s\-Plugin} & \\
+\hline
+string & {\em \$s\-Implements} & (default = null) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+mixed The instance of the specified plugin, or null 
+\end{DoxyReturn}
+\hypertarget{class_context_a2f71ab4bef9ba87fa2a43e155d982bfe}{\index{Context@{Context}!load\-Controller@{load\-Controller}}
+\index{load\-Controller@{load\-Controller}!Context@{Context}}
+\subsubsection[{load\-Controller}]{\setlength{\rightskip}{0pt plus 5cm}Context\-::load\-Controller (
+\begin{DoxyParamCaption}
+\item[{}]{\$s\-Name, }
+\item[{array}]{\$a\-Params = {\ttfamily array()}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [final]}}}\label{class_context_a2f71ab4bef9ba87fa2a43e155d982bfe}
+Load and retrieve the specified controller.
+
+
+\begin{DoxyParams}[1]{Parameters}
+string & {\em \$s\-Name} & \\
+\hline
+array & {\em \$a\-Params} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\hyperlink{class_controller}{Controller} 
+\end{DoxyReturn}
+\hypertarget{class_context_aa24e565ad92a8b25d966b599cad64fa0}{\index{Context@{Context}!load\-Model@{load\-Model}}
+\index{load\-Model@{load\-Model}!Context@{Context}}
+\subsubsection[{load\-Model}]{\setlength{\rightskip}{0pt plus 5cm}Context\-::load\-Model (
+\begin{DoxyParamCaption}
+\item[{}]{\$s\-Name, }
+\item[{array}]{\$a\-Params = {\ttfamily array()}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [final]}}}\label{class_context_aa24e565ad92a8b25d966b599cad64fa0}
+Load and retrieve the specified model.
+
+
+\begin{DoxyParams}[1]{Parameters}
+string & {\em \$s\-Name} & \\
+\hline
+array & {\em \$a\-Params} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\hyperlink{class_model}{Model} 
+\end{DoxyReturn}
+\hypertarget{class_context_a4f2a03faa65ed2ce9b5d80aab0b0c4cd}{\index{Context@{Context}!load\-Object\-And\-Requirements@{load\-Object\-And\-Requirements}}
+\index{load\-Object\-And\-Requirements@{load\-Object\-And\-Requirements}!Context@{Context}}
+\subsubsection[{load\-Object\-And\-Requirements}]{\setlength{\rightskip}{0pt plus 5cm}Context\-::load\-Object\-And\-Requirements (
+\begin{DoxyParamCaption}
+\item[{}]{\$s\-Object\-Name, }
+\item[{array}]{\$a\-Params = {\ttfamily array()}, }
+\item[{}]{\$s\-Include\-File = {\ttfamily null}, }
+\item[{}]{\$s\-Extends = {\ttfamily null}, }
+\item[{array}]{\$a\-Implements = {\ttfamily array()}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [final]}}}\label{class_context_a4f2a03faa65ed2ce9b5d80aab0b0c4cd}
+Try to load a specified class and retrieve an instance of it
+
+
+\begin{DoxyParams}[1]{Parameters}
+string & {\em \$s\-Class\-Name} & \\
+\hline
+array & {\em \$a\-Config} & \\
+\hline
+string & {\em \$s\-Include\-File} & \\
+\hline
+string & {\em \$s\-Extends} & \\
+\hline
+string & {\em \$s\-Implements} & \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_context_a4842e2aeb71bfa7e01102b5625636784}{\index{Context@{Context}!load\-Plugin@{load\-Plugin}}
+\index{load\-Plugin@{load\-Plugin}!Context@{Context}}
+\subsubsection[{load\-Plugin}]{\setlength{\rightskip}{0pt plus 5cm}Context\-::load\-Plugin (
+\begin{DoxyParamCaption}
+\item[{}]{\$s\-Plugin}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [final]}}}\label{class_context_a4842e2aeb71bfa7e01102b5625636784}
+Try to load a plugin is it's not loaded allready
+
+
+\begin{DoxyParams}[1]{Parameters}
+string & {\em \$s\-Plugin} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+boolean Indicator if the plugin was loaded 
+\end{DoxyReturn}
+\hypertarget{class_context_ab9c91486c1ef629018b9064b8fa2e8c4}{\index{Context@{Context}!load\-Plugins@{load\-Plugins}}
+\index{load\-Plugins@{load\-Plugins}!Context@{Context}}
+\subsubsection[{load\-Plugins}]{\setlength{\rightskip}{0pt plus 5cm}Context\-::load\-Plugins (
+\begin{DoxyParamCaption}
+\item[{array}]{\$a\-Plugins, }
+\item[{}]{\$b\-Terminate = {\ttfamily true}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [final]}}}\label{class_context_ab9c91486c1ef629018b9064b8fa2e8c4}
+Try to load a whole list of plugins if they're not loaded allready
+
+
+\begin{DoxyParams}[1]{Parameters}
+string & {\em \$s\-Plugins} & \\
+\hline
+boolean & {\em \$b\-Terminate} & (default = false) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+boolean Indicator if the plugins were loaded 
+\end{DoxyReturn}
+\hypertarget{class_context_a93b8171f08dc553101d04295a559d48d}{\index{Context@{Context}!load\-View@{load\-View}}
+\index{load\-View@{load\-View}!Context@{Context}}
+\subsubsection[{load\-View}]{\setlength{\rightskip}{0pt plus 5cm}Context\-::load\-View (
+\begin{DoxyParamCaption}
+\item[{}]{\$s\-Name, }
+\item[{array}]{\$a\-Params = {\ttfamily array()}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [final]}}}\label{class_context_a93b8171f08dc553101d04295a559d48d}
+Load and retrieve the specified view.
+
+
+\begin{DoxyParams}[1]{Parameters}
+string & {\em \$s\-Name} & \\
+\hline
+array & {\em \$a\-Params} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\hyperlink{class_view}{View} 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+D\-:/www/watena/base/system/class.\-context.\-php\end{DoxyCompactItemize}

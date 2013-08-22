@@ -1,0 +1,323 @@
+\hypertarget{classhtml2text}{\section{html2text Class Reference}
+\label{classhtml2text}\index{html2text@{html2text}}
+}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classhtml2text_ac404b5212f8b30c6b3b2e86806a5f5b2}{\-\_\-\-\_\-construct} (\$source=null)
+\item 
+\hyperlink{classhtml2text_abf3a1fc2ddd0622eaf181b68991cd382}{set\-\_\-html} (\$source, \$from\-\_\-file=false)
+\item 
+\hyperlink{classhtml2text_a160a9753434e61b3ff460860ca820c6d}{get\-Text} ()
+\item 
+\hyperlink{classhtml2text_aa1a63a82736ee37ea305e2e17b1b2cc9}{print\-\_\-text} ()
+\item 
+\hyperlink{classhtml2text_a65c9d6847400bced67eb0f82deb1784c}{p} ()
+\item 
+\hyperlink{classhtml2text_a426f32b8fc504be6eb0e2af96d9e11f6}{set\-\_\-allowed\-\_\-tags} (\$allowed\-\_\-tags= '')
+\item 
+\hyperlink{classhtml2text_afc4959f0839eccd625718914f879eabc}{set\-\_\-base\-\_\-url} (\$url= '')
+\item 
+\hyperlink{classhtml2text_adfcac63cc53ce5fd4f3ff2d72cf9a5c9}{\-\_\-convert} ()
+\item 
+\hyperlink{classhtml2text_a82ac6258106b2d8ad380dce11d9dddef}{\-\_\-build\-\_\-link\-\_\-list} (\$link, \$display)
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classhtml2text_a891f6ae7d8de6312895706453fcda29f}{\$html}
+\item 
+\hyperlink{classhtml2text_a9f893148949046a51cefad452e88f4ab}{\$text}
+\item 
+\hyperlink{classhtml2text_a69cdbc42dd33f4215e4a655adaf24989}{\$width} = 70
+\item 
+\hyperlink{classhtml2text_aa5dbb9c672807ed8c4826b219aa2f22e}{\$search}
+\item 
+\hyperlink{classhtml2text_ab84fb8261392ce0f0d329dbffd0dc848}{\$replace}
+\item 
+\hyperlink{classhtml2text_a062ee8ef94be7191ef9dda3dba416891}{\$allowed\-\_\-tags} = ''
+\item 
+\hyperlink{classhtml2text_a2064bd23eca4e7eeb207ba23ca91613b}{\$url}
+\item 
+\hyperlink{classhtml2text_a98248146d367395beda0a99dce560690}{\$\-\_\-converted} = false
+\item 
+\hyperlink{classhtml2text_a2b0a222d507b5cb972acf2d10b4d9d3f}{\$\-\_\-link\-\_\-list} = ''
+\item 
+\hyperlink{classhtml2text_a12205ffda18f0cd0eb505b4d2332a32c}{\$\-\_\-link\-\_\-count} = 0
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Takes H\-T\-M\-L and converts it to formatted, plain text.
+
+Thanks to Alexander Krug (\href{http://www.krugar.de/}{\tt http\-://www.\-krugar.\-de/}) to pointing out and correcting an error in the regexp search array. Fixed 7/30/03.
+
+Updated \hyperlink{classhtml2text_abf3a1fc2ddd0622eaf181b68991cd382}{set\-\_\-html()} function's file reading mechanism, 9/25/03.
+
+Thanks to Joss Sanglier (\href{http://www.dancingbear.co.uk/}{\tt http\-://www.\-dancingbear.\-co.\-uk/}) for adding several more H\-T\-M\-L entity codes to the \$search and \$replace arrays. Updated 11/7/03.
+
+Thanks to Darius Kasperavicius (\href{http://www.dar.dar.lt/}{\tt http\-://www.\-dar.\-dar.\-lt/}) for suggesting the addition of \$allowed\-\_\-tags and its supporting function (which I slightly modified). Updated 3/12/04.
+
+Thanks to Justin Dearing for pointing out that a replacement for the 
+
+tag was missing, and suggesting an appropriate fix. Updated 8/25/04.
+
+Thanks to Mathieu Collas (\href{http://www.myefarm.com/}{\tt http\-://www.\-myefarm.\-com/}) for finding a display/formatting bug in the \hyperlink{classhtml2text_a82ac6258106b2d8ad380dce11d9dddef}{\-\_\-build\-\_\-link\-\_\-list()} function\-: email readers would show the left bracket and number (\char`\"{}\mbox{[}1\char`\"{}) as part of the rendered email address. Updated 12/16/04.
+
+Thanks to Wojciech Bajon (\href{http://histeria.pl/}{\tt http\-://histeria.\-pl/}) for submitting code to handle relative links, which I hadn't considered. I modified his code a bit to handle normal H\-T\-T\-P links and M\-A\-I\-L\-T\-O links. Also for suggesting three additional H\-T\-M\-L entity codes to search for. Updated 03/02/05.
+
+Thanks to Jacob Chandler for pointing out another link condition for the \hyperlink{classhtml2text_a82ac6258106b2d8ad380dce11d9dddef}{\-\_\-build\-\_\-link\-\_\-list()} function\-: \char`\"{}https\char`\"{}. Updated 04/06/05.
+
+Thanks to Marc Bertrand (\href{http://www.dresdensky.com/}{\tt http\-://www.\-dresdensky.\-com/}) for suggesting a revision to the word wrapping functionality; if you specify a \$width of 0 or less, word wrapping will be ignored. Updated 11/02/06.
+
+$\ast$$\ast$$\ast$ Big housecleaning updates below\-:
+
+Thanks to Colin Brown (\href{http://www.sparkdriver.co.uk/}{\tt http\-://www.\-sparkdriver.\-co.\-uk/}) for suggesting the fix to handle  and blank lines (whitespace). Christian Basedau (\href{http://www.movetheweb.de/}{\tt http\-://www.\-movetheweb.\-de/}) also suggested the blank lines fix.
+
+Special thanks to Marcus Bointon (\href{http://www.synchromedia.co.uk/}{\tt http\-://www.\-synchromedia.\-co.\-uk/}), Christian Basedau, Norbert Laposa (\href{http://ln5.co.uk/}{\tt http\-://ln5.\-co.\-uk/}), Bas van de Weijer, and Marijn van Butselaar for pointing out my glaring error in the 
+
+handling. Marcus also supplied a host of fixes.
+
+Thanks to Jeffrey Silverman (\href{http://www.newtnotes.com/}{\tt http\-://www.\-newtnotes.\-com/}) for pointing out that extra spaces should be compressed--a problem addressed with Marcus Bointon's fixes but that I had not yet incorporated.
+
+Thanks to Daniel Schledermann (\href{http://www.typoconsult.dk/}{\tt http\-://www.\-typoconsult.\-dk/}) for suggesting a valuable fix with  tag handling.
+
+Thanks to Wojciech Bajon (again!) for suggesting fixes and additions, including the  tag handling that Daniel Schledermann pointed out but that I had not yet incorporated. I haven't (yet) incorporated all of Wojciech's changes, though I may at some future time.
+
+$\ast$$\ast$$\ast$ End of the housecleaning updates. Updated 08/08/07.
+
+\begin{DoxyAuthor}{Author}
+Jon Abernathy \href{mailto:jon@chuggnutt.com}{\tt jon@chuggnutt.\-com} 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+1.\-0.\-0 
+\end{DoxyVersion}
+\begin{DoxySince}{Since}
+P\-H\-P 4.\-0.\-2 
+\end{DoxySince}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classhtml2text_ac404b5212f8b30c6b3b2e86806a5f5b2}{\index{html2text@{html2text}!\-\_\-\-\_\-construct@{\-\_\-\-\_\-construct}}
+\index{\-\_\-\-\_\-construct@{\-\_\-\-\_\-construct}!html2text@{html2text}}
+\subsubsection[{\-\_\-\-\_\-construct}]{\setlength{\rightskip}{0pt plus 5cm}html2text\-::\-\_\-\-\_\-construct (
+\begin{DoxyParamCaption}
+\item[{}]{\$source = {\ttfamily null}}
+\end{DoxyParamCaption}
+)}}\label{classhtml2text_ac404b5212f8b30c6b3b2e86806a5f5b2}
+Constructor.
+
+If the H\-T\-M\-L source string (or file) is supplied, the class will instantiate with that source propagated, all that has to be done it to call get\-\_\-text().
+
+
+\begin{DoxyParams}[1]{Parameters}
+string & {\em \$source} & H\-T\-M\-L content \\
+\hline
+boolean & {\em \$from\-\_\-file} & Indicates \$source is a file to pull content from  public \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classhtml2text_a82ac6258106b2d8ad380dce11d9dddef}{\index{html2text@{html2text}!\-\_\-build\-\_\-link\-\_\-list@{\-\_\-build\-\_\-link\-\_\-list}}
+\index{\-\_\-build\-\_\-link\-\_\-list@{\-\_\-build\-\_\-link\-\_\-list}!html2text@{html2text}}
+\subsubsection[{\-\_\-build\-\_\-link\-\_\-list}]{\setlength{\rightskip}{0pt plus 5cm}html2text\-::\-\_\-build\-\_\-link\-\_\-list (
+\begin{DoxyParamCaption}
+\item[{}]{\$link, }
+\item[{}]{\$display}
+\end{DoxyParamCaption}
+)}}\label{classhtml2text_a82ac6258106b2d8ad380dce11d9dddef}
+Helper function called by preg\-\_\-replace() on link replacement.
+
+Maintains an internal list of links to be displayed at the end of the text, with numeric indices to the original point in the text they appeared. Also makes an effort at identifying and handling absolute and relative links.
+
+
+\begin{DoxyParams}[1]{Parameters}
+string & {\em \$link} & U\-R\-L of the link \\
+\hline
+string & {\em \$display} & Part of the text to associate number with  private \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+string 
+\end{DoxyReturn}
+\hypertarget{classhtml2text_adfcac63cc53ce5fd4f3ff2d72cf9a5c9}{\index{html2text@{html2text}!\-\_\-convert@{\-\_\-convert}}
+\index{\-\_\-convert@{\-\_\-convert}!html2text@{html2text}}
+\subsubsection[{\-\_\-convert}]{\setlength{\rightskip}{0pt plus 5cm}html2text\-::\-\_\-convert (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classhtml2text_adfcac63cc53ce5fd4f3ff2d72cf9a5c9}
+Workhorse function that does actual conversion.
+
+First performs custom tag replacement specified by \$search and \$replace arrays. Then strips any remaining H\-T\-M\-L tags, reduces whitespace and newlines to a readable format, and word wraps the text to \$width characters.
+
+private \begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\hypertarget{classhtml2text_a160a9753434e61b3ff460860ca820c6d}{\index{html2text@{html2text}!get\-Text@{get\-Text}}
+\index{get\-Text@{get\-Text}!html2text@{html2text}}
+\subsubsection[{get\-Text}]{\setlength{\rightskip}{0pt plus 5cm}html2text\-::get\-Text (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classhtml2text_a160a9753434e61b3ff460860ca820c6d}
+Returns the text, converted from H\-T\-M\-L.
+
+public \begin{DoxyReturn}{Returns}
+string 
+\end{DoxyReturn}
+\hypertarget{classhtml2text_a65c9d6847400bced67eb0f82deb1784c}{\index{html2text@{html2text}!p@{p}}
+\index{p@{p}!html2text@{html2text}}
+\subsubsection[{p}]{\setlength{\rightskip}{0pt plus 5cm}html2text\-::p (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classhtml2text_a65c9d6847400bced67eb0f82deb1784c}
+Alias to \hyperlink{classhtml2text_aa1a63a82736ee37ea305e2e17b1b2cc9}{print\-\_\-text()}, operates identically.
+
+public \begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{classhtml2text_aa1a63a82736ee37ea305e2e17b1b2cc9}{print\-\_\-text()} 
+\end{DoxySeeAlso}
+\hypertarget{classhtml2text_aa1a63a82736ee37ea305e2e17b1b2cc9}{\index{html2text@{html2text}!print\-\_\-text@{print\-\_\-text}}
+\index{print\-\_\-text@{print\-\_\-text}!html2text@{html2text}}
+\subsubsection[{print\-\_\-text}]{\setlength{\rightskip}{0pt plus 5cm}html2text\-::print\-\_\-text (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classhtml2text_aa1a63a82736ee37ea305e2e17b1b2cc9}
+Prints the text, converted from H\-T\-M\-L.
+
+public \begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\hypertarget{classhtml2text_a426f32b8fc504be6eb0e2af96d9e11f6}{\index{html2text@{html2text}!set\-\_\-allowed\-\_\-tags@{set\-\_\-allowed\-\_\-tags}}
+\index{set\-\_\-allowed\-\_\-tags@{set\-\_\-allowed\-\_\-tags}!html2text@{html2text}}
+\subsubsection[{set\-\_\-allowed\-\_\-tags}]{\setlength{\rightskip}{0pt plus 5cm}html2text\-::set\-\_\-allowed\-\_\-tags (
+\begin{DoxyParamCaption}
+\item[{}]{\$allowed\-\_\-tags = {\ttfamily ''}}
+\end{DoxyParamCaption}
+)}}\label{classhtml2text_a426f32b8fc504be6eb0e2af96d9e11f6}
+Sets the allowed H\-T\-M\-L tags to pass through to the resulting text.
+
+Tags should be in the form \char`\"{}$<$p$>$\char`\"{}, with no corresponding closing tag.
+
+public \begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\hypertarget{classhtml2text_afc4959f0839eccd625718914f879eabc}{\index{html2text@{html2text}!set\-\_\-base\-\_\-url@{set\-\_\-base\-\_\-url}}
+\index{set\-\_\-base\-\_\-url@{set\-\_\-base\-\_\-url}!html2text@{html2text}}
+\subsubsection[{set\-\_\-base\-\_\-url}]{\setlength{\rightskip}{0pt plus 5cm}html2text\-::set\-\_\-base\-\_\-url (
+\begin{DoxyParamCaption}
+\item[{}]{\$url = {\ttfamily ''}}
+\end{DoxyParamCaption}
+)}}\label{classhtml2text_afc4959f0839eccd625718914f879eabc}
+Sets a base U\-R\-L to handle relative links.
+
+public \begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\hypertarget{classhtml2text_abf3a1fc2ddd0622eaf181b68991cd382}{\index{html2text@{html2text}!set\-\_\-html@{set\-\_\-html}}
+\index{set\-\_\-html@{set\-\_\-html}!html2text@{html2text}}
+\subsubsection[{set\-\_\-html}]{\setlength{\rightskip}{0pt plus 5cm}html2text\-::set\-\_\-html (
+\begin{DoxyParamCaption}
+\item[{}]{\$source, }
+\item[{}]{\$from\-\_\-file = {\ttfamily false}}
+\end{DoxyParamCaption}
+)}}\label{classhtml2text_abf3a1fc2ddd0622eaf181b68991cd382}
+Loads source H\-T\-M\-L into memory, either from \$source string or a file.
+
+
+\begin{DoxyParams}[1]{Parameters}
+string & {\em \$source} & H\-T\-M\-L content \\
+\hline
+boolean & {\em \$from\-\_\-file} & Indicates \$source is a file to pull content from  public \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{classhtml2text_a98248146d367395beda0a99dce560690}{\index{html2text@{html2text}!\$\-\_\-converted@{\$\-\_\-converted}}
+\index{\$\-\_\-converted@{\$\-\_\-converted}!html2text@{html2text}}
+\subsubsection[{\$\-\_\-converted}]{\setlength{\rightskip}{0pt plus 5cm}boolean html2text\-::\$\-\_\-converted = false}}\label{classhtml2text_a98248146d367395beda0a99dce560690}
+Indicates whether content in the \$html variable has been converted yet.
+
+private \begin{DoxySeeAlso}{See Also}
+\hyperlink{classhtml2text_a891f6ae7d8de6312895706453fcda29f}{\$html}, \hyperlink{classhtml2text_a9f893148949046a51cefad452e88f4ab}{\$text} 
+\end{DoxySeeAlso}
+\hypertarget{classhtml2text_a12205ffda18f0cd0eb505b4d2332a32c}{\index{html2text@{html2text}!\$\-\_\-link\-\_\-count@{\$\-\_\-link\-\_\-count}}
+\index{\$\-\_\-link\-\_\-count@{\$\-\_\-link\-\_\-count}!html2text@{html2text}}
+\subsubsection[{\$\-\_\-link\-\_\-count}]{\setlength{\rightskip}{0pt plus 5cm}integer html2text\-::\$\-\_\-link\-\_\-count = 0}}\label{classhtml2text_a12205ffda18f0cd0eb505b4d2332a32c}
+Number of valid links detected in the text, used for plain text display (rendered similar to footnotes).
+
+private \begin{DoxySeeAlso}{See Also}
+\hyperlink{classhtml2text_a82ac6258106b2d8ad380dce11d9dddef}{\-\_\-build\-\_\-link\-\_\-list()} 
+\end{DoxySeeAlso}
+\hypertarget{classhtml2text_a2b0a222d507b5cb972acf2d10b4d9d3f}{\index{html2text@{html2text}!\$\-\_\-link\-\_\-list@{\$\-\_\-link\-\_\-list}}
+\index{\$\-\_\-link\-\_\-list@{\$\-\_\-link\-\_\-list}!html2text@{html2text}}
+\subsubsection[{\$\-\_\-link\-\_\-list}]{\setlength{\rightskip}{0pt plus 5cm}string html2text\-::\$\-\_\-link\-\_\-list = ''}}\label{classhtml2text_a2b0a222d507b5cb972acf2d10b4d9d3f}
+Contains U\-R\-L addresses from links to be rendered in plain text.
+
+private \begin{DoxySeeAlso}{See Also}
+\hyperlink{classhtml2text_a82ac6258106b2d8ad380dce11d9dddef}{\-\_\-build\-\_\-link\-\_\-list()} 
+\end{DoxySeeAlso}
+\hypertarget{classhtml2text_a062ee8ef94be7191ef9dda3dba416891}{\index{html2text@{html2text}!\$allowed\-\_\-tags@{\$allowed\-\_\-tags}}
+\index{\$allowed\-\_\-tags@{\$allowed\-\_\-tags}!html2text@{html2text}}
+\subsubsection[{\$allowed\-\_\-tags}]{\setlength{\rightskip}{0pt plus 5cm}string html2text\-::\$allowed\-\_\-tags = ''}}\label{classhtml2text_a062ee8ef94be7191ef9dda3dba416891}
+Contains a list of H\-T\-M\-L tags to allow in the resulting text.
+
+public \begin{DoxySeeAlso}{See Also}
+\hyperlink{classhtml2text_a426f32b8fc504be6eb0e2af96d9e11f6}{set\-\_\-allowed\-\_\-tags()} 
+\end{DoxySeeAlso}
+\hypertarget{classhtml2text_a891f6ae7d8de6312895706453fcda29f}{\index{html2text@{html2text}!\$html@{\$html}}
+\index{\$html@{\$html}!html2text@{html2text}}
+\subsubsection[{\$html}]{\setlength{\rightskip}{0pt plus 5cm}string html2text\-::\$html}}\label{classhtml2text_a891f6ae7d8de6312895706453fcda29f}
+Contains the H\-T\-M\-L content to convert.
+
+public \hypertarget{classhtml2text_ab84fb8261392ce0f0d329dbffd0dc848}{\index{html2text@{html2text}!\$replace@{\$replace}}
+\index{\$replace@{\$replace}!html2text@{html2text}}
+\subsubsection[{\$replace}]{\setlength{\rightskip}{0pt plus 5cm}array html2text\-::\$replace}}\label{classhtml2text_ab84fb8261392ce0f0d329dbffd0dc848}
+List of pattern replacements corresponding to patterns searched.
+
+public \begin{DoxySeeAlso}{See Also}
+\hyperlink{classhtml2text_aa5dbb9c672807ed8c4826b219aa2f22e}{\$search} 
+\end{DoxySeeAlso}
+\hypertarget{classhtml2text_aa5dbb9c672807ed8c4826b219aa2f22e}{\index{html2text@{html2text}!\$search@{\$search}}
+\index{\$search@{\$search}!html2text@{html2text}}
+\subsubsection[{\$search}]{\setlength{\rightskip}{0pt plus 5cm}array html2text\-::\$search}}\label{classhtml2text_aa5dbb9c672807ed8c4826b219aa2f22e}
+List of preg$\ast$ regular expression patterns to search for, used in conjunction with \$replace.
+
+public \begin{DoxySeeAlso}{See Also}
+\hyperlink{classhtml2text_ab84fb8261392ce0f0d329dbffd0dc848}{\$replace} 
+\end{DoxySeeAlso}
+\hypertarget{classhtml2text_a9f893148949046a51cefad452e88f4ab}{\index{html2text@{html2text}!\$text@{\$text}}
+\index{\$text@{\$text}!html2text@{html2text}}
+\subsubsection[{\$text}]{\setlength{\rightskip}{0pt plus 5cm}string html2text\-::\$text}}\label{classhtml2text_a9f893148949046a51cefad452e88f4ab}
+Contains the converted, formatted text.
+
+public \hypertarget{classhtml2text_a2064bd23eca4e7eeb207ba23ca91613b}{\index{html2text@{html2text}!\$url@{\$url}}
+\index{\$url@{\$url}!html2text@{html2text}}
+\subsubsection[{\$url}]{\setlength{\rightskip}{0pt plus 5cm}string html2text\-::\$url}}\label{classhtml2text_a2064bd23eca4e7eeb207ba23ca91613b}
+Contains the base U\-R\-L that relative links should resolve to.
+
+public \hypertarget{classhtml2text_a69cdbc42dd33f4215e4a655adaf24989}{\index{html2text@{html2text}!\$width@{\$width}}
+\index{\$width@{\$width}!html2text@{html2text}}
+\subsubsection[{\$width}]{\setlength{\rightskip}{0pt plus 5cm}integer html2text\-::\$width = 70}}\label{classhtml2text_a69cdbc42dd33f4215e4a655adaf24989}
+Maximum width of the formatted text, in columns.
+
+Set this value to 0 (or less) to ignore word wrapping and not constrain text to a fixed-\/width column.
+
+public 
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+class.\-html2text.\-php\end{DoxyCompactItemize}
