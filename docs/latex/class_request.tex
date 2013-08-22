@@ -1,0 +1,403 @@
+\hypertarget{class_request}{\section{Request Class Reference}
+\label{class_request}\index{Request@{Request}}
+}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \hyperlink{class_request_a0552dcea819c77f239bb6db060e17b47}{init} ()
+\item 
+static \hyperlink{class_request_a8d58147bb9572424021c44b0ebb3f85a}{is\-Http} ()
+\item 
+static \hyperlink{class_request_afab6f7cb93efa72b28f3e8b2eba901dd}{is\-Https} ()
+\item 
+static \hyperlink{class_request_a806349a06939db0150ce9d7d3e6f54f5}{protocol} ()
+\item 
+static \hyperlink{class_request_a512dd9b95abef2346ad3af2e593d10c1}{user} ()
+\item 
+static \hyperlink{class_request_a1ad0dec68fffe32c3b59e5130b63c1ba}{password} ()
+\item 
+static \hyperlink{class_request_a291eeae48e2675a5301279b0e1b8d8e2}{host} (\$b\-Server=false)
+\item 
+static \hyperlink{class_request_a495e06b9d24638c678259b6f3aefbcd6}{port} ()
+\item 
+static \hyperlink{class_request_aca04f9b433bb568c10d32ee114a0d02c}{base} ()
+\item 
+static \hyperlink{class_request_a64f9327ac4a815b3f114d50fd6ba521b}{offset} ()
+\item 
+static \hyperlink{class_request_a6b69986e47c94186cce2336f11ad1f6e}{root} ()
+\item 
+static \hyperlink{class_request_ae1725b521b1833602f3f554566142c51}{path} ()
+\item 
+static \hyperlink{class_request_abf1e0caab3f4027d508eec81489b260b}{url} ()
+\item 
+static \hyperlink{class_request_a4d6813e2943a1ced4ae7159e3a382695}{method} ()
+\item 
+static \hyperlink{class_request_a12099938e1500f4559b32b833de2088e}{useragent} ()
+\item 
+static \hyperlink{class_request_af0cfa5de39cd1b78dd183f8755c5881a}{get} (\$m\-Index, \$m\-Default=null)
+\item 
+static \hyperlink{class_request_ab2b509ddd1e625547bd79a8f207670e3}{post} (\$m\-Index, \$m\-Default=null)
+\item 
+static \hyperlink{class_request_af0d98675f85be7ee4fca80e18942693b}{session} (\$m\-Index, \$m\-Default=null)
+\item 
+static \hyperlink{class_request_ad6b7fe8e73dd7eed912086488002ddd0}{cookie} (\$m\-Index, \$m\-Default=null)
+\item 
+static \hyperlink{class_request_a2817486e88b192ef552ebca4c62d70af}{detail} ()
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This class hold the request data for the current request. Before using it, you should make sure to call \hyperlink{class_request_a0552dcea819c77f239bb6db060e17b47}{Request\-::init()}. If this class is used as part of Watena, this will be done for you.
+
+\begin{DoxyAuthor}{Author}
+Jelle Voet 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+0.\-1.\-0 
+\end{DoxyVersion}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_request_aca04f9b433bb568c10d32ee114a0d02c}{\index{Request@{Request}!base@{base}}
+\index{base@{base}!Request@{Request}}
+\subsubsection[{base}]{\setlength{\rightskip}{0pt plus 5cm}static Request\-::base (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [final]}}}\label{class_request_aca04f9b433bb568c10d32ee114a0d02c}
+Retrieve the base portion of the current request.
+
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{class_request_a806349a06939db0150ce9d7d3e6f54f5}{Request\-::protocol()} 
+
+\hyperlink{class_request_a512dd9b95abef2346ad3af2e593d10c1}{Request\-::user()} 
+
+\hyperlink{class_request_a1ad0dec68fffe32c3b59e5130b63c1ba}{Request\-::password()} 
+
+\hyperlink{class_request_a291eeae48e2675a5301279b0e1b8d8e2}{Request\-::host()} 
+
+\hyperlink{class_request_a495e06b9d24638c678259b6f3aefbcd6}{Request\-::port()} 
+\end{DoxySeeAlso}
+\begin{DoxyReturn}{Returns}
+string http\mbox{[}s\mbox{]}\-://\mbox{[}user\mbox{[}\-:password\mbox{]}@\mbox{]}example.\-com\mbox{[}\-:80\mbox{]} 
+\end{DoxyReturn}
+\hypertarget{class_request_ad6b7fe8e73dd7eed912086488002ddd0}{\index{Request@{Request}!cookie@{cookie}}
+\index{cookie@{cookie}!Request@{Request}}
+\subsubsection[{cookie}]{\setlength{\rightskip}{0pt plus 5cm}static Request\-::cookie (
+\begin{DoxyParamCaption}
+\item[{}]{\$m\-Index, }
+\item[{}]{\$m\-Default = {\ttfamily null}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [final]}}}\label{class_request_ad6b7fe8e73dd7eed912086488002ddd0}
+Retrieve the specified value from the current \$\-\_\-\-C\-O\-O\-K\-I\-E. You can specify as you would when using array\-\_\-value(). If the specified index does not exist, \$m\-Default will be returned
+
+\begin{DoxySeeAlso}{See Also}
+array\-\_\-value() 
+\end{DoxySeeAlso}
+
+\begin{DoxyParams}[1]{Parameters}
+mixed & {\em \$m\-Index} & The index of the required value. \\
+\hline
+mixed & {\em \$m\-Default} & Default value when index does not exist. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+mixed The value specified by \$m\-Index in \$\-\_\-\-C\-O\-O\-K\-I\-E, of \$m\-Default. 
+\end{DoxyReturn}
+\hypertarget{class_request_a2817486e88b192ef552ebca4c62d70af}{\index{Request@{Request}!detail@{detail}}
+\index{detail@{detail}!Request@{Request}}
+\subsubsection[{detail}]{\setlength{\rightskip}{0pt plus 5cm}static Request\-::detail (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [final]}}}\label{class_request_a2817486e88b192ef552ebca4c62d70af}
+Retrieve the full detailed string containing the current request state. Currently only the \$\-\_\-\-G\-E\-T parameters are appended. (not \$\-\_\-\-P\-O\-S\-T, \$\-\_\-\-C\-O\-O\-K\-I\-E, \$\-\_\-\-S\-E\-S\-S\-I\-O\-N) This is the concatenation of \hyperlink{class_request_a4d6813e2943a1ced4ae7159e3a382695}{Request\-::method()}, \hyperlink{class_request_abf1e0caab3f4027d508eec81489b260b}{Request\-::url()}, \hyperlink{class_request_af0cfa5de39cd1b78dd183f8755c5881a}{Request\-::get()}, \hyperlink{class_request_a12099938e1500f4559b32b833de2088e}{Request\-::useragent()}.
+
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{class_request_a4d6813e2943a1ced4ae7159e3a382695}{Request\-::method()} 
+
+\hyperlink{class_request_abf1e0caab3f4027d508eec81489b260b}{Request\-::url()} 
+
+\hyperlink{class_request_af0cfa5de39cd1b78dd183f8755c5881a}{Request\-::get()} 
+
+\hyperlink{class_request_a12099938e1500f4559b32b833de2088e}{Request\-::useragent()} 
+\end{DoxySeeAlso}
+\begin{DoxyReturn}{Returns}
+string \mbox{[}G\-E\-T\mbox{]} http\mbox{[}s\mbox{]}\-://\mbox{[}user\mbox{[}\-:password\mbox{]}@\mbox{]}example.\-com\mbox{[}\-:80\mbox{]}\mbox{[}/path-\/to-\/install\mbox{]}/\mbox{[}path/mapping\mbox{]}?\mbox{[}param0=foo\&param1=bar\mbox{]} (useragent) 
+\end{DoxyReturn}
+\hypertarget{class_request_af0cfa5de39cd1b78dd183f8755c5881a}{\index{Request@{Request}!get@{get}}
+\index{get@{get}!Request@{Request}}
+\subsubsection[{get}]{\setlength{\rightskip}{0pt plus 5cm}static Request\-::get (
+\begin{DoxyParamCaption}
+\item[{}]{\$m\-Index, }
+\item[{}]{\$m\-Default = {\ttfamily null}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [final]}}}\label{class_request_af0cfa5de39cd1b78dd183f8755c5881a}
+Retrieve the specified value from the current \$\-\_\-\-G\-E\-T. You can specify as you would when using array\-\_\-value(). If the specified index does not exist, \$m\-Default will be returned
+
+\begin{DoxySeeAlso}{See Also}
+array\-\_\-value() 
+\end{DoxySeeAlso}
+
+\begin{DoxyParams}[1]{Parameters}
+mixed & {\em \$m\-Index} & The index of the required value. \\
+\hline
+mixed & {\em \$m\-Default} & Default value when index does not exist. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+mixed The value specified by \$m\-Index in \$\-\_\-\-G\-E\-T, of \$m\-Default. 
+\end{DoxyReturn}
+\hypertarget{class_request_a291eeae48e2675a5301279b0e1b8d8e2}{\index{Request@{Request}!host@{host}}
+\index{host@{host}!Request@{Request}}
+\subsubsection[{host}]{\setlength{\rightskip}{0pt plus 5cm}static Request\-::host (
+\begin{DoxyParamCaption}
+\item[{}]{\$b\-Server = {\ttfamily false}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [final]}}}\label{class_request_a291eeae48e2675a5301279b0e1b8d8e2}
+Retrieve the lowercase hostname of the current request. Optionally you can try to retrieve the actual server-\/name as specified on the server config. If not required, the value returned will be the host-\/portion of the request. The return value is based on \$\-\_\-\-S\-E\-R\-V\-E\-R\mbox{[}'S\-E\-R\-V\-E\-R\-\_\-\-N\-A\-M\-E'\mbox{]} or \$\-\_\-\-S\-E\-R\-V\-E\-R\mbox{[}'H\-T\-T\-P\-\_\-\-P\-O\-S\-T'\mbox{]}.
+
+
+\begin{DoxyParams}[1]{Parameters}
+boolean & {\em \$b\-Server} & Set to true if you want the internal server-\/name. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+string Returns lowercase \$\-\_\-\-S\-E\-R\-V\-E\-R\mbox{[}'H\-T\-T\-P\-\_\-\-H\-O\-S\-T'\mbox{]} or \$\-\_\-\-S\-E\-R\-V\-E\-R\mbox{[}'S\-E\-R\-V\-E\-R\-\_\-\-N\-A\-M\-E'\mbox{]}. (default\-: localhost) 
+\end{DoxyReturn}
+\hypertarget{class_request_a0552dcea819c77f239bb6db060e17b47}{\index{Request@{Request}!init@{init}}
+\index{init@{init}!Request@{Request}}
+\subsubsection[{init}]{\setlength{\rightskip}{0pt plus 5cm}static Request\-::init (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [final]}}}\label{class_request_a0552dcea819c77f239bb6db060e17b47}
+Initialize and cache the correct values for the current request. \hypertarget{class_request_a8d58147bb9572424021c44b0ebb3f85a}{\index{Request@{Request}!is\-Http@{is\-Http}}
+\index{is\-Http@{is\-Http}!Request@{Request}}
+\subsubsection[{is\-Http}]{\setlength{\rightskip}{0pt plus 5cm}static Request\-::is\-Http (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [final]}}}\label{class_request_a8d58147bb9572424021c44b0ebb3f85a}
+Determine if the current request is not using a secured protocol. This method is the opposite of \hyperlink{class_request_afab6f7cb93efa72b28f3e8b2eba901dd}{Request\-::is\-Https()}. The return value is based on \$\-\_\-\-S\-E\-R\-V\-E\-R\mbox{[}'H\-T\-T\-P\-S'\mbox{]} and will influence the behaviour of \hyperlink{class_request_a806349a06939db0150ce9d7d3e6f54f5}{Request\-::protocol()} and \hyperlink{class_request_a495e06b9d24638c678259b6f3aefbcd6}{Request\-::port()}.
+
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{class_request_afab6f7cb93efa72b28f3e8b2eba901dd}{Request\-::is\-Https()} 
+
+\hyperlink{class_request_a806349a06939db0150ce9d7d3e6f54f5}{Request\-::protocol()} 
+
+\hyperlink{class_request_a495e06b9d24638c678259b6f3aefbcd6}{Request\-::port()} 
+\end{DoxySeeAlso}
+\begin{DoxyReturn}{Returns}
+boolean Indicates if the current request is not using https. (default\-: true) 
+\end{DoxyReturn}
+\hypertarget{class_request_afab6f7cb93efa72b28f3e8b2eba901dd}{\index{Request@{Request}!is\-Https@{is\-Https}}
+\index{is\-Https@{is\-Https}!Request@{Request}}
+\subsubsection[{is\-Https}]{\setlength{\rightskip}{0pt plus 5cm}static Request\-::is\-Https (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [final]}}}\label{class_request_afab6f7cb93efa72b28f3e8b2eba901dd}
+Determine if the current request is using a secured protocol. This method is the opposite of \hyperlink{class_request_a8d58147bb9572424021c44b0ebb3f85a}{Request\-::is\-Http()}. The return value is based on \$\-\_\-\-S\-E\-R\-V\-E\-R\mbox{[}'H\-T\-T\-P\-S'\mbox{]} and will influence the behaviour of \hyperlink{class_request_a806349a06939db0150ce9d7d3e6f54f5}{Request\-::protocol()} and \hyperlink{class_request_a495e06b9d24638c678259b6f3aefbcd6}{Request\-::port()}.
+
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{class_request_afab6f7cb93efa72b28f3e8b2eba901dd}{Request\-::is\-Https()} 
+
+\hyperlink{class_request_a806349a06939db0150ce9d7d3e6f54f5}{Request\-::protocol()} 
+
+\hyperlink{class_request_a495e06b9d24638c678259b6f3aefbcd6}{Request\-::port()} 
+\end{DoxySeeAlso}
+\begin{DoxyReturn}{Returns}
+boolean Indicates of the current request is using https. (default\-: false) 
+\end{DoxyReturn}
+\hypertarget{class_request_a4d6813e2943a1ced4ae7159e3a382695}{\index{Request@{Request}!method@{method}}
+\index{method@{method}!Request@{Request}}
+\subsubsection[{method}]{\setlength{\rightskip}{0pt plus 5cm}static Request\-::method (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [final]}}}\label{class_request_a4d6813e2943a1ced4ae7159e3a382695}
+Retrieve the uppercase request-\/method of the current request. If no request-\/method is specified, this will default to G\-E\-T. The return values is based on \$\-\_\-\-S\-E\-R\-V\-E\-R\mbox{[}'R\-E\-Q\-U\-E\-S\-T\-\_\-\-M\-E\-T\-H\-O\-D'\mbox{]}.
+
+\begin{DoxyReturn}{Returns}
+string De method used for the data of the current request. (default\-: 'G\-E\-T') 
+\end{DoxyReturn}
+\hypertarget{class_request_a64f9327ac4a815b3f114d50fd6ba521b}{\index{Request@{Request}!offset@{offset}}
+\index{offset@{offset}!Request@{Request}}
+\subsubsection[{offset}]{\setlength{\rightskip}{0pt plus 5cm}static Request\-::offset (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [final]}}}\label{class_request_a64f9327ac4a815b3f114d50fd6ba521b}
+Retrieve the offset portion of the current request. The offset is defined as the difference between the base and the root url for the current request and is not fixed 'per install'.
+
+\begin{DoxyReturn}{Returns}
+string The path to the webroot for this install. /path-\/to-\/install 
+\end{DoxyReturn}
+\hypertarget{class_request_a1ad0dec68fffe32c3b59e5130b63c1ba}{\index{Request@{Request}!password@{password}}
+\index{password@{password}!Request@{Request}}
+\subsubsection[{password}]{\setlength{\rightskip}{0pt plus 5cm}static Request\-::password (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [final]}}}\label{class_request_a1ad0dec68fffe32c3b59e5130b63c1ba}
+Retrievethe http-\/authentication password of the current request. The return value is based on \$\-\_\-\-S\-E\-R\-V\-E\-R\mbox{[}'P\-H\-P\-\_\-\-A\-U\-T\-H\-\_\-\-P\-A\-S\-S'\mbox{]}.
+
+\begin{DoxyReturn}{Returns}
+string The password portion of the current request. (default\-: '') 
+\end{DoxyReturn}
+\hypertarget{class_request_ae1725b521b1833602f3f554566142c51}{\index{Request@{Request}!path@{path}}
+\index{path@{path}!Request@{Request}}
+\subsubsection[{path}]{\setlength{\rightskip}{0pt plus 5cm}static Request\-::path (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [final]}}}\label{class_request_ae1725b521b1833602f3f554566142c51}
+Retrieve the path portion of the current request. The path is defined as the as the posfix after the offset and thus contains the actual mapping with the install starting from the root. When no mapping is found, this will always return '/'.
+
+\begin{DoxyReturn}{Returns}
+string The mapping for the current request. /path/mapping (default\-: '/') 
+\end{DoxyReturn}
+\hypertarget{class_request_a495e06b9d24638c678259b6f3aefbcd6}{\index{Request@{Request}!port@{port}}
+\index{port@{port}!Request@{Request}}
+\subsubsection[{port}]{\setlength{\rightskip}{0pt plus 5cm}static Request\-::port (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [final]}}}\label{class_request_a495e06b9d24638c678259b6f3aefbcd6}
+Retrieve the portnumber of the current request. The return value is based on \$\-\_\-\-S\-E\-R\-V\-E\-R\mbox{[}S\-E\-R\-V\-E\-R\-\_\-\-P\-O\-R\-T\mbox{]}. If no port is specified, this will default to 80 for http and 443 for https.
+
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{class_request_a8d58147bb9572424021c44b0ebb3f85a}{Request\-::is\-Http()} 
+
+\hyperlink{class_request_afab6f7cb93efa72b28f3e8b2eba901dd}{Request\-::is\-Https()} 
+\end{DoxySeeAlso}
+\begin{DoxyReturn}{Returns}
+int The port number of the current request. (default based on protocol\-: 80 or 443) 
+\end{DoxyReturn}
+\hypertarget{class_request_ab2b509ddd1e625547bd79a8f207670e3}{\index{Request@{Request}!post@{post}}
+\index{post@{post}!Request@{Request}}
+\subsubsection[{post}]{\setlength{\rightskip}{0pt plus 5cm}static Request\-::post (
+\begin{DoxyParamCaption}
+\item[{}]{\$m\-Index, }
+\item[{}]{\$m\-Default = {\ttfamily null}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [final]}}}\label{class_request_ab2b509ddd1e625547bd79a8f207670e3}
+Retrieve the specified value from the current \$\-\_\-\-P\-O\-S\-T. You can specify as you would when using array\-\_\-value(). If the specified index does not exist, \$m\-Default will be returned
+
+\begin{DoxySeeAlso}{See Also}
+array\-\_\-value() 
+\end{DoxySeeAlso}
+
+\begin{DoxyParams}[1]{Parameters}
+mixed & {\em \$m\-Index} & The index of the required value. \\
+\hline
+mixed & {\em \$m\-Default} & Default value when index does not exist. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+mixed The value specified by \$m\-Index in \$\-\_\-\-P\-O\-S\-T, of \$m\-Default. 
+\end{DoxyReturn}
+\hypertarget{class_request_a806349a06939db0150ce9d7d3e6f54f5}{\index{Request@{Request}!protocol@{protocol}}
+\index{protocol@{protocol}!Request@{Request}}
+\subsubsection[{protocol}]{\setlength{\rightskip}{0pt plus 5cm}static Request\-::protocol (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [final]}}}\label{class_request_a806349a06939db0150ce9d7d3e6f54f5}
+Retrieve the scheme/protocol of the current request. Currently the only two protocols supported are 'http' and 'https'. The return value is based on \hyperlink{class_request_a8d58147bb9572424021c44b0ebb3f85a}{Request\-::is\-Http()} and \hyperlink{class_request_afab6f7cb93efa72b28f3e8b2eba901dd}{Request\-::is\-Https()}.
+
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{class_request_a8d58147bb9572424021c44b0ebb3f85a}{Request\-::is\-Http()} 
+
+\hyperlink{class_request_afab6f7cb93efa72b28f3e8b2eba901dd}{Request\-::is\-Https()} 
+\end{DoxySeeAlso}
+\begin{DoxyReturn}{Returns}
+string Return value should be 'http' or 'https'. (default\-: 'http') 
+\end{DoxyReturn}
+\hypertarget{class_request_a6b69986e47c94186cce2336f11ad1f6e}{\index{Request@{Request}!root@{root}}
+\index{root@{root}!Request@{Request}}
+\subsubsection[{root}]{\setlength{\rightskip}{0pt plus 5cm}static Request\-::root (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [final]}}}\label{class_request_a6b69986e47c94186cce2336f11ad1f6e}
+Retrieve the root portion of the current request. This is the concatenation of \hyperlink{class_request_aca04f9b433bb568c10d32ee114a0d02c}{Request\-::base()} and \hyperlink{class_request_a64f9327ac4a815b3f114d50fd6ba521b}{Request\-::offset()}.
+
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{class_request_aca04f9b433bb568c10d32ee114a0d02c}{Request\-::base()} 
+
+\hyperlink{class_request_a64f9327ac4a815b3f114d50fd6ba521b}{Request\-::offset()} 
+\end{DoxySeeAlso}
+\begin{DoxyReturn}{Returns}
+string http\mbox{[}s\mbox{]}\-://\mbox{[}user\mbox{[}\-:password\mbox{]}@\mbox{]}example.\-com\mbox{[}\-:80\mbox{]}\mbox{[}/path-\/to-\/install\mbox{]} 
+\end{DoxyReturn}
+\hypertarget{class_request_af0d98675f85be7ee4fca80e18942693b}{\index{Request@{Request}!session@{session}}
+\index{session@{session}!Request@{Request}}
+\subsubsection[{session}]{\setlength{\rightskip}{0pt plus 5cm}static Request\-::session (
+\begin{DoxyParamCaption}
+\item[{}]{\$m\-Index, }
+\item[{}]{\$m\-Default = {\ttfamily null}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [final]}}}\label{class_request_af0d98675f85be7ee4fca80e18942693b}
+Retrieve the specified value from the current \$\-\_\-\-S\-E\-S\-S\-I\-O\-N. You can specify as you would when using array\-\_\-value(). If the specified index does not exist, \$m\-Default will be returned
+
+\begin{DoxySeeAlso}{See Also}
+array\-\_\-value() 
+\end{DoxySeeAlso}
+
+\begin{DoxyParams}[1]{Parameters}
+mixed & {\em \$m\-Index} & The index of the required value. \\
+\hline
+mixed & {\em \$m\-Default} & Default value when index does not exist. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+mixed The value specified by \$m\-Index in \$\-\_\-\-S\-E\-S\-S\-I\-O\-N, of \$m\-Default. 
+\end{DoxyReturn}
+\hypertarget{class_request_abf1e0caab3f4027d508eec81489b260b}{\index{Request@{Request}!url@{url}}
+\index{url@{url}!Request@{Request}}
+\subsubsection[{url}]{\setlength{\rightskip}{0pt plus 5cm}static Request\-::url (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [final]}}}\label{class_request_abf1e0caab3f4027d508eec81489b260b}
+Retrieve the full url of the current request. This is the concatenation of \hyperlink{class_request_a6b69986e47c94186cce2336f11ad1f6e}{Request\-::root()} and \hyperlink{class_request_ae1725b521b1833602f3f554566142c51}{Request\-::path()}.
+
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{class_request_a6b69986e47c94186cce2336f11ad1f6e}{Request\-::root()} 
+
+\hyperlink{class_request_ae1725b521b1833602f3f554566142c51}{Request\-::path()} 
+\end{DoxySeeAlso}
+\begin{DoxyReturn}{Returns}
+string http\mbox{[}s\mbox{]}\-://\mbox{[}user\mbox{[}\-:password\mbox{]}@\mbox{]}example.\-com\mbox{[}\-:80\mbox{]}\mbox{[}/path-\/to-\/install\mbox{]}/\mbox{[}path/mapping\mbox{]} 
+\end{DoxyReturn}
+\hypertarget{class_request_a512dd9b95abef2346ad3af2e593d10c1}{\index{Request@{Request}!user@{user}}
+\index{user@{user}!Request@{Request}}
+\subsubsection[{user}]{\setlength{\rightskip}{0pt plus 5cm}static Request\-::user (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [final]}}}\label{class_request_a512dd9b95abef2346ad3af2e593d10c1}
+Retrieve the http-\/authentication user of the current request. The return value is based on \$\-\_\-\-S\-E\-R\-V\-E\-R\mbox{[}'P\-H\-P\-\_\-\-A\-U\-T\-H\-\_\-\-U\-S\-E\-R'\mbox{]}.
+
+\begin{DoxyReturn}{Returns}
+string The user portion of the current request. (default\-: '') 
+\end{DoxyReturn}
+\hypertarget{class_request_a12099938e1500f4559b32b833de2088e}{\index{Request@{Request}!useragent@{useragent}}
+\index{useragent@{useragent}!Request@{Request}}
+\subsubsection[{useragent}]{\setlength{\rightskip}{0pt plus 5cm}static Request\-::useragent (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [final]}}}\label{class_request_a12099938e1500f4559b32b833de2088e}
+Retrieve the useragent of the current request. This will automatically save the useragent to a session. If a subsequent request with useragent $\ast$ / $\ast$ should occur, the session-\/value will be used instead. If no useragent is specified, this will default to 'Unknown'. The return valies is based
+
+\begin{DoxyReturn}{Returns}
+string The persistent useragent data from the previous and current requests. 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+static.\-request.\-php\end{DoxyCompactItemize}

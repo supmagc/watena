@@ -1,0 +1,321 @@
+\hypertarget{class_mapping}{\section{Mapping Class Reference}
+\label{class_mapping}\index{Mapping@{Mapping}}
+}
+Inheritance diagram for Mapping\-:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_mapping}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_mapping_ab6d98c2c453723581b019a9f53b240c6}{\-\_\-\-\_\-construct} (\$s\-Local=null, array \$a\-Params=array())
+\item 
+\hyperlink{class_mapping_a6cfcd7801cc9fd38ca515e73ef0c773b}{get\-Variable} (\$s\-Name)
+\item 
+\hyperlink{class_mapping_ac71836f63ab6a062bd737dd6749ab66f}{get\-Host} ()
+\item 
+\hyperlink{class_mapping_a50608963662f354e84ae95c6ffc69af5}{get\-Base} ()
+\item 
+\hyperlink{class_mapping_ab9a871b557d9612028065737252c4214}{get\-Port} ()
+\item 
+\hyperlink{class_mapping_a04d794284036472eccbc099fc28c62ab}{get\-Offset} ()
+\item 
+\hyperlink{class_mapping_af8d55dc2d96fa8837ef244fbc12ffc6a}{get\-Root} ()
+\item 
+\hyperlink{class_mapping_a339b33ea0f2cf278e739a19830ba7d82}{get\-Local} ()
+\item 
+\hyperlink{class_mapping_a915d647cb54784ab65b7b6d5a3be1aee}{get\-Part} (\$n\-Index)
+\item 
+\hyperlink{class_mapping_a15fdb50b851ad8f39e1fea4e962226de}{get\-Query} ()
+\item 
+\hyperlink{class_mapping_a4469b01f18836e2468bca0dfff8da521}{get\-Param} (\$s\-Name)
+\item 
+\hyperlink{class_mapping_a507dcd8523c560db8abed233f91aabaa}{get\-Anchor} ()
+\item 
+\hyperlink{class_mapping_a53413e6e5d618c7d781d3020cac1d8d5}{get\-Full} ()
+\item 
+\hypertarget{class_mapping_a45417c12799202166a2aaf92da822b89}{{\bfseries get\-Useragent} ()}\label{class_mapping_a45417c12799202166a2aaf92da822b89}
+
+\item 
+\hyperlink{class_mapping_ad209954974195306ae2d70cdbb81fb1a}{to\-String} ()
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \hyperlink{class_mapping_acd4a9734d15425d6138340098c5b27c8}{host} (\$b\-Internal=false)
+\item 
+static \hyperlink{class_mapping_aac3d7a82bfb2fce8ae5715b6046c6e46}{port} ()
+\item 
+static \hyperlink{class_mapping_aba1f69c4ff3f6acd7540d051921b7d37}{method} ()
+\item 
+static \hyperlink{class_mapping_a2a756a1378190e25bc68740b4bed8565}{user\-Agent} ()
+\item 
+static \hyperlink{class_mapping_a8f08ba2b3c1735dd99da430a2a01b404}{offset} ()
+\item 
+static \hyperlink{class_mapping_afd861345208dff279f33a824db561d59}{init} ()
+\item 
+\hypertarget{class_mapping_afd861345208dff279f33a824db561d59}{static {\bfseries init} ()}\label{class_mapping_afd861345208dff279f33a824db561d59}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_mapping_ab6d98c2c453723581b019a9f53b240c6}{\index{Mapping@{Mapping}!\-\_\-\-\_\-construct@{\-\_\-\-\_\-construct}}
+\index{\-\_\-\-\_\-construct@{\-\_\-\-\_\-construct}!Mapping@{Mapping}}
+\subsubsection[{\-\_\-\-\_\-construct}]{\setlength{\rightskip}{0pt plus 5cm}Mapping\-::\-\_\-\-\_\-construct (
+\begin{DoxyParamCaption}
+\item[{}]{\$s\-Local = {\ttfamily null}, }
+\item[{array}]{\$a\-Params = {\ttfamily array()}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [final]}}}\label{class_mapping_ab6d98c2c453723581b019a9f53b240c6}
+Create a new mapping instance. You can specify the following types of local-\/mapping\-: absolute\-: (starting with a /) A mapping relative to the root. relative\-: (not starting with a /) A mapping relative to the directory of the current mapping. current\-: (current mapping) Specify null (default-\/value).
+
+
+\begin{DoxyParams}[1]{Parameters}
+string & {\em \$s\-Local} & The local mapping. \\
+\hline
+array & {\em \$a\-Params} & Additional G\-E\-T-\/parameters. \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_mapping_a507dcd8523c560db8abed233f91aabaa}{\index{Mapping@{Mapping}!get\-Anchor@{get\-Anchor}}
+\index{get\-Anchor@{get\-Anchor}!Mapping@{Mapping}}
+\subsubsection[{get\-Anchor}]{\setlength{\rightskip}{0pt plus 5cm}Mapping\-::get\-Anchor (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [final]}}}\label{class_mapping_a507dcd8523c560db8abed233f91aabaa}
+example\-: \href{https://subdomain.example.org}{\tt https\-://subdomain.\-example.\-org}\mbox{[}\-:80\mbox{]}/path-\/to-\/site/directory/script.php?name=value\-::anchor =$>$ anchor
+
+\begin{DoxyReturn}{Returns}
+string$|$null 
+\end{DoxyReturn}
+\hypertarget{class_mapping_a50608963662f354e84ae95c6ffc69af5}{\index{Mapping@{Mapping}!get\-Base@{get\-Base}}
+\index{get\-Base@{get\-Base}!Mapping@{Mapping}}
+\subsubsection[{get\-Base}]{\setlength{\rightskip}{0pt plus 5cm}Mapping\-::get\-Base (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [final]}}}\label{class_mapping_a50608963662f354e84ae95c6ffc69af5}
+example\-: \href{https://subdomain.example.org}{\tt https\-://subdomain.\-example.\-org}\mbox{[}\-:80\mbox{]}/path-\/to-\/site/directory/script.php?name=value\-::anchor =$>$ \href{https://subdomain.example.org}{\tt https\-://subdomain.\-example.\-org}\mbox{[}\-:80\mbox{]}
+
+\begin{DoxyReturn}{Returns}
+string 
+\end{DoxyReturn}
+\hypertarget{class_mapping_a53413e6e5d618c7d781d3020cac1d8d5}{\index{Mapping@{Mapping}!get\-Full@{get\-Full}}
+\index{get\-Full@{get\-Full}!Mapping@{Mapping}}
+\subsubsection[{get\-Full}]{\setlength{\rightskip}{0pt plus 5cm}Mapping\-::get\-Full (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [final]}}}\label{class_mapping_a53413e6e5d618c7d781d3020cac1d8d5}
+example\-: \href{https://subdomain.example.org}{\tt https\-://subdomain.\-example.\-org}\mbox{[}\-:80\mbox{]}/path-\/to-\/site/directory/script.php?name=value\-::anchor =$>$ \href{https://subdomain.example.org}{\tt https\-://subdomain.\-example.\-org}\mbox{[}\-:80\mbox{]}/path-\/to-\/site/directory/script.php?name=value\-::anchor
+
+\begin{DoxyReturn}{Returns}
+string 
+\end{DoxyReturn}
+\hypertarget{class_mapping_ac71836f63ab6a062bd737dd6749ab66f}{\index{Mapping@{Mapping}!get\-Host@{get\-Host}}
+\index{get\-Host@{get\-Host}!Mapping@{Mapping}}
+\subsubsection[{get\-Host}]{\setlength{\rightskip}{0pt plus 5cm}Mapping\-::get\-Host (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [final]}}}\label{class_mapping_ac71836f63ab6a062bd737dd6749ab66f}
+example\-: \href{https://subdomain.example.org}{\tt https\-://subdomain.\-example.\-org}\mbox{[}\-:80\mbox{]}/path-\/to-\/site/directory/script.php?name=value\-::anchor =$>$ subdomain.\-example.\-org
+
+\begin{DoxyReturn}{Returns}
+string 
+\end{DoxyReturn}
+\hypertarget{class_mapping_a339b33ea0f2cf278e739a19830ba7d82}{\index{Mapping@{Mapping}!get\-Local@{get\-Local}}
+\index{get\-Local@{get\-Local}!Mapping@{Mapping}}
+\subsubsection[{get\-Local}]{\setlength{\rightskip}{0pt plus 5cm}Mapping\-::get\-Local (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [final]}}}\label{class_mapping_a339b33ea0f2cf278e739a19830ba7d82}
+example\-: \href{https://subdomain.example.org}{\tt https\-://subdomain.\-example.\-org}\mbox{[}\-:80\mbox{]}/path-\/to-\/site/directory/script.php?name=value\-::anchor =$>$ /directory/script.php
+
+\begin{DoxyReturn}{Returns}
+string 
+\end{DoxyReturn}
+\hypertarget{class_mapping_a04d794284036472eccbc099fc28c62ab}{\index{Mapping@{Mapping}!get\-Offset@{get\-Offset}}
+\index{get\-Offset@{get\-Offset}!Mapping@{Mapping}}
+\subsubsection[{get\-Offset}]{\setlength{\rightskip}{0pt plus 5cm}Mapping\-::get\-Offset (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [final]}}}\label{class_mapping_a04d794284036472eccbc099fc28c62ab}
+example\-: \href{https://subdomain.example.org}{\tt https\-://subdomain.\-example.\-org}\mbox{[}\-:80\mbox{]}/path-\/to-\/site/directory/script.php?name=value\-::anchor =$>$ /path-\/to-\/site
+
+\begin{DoxyReturn}{Returns}
+string 
+\end{DoxyReturn}
+\hypertarget{class_mapping_a4469b01f18836e2468bca0dfff8da521}{\index{Mapping@{Mapping}!get\-Param@{get\-Param}}
+\index{get\-Param@{get\-Param}!Mapping@{Mapping}}
+\subsubsection[{get\-Param}]{\setlength{\rightskip}{0pt plus 5cm}Mapping\-::get\-Param (
+\begin{DoxyParamCaption}
+\item[{}]{\$s\-Name}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [final]}}}\label{class_mapping_a4469b01f18836e2468bca0dfff8da521}
+example\-: \href{https://subdomain.example.org}{\tt https\-://subdomain.\-example.\-org}\mbox{[}\-:80\mbox{]}/path-\/to-\/site/directory/script.php?name=value\-::anchor =$>$ name\-: value =$>$ unknown\-: null
+
+\begin{DoxyReturn}{Returns}
+string$|$null 
+\end{DoxyReturn}
+\hypertarget{class_mapping_a915d647cb54784ab65b7b6d5a3be1aee}{\index{Mapping@{Mapping}!get\-Part@{get\-Part}}
+\index{get\-Part@{get\-Part}!Mapping@{Mapping}}
+\subsubsection[{get\-Part}]{\setlength{\rightskip}{0pt plus 5cm}Mapping\-::get\-Part (
+\begin{DoxyParamCaption}
+\item[{}]{\$n\-Index}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [final]}}}\label{class_mapping_a915d647cb54784ab65b7b6d5a3be1aee}
+example\-: \href{https://subdomain.example.org}{\tt https\-://subdomain.\-example.\-org}\mbox{[}\-:80\mbox{]}/path-\/to-\/site/directory/script.php?name=value\-::anchor =$>$ 0\-: directory =$>$ 1\-: script.\-php =$>$ 2\-: null
+
+\begin{DoxyReturn}{Returns}
+string$|$null 
+\end{DoxyReturn}
+\hypertarget{class_mapping_ab9a871b557d9612028065737252c4214}{\index{Mapping@{Mapping}!get\-Port@{get\-Port}}
+\index{get\-Port@{get\-Port}!Mapping@{Mapping}}
+\subsubsection[{get\-Port}]{\setlength{\rightskip}{0pt plus 5cm}Mapping\-::get\-Port (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [final]}}}\label{class_mapping_ab9a871b557d9612028065737252c4214}
+example\-: \href{https://subdomain.example.org}{\tt https\-://subdomain.\-example.\-org}\mbox{[}\-:80\mbox{]}/path-\/to-\/site/directory/script.php?name=value\-::anchor =$>$ 80
+
+\begin{DoxyReturn}{Returns}
+string 
+\end{DoxyReturn}
+\hypertarget{class_mapping_a15fdb50b851ad8f39e1fea4e962226de}{\index{Mapping@{Mapping}!get\-Query@{get\-Query}}
+\index{get\-Query@{get\-Query}!Mapping@{Mapping}}
+\subsubsection[{get\-Query}]{\setlength{\rightskip}{0pt plus 5cm}Mapping\-::get\-Query (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [final]}}}\label{class_mapping_a15fdb50b851ad8f39e1fea4e962226de}
+example\-: \href{https://subdomain.example.org}{\tt https\-://subdomain.\-example.\-org}\mbox{[}\-:80\mbox{]}/path-\/to-\/site/directory/script.php?name=value\-::anchor =$>$ name=value
+
+\begin{DoxyReturn}{Returns}
+string$|$null 
+\end{DoxyReturn}
+\hypertarget{class_mapping_af8d55dc2d96fa8837ef244fbc12ffc6a}{\index{Mapping@{Mapping}!get\-Root@{get\-Root}}
+\index{get\-Root@{get\-Root}!Mapping@{Mapping}}
+\subsubsection[{get\-Root}]{\setlength{\rightskip}{0pt plus 5cm}Mapping\-::get\-Root (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [final]}}}\label{class_mapping_af8d55dc2d96fa8837ef244fbc12ffc6a}
+example\-: \href{https://subdomain.example.org}{\tt https\-://subdomain.\-example.\-org}\mbox{[}\-:80\mbox{]}/path-\/to-\/site/directory/script.php?name=value\-::anchor =$>$ \href{https://subdomain.example.org}{\tt https\-://subdomain.\-example.\-org}\mbox{[}\-:80\mbox{]}/path-\/to-\/site
+
+\begin{DoxyReturn}{Returns}
+string 
+\end{DoxyReturn}
+\hypertarget{class_mapping_a6cfcd7801cc9fd38ca515e73ef0c773b}{\index{Mapping@{Mapping}!get\-Variable@{get\-Variable}}
+\index{get\-Variable@{get\-Variable}!Mapping@{Mapping}}
+\subsubsection[{get\-Variable}]{\setlength{\rightskip}{0pt plus 5cm}Mapping\-::get\-Variable (
+\begin{DoxyParamCaption}
+\item[{}]{\$s\-Name}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [final]}}}\label{class_mapping_a6cfcd7801cc9fd38ca515e73ef0c773b}
+Get a variable linked to one of the defined getters.
+
+
+\begin{DoxyParams}[1]{Parameters}
+string & {\em \$s\-Name} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+string 
+\end{DoxyReturn}
+\hypertarget{class_mapping_acd4a9734d15425d6138340098c5b27c8}{\index{Mapping@{Mapping}!host@{host}}
+\index{host@{host}!Mapping@{Mapping}}
+\subsubsection[{host}]{\setlength{\rightskip}{0pt plus 5cm}static Mapping\-::host (
+\begin{DoxyParamCaption}
+\item[{}]{\$b\-Internal = {\ttfamily false}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [final]}}}\label{class_mapping_acd4a9734d15425d6138340098c5b27c8}
+Retrieve the hostname of the current request. Optionally you can try to retrieve the actual server-\/name as specified on the server. If not requested, the value returned will the host-\/portion of the request is specified. If none of these options are viable the return value will be 'unknown'.
+
+\begin{DoxyReturn}{Returns}
+string 
+\end{DoxyReturn}
+\hypertarget{class_mapping_afd861345208dff279f33a824db561d59}{\index{Mapping@{Mapping}!init@{init}}
+\index{init@{init}!Mapping@{Mapping}}
+\subsubsection[{init}]{\setlength{\rightskip}{0pt plus 5cm}static Mapping\-::init (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [final]}}}\label{class_mapping_afd861345208dff279f33a824db561d59}
+Initialize the mapping by calculating the current request values. This must be called before any instance creation of this class. \hypertarget{class_mapping_aba1f69c4ff3f6acd7540d051921b7d37}{\index{Mapping@{Mapping}!method@{method}}
+\index{method@{method}!Mapping@{Mapping}}
+\subsubsection[{method}]{\setlength{\rightskip}{0pt plus 5cm}static Mapping\-::method (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [final]}}}\label{class_mapping_aba1f69c4ff3f6acd7540d051921b7d37}
+Retrieve the request-\/method of the current request. If no request-\/method is specified, this will default to G\-E\-T.
+
+\begin{DoxyReturn}{Returns}
+string 
+\end{DoxyReturn}
+\hypertarget{class_mapping_a8f08ba2b3c1735dd99da430a2a01b404}{\index{Mapping@{Mapping}!offset@{offset}}
+\index{offset@{offset}!Mapping@{Mapping}}
+\subsubsection[{offset}]{\setlength{\rightskip}{0pt plus 5cm}static Mapping\-::offset (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [final]}}}\label{class_mapping_a8f08ba2b3c1735dd99da430a2a01b404}
+Retrieve the offset of the current request. The offset is the mapping from the host to the root (index.\-php and .htaccess) of the framework.
+
+\begin{DoxyReturn}{Returns}
+string 
+\end{DoxyReturn}
+\hypertarget{class_mapping_aac3d7a82bfb2fce8ae5715b6046c6e46}{\index{Mapping@{Mapping}!port@{port}}
+\index{port@{port}!Mapping@{Mapping}}
+\subsubsection[{port}]{\setlength{\rightskip}{0pt plus 5cm}static Mapping\-::port (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [final]}}}\label{class_mapping_aac3d7a82bfb2fce8ae5715b6046c6e46}
+Retrieve the portnumber of the current request. If no port is specified, this will default to 80.
+
+\begin{DoxyReturn}{Returns}
+int 
+\end{DoxyReturn}
+\hypertarget{class_mapping_ad209954974195306ae2d70cdbb81fb1a}{\index{Mapping@{Mapping}!to\-String@{to\-String}}
+\index{to\-String@{to\-String}!Mapping@{Mapping}}
+\subsubsection[{to\-String}]{\setlength{\rightskip}{0pt plus 5cm}Mapping\-::to\-String (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [final]}}}\label{class_mapping_ad209954974195306ae2d70cdbb81fb1a}
+Returns the full url of this instance
+
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{class_mapping_a53413e6e5d618c7d781d3020cac1d8d5}{Mapping\-::get\-Full()} 
+\end{DoxySeeAlso}
+\begin{DoxyReturn}{Returns}
+string 
+\end{DoxyReturn}
+\hypertarget{class_mapping_a2a756a1378190e25bc68740b4bed8565}{\index{Mapping@{Mapping}!user\-Agent@{user\-Agent}}
+\index{user\-Agent@{user\-Agent}!Mapping@{Mapping}}
+\subsubsection[{user\-Agent}]{\setlength{\rightskip}{0pt plus 5cm}static Mapping\-::user\-Agent (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [final]}}}\label{class_mapping_a2a756a1378190e25bc68740b4bed8565}
+Retrieve the useragent of the current request. This will automatically save the useragent to a session. If a subsequent request with useragent $\ast$ / $\ast$ should occur, the session-\/value will be used instead. If no useragent is specified, this will default to 'Unknown'.
+
+\begin{DoxyReturn}{Returns}
+string 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+D\-:/www/watena/base/system/class.\-mapping-\/old.\-php\item 
+D\-:/www/watena/base/system/class.\-mapping.\-php\end{DoxyCompactItemize}

@@ -1,0 +1,219 @@
+\hypertarget{class_user_connection_provider}{\section{User\-Connection\-Provider Class Reference}
+\label{class_user_connection_provider}\index{User\-Connection\-Provider@{User\-Connection\-Provider}}
+}
+Inheritance diagram for User\-Connection\-Provider\-:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_user_connection_provider}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_user_connection_provider_a44ddc4806292a57a3d46267f85fcb8b2}{get\-Name} ()
+\item 
+\hyperlink{class_user_connection_provider_a8ba8b5a529e6f20c8b243368862120b8}{update} (\hyperlink{class_user}{User} \$o\-User, \$b\-Force\-Overwrite=false)
+\item 
+\hyperlink{class_user_connection_provider_ab1d2c9bb70f491f514b7c16c558f0777}{get\-Connection\-Id} ()
+\item 
+\hyperlink{class_user_connection_provider_a51cc299a8ba01d2a7d2a26b146cedc08}{get\-Connection\-Name} ()
+\item 
+\hyperlink{class_user_connection_provider_a0155cc7f100de785220b81361e4d7021}{get\-Connection\-Email} ()
+\item 
+\hyperlink{class_user_connection_provider_adc340342b987e52cbb96ef4006566694}{get\-Connection\-Data} ()
+\item 
+\hyperlink{class_user_connection_provider_ab646bdaf89b832246af303efae5a6a50}{get\-Connection\-Tokens} ()
+\item 
+\hyperlink{class_user_connection_provider_a1bda2ec75dd12b1b73510780f8ba9094}{get\-Disconnect\-Url} (\$s\-Redirect)
+\item 
+\hyperlink{class_user_connection_provider_abb1139d2d575d13f24e509c97d31b6c4}{get\-Connect\-Url} (\$s\-Redirect, \$s\-Scope=null)
+\item 
+\hyperlink{class_user_connection_provider_a9b5c8d50b9e3e9641aed1b8ddba69e17}{is\-Connected} ()
+\item 
+\hyperlink{class_user_connection_provider_a40db3277b904ccd1685a86a17f2475b2}{disconnect} ()
+\item 
+\hyperlink{class_user_connection_provider_a583fd17c4a06932ccf11eb79207aea0f}{connect} ()
+\end{DoxyCompactItemize}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_user_connection_provider_a583fd17c4a06932ccf11eb79207aea0f}{\index{User\-Connection\-Provider@{User\-Connection\-Provider}!connect@{connect}}
+\index{connect@{connect}!UserConnectionProvider@{User\-Connection\-Provider}}
+\subsubsection[{connect}]{\setlength{\rightskip}{0pt plus 5cm}User\-Connection\-Provider\-::connect (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [abstract]}}}\label{class_user_connection_provider_a583fd17c4a06932ccf11eb79207aea0f}
+Thid method should be called on the connect-\/redirect-\/page. It's meant to validate the last part of the connect-\/procedure.
+
+\begin{DoxyReturn}{Returns}
+bool True when the procedure succesfylly completed. 
+\end{DoxyReturn}
+\hypertarget{class_user_connection_provider_a40db3277b904ccd1685a86a17f2475b2}{\index{User\-Connection\-Provider@{User\-Connection\-Provider}!disconnect@{disconnect}}
+\index{disconnect@{disconnect}!UserConnectionProvider@{User\-Connection\-Provider}}
+\subsubsection[{disconnect}]{\setlength{\rightskip}{0pt plus 5cm}User\-Connection\-Provider\-::disconnect (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [abstract]}}}\label{class_user_connection_provider_a40db3277b904ccd1685a86a17f2475b2}
+Thid method should be called on the disconnect-\/redirect-\/page. It's meant to validate the last part of the disconnect-\/procedure.
+
+\begin{DoxyReturn}{Returns}
+bool True when the procedure succesfylly completed. 
+\end{DoxyReturn}
+\hypertarget{class_user_connection_provider_adc340342b987e52cbb96ef4006566694}{\index{User\-Connection\-Provider@{User\-Connection\-Provider}!get\-Connection\-Data@{get\-Connection\-Data}}
+\index{get\-Connection\-Data@{get\-Connection\-Data}!UserConnectionProvider@{User\-Connection\-Provider}}
+\subsubsection[{get\-Connection\-Data}]{\setlength{\rightskip}{0pt plus 5cm}User\-Connection\-Provider\-::get\-Connection\-Data (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [abstract]}}}\label{class_user_connection_provider_adc340342b987e52cbb96ef4006566694}
+Retrieve any userdata linked to the connection. This might also include the user-\/id. This data is connection-\/specific, and should not be relied upon outside of the connectionprovider. If no connection is found this method returns false.
+
+\begin{DoxyReturn}{Returns}
+array$|$false The internal connection's user-\/data, or false when not connected. 
+\end{DoxyReturn}
+\hypertarget{class_user_connection_provider_a0155cc7f100de785220b81361e4d7021}{\index{User\-Connection\-Provider@{User\-Connection\-Provider}!get\-Connection\-Email@{get\-Connection\-Email}}
+\index{get\-Connection\-Email@{get\-Connection\-Email}!UserConnectionProvider@{User\-Connection\-Provider}}
+\subsubsection[{get\-Connection\-Email}]{\setlength{\rightskip}{0pt plus 5cm}User\-Connection\-Provider\-::get\-Connection\-Email (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [abstract]}}}\label{class_user_connection_provider_a0155cc7f100de785220b81361e4d7021}
+Retrieve the email-\/adress linked to the connection. If no connection is found this method returns false. Some connections may not provide this (ex\-: \hyperlink{class_twitter}{Twitter})
+
+\begin{DoxyReturn}{Returns}
+string$|$false The internal connection's username, or false when not connected, or not provided. 
+\end{DoxyReturn}
+\hypertarget{class_user_connection_provider_ab1d2c9bb70f491f514b7c16c558f0777}{\index{User\-Connection\-Provider@{User\-Connection\-Provider}!get\-Connection\-Id@{get\-Connection\-Id}}
+\index{get\-Connection\-Id@{get\-Connection\-Id}!UserConnectionProvider@{User\-Connection\-Provider}}
+\subsubsection[{get\-Connection\-Id}]{\setlength{\rightskip}{0pt plus 5cm}User\-Connection\-Provider\-::get\-Connection\-Id (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [abstract]}}}\label{class_user_connection_provider_ab1d2c9bb70f491f514b7c16c558f0777}
+Retrieve the user-\/id linked to the connection. If no connection is found this method returns false.
+
+\begin{DoxyReturn}{Returns}
+int$|$false The internal connection's user-\/id, or false when not connected. 
+\end{DoxyReturn}
+\hypertarget{class_user_connection_provider_a51cc299a8ba01d2a7d2a26b146cedc08}{\index{User\-Connection\-Provider@{User\-Connection\-Provider}!get\-Connection\-Name@{get\-Connection\-Name}}
+\index{get\-Connection\-Name@{get\-Connection\-Name}!UserConnectionProvider@{User\-Connection\-Provider}}
+\subsubsection[{get\-Connection\-Name}]{\setlength{\rightskip}{0pt plus 5cm}User\-Connection\-Provider\-::get\-Connection\-Name (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [abstract]}}}\label{class_user_connection_provider_a51cc299a8ba01d2a7d2a26b146cedc08}
+Retrieve the username linked to the connection. If no connection is found this method returns false.
+
+\begin{DoxyReturn}{Returns}
+string$|$false The internal connection's username, or false when not connected. 
+\end{DoxyReturn}
+\hypertarget{class_user_connection_provider_ab646bdaf89b832246af303efae5a6a50}{\index{User\-Connection\-Provider@{User\-Connection\-Provider}!get\-Connection\-Tokens@{get\-Connection\-Tokens}}
+\index{get\-Connection\-Tokens@{get\-Connection\-Tokens}!UserConnectionProvider@{User\-Connection\-Provider}}
+\subsubsection[{get\-Connection\-Tokens}]{\setlength{\rightskip}{0pt plus 5cm}User\-Connection\-Provider\-::get\-Connection\-Tokens (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [abstract]}}}\label{class_user_connection_provider_ab646bdaf89b832246af303efae5a6a50}
+Retrieve the tokens required to make requests to the connection-\/provider on the user's behalve. This data is connection pecific and not guaranteed to exists or to stay valid outside the user's session. If no connection is found this method returns false.
+
+\begin{DoxyReturn}{Returns}
+mixed$|$false The internal connection's user-\/tokens, or false when not connected. 
+\end{DoxyReturn}
+\hypertarget{class_user_connection_provider_abb1139d2d575d13f24e509c97d31b6c4}{\index{User\-Connection\-Provider@{User\-Connection\-Provider}!get\-Connect\-Url@{get\-Connect\-Url}}
+\index{get\-Connect\-Url@{get\-Connect\-Url}!UserConnectionProvider@{User\-Connection\-Provider}}
+\subsubsection[{get\-Connect\-Url}]{\setlength{\rightskip}{0pt plus 5cm}User\-Connection\-Provider\-::get\-Connect\-Url (
+\begin{DoxyParamCaption}
+\item[{}]{\$s\-Redirect, }
+\item[{}]{\$s\-Scope = {\ttfamily null}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [abstract]}}}\label{class_user_connection_provider_abb1139d2d575d13f24e509c97d31b6c4}
+Since connectionproviders use an external system to verify the user's linkage to other sites every login procedure starts with a redirect. This method returns the url to create the connection.
+
+
+\begin{DoxyParams}[1]{Parameters}
+string & {\em \$s\-Redirect} & A Fully qualified url to which the user will be redirected at the end of the procedure. \\
+\hline
+string & {\em \$s\-Scope} & An optional list to pass on during authentication, identifying the required permission scope. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+string$|$false A string with the correct url on succes, false on failure. 
+\end{DoxyReturn}
+\hypertarget{class_user_connection_provider_a1bda2ec75dd12b1b73510780f8ba9094}{\index{User\-Connection\-Provider@{User\-Connection\-Provider}!get\-Disconnect\-Url@{get\-Disconnect\-Url}}
+\index{get\-Disconnect\-Url@{get\-Disconnect\-Url}!UserConnectionProvider@{User\-Connection\-Provider}}
+\subsubsection[{get\-Disconnect\-Url}]{\setlength{\rightskip}{0pt plus 5cm}User\-Connection\-Provider\-::get\-Disconnect\-Url (
+\begin{DoxyParamCaption}
+\item[{}]{\$s\-Redirect}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [abstract]}}}\label{class_user_connection_provider_a1bda2ec75dd12b1b73510780f8ba9094}
+Since connectionproviders use an external system to verify the user's linkage to other sites every login procedure starts with a redirect. This method returns the url to break the connection.
+
+If a disconnect option is not part of the underlying provider, this method returns null;
+
+
+\begin{DoxyParams}[1]{Parameters}
+string & {\em \$s\-Redirect} & A Fully qualified url to which the user will be redirected at the end of the procedure. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+string$|$false A string with the correct url on succes, false on failure, null if the operation is not possible. 
+\end{DoxyReturn}
+\hypertarget{class_user_connection_provider_a44ddc4806292a57a3d46267f85fcb8b2}{\index{User\-Connection\-Provider@{User\-Connection\-Provider}!get\-Name@{get\-Name}}
+\index{get\-Name@{get\-Name}!UserConnectionProvider@{User\-Connection\-Provider}}
+\subsubsection[{get\-Name}]{\setlength{\rightskip}{0pt plus 5cm}User\-Connection\-Provider\-::get\-Name (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_user_connection_provider_a44ddc4806292a57a3d46267f85fcb8b2}
+Helper method to identify the connectionprovider.
+
+\begin{DoxyReturn}{Returns}
+string The name of the connection-\/provider-\/class. 
+\end{DoxyReturn}
+\hypertarget{class_user_connection_provider_a9b5c8d50b9e3e9641aed1b8ddba69e17}{\index{User\-Connection\-Provider@{User\-Connection\-Provider}!is\-Connected@{is\-Connected}}
+\index{is\-Connected@{is\-Connected}!UserConnectionProvider@{User\-Connection\-Provider}}
+\subsubsection[{is\-Connected}]{\setlength{\rightskip}{0pt plus 5cm}User\-Connection\-Provider\-::is\-Connected (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [abstract]}}}\label{class_user_connection_provider_a9b5c8d50b9e3e9641aed1b8ddba69e17}
+Check if the underlying provider had a valid connection. Even when a connection is found, there is no guarantee it's connected to the logged-\/in user. When creating a connection, attention should be given to assure linkage to the correct user.
+
+\begin{DoxyReturn}{Returns}
+bool True when connected, false when not connected. 
+\end{DoxyReturn}
+\hypertarget{class_user_connection_provider_a8ba8b5a529e6f20c8b243368862120b8}{\index{User\-Connection\-Provider@{User\-Connection\-Provider}!update@{update}}
+\index{update@{update}!UserConnectionProvider@{User\-Connection\-Provider}}
+\subsubsection[{update}]{\setlength{\rightskip}{0pt plus 5cm}User\-Connection\-Provider\-::update (
+\begin{DoxyParamCaption}
+\item[{{\bf User}}]{\$o\-User, }
+\item[{}]{\$b\-Force\-Overwrite = {\ttfamily false}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [abstract]}}}\label{class_user_connection_provider_a8ba8b5a529e6f20c8b243368862120b8}
+Update the userdata according to the current connection. This method is meant to update the userdata such\-:
+\begin{DoxyItemize}
+\item locale (if not set)
+\item timezone (if not set)
+\item birthday (if not set)
+\item add email adresses
+\end{DoxyItemize}
+
+This method can only be run when \hyperlink{class_user_connection_provider_a9b5c8d50b9e3e9641aed1b8ddba69e17}{is\-Connected()} returns true. And when \hyperlink{class_user_connection_provider_adc340342b987e52cbb96ef4006566694}{get\-Connection\-Data()} returns valid data.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\hyperlink{class_user}{User} & {\em \$o\-User} & The user to be updated. \\
+\hline
+bool & {\em \$b\-Force\-Overwrite} & Indicate if we should overwrite current settings. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+bool Returns true when the update succeeded. 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+D\-:/www/watena/libs/default/usermanager/um\-\_\-userconnectionprovider.\-php\end{DoxyCompactItemize}
