@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * This class hold the request data for the current request.
+ * Before using it, you should make sure to call Request::init().
+ * If this class is used as part of Watena, this will be done for you.
+ * 
+ * @author Jelle Voet
+ * @version 0.1.0
+ */
 class Request {
 	
 	private static $s_aData = array(
@@ -22,6 +30,9 @@ class Request {
 		'detail' => '[GET] http://localhost',
 	);
 	
+	/**
+	 * Initialize and cache the correct values for the current request.
+	 */
 	public final static function init() {
 		if(!empty($_SERVER['HTTP_USER_AGENT'])) {
 			if(empty($_SESSION['HTP_USER_AGENT'])) {
@@ -104,7 +115,7 @@ class Request {
 		$sBuilder .= self::$s_aData['path'];
 		self::$s_aData['url'] = $sBuilder;
 		
-		$sBuilder = '[' . self::$s_aData['method'] . ']' . $sBuilder . '?' . http_build_query($_GET, null, '&');
+		$sBuilder = '[' . self::$s_aData['method'] . ']' . $sBuilder . '?' . http_build_query($_GET, null, '&') . ' (' . self::$s_aData['useragent'] . ')';
 		self::$s_aData['detail'] = $sBuilder;
 	}
 
@@ -117,7 +128,7 @@ class Request {
 	 * @see Request::isHttps()
 	 * @see Request::protocol()
 	 * @see Request::port()
-	 * @return boolean (default: true)
+	 * @return boolean Indicates if the current request is not using https. (default: true)
 	 */
 	public final static function isHttp() {
 		return self::$s_aData['http'];
@@ -132,7 +143,7 @@ class Request {
 	 * @see Request::isHttps()
 	 * @see Request::protocol()
 	 * @see Request::port()
-	 * @return boolean (default: false)
+	 * @return boolean Indicates of the current request is using https. (default: false)
 	 */
 	public final static function isHttps() {
 		return self::$s_aData['https'];
@@ -153,9 +164,9 @@ class Request {
 
 	/**
 	 * Retrieve the http-authentication user of the current request.
-	 * The return value is based on $_SERVER[PHP_AUTH_USER]?
+	 * The return value is based on $_SERVER['PHP_AUTH_USER'].
 	 * 
-	 * @return string The 'user'-part. (default: '')
+	 * @return string The user portion of the current request. (default: '')
 	 */
 	public final static function user() {
 		return self::$s_aData['user'];
@@ -163,9 +174,9 @@ class Request {
 
 	/**
 	 * Retrievethe http-authentication password of the current request.
-	 * The return value is based on $_SERVER[[PHP_AUTH_PASS].
+	 * The return value is based on $_SERVER['PHP_AUTH_PASS'].
 	 * 
-	 * @return string the 'password'-part. (default: '')
+	 * @return string The password portion of the current request. (default: '')
 	 */
 	public final static function password() {
 		return self::$s_aData['password'];
@@ -179,7 +190,7 @@ class Request {
 	 * The return value is based on $_SERVER['SERVER_NAME'] or $_SERVER['HTTP_POST'].
 	 *
 	 * @param boolean $bServer Set to true if you want the internal server-name.
-	 * @return string Returns lowercase $_SERVER[HTTP_HOST] or $_SERVER[SERVER_NAME]. (default: localhost)
+	 * @return string Returns lowercase $_SERVER['HTTP_HOST'] or $_SERVER['SERVER_NAME']. (default: localhost)
 	 */
 	public final static function host($bServer = false) {
 		return $bServer ? self::$s_aData['host_server'] : self::$s_aData['host_http'];
@@ -192,32 +203,32 @@ class Request {
 	 *
 	 * @see Request::isHttp()
 	 * @see Request::isHttps()
-	 * @return int The requests port-number. (default based on protocol: 80 or 443)
+	 * @return int The port number of the current request. (default based on protocol: 80 or 443)
 	 */
 	public final static function port() {
 		return self::$s_aData['port'];
 	}
 	
 	/**
-	 * Retrieve the base-portion of the current request.
+	 * Retrieve the base portion of the current request.
 	 * 
 	 * @see Request::protocol()
+	 * @see Request::user()
+	 * @see Request::password()
 	 * @see Request::host()
 	 * @see Request::port()
-	 * @example http://[user[:pass]@]example.com[:80]
-	 * @return string
+	 * @return string http[s]://[user[:password]@]example.com[:80]
 	 */
 	public final static function base() {
 		return self::$s_aData['base'];
 	}
 
 	/**
-	 * Retrieve the offset of the current request.
+	 * Retrieve the offset portion of the current request.
 	 * The offset is defined as the difference between the base and the root url
 	 * for the current request and is not fixed 'per install'.
 	 *
-	 * @example /path-to-install
-	 * @return string
+	 * @return string The path to the webroot for this install. /path-to-install
 	 */
 	public final static function offset() {
 		return self::$s_aData['offset'];
@@ -225,26 +236,46 @@ class Request {
 
 	/**
 	 * Retrieve the root portion of the current request.
+	 * This is the concatenation of Request::base() and Request::offset().
 	 * 
-	 * @return multitype:string boolean number multitype:
+	 * @see Request::base()
+	 * @see Request::offset()
+	 * @return string http[s]://[user[:password]@]example.com[:80][/path-to-install]
 	 */
 	public final static function root() {
 		return self::$s_aData['root'];
 	}
 	
+	/**
+	 * Retrieve the path portion of the current request.
+	 * The path is defined as the as the posfix after the offset and thus contains
+	 * the actual mapping with the install starting from the root.
+	 * When no mapping is found, this will always return '/'.
+	 * 
+	 * @return string The mapping for the current request. /path/mapping (default: '/')
+	 */
 	public final static function path() {
 		return self::$s_aData['path'];
 	}
 	
+	/**
+	 * Retrieve the full url of the current request.
+	 * This is the concatenation of Request::root() and Request::path().
+	 * 
+	 * @see Request::root()
+	 * @see Request::path()
+	 * @return string http[s]://[user[:password]@]example.com[:80][/path-to-install]/[path/mapping]
+	 */
 	public final static function url() {
 		return self::$s_aData['url'];
 	}
 	
 	/**
-	 * Retrieve the request-method of the current request.
+	 * Retrieve the uppercase request-method of the current request.
 	 * If no request-method is specified, this will default to GET.
+	 * The return values is based on $_SERVER['REQUEST_METHOD'].
 	 *
-	 * @return string
+	 * @return string De method used for the data of the current request. (default: 'GET')
 	 */
 	public final static function method() {
 		return self::$s_aData['method'];
@@ -255,27 +286,84 @@ class Request {
 	 * This will automatically save the useragent to a session.
 	 * If a subsequent request with useragent * / * should occur, the session-value will be used instead.
 	 * If no useragent is specified, this will default to 'Unknown'.
+	 * The return valies is based 
 	 *
-	 * @return string
+	 * @return string The persistent useragent data from the previous and current requests.
 	 */
-	public final static function userAgent() {
+	public final static function useragent() {
 		return self::$s_aData['useragent'];
 	}
 	
+	/**
+	 * Retrieve the specified value from the current $_GET.
+	 * You can specify as you would when using array_value().
+	 * If the specified index does not exist, $mDefault will be returned
+	 * 
+	 * @see array_value()
+	 * @param mixed $mIndex The index of the required value.
+	 * @param mixed $mDefault Default value when index does not exist.
+	 * @return mixed The value specified by $mIndex in $_GET, of $mDefault.
+	 */
 	public final static function get($mIndex, $mDefault = null) {
 		return array_value($_GET, $mIndex, $mDefault);
 	} 
 
+	/**
+	 * Retrieve the specified value from the current $_POST.
+	 * You can specify as you would when using array_value().
+	 * If the specified index does not exist, $mDefault will be returned
+	 * 
+	 * @see array_value()
+	 * @param mixed $mIndex The index of the required value.
+	 * @param mixed $mDefault Default value when index does not exist.
+	 * @return mixed The value specified by $mIndex in $_POST, of $mDefault.
+	 */
 	public final static function post($mIndex, $mDefault = null) {
 		return array_value($_POST, $mIndex, $mDefault);
 	}
 
+	/**
+	 * Retrieve the specified value from the current $_SESSION.
+	 * You can specify as you would when using array_value().
+	 * If the specified index does not exist, $mDefault will be returned
+	 * 
+	 * @see array_value()
+	 * @param mixed $mIndex The index of the required value.
+	 * @param mixed $mDefault Default value when index does not exist.
+	 * @return mixed The value specified by $mIndex in $_SESSION, of $mDefault.
+	 */
 	public final static function session($mIndex, $mDefault = null) {
 		return array_value($_SESSION, $mIndex, $mDefault);
 	}
 
+	/**
+	 * Retrieve the specified value from the current $_COOKIE.
+	 * You can specify as you would when using array_value().
+	 * If the specified index does not exist, $mDefault will be returned
+	 * 
+	 * @see array_value()
+	 * @param mixed $mIndex The index of the required value.
+	 * @param mixed $mDefault Default value when index does not exist.
+	 * @return mixed The value specified by $mIndex in $_COOKIE, of $mDefault.
+	 */
 	public final static function cookie($mIndex, $mDefault = null) {
 		return array_value($_COOKIE, $mIndex, $mDefault);
+	}
+	
+	/**
+	 * Retrieve the full detailed string containing the current request state.
+	 * Currently only the $_GET parameters are appended. (not $_POST, $_COOKIE, $_SESSION)
+	 * This is the concatenation of Request::method(), Request::url(), Request::get(), 
+	 * Request::useragent().
+	 * 
+	 * @see Request::method()
+	 * @see Request::url()
+	 * @see Request::get()
+	 * @see Request::useragent()
+	 * @return string [GET] http[s]://[user[:password]@]example.com[:80][/path-to-install]/[path/mapping]?[param0=foo&param1=bar] (useragent)
+	 */
+	public final static function detail() {
+		return self::$s_aData['detail'];
 	}
 }
 
