@@ -62,6 +62,18 @@ function send(sTest) {
 	oRequest.send();
 }
 </script>
+<style>
+html, body {
+	width: 100%;
+}
+			
+.rowA {
+	background: #DDD;
+}
+.rowB {
+	background: #AAA;
+}
+</style>
 </head>
 <body>
 <table width="100%" border="1">
@@ -75,6 +87,10 @@ EOT;
 	}
 	echo <<<EOT
 </table>
+			<div>Test A</div>
+			<div>Test B</div>
+			<div>Test C</div>
+			<div>Test D</div>
 </body>
 </html>
 EOT;
