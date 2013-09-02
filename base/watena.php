@@ -14,12 +14,14 @@ class WatenaLoader {
 		return new WatenaConfig($config, $name);
 	}
 	
-	public static function run() {
+	public static function init() {
 		if(!defined('PATH_BASE')) define('PATH_BASE', realpath(dirname(__FILE__)));
 		if(!defined('PATH_DATA')) define('PATH_DATA', realpath(dirname(__FILE__) . '/../data'));
 		if(!defined('PATH_LIBS')) define('PATH_LIBS', realpath(dirname(__FILE__) . '/../libs'));
 		if(!defined('PATH_ROOT')) define('PATH_ROOT', realpath(dirname(__FILE__) . '/..'));
-		
+	}
+	
+	public static function run() {
 		if(!PATH_BASE || !PATH_DATA || !PATH_LIBS || !PATH_ROOT) {
 			die('Not all path-constants are defined.');
 		}
@@ -27,10 +29,7 @@ class WatenaLoader {
 		if(function_exists('__autoload')) {
 			die('You are not allowed to define __autoload(); since a part of the framework depends on it.');
 		}
-				
-		// ############################################################
-		// BaseSystem inclusions needed for all Watena classes
-		// ############################################################
+
 		require_once PATH_BASE . '/system/global.common.php';
 		require_once PATH_BASE . '/system/global.requirements.php';
 		require_once PATH_BASE . '/system/static.encoding.php';
@@ -76,7 +75,7 @@ class WatenaLoader {
 		require_once PATH_BASE . '/system/class.iniparser.php';
 		require_once PATH_BASE . '/system/class.mail.php';
 		require_once PATH_BASE . '/system/class.html2text.php';
-		
+				
 		// Get configuration object
 		$oConf = self::getConfig();
 		
@@ -97,6 +96,10 @@ class WatenaLoader {
 			function watena() {return Watena::getWatena();}
 			new Watena($oConf, !defined('NMVC'));
 		}
+	}
+	
+	public static function mvc() {
+	
 	}
 }
 
