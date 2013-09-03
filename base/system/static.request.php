@@ -35,11 +35,11 @@ class Request {
 	 */
 	public final static function init() {
 		if(!empty($_SERVER['HTTP_USER_AGENT'])) {
-			if(empty($_SESSION['HTP_USER_AGENT'])) {
-				self::$s_aData['useragent'] = $_SESSION['HTTP_USER_AGENT'];
+			if(empty($_SESSION['HTTP_USER_AGENT'])) {
+				self::$s_aData['useragent'] = $_SERVER['HTTP_USER_AGENT'];
 			}
 			else {
-				self::$s_aData['useragent'] = $_SERVER['HTTP_USER_AGENT'];
+				self::$s_aData['useragent'] = $_SESSION['HTTP_USER_AGENT'];
 			}
 			if($_SERVER['HTTP_USER_AGENT'] !== '*/*') {
 				$_SESSION['HTP_USER_AGENT'] = $_SERVER['HTTP_USER_AGENT'];
