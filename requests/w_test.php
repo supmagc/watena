@@ -25,6 +25,22 @@ class Test {
 	protected function assertEquals($mActual, $mExpected, $sDescription) {
 		
 	}
+	
+	protected function assertNotEquals($mActual, $mExpected, $sDescription) {
+		
+	}
+	
+	protected function assertTrue($mActual, $sDescription) {
+		
+	}
+	
+	protected function assertFalse($mActual, $sDescription) {
+		
+	}
+	
+	private function error($sDescription) {
+		
+	}
 }
 
 function test_scandir($sBase = TEST_DIR) {
