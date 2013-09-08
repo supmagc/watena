@@ -22,6 +22,13 @@ function dump($mVar) {
 	echo '</pre>';
 }
 
+function uchr($mCodes) {
+    $sReturn = '';
+    if(is_scalar($mCodes)) $mCodes = func_get_args();
+    foreach($mCodes as $nCode) $sReturn .= html_entity_decode("&#$nCode;", ENT_NOQUOTES, 'UTF-8');
+    return $sReturn;
+}
+
 /**
  * Assure the array structure exists as provided
  * The structure is as defined by the keys array
