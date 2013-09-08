@@ -6,12 +6,26 @@ ob_start();
 class Test {
 	
 	private $m_aErrors = array();
+	private $m_sMethodName;
+	private $m_sTestName;
 	
 	public function setup() {}
 	public function teardown() {}
 	
 	public final function run() {
 		$this->setup();
+		
+		$oClass = new ReflectionClass($this);
+		$aMethods = $oClass->getMethods(ReflectionMethod::IS_PUBLIC);
+		foreach($aMethods as $oMethod) {
+			$aMatches = array();
+			if(preg_match('/test([a-z0-9_]+)/i', $oMethod->name, $aMatches)) {
+				$this->m_sMethodName = $oMethod->name;
+				$this->m_sTestName = $aMatches[1];
+				$oMethod->invoke($this);
+			}
+		}
+		
 		$this->teardown();
 		
 		if(count($this->m_aErrors) == 0) {
@@ -22,24 +36,26 @@ class Test {
 		}
 	}
 	
-	protected function assertEquals($mActual, $mExpected, $sDescription) {
-		
+	protected function assertEquals($mExpected, $mActual, $sDescription = null) {
+		if($mActual !== $mExpected) $this->error('EQUALS', "$mActual === $mExpected", $sDescription);
 	}
 	
-	protected function assertNotEquals($mActual, $mExpected, $sDescription) {
-		
+	protected function assertNotEquals($mExpected, $mActual, $sDescription = null) {
+		if($mActual === $mExpected) $this->error('NOTEQUALS', "$mActual !== $mExpected", $sDescription);
 	}
 	
-	protected function assertTrue($mActual, $sDescription) {
-		
+	protected function assertTrue($mActual, $sDescription = null) {
+		if($mActual == false) $this->error('TRUE', "$mActual", $sDescription);
 	}
 	
-	protected function assertFalse($mActual, $sDescription) {
-		
+	protected function assertFalse($mActual, $sDescription = null) {
+		if($mActual == true) $this->error('FALSE', "$mActual", $sDescription);
 	}
 	
-	private function error($sDescription) {
-		
+	private function error($sAssert, $sCondition, $sDescription) {
+		$aTrace = debug_backtrace(false);
+		$nLine = $aTrace[1]['line'];
+		$this->m_aErrors []= sprintf('<div class="assert"><font class="line">%d</font>@<font class="name">%s</font> :: %s(<font class="condition">%s</font>) <font class="description">%s</font></div>', $nLine, $this->m_sTestName, strtoupper($sAssert), $sCondition, $sDescription);
 	}
 }
 
@@ -140,6 +156,7 @@ function getXmlHttpRequest() {
 }
 
 function send(sTest, sField) {
+	setField(sField, "rowLoading", "Loading test ...");
 	var oRequest = getXmlHttpRequest();
 	oRequest.onreadystatechange = function() {
 		if(oRequest.readyState == 4 && oRequest.status == 200) {
@@ -147,10 +164,12 @@ function send(sTest, sField) {
 			var aLines = oRequest.responseText.split("\r\n");
 			if(aLines.length > 0 && oRegex.test(aLines[0])) {
 				if(oRegex.exec(aLines[0])[1] == "ok") {
-					setField(sField, "rowSuccess", "Test Succeeded !", undefined);
+					setField(sField, "rowSuccess", "Test Succeeded !");
 				}
 				else {
-					setField(sField, "rowError", "Test failed !", oRequest.responseText);
+					var sContent = "";
+					for(i=1 ; i<aLines.length ; ++i) sContent += aLines[i];
+					setField(sField, "rowError", "Test failed !", sContent);
 				}
 			}
 			else {
@@ -187,11 +206,30 @@ h2 {
 	margin-bottom:0px;
 	padding: 10px;
 }
+.assert {
+	font: 15px arial;
+}
+.assert .line, .assert .name {
+	color: #333;
+	font-weight: 900;
+}
+.assert .condition {
+	color: #900;
+	font: 12px monospace italic;
+	text-decoration: underline;
+}
+.assert .description {
+	color: #666;
+	font: 10px arial;
+}
 .rowOdd {
 	background: #DDD;
 }
 .rowEven {
 	background: #AAA;
+}
+.rowLoading {
+	background: #FFA;
 }
 .rowSuccess {
 	background: #AFA;

@@ -206,7 +206,7 @@ class Request {
 	 * @return int The port number of the current request. (default based on protocol: 80 or 443)
 	 */
 	public final static function port() {
-		return self::$s_aData['port'];
+		return (int)self::$s_aData['port'];
 	}
 	
 	/**
