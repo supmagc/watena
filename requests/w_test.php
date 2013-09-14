@@ -37,25 +37,26 @@ class Test {
 	}
 	
 	protected function assertEquals($mExpected, $mActual, $sDescription = null) {
-		if($mActual !== $mExpected) $this->error('EQUALS', "$mActual === $mExpected", $sDescription);
+		return $mActual === $mExpected || $this->error('EQUALS', "$mActual === $mExpected", $sDescription);
 	}
 	
 	protected function assertNotEquals($mExpected, $mActual, $sDescription = null) {
-		if($mActual === $mExpected) $this->error('NOTEQUALS', "$mActual !== $mExpected", $sDescription);
+		return $mActual !== $mExpected || $this->error('NOTEQUALS', "$mActual !== $mExpected", $sDescription);
 	}
 	
 	protected function assertTrue($mActual, $sDescription = null) {
-		if($mActual == false) $this->error('TRUE', "$mActual", $sDescription);
+		return $mActual == true || $this->error('TRUE', "$mActual", $sDescription);
 	}
 	
 	protected function assertFalse($mActual, $sDescription = null) {
-		if($mActual == true) $this->error('FALSE', "$mActual", $sDescription);
+		return $mActual == false || $this->error('FALSE', "$mActual", $sDescription);
 	}
 	
 	private function error($sAssert, $sCondition, $sDescription) {
 		$aTrace = debug_backtrace(false);
 		$nLine = $aTrace[1]['line'];
 		$this->m_aErrors []= sprintf('<div class="assert"><font class="line">%d</font>@<font class="name">%s</font> :: %s(<font class="condition">%s</font>) <font class="description">%s</font></div>', $nLine, $this->m_sTestName, strtoupper($sAssert), $sCondition, $sDescription);
+		return false;
 	}
 }
 
