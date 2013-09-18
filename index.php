@@ -1,4 +1,5 @@
 <?php
 include 'base/watena.php';
-WatenaLoader::run();
+WatenaLoader::init();
+WatenaLoader::load()->mvc();
 ?>
