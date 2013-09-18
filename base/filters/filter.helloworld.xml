@@ -7,6 +7,6 @@
 	<controller name="HelloWorldController">
 	</controller>
 	<rules>
-		<rule type="mapping" variable="main">^/</rule>
+		<rule type="mapping" variable="main" condition="pattern">^/</rule>
 	</rules>
 </filter>

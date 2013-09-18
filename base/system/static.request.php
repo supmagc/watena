@@ -27,7 +27,7 @@ class Request {
 		'base' => 'http://localhost',
 		'root' => 'http://localhost',
 		'url' => 'http://localhost/',
-		'detail' => '[GET] http://localhost',
+		'detail' => '[GET] http://localhost/? (watena)',
 	);
 	
 	/**
@@ -115,7 +115,7 @@ class Request {
 		$sBuilder .= self::$s_aData['path'];
 		self::$s_aData['url'] = $sBuilder;
 		
-		$sBuilder = '[' . self::$s_aData['method'] . ']' . $sBuilder . '?' . http_build_query($_GET, null, '&') . ' (' . self::$s_aData['useragent'] . ')';
+		$sBuilder = '[' . self::$s_aData['method'] . '] ' . $sBuilder . '?' . http_build_query($_GET, null, '&') . ' (' . self::$s_aData['useragent'] . ')';
 		self::$s_aData['detail'] = $sBuilder;
 	}
 

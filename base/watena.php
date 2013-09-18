@@ -14,14 +14,33 @@ class WatenaLoader {
 		return new WatenaConfig($config, $name);
 	}
 	
+	/**
+	 * Initialise the watena environment.
+	 * 
+	 * This effectively sets the required constants:
+	 * - PATH_BASE = The path to the base directory.
+	 * - PATH DATA = The path to the data directory.
+	 * - PATH_LIBS = The path to the installed libraries.
+	 * - PATH_ROOT = The path to the root of the application.
+	 */
 	public static function init() {
 		if(!defined('PATH_BASE')) define('PATH_BASE', realpath(dirname(__FILE__)));
 		if(!defined('PATH_DATA')) define('PATH_DATA', realpath(dirname(__FILE__) . '/../data'));
 		if(!defined('PATH_LIBS')) define('PATH_LIBS', realpath(dirname(__FILE__) . '/../libs'));
 		if(!defined('PATH_ROOT')) define('PATH_ROOT', realpath(dirname(__FILE__) . '/..'));
 	}
-	
-	public static function run() {
+
+	/**
+	 * Load the system.
+	 * 
+	 * The following defines may impact the behaviour:
+	 * - NSESSION = Disable the session guard. 
+	 * - NLOGGER = Disable the default loggers.
+	 * - NWATENA = Disable the creation of the main Watena-instance.
+	 * 
+	 * @return Watena The main Watena-instance of null when NWATENA is defined.
+	 */
+	public static function load() {
 		if(!PATH_BASE || !PATH_DATA || !PATH_LIBS || !PATH_ROOT) {
 			die('Not all path-constants are defined.');
 		}
@@ -94,12 +113,11 @@ class WatenaLoader {
 		if(!defined('NWATENA')) {
 			define('WATENA', true);
 			function watena() {return Watena::getWatena();}
-			new Watena($oConf, !defined('NMVC'));
+			 return new Watena($oConf, !defined('NMVC'));
 		}
-	}
-	
-	public static function mvc() {
-	
+		else {
+			return null;
+		}
 	}
 }
 

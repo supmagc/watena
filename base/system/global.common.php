@@ -1,19 +1,38 @@
 <?php
 
+/**
+ * Stub function when 'not yet implemented'.
+ * This will terminate the execution.
+ */
 function NYI() {
 	terminate('NYI');
 }
 
+/**
+ * Stub function when deprecated.
+ * This will terminate the execution.
+ */
 function DEPR() {
 	terminate('DEPRECATED');
 }
 
+/**
+ * Terminate the execution and print the call-location and given message.
+ * 
+ * @param string $sMessage
+ */
 function terminate($sMessage) {
 	$aTrace = debug_backtrace();
 	if(count($aTrace) > 0) echo "<strong>{$aTrace[0]['file']}</strong> (<i>line: {$aTrace[0]['line']}</i>)\r\n";
 	die($sMessage);
 }
 
+/**
+ * Visualize the type and content of the given variable.
+ * This will also print the location of the dump-call so you can easily remove it.
+ * 
+ * @param mixed $mVar
+ */
 function dump($mVar) {
 	$aTrace = debug_backtrace();
 	if(count($aTrace) > 0) echo "<strong>{$aTrace[0]['file']}</strong> (<i>line: {$aTrace[0]['line']}</i>)\r\n";
@@ -22,6 +41,13 @@ function dump($mVar) {
 	echo '</pre>';
 }
 
+/**
+ * Unicode (UTF-8) variant of chr(...)
+ * 
+ * @see chr
+ * @param mixed $mCodes
+ * @return string
+ */
 function uchr($mCodes) {
     $sReturn = '';
     if(is_scalar($mCodes)) $mCodes = func_get_args();
@@ -150,6 +176,15 @@ function array_last(array &$arr) {
 	return $arr[$aKeys[count($aKeys) - 1]];
 }
 
+/**
+ * Try to make sure the file at the given path exists and has the right permissions.
+ * If some of these conditions are not met, they will me fixed if possible,
+ * or the function will return false
+ * 
+ * @param string $sPath
+ * @param number $nMode (default: 0664)
+ * @return boolean If the file could be assured or not.
+ */
 function file_assure($sPath, $nMode = 0664) {
 	$sDirectory = dirname($sPath);
 	if(!file_exists($sDirectory) && !mkdir($sDirectory, 0775, true)) return false;
