@@ -20,13 +20,10 @@ class WatenaConfig {
 		'version' => '0.1.2-dev [Dusty]'
 	);
 	
-	public final function __construct(array $aConfig, $sConfigName = self::WatenaConfig) {
+	public final function __construct(array $aConfig, $sConfigName = self::CONFIGNAME_DEFAULT) {
 		$this->m_sConfigName = $sConfigName;
 		
-		$this->m_aConfig = self::$s_aConfig;
-		if(isset($aConfig[$sConfigName]) && is_array($aConfig[$sConfigName])) {
-			$this->m_aConfig = array_merge($this->m_aConfig, $aConfig[$sConfigName]);
-		}
+		$this->m_aConfig = array_merge(self::$s_aConfig, $aConfig[self::CONFIGNAME_DEFAULT], $aConfig[$sConfigName]);
 	}
 	
 	public final function config() {

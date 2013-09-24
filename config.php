@@ -56,7 +56,7 @@ $conf['default']['timeformat'] = 'Y/m/d H:i:s';
 # - CacheMemcache
 # - CachePEAR
 #
-$conf['default']['cachengine'] = 'CacheMemcache';
+$conf['default']['cachengine'] = ''; //'CacheMemcache';
 
 #
 # Default cache expiration time.

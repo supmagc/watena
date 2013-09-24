@@ -242,10 +242,10 @@ class Context extends Object {
 		foreach($aFilterGroups as $oFilterGroup) {
 			$aFilters = $oFilterGroup->getFilters();
 			foreach($aFilters as $nOrder => $oFilter) {
-				if($oFilter->match($oMapping)) {
-					if(!$oModel) $oModel = $oFilter->createModel();
-					if(!$oView) $oView = $oFilter->createView();
-					if(!$oController) $oController = $oFilter->createController();
+				if($oMapping->Mathes($oFilter)) {
+					if(!$oModel && null != $oFilter->getModelData()) $oModel = $this->loadModel($oFilter->getModelData()->getName(), $oFilter->getModelData()->getParams());
+					if(!$oView && null != $oFilter->getViewData()) $oView = $this->loadView($oFilter->getViewData()->getName(), $oFilter->getViewData()->getParams());
+					if(!$oController && null != $oFilter->getControllerData()) $oController = $this->loadController($oFilter->getControllerData()->getName(), $oFilter->getControllerData()->getParams());
 					break;
 				}
 			}

@@ -16,13 +16,16 @@ class Watena extends Object {
 		$nTime = microtime(true);	
 		parent::__construct();
 		$this->m_oConfig = $oConfig;
-		$this->assureEnvironment();
 		
+		Encoding::init($this->getConfig()->charset());
+		Request::init();
+		Time::init($this->getConfig()->timeZone(), $this->getConfig()->timeFormat());
+				
 		// Create a default context and default cache
 		$this->m_oTime = new Time();
 		$this->m_oCache = new CacheEmpty();
 		$this->m_oContext = new Context();
-		$this->m_oMapping = new Mapping(null, $_GET);
+		$this->m_oMapping = Mapping::LoadFromRequest();
 		
 		// Load all specified logProcessors
 		Logger::setDefaultFilterLevel($this->getConfig()->loggerLevel());
@@ -40,43 +43,44 @@ class Watena extends Object {
 			$this->m_oContext->loadPlugin($sCachePlugin);
 			$this->m_oCache = $this->m_oContext->GetPlugin($sCachePlugin, 'ICache');
 		}
-
+		
 		// Log the end of the init
 		$this->getLogger()->debug('Watena was succesfully initialised in {time} sec.', array('time' => round(microtime(true) - $nTime, 5)));
+	}
+	
+	public final function mvc() {
 		$nTime = microtime(true);
 		
 		// Load the mapping and retrieve the appropriate controller
-		if($bUseMvc) {
-			list($this->m_oModel, $this->m_oView, $this->m_oController) = $this->m_oContext->getMVC($this->m_oMapping);
-			while($this->m_oController) {
-				$this->m_oController->clearRemapping();
-				$this->m_oController->clearNewModel();
-				$this->m_oController->clearNewView();
-				$this->m_oController->process($this->m_oModel, $this->m_oView);
-				if($this->m_oController->hasRemapping()) {
-					$this->m_oMapping = $this->m_oController->getRemapping();
-					list($this->m_oModel, $this->m_oView, $this->m_oController) = $this->m_oContext->getMVC($this->m_oMapping);
-				}
-				if($this->m_oController->hasNewModel()) {
-					$this->m_oModel = $this->m_oController->getNewModel();
-				}
-				if($this->m_oController->hasNewView()) {
-					$this->m_oView = $this->m_oController->getNewView();
-				}
-				if(!$this->m_oController->hasRemapping()) {
-					break;
-				}
+		list($this->m_oModel, $this->m_oView, $this->m_oController) = $this->m_oContext->getMVC($this->m_oMapping);
+		while($this->m_oController) {
+			$this->m_oController->clearRemapping();
+			$this->m_oController->clearNewModel();
+			$this->m_oController->clearNewView();
+			$this->m_oController->process($this->m_oModel, $this->m_oView);
+			if($this->m_oController->hasRemapping()) {
+				$this->m_oMapping = $this->m_oController->getRemapping();
+				list($this->m_oModel, $this->m_oView, $this->m_oController) = $this->m_oContext->getMVC($this->m_oMapping);
 			}
-			if($this->m_oView) {
-				$this->m_oView->headers($this->m_oModel);
+			if($this->m_oController->hasNewModel()) {
+				$this->m_oModel = $this->m_oController->getNewModel();
 			}
-			ob_end_flush();
-			if($this->m_oView)
-				$this->m_oView->render($this->m_oModel);
-		
-			// Log the end of Watena
-			$this->getLogger()->debug('Watena loaded and rendered the page in {time} sec.', array('time' => round(microtime(true) - $nTime, 5)));
+			if($this->m_oController->hasNewView()) {
+				$this->m_oView = $this->m_oController->getNewView();
+			}
+			if(!$this->m_oController->hasRemapping()) {
+				break;
+			}
 		}
+		if($this->m_oView) {
+			$this->m_oView->headers($this->m_oModel);
+		}
+		ob_end_flush();
+		if($this->m_oView)
+			$this->m_oView->render($this->m_oModel);
+	
+		// Log the end of Watena
+		$this->getLogger()->debug('Watena loaded and rendered the page in {time} sec.', array('time' => round(microtime(true) - $nTime, 5)));
 	}
 	
 	/**
@@ -156,18 +160,6 @@ class Watena extends Object {
 	 */
 	public final function getTime() {
 		return $this->m_oTime;
-	}
-	
-	/**
-	 * Sett all required PHP-settings
-	 */
-	public final function assureEnvironment() {
-		//set_include_path(get_include_path() . PATH_SEPARATOR . str_replace(',', PATH_SEPARATOR, self::getConfig('INCLUDE', '')));
-		Encoding::init($this->getConfig()->charset());
-		Request::init();
-		Mapping::init();
-		Time::init($this->getConfig()->timeZone(), $this->getConfig()->timeFormat());
-		if(!is_writable(PATH_DATA)) die('Data path is not writeable.');
 	}
 	
 	/**
