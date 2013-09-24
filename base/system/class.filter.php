@@ -1,5 +1,6 @@
 <?php
 
+/*
 class _FilterData extends Object {
 	
 	const TYPE_UNKNOWN = 0;
@@ -13,12 +14,6 @@ class _FilterData extends Object {
 	private $m_sFilePath;
 	private $m_aParams = array();
 	
-	/**
-	 * Create a new FilterGroup (Model/View/Controller)
-	 * 
-	 * @param string $sName The name of the class we require
-	 * @param string $nType The type of class to load/create
-	 */
 	public function __construct($sName, $nType) {
 		$this->m_sName = $sName;
 		$this->m_nType = $nType;
@@ -49,15 +44,15 @@ class _FilterData extends Object {
 		}
 	}
 }
+*/
 
 class Filter extends CacheableFile {
 
 	private $m_sName = '';
-	private $m_sTheme = '';
+	private $m_nOrder = 0;
 	private $m_oModel = null;
 	private $m_oView = null;
 	private $m_oController = null;
-	private $m_nOrder = 0;
 	private $m_aRules = array();
 	
 	public function make(array $aMembers) {
@@ -75,23 +70,24 @@ class Filter extends CacheableFile {
 					}
 				}
 				else if(($sName = $this->_matchesGetName($oXml, 'model')) !== false) {
-					$oLast = ($this->m_oModel = new _FilterData($sName, _FilterData::TYPE_MODEL));
+					$oLast = ($this->m_oModel = new FilterData($sName));
 				}
 				else if(($sName = $this->_matchesGetName($oXml, 'view')) !== false) {
-					$oLast = ($this->m_oView = new _FilterData($sName, _FilterData::TYPE_VIEW));
+					$oLast = ($this->m_oView = new FilterData($sName));
 				}
 				else if(($sName = $this->_matchesGetName($oXml, 'controller')) !== false) {
-					$oLast = ($this->m_oController = new _FilterData($sName, _FilterData::TYPE_CONTROLLER));
+					$oLast = ($this->m_oController = new FilterData($sName));
 				}
 				else if(($sName = $this->_matchesGetName($oXml, 'param')) !== false) {
 					$oXml->read();
 					$oLast->addParam($sName, $oXml->readString());
 				}
-				else if((list($sType, $sVariable) = $this->_matchesGetName($oXml, 'rule', array('type', 'variable'))) !== false) {
+				else if((list($sVariable, $sCondition) = $this->_matchesGetName($oXml, 'rule', array('variable', 'condition'))) !== false) {
 					$oXml->read();
-					$this->m_aRules []= array('type' => $sType, 'variable' => $sVariable, 'pattern' => $oXml->readString());
+					$this->m_aRules []= new FilterRule(explode('.', $sVariable), $sCondition, $oXml->readString());
 				}
 			}
+			
 			if(count($this->m_aRules) == 0) throw new WatCeption('You need at least one rule in each filter.', array('filter' => parent::getFilePath()), $this);
 			$this->getLogger()->debug('Succesfully parsed filter: {filter}', array(
 				'filter' => parent::getFilePath(), 
@@ -104,6 +100,7 @@ class Filter extends CacheableFile {
 		}
 	}
 	
+	/*
 	public function createModel() {
 		return $this->m_oModel ? $this->m_oModel->create() : null;
 	}
@@ -119,6 +116,7 @@ class Filter extends CacheableFile {
 	public function getTheme() {
 		return $this->m_sTheme;
 	}
+	*/
 	
 	public function getName() {
 		return $this->m_sName;
@@ -128,6 +126,23 @@ class Filter extends CacheableFile {
 		return $this->m_nOrder;
 	}
 	
+	public function GetModelData() {
+		return $this->m_oModel;
+	}
+	
+	public function getViewData() {
+		return $this->m_oView;
+	}
+	
+	public function getControllerData() {
+		return $this->m_oController;
+	}
+	
+	public function getRules() {
+		return $this->m_aRules;
+	}
+	
+	/*
 	public function match(Mapping $oMapping) {
 		$bSucces = true;
 		foreach($this->m_aRules as $aRuleData) {
@@ -147,6 +162,7 @@ class Filter extends CacheableFile {
 		}
 		return $bSucces;
 	}
+	*/
 	
 	private function _matchesGetName(XMLReader $oXml, $sMatch, $aNameTags = array('name')) {
 		if(!is_array($aNameTags)) $aNameTags = array($aNameTags);

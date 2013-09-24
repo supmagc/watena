@@ -259,6 +259,18 @@ class Request {
 	}
 	
 	/**
+	 * Retrieve the mapping of the current request.
+	 * The mapping here is defined as the path split on forward slashes without the empty values.
+	 * If an index is specified the mapping at given index is returned, or 'null' if not set.
+	 * 
+	 * @param int $nIndex The index of the mapping part you require.
+	 * @return array|string|null An array with the mapping | The mapping you specified with $nIndex | nothing if nothing found
+	 */
+	public final static function mapping($nIndex = -1) {
+		return ($nIndex >= 0 && isset(self::$s_aData['mapping'][$nIndex])) ? self::$s_aData['mapping'][$nIndex] : null;
+	}
+	
+	/**
 	 * Retrieve the full url of the current request.
 	 * This is the concatenation of Request::root() and Request::path().
 	 * 

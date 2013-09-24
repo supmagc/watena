@@ -9,9 +9,9 @@ class WatenaLoader {
 		else if(($sPath = realpath(dirname(__FILE__) . '/../config.php')) && is_readable($sPath)) {}
 		
 		if(!empty($sPath)) include $sPath;
-		if(!isset($config)) $config = array();
+		if(!isset($conf)) $conf = array();
 		if(!isset($name)) $name = WatenaConfig::CONFIGNAME_DEFAULT;
-		return new WatenaConfig($config, $name);
+		return new WatenaConfig($conf, $name);
 	}
 	
 	/**
@@ -75,6 +75,8 @@ class WatenaLoader {
 		require_once PATH_BASE . '/system/class.context.php';
 		require_once PATH_BASE . '/system/class.requirementbuffer.php';
 		require_once PATH_BASE . '/system/class.filter.php';
+		require_once PATH_BASE . '/system/class.filterdata.php';
+		require_once PATH_BASE . '/system/class.filterrule.php';
 		require_once PATH_BASE . '/system/class.filtergroup.php';
 		require_once PATH_BASE . '/system/class.plugin.php';
 		require_once PATH_BASE . '/system/class.url.php';

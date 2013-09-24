@@ -4,22 +4,24 @@ class Mapping extends Object {
 	
 	private $m_aData;
 	
-	private function __construct(array $aData = array()) {
+	protected function __construct(array $aData = array()) {
+		parent::__construct();
 		$this->m_aData = $aData;
 	}
 	
 	public function Mathes(Filter $oFilter) {
-		
+		return true;
 	}
 	
 	public static function LoadFromRequest() {
 		return new Mapping(array(
-			'usergent' => Request::useragent(),
+			'useragent' => Request::useragent(),
 			'protocol' => Request::protocol(),
 			'host' => Request::host(),
 			'port' => Request::port(),
 			'offset' => Request::offset(),
-			'path' => Request::map(),
+			'path' => Request::path(),
+			'mapping' => Request::mapping(),
 			'session' => $_SESSION,
 			'cookie' => $_COOKIE,
 			'post' => $_POST,
