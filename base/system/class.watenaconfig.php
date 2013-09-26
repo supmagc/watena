@@ -8,7 +8,7 @@ class WatenaConfig {
 	private $m_sConfigName;
 	
 	private static $s_aConfig = array(
-		'libraries' => array('admin', 'default'),
+		'libraries' => array(),
 		'charset' => 'UTF-8',
 		'timezone' => 'UTC',
 		'timeformat' => 'Y/m/d H:i:s',
@@ -16,14 +16,19 @@ class WatenaConfig {
 		'cachengine' => 'CacheMemcache',
 		'cachexpiration' => 30,
 		'loglevel' => 'WARNING',
-		'logprocessors' => array(),
-		'version' => '0.1.2-dev [Dusty]'
+		'logprocessors' => array()
 	);
 	
 	public final function __construct(array $aConfig, $sConfigName = self::CONFIGNAME_DEFAULT) {
 		$this->m_sConfigName = $sConfigName;
 		
-		$this->m_aConfig = array_merge(self::$s_aConfig, $aConfig[self::CONFIGNAME_DEFAULT], $aConfig[$sConfigName]);
+		$this->m_aConfig = self::$s_aConfig;
+		if(isset($aConfig[self::CONFIGNAME_DEFAULT]) && is_array($aConfig[self::CONFIGNAME_DEFAULT])) {
+			$this->m_aConfig = array_merge($this->m_aConfig, $aConfig[self::CONFIGNAME_DEFAULT]);
+		}
+		if(isset($aConfig[$sConfigName]) && is_array($aConfig[$sConfigName])) {
+			$this->m_aConfig = array_merge($this->m_aConfig, $aConfig[$sConfigName]);
+		}
 	}
 	
 	public final function config() {
@@ -71,7 +76,7 @@ class WatenaConfig {
 	}
 	
 	public function version() {
-		return $this->m_aConfig['version'];		
+		return self::VERSION;
 	}
 }
 

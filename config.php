@@ -29,7 +29,7 @@ $conf['product'] = array();
 # Their order can be of some importance if multiple libraries contain identical content.
 # Priority is given to the libraries that are defined first.
 #
-$conf['default']['libraries'] = array('admin', 'default');
+$conf['default']['libraries'] = array(); //array('admin', 'default');
 
 #
 # Charset used throughout the system.
@@ -68,7 +68,6 @@ $conf['default']['cachexpiration'] = 30;
 $conf['default']['loglevel'] = 'WARNING';
 $conf['default']['logprocessors'] = array();
 $conf['default']['webroot'] = 'watena';
-$conf['default']['version'] = '0.1.2-dev [Dusty]';
 
 #
 # Disable the advanced logging system
@@ -84,9 +83,4 @@ $conf['default']['version'] = '0.1.2-dev [Dusty]';
 # Disable the loading of watena
 #
 // define('NWATENA', false);
-
-#
-# Disable the MVC processing when watena is enabled
-#
-// define('NMVC', false);
 ?>

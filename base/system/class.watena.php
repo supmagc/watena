@@ -40,6 +40,7 @@ class Watena extends Object {
 		// Load the specified cachingengine
 		$sCachePlugin = $this->getConfig()->cacheEngine();
 		if($sCachePlugin) {
+			die($sCachePlugin);
 			$this->m_oContext->loadPlugin($sCachePlugin);
 			$this->m_oCache = $this->m_oContext->GetPlugin($sCachePlugin, 'ICache');
 		}

@@ -28,6 +28,8 @@ static \hyperlink{class_request_a6b69986e47c94186cce2336f11ad1f6e}{root} ()
 \item 
 static \hyperlink{class_request_ae1725b521b1833602f3f554566142c51}{path} ()
 \item 
+static \hyperlink{class_request_ada5f08ac6d1754ad0cc7312c10b8c9a3}{mapping} (\$n\-Index=-\/1)
+\item 
 static \hyperlink{class_request_abf1e0caab3f4027d508eec81489b260b}{url} ()
 \item 
 static \hyperlink{class_request_a4d6813e2943a1ced4ae7159e3a382695}{method} ()
@@ -209,6 +211,23 @@ Determine if the current request is using a secured protocol. This method is the
 \end{DoxySeeAlso}
 \begin{DoxyReturn}{Returns}
 boolean Indicates of the current request is using https. (default\-: false) 
+\end{DoxyReturn}
+\hypertarget{class_request_ada5f08ac6d1754ad0cc7312c10b8c9a3}{\index{Request@{Request}!mapping@{mapping}}
+\index{mapping@{mapping}!Request@{Request}}
+\subsubsection[{mapping}]{\setlength{\rightskip}{0pt plus 5cm}static Request\-::mapping (
+\begin{DoxyParamCaption}
+\item[{}]{\$n\-Index = {\ttfamily -\/1}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [final]}}}\label{class_request_ada5f08ac6d1754ad0cc7312c10b8c9a3}
+Retrieve the mapping of the current request. The mapping here is defined as the path split on forward slashes without the empty values. If an index is specified the mapping at given index is returned, or 'null' if not set.
+
+
+\begin{DoxyParams}[1]{Parameters}
+int & {\em \$n\-Index} & The index of the mapping part you require. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+array$|$string$|$null An array with the mapping $|$ The mapping you specified with \$n\-Index $|$ nothing if nothing found 
 \end{DoxyReturn}
 \hypertarget{class_request_a4d6813e2943a1ced4ae7159e3a382695}{\index{Request@{Request}!method@{method}}
 \index{method@{method}!Request@{Request}}
