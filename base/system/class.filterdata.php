@@ -7,6 +7,7 @@ class FilterData extends Object {
 	
 	public final function __construct($sName) {
 		$this->m_sName = $sName;
+		$this->m_aParams = array();
 	}
 	
 	public final function addParam($sName, $sValue) {

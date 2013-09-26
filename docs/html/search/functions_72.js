@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['registerprocessor',['registerProcessor',['../class_logger.html#a67f68a274b78033665beb7e42c3367ad',1,'Logger']]],
   ['registerrequest',['registerRequest',['../class_a_j_a_x___client.html#a6fe317ebce44e13e98c9ab24a61edbfe',1,'AJAX_Client']]],
   ['removecssfile',['RemoveCSSFile',['../class_a_j_a_x___response.html#aca7ea3ab30272291eafe98d41b602700',1,'AJAX_Response']]],
   ['removejsfile',['RemoveJSFile',['../class_a_j_a_x___response.html#aeebbe6e31801e025b95b56a5fcff0850',1,'AJAX_Response']]],

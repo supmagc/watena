@@ -7,6 +7,6 @@
 	<controller name="HelloWorldController">
 	</controller>
 	<rules>
-		<rule variable="path" condition="pattern">^/</rule>
+		<rule variable="path" condition="set"></rule>
 	</rules>
 </filter>

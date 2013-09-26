@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * This class manages the logging of watena.
+ * 
+ * @author Jelle Voet
+ * @version 0.1.0
+ */
 class Logger {
 	
 	const INHERIT = -1;

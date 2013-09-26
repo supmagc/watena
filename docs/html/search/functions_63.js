@@ -7,7 +7,6 @@ var searchData=
   ['classchangebyid',['ClassChangeByID',['../class_a_j_a_x___response.html#a83aedd965664793eca47a68de5ac1273',1,'AJAX_Response']]],
   ['clearallpersistentdata',['clearAllPersistentData',['../class_base_facebook.html#a2f98dbe9b9b63d3e76ba7f1971d80c91',1,'BaseFacebook']]],
   ['clearpersistentdata',['clearPersistentData',['../class_base_facebook.html#a3bfb6ef7b1abbd3ec0545be109d32bef',1,'BaseFacebook']]],
-  ['compile',['compile',['../class_u_r_i.html#a60ca24bd19f67a822dd2cbee04b196b8',1,'URI']]],
   ['cookie',['cookie',['../class_request.html#ad6b7fe8e73dd7eed912086488002ddd0',1,'Request']]],
   ['create',['Create',['../class_a_j_a_x___selector.html#adc1bdf2f113bca7cf716793855c63b4c',1,'AJAX_Selector']]],
   ['createerrorresponse',['CreateErrorResponse',['../class_a_j_a_x___response.html#ad3c0f052bfa7658aa4b8e1dfa1224496',1,'AJAX_Response']]]

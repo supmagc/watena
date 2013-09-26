@@ -4,7 +4,7 @@
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\hyperlink{class_logger_a54e5e4ead59460c6345d38ed4385e3fc}{set\-Filter} (\hyperlink{interface_i_log_filter}{I\-Log\-Filter} \$o\-Filter)
+\hyperlink{class_logger_a54e5e4ead59460c6345d38ed4385e3fc}{set\-Filter} (I\-Log\-Filter \$o\-Filter)
 \item 
 \hyperlink{class_logger_a71d1988b4a05424766640f00cc0c5ec4}{get\-Filter} ()
 \item 
@@ -43,7 +43,7 @@ static \hyperlink{class_logger_a3af4a199ee9ff77080b287d445fd7258}{get\-Default\-
 \item 
 static \hyperlink{class_logger_a7af0235d7605c027e8fc05014c5e8a02}{set\-Default\-Filter\-Level} (\$m\-Level)
 \item 
-static \hyperlink{class_logger_a67f68a274b78033665beb7e42c3367ad}{register\-Processor} (\hyperlink{interface_i_log_processor}{I\-Log\-Processor} \$o\-Processor)
+static \hyperlink{class_logger_a67f68a274b78033665beb7e42c3367ad}{register\-Processor} (I\-Log\-Processor \$o\-Processor)
 \item 
 static \hyperlink{class_logger_a7cd51ad43efe88cfde3c1ebdc988940b}{get\-Generic\-Instance} ()
 \item 
@@ -51,39 +51,17 @@ static \hyperlink{class_logger_a01709c6e4bc16337f430ab0d657f187f}{get\-Level\-Na
 \item 
 static \hyperlink{class_logger_aba0511b6a8e0338bfe1edf5fb6eb4b59}{get\-Level\-Constant} (\$s\-Level)
 \end{DoxyCompactItemize}
-\subsection*{Public Attributes}
-\begin{DoxyCompactItemize}
-\item 
-\hypertarget{class_logger_a7d7bfc072f31d89d47f0b66159d5e385}{const {\bfseries I\-N\-H\-E\-R\-I\-T} = -\/1}\label{class_logger_a7d7bfc072f31d89d47f0b66159d5e385}
 
-\item 
-\hypertarget{class_logger_add9d10860e1347360209a2f2b4a90a9a}{const {\bfseries A\-L\-W\-A\-Y\-S} = 0}\label{class_logger_add9d10860e1347360209a2f2b4a90a9a}
 
-\item 
-\hypertarget{class_logger_a7c7cc48e943eaf5fdfac82539bdb7ea7}{const {\bfseries D\-E\-B\-U\-G} = 1}\label{class_logger_a7c7cc48e943eaf5fdfac82539bdb7ea7}
+\subsection{Detailed Description}
+This class manages the logging of watena.
 
-\item 
-\hypertarget{class_logger_a3b8292b16f7a7c154f9a8fba73be77bb}{const {\bfseries I\-N\-F\-O} = 2}\label{class_logger_a3b8292b16f7a7c154f9a8fba73be77bb}
-
-\item 
-\hypertarget{class_logger_a2b8319ace5692281cc34a1b5d6dcc771}{const {\bfseries E\-X\-C\-E\-P\-T\-I\-O\-N} = 3}\label{class_logger_a2b8319ace5692281cc34a1b5d6dcc771}
-
-\item 
-\hypertarget{class_logger_ad3aeb7e34220e61e1b00a84db7655c30}{const {\bfseries W\-A\-R\-N\-I\-N\-G} = 4}\label{class_logger_ad3aeb7e34220e61e1b00a84db7655c30}
-
-\item 
-\hypertarget{class_logger_aa34a753ba42f06c914708eca2098e235}{const {\bfseries E\-R\-R\-O\-R} = 5}\label{class_logger_aa34a753ba42f06c914708eca2098e235}
-
-\item 
-\hypertarget{class_logger_a338704427ea36e3d8499d65aa09b951e}{const {\bfseries T\-E\-R\-M\-I\-N\-A\-T\-E} = 6}\label{class_logger_a338704427ea36e3d8499d65aa09b951e}
-
-\item 
-\hypertarget{class_logger_a6700e6d77288e3695320b4078e304b6f}{const {\bfseries N\-O\-N\-E} = 7}\label{class_logger_a6700e6d77288e3695320b4078e304b6f}
-
-\item 
-\hypertarget{class_logger_ace35692bcef5bca786f7ad6111bf0d0d}{const {\bfseries G\-E\-N\-E\-R\-I\-C\-\_\-\-I\-D\-E\-N\-T\-I\-F\-I\-E\-R} = 'G\-L\-O\-B\-A\-L'}\label{class_logger_ace35692bcef5bca786f7ad6111bf0d0d}
-
-\end{DoxyCompactItemize}
+\begin{DoxyAuthor}{Author}
+Jelle Voet 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+0.\-1.\-0 
+\end{DoxyVersion}
 
 
 \subsection{Member Function Documentation}
@@ -171,10 +149,10 @@ int
 {}
 \end{DoxyParamCaption}
 )\hspace{0.3cm}{\ttfamily [final]}}}\label{class_logger_a71d1988b4a05424766640f00cc0c5ec4}
-Get the optional \hyperlink{interface_i_log_filter}{I\-Log\-Filter} object or null when none is set.
+Get the optional I\-Log\-Filter object or null when none is set.
 
 \begin{DoxyReturn}{Returns}
-\hyperlink{interface_i_log_filter}{I\-Log\-Filter} $|$ null 
+I\-Log\-Filter $|$ null 
 \end{DoxyReturn}
 \hypertarget{class_logger_aaffe36d440a09bceb9f27f7667fd7625}{\index{Logger@{Logger}!get\-Filter\-Level@{get\-Filter\-Level}}
 \index{get\-Filter\-Level@{get\-Filter\-Level}!Logger@{Logger}}
@@ -329,7 +307,7 @@ int & {\em \$n\-Line} & \\
 \item[{Exception}]{\$o\-Exception}
 \end{DoxyParamCaption}
 )\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [final]}}}\label{class_logger_ab6ff3cbd5cae35325708da45422f9ddb}
-P\-H\-P exception catcher. This function will try to redirect the exception to its rightfull owner/logger, and will try to create a log entry for the provided data. The log-\/creation/-\/processing will be done in all registered \hyperlink{interface_i_log_processor}{I\-Log\-Processor}'s. Make sure nothing can go wrong in those, as otherwise the behaviour is undefined.
+P\-H\-P exception catcher. This function will try to redirect the exception to its rightfull owner/logger, and will try to create a log entry for the provided data. The log-\/creation/-\/processing will be done in all registered I\-Log\-Processor's. Make sure nothing can go wrong in those, as otherwise the behaviour is undefined.
 
 
 \begin{DoxyParams}[1]{Parameters}
@@ -340,14 +318,14 @@ Exception & {\em \$o\-Exception} & \\
 \index{register\-Processor@{register\-Processor}!Logger@{Logger}}
 \subsubsection[{register\-Processor}]{\setlength{\rightskip}{0pt plus 5cm}static Logger\-::register\-Processor (
 \begin{DoxyParamCaption}
-\item[{{\bf I\-Log\-Processor}}]{\$o\-Processor}
+\item[{I\-Log\-Processor}]{\$o\-Processor}
 \end{DoxyParamCaption}
 )\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [final]}}}\label{class_logger_a67f68a274b78033665beb7e42c3367ad}
-Register a given \hyperlink{interface_i_log_processor}{I\-Log\-Processor}. These will process and dispatch all received logger messages.
+Register a given I\-Log\-Processor. These will process and dispatch all received logger messages.
 
 
 \begin{DoxyParams}[1]{Parameters}
-\hyperlink{interface_i_log_processor}{I\-Log\-Processor} & {\em \$o\-Processor} & \\
+I\-Log\-Processor & {\em \$o\-Processor} & \\
 \hline
 \end{DoxyParams}
 \hypertarget{class_logger_a7af0235d7605c027e8fc05014c5e8a02}{\index{Logger@{Logger}!set\-Default\-Filter\-Level@{set\-Default\-Filter\-Level}}
@@ -368,7 +346,7 @@ mixed & {\em \$m\-Level} & \\
 \index{set\-Filter@{set\-Filter}!Logger@{Logger}}
 \subsubsection[{set\-Filter}]{\setlength{\rightskip}{0pt plus 5cm}Logger\-::set\-Filter (
 \begin{DoxyParamCaption}
-\item[{{\bf I\-Log\-Filter}}]{\$o\-Filter}
+\item[{I\-Log\-Filter}]{\$o\-Filter}
 \end{DoxyParamCaption}
 )\hspace{0.3cm}{\ttfamily [final]}}}\label{class_logger_a54e5e4ead59460c6345d38ed4385e3fc}
 Set an optional filter (object implementing I\-L\-Og\-Filter) to verify and adapt log messages and calls. It to provides the means to change the data before being logged, thus enabling external log-\/control.
@@ -377,7 +355,7 @@ Only one filter for each logger can be active at any given time. If during the f
 
 
 \begin{DoxyParams}[1]{Parameters}
-\hyperlink{interface_i_log_filter}{I\-Log\-Filter} & {\em \$o\-Filter} & \\
+I\-Log\-Filter & {\em \$o\-Filter} & \\
 \hline
 \end{DoxyParams}
 \hypertarget{class_logger_ad960882fc5dd94fe18c9d0417c3985f2}{\index{Logger@{Logger}!set\-Filter\-Level@{set\-Filter\-Level}}
@@ -432,4 +410,4 @@ array & {\em \$a\-Data} & \\
 
 The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
 \item 
-D\-:/www/watena/base/system/static.\-logger.\-php\end{DoxyCompactItemize}
+static.\-logger.\-php\end{DoxyCompactItemize}
