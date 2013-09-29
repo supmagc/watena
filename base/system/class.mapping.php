@@ -9,7 +9,7 @@ class Mapping extends Object {
 		$this->m_aData = $aData;
 	}
 	
-	public function Mathes(Filter $oFilter) {
+	public function Matches(Filter $oFilter) {
 		foreach($oFilter->getRules() as $oRule) {
 			$mVariable = array_value($this->m_aData, $oRule->getVariable());
 			switch($oRule->getCondition()) {
