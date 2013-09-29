@@ -16,7 +16,7 @@ abstract class View extends CacheableData {
 		return $this->m_sContentType ? $this->m_sContentType : $this->getConfig('content-type', 'text/plain');
 	}
 	
-	protected final function headerContentType($sContentType = null, $sCharset = null) {
+	protected final function setContentType($sContentType = null, $sCharset = null) {
 		$this->m_sCharset = $sCharset;
 		$this->m_sContentType = $sContentType;
 		return $this->header(sprintf('Content-Type: %s;charset=%s', $this->getContentType(), $this->getCharset()), true);

@@ -16,7 +16,7 @@ class AdminMainModel extends HtmlModel {
 	public function getAjax() {
 		$oRequest = new AJAX_Request('requestContent');
 		$oRequest->setCallback('getContent');
-		$oRequest->setUrl(new Mapping('/admin/ajax'));
+		$oRequest->setUrl('/admin/ajax');
 		$oAjax = new AJAX_Client('file');
 		$oAjax->registerRequest($oRequest);
 		return $oAjax->getOutput();

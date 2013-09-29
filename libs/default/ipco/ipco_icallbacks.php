@@ -3,7 +3,7 @@
 interface IPCO_ICallbacks {
 	
 	public function getFilePathForTemplate($sTemplate);
-	public function getTemplateForFilePath($sFilePath);
+	public function getTemplateClassForFilePath($sFilePath);
 }
 
 ?>

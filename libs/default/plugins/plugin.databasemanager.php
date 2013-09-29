@@ -1,5 +1,5 @@
 <?php
-require_includeonce(dirname(__FILE__) . '/../dbman/dbman.php');
+require_includeonce(dirname(__FILE__) . '/../dbmanager/dbmanager.php');
 
 class DatabaseManager extends Plugin {
 

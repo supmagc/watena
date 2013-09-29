@@ -15,6 +15,7 @@ var searchData=
   ['getcontent',['GetContent',['../class_t_m_x___ajax_page.html#ac98232f9db9c62594da2ababa6920edb',1,'TMX_AjaxPage']]],
   ['getcurrenturl',['getCurrentUrl',['../class_base_facebook.html#a5746a277eddefc701ad5308285252465',1,'BaseFacebook']]],
   ['getdefaultfilterlevel',['getDefaultFilterLevel',['../class_logger.html#a3af4a199ee9ff77080b287d445fd7258',1,'Logger']]],
+  ['getfilepathfortemplate',['getFilePathForTemplate',['../class_template_file.html#a9b8d7aa0b8464b97897333ec08931aea',1,'TemplateFile']]],
   ['getfileuploadsupport',['getFileUploadSupport',['../class_base_facebook.html#a339321887bccd3b1ebc79c433ed97409',1,'BaseFacebook']]],
   ['getfilter',['getFilter',['../class_logger.html#a71d1988b4a05424766640f00cc0c5ec4',1,'Logger']]],
   ['getfilterlevel',['getFilterLevel',['../class_logger.html#aaffe36d440a09bceb9f27f7667fd7625',1,'Logger']]],
@@ -36,6 +37,7 @@ var searchData=
   ['getresult',['getResult',['../class_facebook_api_exception.html#ac6376ad18e5695a4ff443d4b6832f5f1',1,'FacebookApiException']]],
   ['getsignedrequest',['getSignedRequest',['../class_base_facebook.html#adf3c753e09842db169309daf8713d17a',1,'BaseFacebook']]],
   ['getsignedrequestcookiename',['getSignedRequestCookieName',['../class_base_facebook.html#a67b1b4b1b2337a342ed03aa0a8f91ec5',1,'BaseFacebook']]],
+  ['gettemplateclassforfilepath',['getTemplateClassForFilePath',['../class_template_file.html#a1d9196fa579b962fb725833326d4fa28',1,'TemplateFile']]],
   ['gettemplateclassname',['getTemplateClassName',['../class_i_p_c_o.html#ae0e86b06b253b50ff01d37f9c190f046',1,'IPCO']]],
   ['gettext',['getText',['../classhtml2text.html#a160a9753434e61b3ff460860ca820c6d',1,'html2text']]],
   ['gettype',['getType',['../class_facebook_api_exception.html#a6b119e3ab23ac69f3f51ee90aee6e688',1,'FacebookApiException']]],
@@ -43,5 +45,6 @@ var searchData=
   ['getuser',['getUser',['../class_base_facebook.html#a8a3ed9483d09400ec486232401189cba',1,'BaseFacebook']]],
   ['getuseraccesstoken',['getUserAccessToken',['../class_base_facebook.html#afe9aab209768e4d4cc4c959f4dff4310',1,'BaseFacebook']]],
   ['getuserfromaccesstoken',['getUserFromAccessToken',['../class_base_facebook.html#ac67c523b16b29ab94354fd518b4daf06',1,'BaseFacebook']]],
-  ['getuserfromavailabledata',['getUserFromAvailableData',['../class_base_facebook.html#ad3dbf5723aa966c9618d1d109526dc4b',1,'BaseFacebook']]]
+  ['getuserfromavailabledata',['getUserFromAvailableData',['../class_base_facebook.html#ad3dbf5723aa966c9618d1d109526dc4b',1,'BaseFacebook']]],
+  ['getversion',['getVersion',['../class_template_loader.html#addcf3877964626b7166e2bb9f538bac6',1,'TemplateLoader']]]
 ];
