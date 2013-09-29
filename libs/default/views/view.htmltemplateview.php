@@ -42,7 +42,7 @@ class HtmlTemplateView extends View implements IPCO_IContentParser {
 	);
 	
 	public function headers(Model $oModel = null) {
-		$this->headerContentType(is_a($oModel, 'HtmlModel') ? $oModel->getContentType() : 'text/html', is_a($oModel, 'HtmlModel') ? $oModel->getCharset() : Encoding::charset());
+		$this->setContentType(is_a($oModel, 'HtmlModel') ? $oModel->getContentType() : 'text/html', is_a($oModel, 'HtmlModel') ? $oModel->getCharset() : Encoding::charset());
 	}
 	
 	public function render(Model $oModel = null) {
@@ -55,7 +55,7 @@ class HtmlTemplateView extends View implements IPCO_IContentParser {
 	
 	public function addMappingRoot($sElement, $sAttribute, $sValue) {
 		// TODO: discover files !!
-		return parent::getWatena()->getMapping()->getRoot() . $sValue;
+		return Request::root() . $sValue;
 	}
 	
 	public function addHead() {

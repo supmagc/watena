@@ -28,26 +28,6 @@ class WatenaLoader {
 		if(!defined('PATH_DATA')) define('PATH_DATA', realpath(dirname(__FILE__) . '/../data'));
 		if(!defined('PATH_LIBS')) define('PATH_LIBS', realpath(dirname(__FILE__) . '/../libs'));
 		if(!defined('PATH_ROOT')) define('PATH_ROOT', realpath(dirname(__FILE__) . '/..'));
-	}
-
-	/**
-	 * Load the system.
-	 * 
-	 * The following defines may impact the behaviour:
-	 * - NSESSION = Disable the session guard. 
-	 * - NLOGGER = Disable the default loggers.
-	 * - NWATENA = Disable the creation of the main Watena-instance.
-	 * 
-	 * @return Watena The main Watena-instance of null when NWATENA is defined.
-	 */
-	public static function load() {
-		if(!PATH_BASE || !PATH_DATA || !PATH_LIBS || !PATH_ROOT) {
-			die('Not all path-constants are defined.');
-		}
-		
-		if(function_exists('__autoload')) {
-			die('You are not allowed to define __autoload(); since a part of the framework depends on it.');
-		}
 
 		require_once PATH_BASE . '/system/global.common.php';
 		require_once PATH_BASE . '/system/global.requirements.php';
@@ -96,6 +76,26 @@ class WatenaLoader {
 		require_once PATH_BASE . '/system/class.iniparser.php';
 		require_once PATH_BASE . '/system/class.mail.php';
 		require_once PATH_BASE . '/system/class.html2text.php';
+	}
+
+	/**
+	 * Load the system.
+	 * 
+	 * The following defines may impact the behaviour:
+	 * - NSESSION = Disable the session guard. 
+	 * - NLOGGER = Disable the default loggers.
+	 * - NWATENA = Disable the creation of the main Watena-instance.
+	 * 
+	 * @return Watena The main Watena-instance of null when NWATENA is defined.
+	 */
+	public static function load() {
+		if(!PATH_BASE || !PATH_DATA || !PATH_LIBS || !PATH_ROOT) {
+			die('Not all path-constants are defined.');
+		}
+		
+		if(function_exists('__autoload')) {
+			die('You are not allowed to define __autoload(); since a part of the framework depends on it.');
+		}
 				
 		// Get configuration object
 		$oConf = self::getConfig();
@@ -103,7 +103,6 @@ class WatenaLoader {
 		if(!defined('NSESSION')) {
 			define('SESSION', true);
 			session_start();
-			// TODO: use the session-guard
 		}
 		
 		if(!defined('NLOGGER')) {
@@ -115,7 +114,7 @@ class WatenaLoader {
 		if(!defined('NWATENA')) {
 			define('WATENA', true);
 			function watena() {return Watena::getWatena();}
-			 return new Watena($oConf, !defined('NMVC'));
+			return new Watena($oConf, !defined('NMVC'));
 		}
 		else {
 			return null;

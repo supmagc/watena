@@ -1,33 +1,164 @@
 \hypertarget{class_template_file}{\section{Template\-File Class Reference}
 \label{class_template_file}\index{Template\-File@{Template\-File}}
 }
-Inheritance diagram for Template\-File\-:\begin{figure}[H]
-\begin{center}
-\leavevmode
-\includegraphics[height=4.000000cm]{class_template_file}
-\end{center}
-\end{figure}
+
+
+Inherits Cacheable\-File, and I\-P\-C\-O\-\_\-\-I\-Callbacks.
+
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\hypertarget{class_template_file_aa36f590b760493569c9c9349915ba6a2}{{\bfseries make} (array \$a\-Members)}\label{class_template_file_aa36f590b760493569c9c9349915ba6a2}
-
+\hyperlink{class_template_file_aa36f590b760493569c9c9349915ba6a2}{make} (array \$a\-Members)
 \item 
-\hypertarget{class_template_file_a478b5bc21a13b8557a981ba723af8f33}{{\bfseries init} ()}\label{class_template_file_a478b5bc21a13b8557a981ba723af8f33}
-
+\hyperlink{class_template_file_ab7ea2154b976b6d4eee1b59254cfc171}{validate} ()
 \item 
-\hypertarget{class_template_file_a9b8d7aa0b8464b97897333ec08931aea}{{\bfseries get\-File\-Path\-For\-Template} (\$s\-Template)}\label{class_template_file_a9b8d7aa0b8464b97897333ec08931aea}
-
+\hyperlink{class_template_file_a478b5bc21a13b8557a981ba723af8f33}{init} ()
 \item 
-\hypertarget{class_template_file_ad367c5f03c60d95d48c531c5e9ea858b}{{\bfseries get\-Template\-For\-File\-Path} (\$s\-File\-Path)}\label{class_template_file_ad367c5f03c60d95d48c531c5e9ea858b}
-
+\hyperlink{class_template_file_a9b8d7aa0b8464b97897333ec08931aea}{get\-File\-Path\-For\-Template} (\$s\-Template)
 \item 
-\hypertarget{class_template_file_ad6ded534b21256f5c40f02d19504bcaf}{{\bfseries create\-Template\-Class} ()}\label{class_template_file_ad6ded534b21256f5c40f02d19504bcaf}
-
+\hyperlink{class_template_file_a1d9196fa579b962fb725833326d4fa28}{get\-Template\-Class\-For\-File\-Path} (\$s\-File\-Path)
+\item 
+\hyperlink{class_template_file_ad6ded534b21256f5c40f02d19504bcaf}{create\-Template\-Class} ()
 \end{DoxyCompactItemize}
-\subsection*{Additional Inherited Members}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \hyperlink{class_template_file_ad40fa812d27ae5ee64c2ae49dc98f10d}{create\-Template\-File} (\$s\-Template, I\-P\-C\-O\-\_\-\-I\-Content\-Parser \$o\-Content\-Parser)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Helper class of the \hyperlink{class_template_loader}{Template\-Loader} plugin.
+
+This class handles the caching of the \hyperlink{class_i_p_c_o}{I\-P\-C\-O} output.
+
+\begin{DoxyAuthor}{Author}
+Jelle Voet 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+0.\-2.\-0 
+\end{DoxyVersion}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_template_file_ad6ded534b21256f5c40f02d19504bcaf}{\index{Template\-File@{Template\-File}!create\-Template\-Class@{create\-Template\-Class}}
+\index{create\-Template\-Class@{create\-Template\-Class}!TemplateFile@{Template\-File}}
+\subsubsection[{create\-Template\-Class}]{\setlength{\rightskip}{0pt plus 5cm}Template\-File\-::create\-Template\-Class (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_template_file_ad6ded534b21256f5c40f02d19504bcaf}
+Create the template-\/instance for this \hyperlink{class_template_file}{Template\-File}.
+
+\begin{DoxyReturn}{Returns}
+I\-P\-C\-O\-\_\-\-Processor 
+\end{DoxyReturn}
+\hypertarget{class_template_file_ad40fa812d27ae5ee64c2ae49dc98f10d}{\index{Template\-File@{Template\-File}!create\-Template\-File@{create\-Template\-File}}
+\index{create\-Template\-File@{create\-Template\-File}!TemplateFile@{Template\-File}}
+\subsubsection[{create\-Template\-File}]{\setlength{\rightskip}{0pt plus 5cm}static Template\-File\-::create\-Template\-File (
+\begin{DoxyParamCaption}
+\item[{}]{\$s\-Template, }
+\item[{I\-P\-C\-O\-\_\-\-I\-Content\-Parser}]{\$o\-Content\-Parser}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{class_template_file_ad40fa812d27ae5ee64c2ae49dc98f10d}
+Create a new, or load an existing \hyperlink{class_template_file}{Template\-File} instance. This is more hany version of the Template\-File\-::create().
+
+\begin{DoxySeeAlso}{See Also}
+Cacheable\-File\-::create() 
+\end{DoxySeeAlso}
+
+\begin{DoxyParams}[1]{Parameters}
+string & {\em \$s\-Template} & The name of the template which we will load. \\
+\hline
+I\-P\-C\-O\-\_\-\-I\-Content\-Parser & {\em \$o\-Content\-Parser} & The optional parser for additional template-\/data. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\hyperlink{class_template_file}{Template\-File} The loaded \hyperlink{class_template_file}{Template\-File} if \$s\-Template points to a valid filepath, or null. 
+\end{DoxyReturn}
+\hypertarget{class_template_file_a9b8d7aa0b8464b97897333ec08931aea}{\index{Template\-File@{Template\-File}!get\-File\-Path\-For\-Template@{get\-File\-Path\-For\-Template}}
+\index{get\-File\-Path\-For\-Template@{get\-File\-Path\-For\-Template}!TemplateFile@{Template\-File}}
+\subsubsection[{get\-File\-Path\-For\-Template}]{\setlength{\rightskip}{0pt plus 5cm}Template\-File\-::get\-File\-Path\-For\-Template (
+\begin{DoxyParamCaption}
+\item[{}]{\$s\-Template}
+\end{DoxyParamCaption}
+)}}\label{class_template_file_a9b8d7aa0b8464b97897333ec08931aea}
+Get the actual local filepath matching the given template-\/name.
+
+\begin{DoxySeeAlso}{See Also}
+I\-P\-C\-O\-\_\-\-I\-Callbacks\-::get\-File\-Path\-For\-Template() 
+\end{DoxySeeAlso}
+
+\begin{DoxyParams}[1]{Parameters}
+string & {\em \$s\-Template} & The template for which you want the filepath. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+string The filepath for the given template or false. 
+\end{DoxyReturn}
+\hypertarget{class_template_file_a1d9196fa579b962fb725833326d4fa28}{\index{Template\-File@{Template\-File}!get\-Template\-Class\-For\-File\-Path@{get\-Template\-Class\-For\-File\-Path}}
+\index{get\-Template\-Class\-For\-File\-Path@{get\-Template\-Class\-For\-File\-Path}!TemplateFile@{Template\-File}}
+\subsubsection[{get\-Template\-Class\-For\-File\-Path}]{\setlength{\rightskip}{0pt plus 5cm}Template\-File\-::get\-Template\-Class\-For\-File\-Path (
+\begin{DoxyParamCaption}
+\item[{}]{\$s\-File\-Path}
+\end{DoxyParamCaption}
+)}}\label{class_template_file_a1d9196fa579b962fb725833326d4fa28}
+The the template instance for the given filepath.
+
+\begin{DoxySeeAlso}{See Also}
+I\-P\-C\-O\-\_\-\-I\-Callbacks\-::get\-Template\-Class\-For\-File\-Path() 
+\end{DoxySeeAlso}
+
+\begin{DoxyParams}[1]{Parameters}
+string & {\em \$s\-File\-Path} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+I\-P\-C\-O\-\_\-\-Processor 
+\end{DoxyReturn}
+\hypertarget{class_template_file_a478b5bc21a13b8557a981ba723af8f33}{\index{Template\-File@{Template\-File}!init@{init}}
+\index{init@{init}!TemplateFile@{Template\-File}}
+\subsubsection[{init}]{\setlength{\rightskip}{0pt plus 5cm}Template\-File\-::init (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_template_file_a478b5bc21a13b8557a981ba723af8f33}
+Init the template by including it's class from the datafile.
+
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{class_cacheable_a3bda7dd0df982212ce5817b5a30f2284}{Cacheable\-::init()} 
+\end{DoxySeeAlso}
+\hypertarget{class_template_file_aa36f590b760493569c9c9349915ba6a2}{\index{Template\-File@{Template\-File}!make@{make}}
+\index{make@{make}!TemplateFile@{Template\-File}}
+\subsubsection[{make}]{\setlength{\rightskip}{0pt plus 5cm}Template\-File\-::make (
+\begin{DoxyParamCaption}
+\item[{array}]{\$a\-Members}
+\end{DoxyParamCaption}
+)}}\label{class_template_file_aa36f590b760493569c9c9349915ba6a2}
+Make the \hyperlink{class_template_file}{Template\-File} object. This will create an \hyperlink{class_i_p_c_o}{I\-P\-C\-O} parser, feed ot the content of the Cacheable\-File, and save the \hyperlink{class_i_p_c_o}{I\-P\-C\-O} output to a datafile that can be included. Additionally it will also keep a copy of the excat classname and parent class if any.
+
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{class_cacheable_a1443eacff201d0317e4481cda75eb44b}{Cacheable\-::make()} 
+\end{DoxySeeAlso}
+
+\begin{DoxyParams}[1]{Parameters}
+array & {\em \$a\-Members} & \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_template_file_ab7ea2154b976b6d4eee1b59254cfc171}{\index{Template\-File@{Template\-File}!validate@{validate}}
+\index{validate@{validate}!TemplateFile@{Template\-File}}
+\subsubsection[{validate}]{\setlength{\rightskip}{0pt plus 5cm}Template\-File\-::validate (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_template_file_ab7ea2154b976b6d4eee1b59254cfc171}
+Validates the saved datafile with the \hyperlink{class_i_p_c_o}{I\-P\-C\-O} output. If none such file exists anymore, the file needs to be recompiled.
+
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{class_cacheable_ab70b135c0d4c3c3db6be09057ec7e361}{Cacheable\-::validate()} 
+\end{DoxySeeAlso}
 
 
 The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
 \item 
-D\-:/www/watena/libs/default/plugins/plugin.\-templateloader.\-php\end{DoxyCompactItemize}
+plugin.\-templateloader.\-php\end{DoxyCompactItemize}

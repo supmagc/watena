@@ -73,68 +73,21 @@ class AdminLoader extends Plugin {
 	}
 	
 	private function parseModuleFile($sFilePath) {
-		$oXml = new XMLReader();
-		$oXml->open($sFilePath);
-		while($oXml->read()) {
-			if($oXml->nodeType == XMLReader::ELEMENT && $oXml->name == 'menu') {
-				$this->m_aMenus []= $this->parseXmlMenu($oXml);
+		$oXml = new SimpleXMLElement($sFilePath, null, true);
+		foreach($oXml->menu as $oXmlMenu) {
+			$sName = '' . $oXmlMenu['name'];
+			$sCategory = '' . $oXmlMenu->category;
+			$sDefaultTab = '' . $oXmlMenu->defaulttab;
+			$sDescription = '' . $oXmlMenu->description;
+			$oMenu = new AdminMenu($sName, $sCategory, $sDescription, $sDefaultTab);
+			foreach($oXmlMenu->tab as $oXmlTab) {
+				$sTabName = '' . $oXmlTab['name'];
+				$sTabDescription = '' . $oXmlTab->description;
+				$sTabContent = '' . $oXmlTab->content;
+				$sTabContentType = !empty($sTabContent) ? ('' . $oXmlTab->content['type']) : '';
+				$oMenu->addTab(new AdminTab($sTabName, $sTabDescription, $sTabContentType, $sTabContent));
 			}
-		}
-	}
-	
-	private function parseXmlMenu(XMLReader $oReader) {
-		$sDescription = null;
-		$sDefaultTab = null;
-		$sCategory = null;
-		$sName = null;
-		$aTabs = array();
-		if($oReader->moveToAttribute('name')) {
-			$sName = $oReader->value;
-		}
-		while($oReader->read()) {
-			if($oReader->nodeType == XMLReader::ELEMENT) {
-				if($oReader->name == 'description' && $oReader->read()) {
-					$sDescription = $oReader->value;
-				}
-				else if($oReader->name == 'defaulttab' && $oReader->read()) {
-					$sDefaultTab = $oReader->value;
-				}
-				else if($oReader->name == 'category' && $oReader->read()) {
-					$sCategory = $oReader->value;
-				}
-				if($oReader->name == 'tab') {
-					$aTabs []= $this->parseXmlTab($oReader);
-				}
-			}
-			else if($oReader->nodeType == XMLReader::END_ELEMENT && $oReader->name == 'menu') {
-				return new AdminMenu($sName, $sCategory, $sDescription, $sDefaultTab, $aTabs);
-			}
-		}
-	}
-	
-	private function parseXmlTab(XMLReader $oReader) {
-		$sDescription = null;
-		$sContent = null;
-		$sType = null;
-		$sName = null;
-		if($oReader->moveToAttribute('name')) {
-			$sName = $oReader->value;
-		}
-		while($oReader->read()) {
-			if($oReader->nodeType == XMLReader::ELEMENT) {
-				if($oReader->name == 'description' && $oReader->read()) {
-					$sDescription = $oReader->value;
-				}
-				else if($oReader->name == 'content' && $oReader->moveToAttribute('type')) {
-					$sType = $oReader->name;
-					if($oReader->read()) {
-						$sContent = $oReader->value;
-					}
-				}
-			}
-			else if($oReader->nodeType == XMLReader::END_ELEMENT && $oReader->name == 'tab') {
-				return new AdminTab($sName, $sDescription, $sType, $sContent);
-			}
+			$this->m_aMenus []= $oMenu;
 		}
 	}
 	

@@ -66,7 +66,7 @@ abstract class IPCO_Processor extends IPCO_Base {
 	}
 	
 	protected final function callInclude($sFilePath) {
-		$oTemplate = $this->getIpco()->getCallbacks()->getTemplateForFilePath($sFilePath);
+		$oTemplate = $this->getIpco()->getCallbacks()->getTemplateClassForFilePath($sFilePath);
 		$oTemplate->m_aComponents = $this->m_aComponents;
 		$oTemplate->m_aIndices = $this->m_aIndices;
 		$oTemplate->m_aVars = $this->m_aVars;

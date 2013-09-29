@@ -61,7 +61,7 @@ class HtmlModel extends Model {
 	}
 	
 	public function getTitle() {
-		return $this->m_sTitle ?: $this->getConfig('title', $this->getWatena()->getMapping()->getHost());
+		return $this->m_sTitle ?: $this->getConfig('title', Request::host());
 	}
 	
 	public function setContentType($sContentType) {

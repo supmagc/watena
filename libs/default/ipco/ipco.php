@@ -15,6 +15,10 @@ require_once dirname(__FILE__) . '/ipco_componentwrapper.php';
 /**
  * Inline php compilator.
  * 
+ * This library takes a template file, parses it, and returns valid and optimised php code.
+ * Choosing to recompile a file, saving the result, or re-using a previous version is not included.
+ * Thus you need to make your own wrapper to handle the caching of the IPCO output.
+ * 
  * @author Jelle Voet
  * @version 0.1.0 Beta
  */
@@ -44,10 +48,6 @@ class IPCO {
 			throw new IPCO_Exception(IPCO_Exception::INVALID_FILE);
 		$sContent = file_get_contents($sFilePath);
 		return $this->createParserFromContent($sFilePath, $sContent, $this);
-	}
-	
-	public function getTemplateForTemplate($sTemplate) {
-		return $this->getTemplateForFilePath($this->getFilePathForTemplate($sTemplate));
 	}
 	
 	public function getContentParser() {
