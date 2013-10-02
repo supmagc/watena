@@ -14,7 +14,7 @@ class Request {
 		'useragent' => 'watena',
 		'http' => true,
 		'https' => false,
-		'protocol' => 'http',
+		'scheme' => 'http',
 		'user' => '',
 		'password' => '',
 		'host_http' => 'localhost',
@@ -49,7 +49,7 @@ class Request {
 		if(!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') {
 			self::$s_aData['http'] = false;
 			self::$s_aData['https'] = true;
-			self::$s_aData['protocol'] = 'https';
+			self::$s_aData['scheme'] = 'https';
 			self::$s_aData['port'] = 443;
 		}
 		
@@ -98,7 +98,7 @@ class Request {
 			self::$s_aData['method'] = Encoding::toUpper($_SERVER['REQUEST_METHOD']);
 		}
 		
-		$sBuilder = self::$s_aData['protocol'] . '://' . self::$s_aData['host_http'];
+		$sBuilder = self::$s_aData['scheme'] . '://' . self::$s_aData['host_http'];
 		if(self::$s_aData['https']) {
 			if(self::$s_aData['port'] != 443)
 				$sBuilder .= ':' . self::$s_aData['port'];
@@ -126,7 +126,7 @@ class Request {
 	 * the behaviour of Request::protocol() and Request::port().
 	 * 
 	 * @see Request::isHttps()
-	 * @see Request::protocol()
+	 * @see Request::scheme()
 	 * @see Request::port()
 	 * @return boolean Indicates if the current request is not using https. (default: true)
 	 */
@@ -141,7 +141,7 @@ class Request {
 	 * the behaviour of Request::protocol() and Request::port().
 	 * 
 	 * @see Request::isHttps()
-	 * @see Request::protocol()
+	 * @see Request::scheme()
 	 * @see Request::port()
 	 * @return boolean Indicates of the current request is using https. (default: false)
 	 */
@@ -158,8 +158,8 @@ class Request {
 	 * @see Request::isHttps()
 	 * @return string Return value should be 'http' or 'https'. (default: 'http')
 	 */
-	public final static function protocol() {
-		return self::$s_aData['protocol'];
+	public final static function scheme() {
+		return self::$s_aData['scheme'];
 	}
 
 	/**
@@ -376,6 +376,20 @@ class Request {
 	 */
 	public final static function detail() {
 		return self::$s_aData['detail'];
+	}
+	
+	/**
+	 * Make a local url instance using the same 'root' portion as the current request.
+	 * 
+	 * @see Request::root()
+	 * @param string $sPath
+	 * @param array $aGet
+	 * @return Url
+	 */
+	public final static function make($sPath, array $aGet = array()) {
+		$oUrl = new Url(self::root() . $sPath);
+		$oUrl->addParameters($aGet);
+		return $oUrl;
 	}
 }
 

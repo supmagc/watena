@@ -25,18 +25,18 @@ class RequestTest extends Test {
 
 	public function testIsHttp() {
 		if('http' == $this->m_sProtocol && $this->assertTrue(Request::isHttp())) {
-			$this->assertEquals('http', Request::protocol());
+			$this->assertEquals('http', Request::scheme());
 		}
 	}
 	
 	public function testIsHttps() {
 		if('https' == $this->m_sProtocol && $this->assertTrue(Request::isHttps())) {
-			$this->assertEquals('https', Request::protocol());
+			$this->assertEquals('https', Request::scheme());
 		}
 	}
 	
 	public function testProtocol() {
-		$this->assertEquals($this->m_sProtocol, Request::protocol());
+		$this->assertEquals($this->m_sProtocol, Request::scheme());
 	}
 	
 	public function testHost() {
