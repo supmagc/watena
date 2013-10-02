@@ -10,8 +10,7 @@ class AJAX_Client {
 	
 	private $m_aRequests = array();
 	private $m_sPrefix = 'TMX';
-	private $m_sJSFile = 'TMX.js';
-	private $m_bProcessed = false;
+	private $m_sJavascriptLink = 'TMX.js';
 	
 	/**
 	 * Create a new client instance
@@ -19,15 +18,15 @@ class AJAX_Client {
 	 * @param string $sJSFile tha file with all the TMX-javascript code
 	 * @param string $sPrefix the prefix that will be used on the JS-funcrions
 	 */
-	public function __construct($sJSFile, $sPrefix = 'TMX') {
+	public function __construct($sJavascriptLink, $sPrefix = 'TMX') {
 		$this->m_sPrefix = $sPrefix;
-		$this->m_sJSFile = $sJSFile;
+		$this->m_sJavascriptLink = $sJavascriptLink;
 	}
 	
 	/**
 	 * Register a new request
 	 *
-	 * @param TMX_Request $oRequest
+	 * @param AJAX_Request $oRequest
 	 */
 	public function registerRequest(AJAX_Request $oRequest) {
 		if(!in_array($oRequest, $this->m_aRequests)) $this->m_aRequests []= $oRequest;
@@ -40,8 +39,19 @@ class AJAX_Client {
 	 * @return string
 	 */
 	public function getOutput() {
-		$sRet = '';
-		$sRet .= '<script language="javascript 1.8" type="text/javascript" src="'.$this->m_sJSFile.'"></script><script language="javascript 1.8" type="text/javascript">TMX_sPrefix = "'.$this->m_sPrefix.'"' . "\n";
+		$sRet = <<<EOT
+<script language="javascript 1.8" type="text/javascript"><!--
+window['ajax] = window['ajax'] || (function(doc, tag, src, ele, tar) {
+	ele = doc.createElement(tag);
+	tar = doc.getElementsByTagName(tag)[0];
+	ele.async = 1;
+	ele.src = src;
+	tar.parentNode.insertBefore(ele, tar)
+})(document, 'script', '{$this->getJavascriptLink()}');
+--></script>
+EOT;
+//		$sRet .= '<script language="javascript 1.8" type="text/javascript" src="'.$this->m_sJSFile.'"></script><script language="javascript 1.8" type="text/javascript">TMX_sPrefix = "'.$this->m_sPrefix.'"' . "\n";
+		$sRet .= '<script language="javascript 1.8" type="text/javascript"><!--';
 		foreach($this->m_aRequests as $oReq) {
 			$sRet .= $oReq->getOutput(false);
 		}

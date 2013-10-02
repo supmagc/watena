@@ -14,11 +14,14 @@ class AdminMainModel extends HtmlModel {
 	}
 	
 	public function getAjax() {
+		$sJavascriptFile = Request::make('/theme/default/js/ajax.js').toString();
+		$oAjax = new AJAX_Client($sJavascriptFile);
+		
 		$oRequest = new AJAX_Request('requestContent');
 		$oRequest->setCallback('getContent');
 		$oRequest->setUrl('/admin/ajax');
-		$oAjax = new AJAX_Client('file');
 		$oAjax->registerRequest($oRequest);
+		
 		return $oAjax->getOutput();
 	}
 }

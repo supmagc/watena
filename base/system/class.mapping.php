@@ -37,7 +37,7 @@ class Mapping extends Object {
 	public static function LoadFromRequest() {
 		return new Mapping(array(
 			'useragent' => Request::useragent(),
-			'protocol' => Request::protocol(),
+			'scheme' => Request::scheme(),
 			'host' => Request::host(),
 			'port' => Request::port(),
 			'offset' => Request::offset(),
@@ -52,6 +52,11 @@ class Mapping extends Object {
 	
 	public static function LoadFromUrl(Url $oUrl) {
 		return new Mapping(array(
+			'scheme' => $oUrl->getScheme(),
+			'host' => $oUrl->getHost(),
+			'port' => $oUrl->getPort(),
+			'path' => $oUrl->getPath(),
+			'get' => $oUrl->getParameters()
 		));
 	}
 }
