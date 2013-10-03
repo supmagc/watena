@@ -21,10 +21,9 @@
  */
 class AJAX_Request extends Object {
 	
-	private $m_sUrl = null;
-	private $m_sFunction = null;
-	private $m_sCallback = null;
-	private $m_nArgCount = 0;
+	private $m_sPath;
+	private $m_sTrigger;
+	private $m_sCallback;
 	private $m_aValues = array();
 	
 	/**
@@ -35,33 +34,21 @@ class AJAX_Request extends Object {
 	 * @param string $sJSCallback the javascript function that you can call on your html-page
 	 * @param int $nArgCount the number of arguments you can set in your javascript-/php-function
 	 */
-	public function __construct($sFunction, $nArgCount = 0) {
-		$this->m_sFunction = $sFunction;
-		$this->m_nArgCount = $nArgCount;
+	public function __construct($sPath, $sFunction) {
+		$this->m_sPath = $sPath;
+		$this->m_sTrigger = $sFunction;
+		$this->m_sCallback = $sFunction;
 	}
 	
-	public function getFunction() {
-		return $this->m_sFunction;
+	public function getPath() {
+		return $this->m_sPath;
 	}
 	
-	/**
-	 * Set a fixed url that will be called when the function is invoked.
-	 * 
-	 * @param string $sUrl
-	 */
-	public function setUrl($sUrl) {
-		$this->m_sUrl = '' . $sUrl;
+	public function getJavascriptTrigger() {
+		return $this->m_sTrigger;
 	}
 	
-	public function getUrl() {
-		return $this->m_sUrl;
-	}
-	
-	public function setCallback($sCallback) {
-		$this->m_sCallback = $sCallback;
-	}
-	
-	public function getCallback() {
+	public function getPhpCallback() {
 		return $this->m_sCallback;
 	}
 	
@@ -81,37 +68,16 @@ class AJAX_Request extends Object {
 	}
 	
 	/**
-	 * Set the number of arguments you can set for your javascript-/php-function
-	 *
-	 * @param int $nArgCount
-	 */
-	public function setArgCount($nArgCount) {
-		$this->m_nArgCount = $nArgCount;
-	}
-	
-	/**
 	 * Process this request-data
 	 *
 	 * @return string
 	 */
 	public function getOutput() {
-		$sRet = '';
-		$sRet .= 'function ' . $this->getFunction() . '(';
-		if(!$this->getUrl()) $sRet .= 'sUrl' . ($this->m_nArgCount > 0 ? ', ' : '');
-		for($i=0 ; $i<$this->m_nArgCount ; ++$i) {
-			$sRet .= "_arg$i" . (($i + 1) < $this->m_nArgCount ? ', ' : '');
-		}
-		$sRet .= ") {";
-		$sRet .= "TMX_Send(";
-		if($this->getUrl()) $sRet .= '(sUrl.length > 0 ? sUrl : "' . rawurlencode($this->getUrl()) . '")';
-		else $sRet .= '"' . rawurlencode($this->getUrl()) . '"';
-		$sRet .= ", \"" . $this->getCallback() . "\", [";
-		for($i=0 ; $i<$this->m_nArgCount ; ++$i) {
-			$sRet .= ($i > 0 ? ', ' : '') . "_arg$i";
-		}
-		$sRet .= "], \"" . rawurlencode(json_encode($this->m_aValues)) . "\");";
-		$sRet .= "}\n";
-		
+		$sRet = "function {$this->getJavascriptTrigger()}() {AJAX.send(";
+		$sRet .= "'" . rawurlencode(Request::make($this->getPath())->toString()) . "', ";
+		$sRet .= "'" . $this->getPhpCallback() . "', ";
+		$sRet .= "arguments, '" . rawurlencode(json_encode($this->m_aValues)) . "'";
+		$sRet .= ");}";
 		return $sRet;
 	}
 }
