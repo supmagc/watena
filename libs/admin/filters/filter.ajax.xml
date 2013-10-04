@@ -2,7 +2,9 @@
 <filter name="Admin Ajax" order="1001">
 	<controller name="AdminAjaxController">
 	</controller>
+	<view name="AjaxView">
+	</view>
 	<rules>
-		<rule type="mapping" variable="local">^/admin/ajax((/|\?).*)?$</rule>
+		<rule variable="path" condition="pattern">^/admin/ajax((/|\?).*)?$</rule>
 	</rules>
 </filter>
