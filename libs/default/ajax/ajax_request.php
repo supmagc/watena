@@ -73,7 +73,7 @@ class AJAX_Request extends Object {
 	 * @return string
 	 */
 	public function getOutput() {
-		$sRet = "function {$this->getJavascriptTrigger()}() {AJAX.send(";
+		$sRet = "function {$this->getJavascriptTrigger()}() {AJAX(";
 		$sRet .= "'" . rawurlencode(Request::make($this->getPath())->toString()) . "', ";
 		$sRet .= "'" . $this->getPhpCallback() . "', ";
 		$sRet .= "arguments, '" . rawurlencode(json_encode($this->m_aValues)) . "'";
