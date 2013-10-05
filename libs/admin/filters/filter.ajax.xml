@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <filter name="Admin Ajax" order="1001">
-	<controller name="AdminAjaxController">
-	</controller>
+	<model name="AjaxModel">
+	</model>
 	<view name="AjaxView">
 	</view>
+	<controller name="AjaxController">
+	</controller>
 	<rules>
 		<rule variable="path" condition="pattern">^/admin/ajax((/|\?).*)?$</rule>
 	</rules>

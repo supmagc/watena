@@ -17,8 +17,10 @@
  */
 class AJAX_Server {
 	
-	private $m_sPrefix = 'TMX';
-	private $m_oPage = null;
+	private $m_oCallbackContext;
+	private $m_sCallback;
+	private $m_aArguments = array();
+	private $m_aValues = array();
 	
 	/**
 	 * Create a new Server-class that will automatically try to process a TMX-request
@@ -26,36 +28,58 @@ class AJAX_Server {
 	 * @param bool $bAutoExit automatically call exit after dataprocessing and your TMX_AjaxPage is flushed
 	 * @param string $sPrefix
 	 */
-	public function __construct($bAutoProcessAndExit = true, $sPrefix = 'TMX') {
-		$this->m_sPrefix = $sPrefix;
-		$oResponse = null;
+	public function __construct($oCallbackContext = null) {
+		$this->m_oCallbackContext = $oCallbackContext;
 		
-		if($this->ValidRequestExists()) {
-			try {
-				$oResponse = $this->GetResponse();
-				if(!($oResponse instanceof TMX_Response)) trigger_error('No TMX_response object returned');
-			}
-			catch(Exception $e) {
-				$oResponse = TMX_Response::CreateErrorResponse(2, 'file: ' . $e->__toString() . $e->getFile() . ' [' . $e->getLine() . ']   ' .$e->getMessage());
-			}
+		if(isset($_POST['callabck'])) {
+			$this->m_sCallback = $_POST['callback'];
 		}
-		else {
-			$oResponse = TMX_Response::CreateErrorResponse(3, 'No valid TMX-data was found in the POST-value-stream.');
+		if(isset($_POST['args'])) {
+			$this->m_aArguments = json_decode($_POST['args']);
 		}
-		$this->m_oPage = new TMX_AjaxPage($oResponse);
-		
-		if($bAutoProcessAndExit) {
-			$this->Process(true);
+		if(isset($_POST['value'])) {
+			$this->m_aValues = json_decode($_POST['values']);
 		}
 	}
 	
-	/**
-	 * Retrieve the ourput-page
-	 * 
-	 * @return TMX_AjaxPage
-	 */
-	public function GetPage() {
-		return $this->m_oPage;
+	public function setCallbackContext($oCallbackContext) {
+		$this->m_oCallbackContext = $oCallbackContext;
+	}
+	
+	public function getCallbackContext() {
+		return $this->m_oCallbackContext;
+	}
+	
+	public function setCallback($sCallback) {
+		$this->m_sCallback = $sCallback;
+	}
+	
+	public function getCallback() {
+		return $this->m_sCallback;
+	}
+	
+	public function setArguments(array $aArguments) {
+		$this->m_aArguments = $aArguments;
+	}
+	
+	public function getArguments() {
+		return $this->m_aArguments;
+	}
+	
+	public function setValues(array $aValues) {
+		$this->m_aValues = $aValues;
+	}
+
+	public function setValue($sName, $mValue) {
+		$this->m_aValues[$sName] = $mValue;
+	}
+	
+	public function getValues() {
+		return $this->m_aValues;
+	}
+	
+	public function getValue($sName) {
+		return array_value($this->m_aValues, $sName, null);
 	}
 
 	/**
@@ -63,35 +87,15 @@ class AJAX_Server {
 	 * 
 	 * @param bool $bAutoExit
 	 */
-	public function Process($bAutoExit = true) {
-		$this->m_oPage->Process();
-		if($bAutoExit) exit;
-	}
-	
-	/**
-	 * Check if valid request-data exist
-	 *
-	 * @return bool
-	 */
-	private function ValidRequestExists() {
-		return 
-			isset($_POST[$this->m_sPrefix.'_PHPCallback']) &&
-			isset($_POST[$this->m_sPrefix.'_Args']) &&
-			isset($_POST[$this->m_sPrefix.'_Values']);
-	}
-	
-	/**
-	 * Retrieve a valid response from the PHPCallback function based on the request-POST-data
-	 *
-	 * @return TMX_Response
-	 */
-	private function GetResponse() {
-		$aCall = unserialize($_POST[$this->m_sPrefix.'_PHPCallback']);
-		$aArgs = json_decode($_POST[$this->m_sPrefix.'_Args'], true);		
-		$aValues = json_decode($_POST[$this->m_sPrefix.'_Values'], true);
-		$aArgs []= $aValues;
-		
-		return call_user_func_array($aCall, $aArgs);
+	public function process() {
+		if(!empty($this->m_sCallback)) {
+			if(!empty($this->m_oCallbackContext)) {
+				call_user_func_array(array($this->getCallbackContext(), $this->getCallback()), $this->getArguments());
+			}
+			else {
+				call_user_func_array($this->getCallback(), $this->getArguments());
+			}
+		}
 	}
 }
 ?>
