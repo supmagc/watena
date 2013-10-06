@@ -31,14 +31,25 @@ class AJAX_Server {
 	public function __construct($oCallbackContext = null) {
 		$this->m_oCallbackContext = $oCallbackContext;
 		
-		if(isset($_POST['callabck'])) {
+		if(isset($_POST['callback'])) {
 			$this->m_sCallback = $_POST['callback'];
 		}
+		else if(isset($_GET['callback'])) {
+			$this->m_sCallback = $_GET['callback'];
+		}
+		
 		if(isset($_POST['args'])) {
 			$this->m_aArguments = json_decode($_POST['args']);
 		}
+		else if(isset($_GET['args'])) {
+			$this->m_aArguments = json_decode($_GET['args']);
+		}
+		
 		if(isset($_POST['value'])) {
 			$this->m_aValues = json_decode($_POST['values']);
+		}
+		else if(isset($_GET['value'])) {
+			$this->m_aValues = json_decode($_GET['values']);
 		}
 	}
 	
