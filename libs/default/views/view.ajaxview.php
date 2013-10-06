@@ -1,29 +1,33 @@
 <?php
+require_plugin('ajax');
 
 class AjaxView extends View {
 	
 	public function headers(Model $oModel = null) {
-		$oModel->headers();
+		$this->setContentType('text/plain');
 	}
 	
 	public function render(Model $oModel = null) {
-		
-		if(!$oModel)
-		$this->getLogger()->error('No model/data was given.');
-		
-		if(!$this->m_sMethod)
-			$this->getLogger()->error('No method-parameter was given in the view-config.');
-					
-		if(!method_exists($oModel, $this->m_sMethod))
-			$this->getLogger()->error('Unable to find the required method "{method}" in the given Model-object.', array('method' => $this->m_sMethod));
-		
-		$sContent = json_encode(call_user_func(array($oModel, $this->m_sMethod)));
-		echo $sContent;
-		
-		$aData = array(
-			'errors' => $oModel->getErrors()
-		);
-		echo json_encode($aData);
+		try {
+			$oServer = new AJAX_Server($oModel);
+			foreach($oServer->getValues() as $sName => $mValue) {
+				$oModel->$sName = $mValue;
+			}
+			$sCallback = $oServer->getCallback();
+			
+			if(empty($sCallback)) {
+				$this->getLogger()->error('No callback defined to use for the ajax-request.');
+			}
+			else if(!method_exists($oModel, $sCallback)) {
+				$this->getLogger()->error('The defined callback \'{callback}\' is not defined within \'{model}\'.', array('callback' => $oServer->getCallback(), 'model' => $oModel));
+			}
+			else {
+				call_user_func_array(array($oModel, $sCallback), $oServer->getArguments());
+			}
+		}
+		catch(Exception $e) {
+			echo 'alert(decodeURIComponent(\''.rawurlencode($e->getMessage()).'\');';
+		}
 	}
 }
 

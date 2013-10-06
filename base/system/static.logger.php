@@ -26,6 +26,7 @@ class Logger {
 	
 	private static $s_aInstances = array();
 	private static $s_aProcessors = array();
+	private static $s_aLogCounters = array();
 	private static $s_oGenericLogger = self::GENERIC_IDENTIFIER;
 	private static $s_nDefaultFilterLevel = self::ALWAYS;
 	
@@ -214,6 +215,13 @@ class Logger {
 	 * @param array $aTrace
 	 */
 	private final function logFull($nLevel, $sFile, $nLine, $sMessage, array $aData, array $aTrace) {
+		if(!isset(self::$s_aLogCounters[$nLevel])) {
+			self::$s_aLogCounters[$nLevel] = 1;
+		}
+		else {
+			self::$s_aLogCounters[$nLevel] += 1;
+		}
+		
 		if($this->approveFilterLevel($nLevel)) {
 			$bLoggable = true;
 			if(is_a($this->getFilter(), 'ILogFilter')) {
