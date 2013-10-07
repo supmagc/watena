@@ -22,6 +22,10 @@ class AdminMainModel extends HtmlModel {
 		
 		$oRequest = new AJAX_Request('/admin/ajax', 'alertHelloWorld');
 		$oAjax->registerRequest($oRequest);
+
+		$oRequest = new AJAX_Request('/admin/ajax', 'tester');
+		$oRequest->addValue('val', 'Hello World By Value!');
+		$oAjax->registerRequest($oRequest);
 		
 		return $oAjax->getOutput();
 	}

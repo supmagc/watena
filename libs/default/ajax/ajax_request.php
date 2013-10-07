@@ -58,12 +58,12 @@ class AJAX_Request extends Object {
 	 * @param string $sName
 	 * @param string $sValue
 	 */
-	public function setValue($sName, $sValue) {
-		if(Encoding::regMatch('/^[-a-z0-9_]+$/i', $sName)) {
+	public function addValue($sName, $sValue) {
+		if(Encoding::regMatch('^[_a-zA-Z][a-zA-Z0-9_]+$', $sName)) {
 			$this->m_aValues[$sName] = $sValue;
 		}
 		else {
-			$this->getLogger()->warning('AJAX_Request invalid value-name \'{name}\'.', array($sName));
+			$this->getLogger()->warning('AJAX_Request invalid value-name \'{name}\'.', array('name' => $sName));
 		}
 	}
 	

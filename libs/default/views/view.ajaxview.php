@@ -26,7 +26,7 @@ class AjaxView extends View {
 			}
 		}
 		catch(Exception $e) {
-			echo 'alert(decodeURIComponent(\''.rawurlencode($e->getMessage()).'\');';
+			echo 'alert(decodeURIComponent(\''.rawurlencode($e->getMessage()."\n".$e->getFile()." (line: ".$e->getLine().")").'\'));';
 		}
 	}
 }

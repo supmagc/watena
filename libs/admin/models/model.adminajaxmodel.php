@@ -1,9 +1,10 @@
 <?php
+require_model('AjaxModel');
 
-class AdminAjaxModel extends Model {
+class AdminAjaxModel extends AjaxModel {
 
-	public function tester() {
-		echo 'hello';
+	public function tester($m) {
+		$this->alert("$m\n".$this->val);
 	}
 }
 

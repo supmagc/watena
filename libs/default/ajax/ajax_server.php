@@ -39,17 +39,17 @@ class AJAX_Server {
 		}
 		
 		if(isset($_POST['args'])) {
-			$this->m_aArguments = json_decode($_POST['args']);
+			$this->m_aArguments = json_decode($_POST['args'], true);
 		}
 		else if(isset($_GET['args'])) {
-			$this->m_aArguments = json_decode($_GET['args']);
+			$this->m_aArguments = json_decode($_GET['args'], true);
 		}
 		
-		if(isset($_POST['value'])) {
-			$this->m_aValues = json_decode($_POST['values']);
+		if(isset($_POST['values'])) {
+			$this->m_aValues = json_decode($_POST['values'], true);
 		}
-		else if(isset($_GET['value'])) {
-			$this->m_aValues = json_decode($_GET['values']);
+		else if(isset($_GET['values'])) {
+			$this->m_aValues = json_decode($_GET['values'], true);
 		}
 	}
 	
