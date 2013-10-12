@@ -9,11 +9,7 @@ class AjaxView extends View {
 	
 	public function render(Model $oModel = null) {
 		try {
-			$oServer = new AJAX_Server($oModel);
-			foreach($oServer->getValues() as $sName => $mValue) {
-				$oModel->$sName = $mValue;
-			}
-			$sCallback = $oServer->getCallback();
+			$sCallback = $oModel->getServer()->getCallback();
 			
 			if(empty($sCallback)) {
 				$this->getLogger()->error('No callback defined to use for the ajax-request.');
