@@ -17,7 +17,6 @@
  */
 class AJAX_Server {
 	
-	private $m_oCallbackContext;
 	private $m_sCallback;
 	private $m_aArguments = array();
 	private $m_aValues = array();
@@ -28,9 +27,7 @@ class AJAX_Server {
 	 * @param bool $bAutoExit automatically call exit after dataprocessing and your TMX_AjaxPage is flushed
 	 * @param string $sPrefix
 	 */
-	public function __construct($oCallbackContext = null) {
-		$this->m_oCallbackContext = $oCallbackContext;
-		
+	public function __construct() {
 		if(isset($_POST['callback'])) {
 			$this->m_sCallback = $_POST['callback'];
 		}
@@ -51,14 +48,6 @@ class AJAX_Server {
 		else if(isset($_GET['values'])) {
 			$this->m_aValues = json_decode($_GET['values'], true);
 		}
-	}
-	
-	public function setCallbackContext($oCallbackContext) {
-		$this->m_oCallbackContext = $oCallbackContext;
-	}
-	
-	public function getCallbackContext() {
-		return $this->m_oCallbackContext;
 	}
 	
 	public function setCallback($sCallback) {
@@ -98,15 +87,18 @@ class AJAX_Server {
 	 * 
 	 * @param bool $bAutoExit
 	 */
-	public function process() {
+	public function process($oContext = null) {
 		if(!empty($this->m_sCallback)) {
-			if(!empty($this->m_oCallbackContext)) {
-				call_user_func_array(array($this->getCallbackContext(), $this->getCallback()), $this->getArguments());
+			if(!empty($oContext)) {
+				if(method_exists($oContext, $this->getCallback())) {
+					return call_user_func_array(array($oContext, $this->getCallback()), $this->getArguments());
+				}
 			}
 			else {
-				call_user_func_array($this->getCallback(), $this->getArguments());
+				return call_user_func_array($this->getCallback(), $this->getArguments());
 			}
 		}
+		return false;
 	}
 }
 ?>
