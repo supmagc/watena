@@ -4,6 +4,8 @@
 	</model>
 	<view name="AjaxView">
 	</view>
+	<controller name="AjaxController">
+	</controller>
 	<rules>
 		<rule variable="path" condition="pattern">^/admin/ajax((/|\?).*)?$</rule>
 	</rules>

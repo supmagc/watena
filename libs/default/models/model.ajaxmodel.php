@@ -13,6 +13,10 @@ class AjaxModel extends Model {
 		}
 	}
 	
+	public final function getAjax() {
+		return $this->m_oServer;
+	}
+	
 	public final function alert($sMessage) {
 		echo "alert(decodeURIComponent('".rawurlencode($sMessage)."'));\n";
 	}
