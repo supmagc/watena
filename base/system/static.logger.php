@@ -369,7 +369,10 @@ class Logger {
 	 * 
 	 * @param ILogProcessor $oProcessor
 	 */
-	public static final function registerProcessor(ILogProcessor $oProcessor) {
+	public static final function registerProcessor(ILogProcessor $oProcessor, $bClearPrevious = false) {
+		if($bClearPrevious) {
+			self::$s_aProcessors = array();
+		}
 		self::$s_aProcessors []= $oProcessor;
 	}
 
