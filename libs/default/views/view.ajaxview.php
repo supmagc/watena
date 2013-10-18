@@ -12,7 +12,12 @@ class AjaxView extends View {
 			
 		}
 		else if($oModel->hasErrors()) {
-			
+			$sMessage = "Error while processing your request:\n";
+			foreach($oModel->getErrors() as $sError) {
+				$sMessage .= "$sError\n";
+			}
+			$sMessage = rawurlencode($sMessage);
+			echo "alert(decodeURIComponent('$sMessage'));";
 		}
 		else {
 			$oModel->generateAjax();
