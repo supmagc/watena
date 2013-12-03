@@ -26,7 +26,7 @@ class Callback extends Object {
 		return count($this->m_aArguments);
 	}
 	
-	public static function LoadFromRequest() {
+	public static function loadFromRequest() {
 		$aData = array();
 		if(isset($_GET['method'])) $aData = $_GET;
 		if(isset($_POST['method'])) $aData = $_POST;
