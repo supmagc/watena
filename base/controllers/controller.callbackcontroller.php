@@ -11,7 +11,7 @@ class CallbackController extends Controller {
 		
 		if(!empty($this->m_oCallback)) {
 			$this->getLogger()->info('Callback-data loaded: ADD DEBUG DATA');
-			
+			$this->m_oCallback->process($this);
 		}
 		else {
 			$this->getLogger()->error('CallbackController is unable to trigger any callback when no callback-data could be loaded.');
