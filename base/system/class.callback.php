@@ -26,6 +26,25 @@ class Callback extends Object {
 		return count($this->m_aArguments);
 	}
 	
+	public final function process($oTarget = null) {
+		if(empty($oTarget)) {
+			if(!function_exists($this->getMethod())) {
+				$this->getLogger()->warning('Callback requires the function {method} to exists in the current global scope.', array('method' => $this->getMethod()));
+				return false;
+			}
+		}
+		else {
+			if(!is_object($oTarget)) {
+				$this->getLogger()->warning('Callback requires thetarget variable to be an object.', array('method' => $this->getMethod(), 'target' => $this->getMethod()));
+				return false;
+			}
+			if(!method_exists($oTarget, $this->getMethod())) {
+				$this->getLogger()->warning('Callback requires the function {method} to exists in the target\'s object scope.', array('method' => $this->getMethod(), 'target' => $oTarget));
+				return false;
+			}
+		}
+	}
+	
 	public static function loadFromRequest() {
 		$aData = array();
 		if(isset($_GET['method'])) $aData = $_GET;
