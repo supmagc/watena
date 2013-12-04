@@ -6,7 +6,7 @@ class CallbackController extends Controller {
 	private $m_oModel;
 	private $m_oView;
 	
-	public final function process(Model $oModel, View $oView) {
+	public final function process(Model $oModel = null, View $oView = null) {
 		$this->m_oCallback = Callback::loadFromRequest();
 		
 		if(!empty($this->m_oCallback)) {
@@ -16,6 +16,10 @@ class CallbackController extends Controller {
 		else {
 			$this->getLogger()->error('CallbackController is unable to trigger any callback when no callback-data could be loaded.');
 		}
+	}
+	
+	public final function tester() {
+		$this->display("Hello Callback !");
 	}
 }
 

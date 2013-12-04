@@ -29,7 +29,7 @@ class Filter extends CacheableFile {
 		}
 		if(!empty($oXml->rules)) {
 			foreach($oXml->rules->rule as $oRule) {
-				$aVariable = empty($oXml->rules->rule['variable']) ? array() : explode('.', $oXml->rules->rule['variable']);
+				$aVariable = empty($oXml->rules->rule['variable']) ? 'url' : ('' . $oXml->rules->rule['variable']);
 				$sCondition = empty($oXml->rules->rule['condition']) ? 'patern' : ('' . $oXml->rules->rule['condition']);
 				if(count($aVariable) > 0) {
 					$this->m_aRules []= new FilterRule($aVariable, $sCondition, '' .$oXml->rules->rule);
@@ -67,6 +67,14 @@ class Filter extends CacheableFile {
 	
 	public function getRules() {
 		return $this->m_aRules;
+	}
+	
+	public final function matches(Mapping $oMapping) {
+		foreach($this->m_aRules as $oRule) {
+			if(!$oRule->matches($oMapping))
+				return false;
+		}
+		return true;
 	}
 	
 	private function parseData(SimpleXMLElement $oXml) {

@@ -29,7 +29,7 @@ $conf['product'] = array();
 # Their order can be of some importance if multiple libraries contain identical content.
 # Priority is given to the libraries that are defined first.
 #
-$conf['default']['libraries'] = array('admin', 'default');
+$conf['default']['libraries'] = array(/*'admin', */'default');
 
 #
 # Charset used throughout the system.

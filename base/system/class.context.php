@@ -238,20 +238,29 @@ class Context extends Object {
 		$oModel = null;
 		$oView = null;
 		$oController = null;
-		$oTheme = null;
 		foreach($aFilterGroups as $oFilterGroup) {
 			$aFilters = $oFilterGroup->getFilters();
 			foreach($aFilters as $nOrder => $oFilter) {
-				if($oMapping->Matches($oFilter)) {
-					if(!$oModel && null != $oFilter->getModelData()) $oModel = $this->loadModel($oFilter->getModelData()->getName(), $oFilter->getModelData()->getParams());
-					if(!$oView && null != $oFilter->getViewData()) $oView = $this->loadView($oFilter->getViewData()->getName(), $oFilter->getViewData()->getParams());
-					if(!$oController && null != $oFilter->getControllerData()) $oController = $this->loadController($oFilter->getControllerData()->getName(), $oFilter->getControllerData()->getParams());
-					break;
+				if($oFilter->matches($oMapping)) {
+					// Load model
+					if(null != $oFilter->getModelData()) 
+						$oModel = $this->loadModel($oFilter->getModelData()->getName(), $oFilter->getModelData()->getParams());
+					
+					// Load view
+					if(null != $oFilter->getViewData()) 
+						$oView = $this->loadView($oFilter->getViewData()->getName(), $oFilter->getViewData()->getParams());
+					
+					// Load controller
+					if(null != $oFilter->getControllerData()) 
+						$oController = $this->loadController($oFilter->getControllerData()->getName(), $oFilter->getControllerData()->getParams());
+					
+					// Return data
+					if($oModel || $oView || $oController)
+						return array($oModel, $oView, $oController);						
 				}
 			}
-			if($oModel || $oView || $oController) break;
 		}
-		return array($oModel, $oView, $oController);
+		return array(null, null, null);
 	}
 
 	/**
