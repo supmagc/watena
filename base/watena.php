@@ -53,6 +53,7 @@ class WatenaLoader {
 		require_once PATH_BASE . '/system/class.cacheloaderdirectory.php';
 		require_once PATH_BASE . '/system/class.cacheabledata.php';
 		require_once PATH_BASE . '/system/class.context.php';
+		require_once PATH_BASE . '/system/class.callback.php';
 		require_once PATH_BASE . '/system/class.requirementbuffer.php';
 		require_once PATH_BASE . '/system/class.filter.php';
 		require_once PATH_BASE . '/system/class.filterdata.php';

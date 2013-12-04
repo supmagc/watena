@@ -28,20 +28,24 @@ class Callback extends Object {
 	
 	public final function process($oTarget = null) {
 		if(empty($oTarget)) {
-			if(!function_exists($this->getMethod())) {
+			if(!function_exists($this->m_sMethod)) {
 				$this->getLogger()->warning('Callback requires the function {method} to exists in the current global scope.', array('method' => $this->getMethod()));
 				return false;
 			}
+			
+			return call_user_func_array($this->m_sMethod, array());
 		}
 		else {
 			if(!is_object($oTarget)) {
 				$this->getLogger()->warning('Callback requires thetarget variable to be an object.', array('method' => $this->getMethod(), 'target' => $this->getMethod()));
 				return false;
 			}
-			if(!method_exists($oTarget, $this->getMethod())) {
+			if(!method_exists($oTarget, $this->m_sMethod)) {
 				$this->getLogger()->warning('Callback requires the function {method} to exists in the target\'s object scope.', array('method' => $this->getMethod(), 'target' => $oTarget));
 				return false;
 			}
+			
+			return call_user_func_array(array($oTarget, $this->m_sMethod), array());
 		}
 	}
 	

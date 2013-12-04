@@ -267,7 +267,7 @@ class Request {
 	 * @return array|string|null An array with the mapping | The mapping you specified with $nIndex | nothing if nothing found
 	 */
 	public final static function mapping($nIndex = -1) {
-		return ($nIndex >= 0 && isset(self::$s_aData['mapping'][$nIndex])) ? self::$s_aData['mapping'][$nIndex] : null;
+		return ($nIndex >= 0 && isset(self::$s_aData['mapping'][$nIndex])) ? self::$s_aData['mapping'][$nIndex] : self::$s_aData['mapping'];
 	}
 	
 	/**
