@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * Generic callback object.
+ * Reads and callback data from POST or GET data.
+ * Formats variables as valid callback string for POST or GET.
+ * 
+ * @author Jelle Voet
+ * @version
+ */
 class Callback extends Object {
 	
 	private $m_sMethod;

@@ -4,6 +4,7 @@ abstract class View extends CacheableData {
 	
 	abstract public function headers(Model $oModel = null);
 	abstract public function render(Model $oModel = null);
+	public function requiredModelType() {return null;}
 	
 	private $m_sCharset = null;
 	private $m_sContentType = null;

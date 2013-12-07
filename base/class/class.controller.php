@@ -3,7 +3,9 @@
 abstract class Controller extends CacheableData {
 	
 	abstract public function process(Model $oModel = null, View $oView = null);
-	
+	public function requiredModelType() {return null;}
+	public function requiredViewType() {return null;}
+		
 	private $m_oRemapping;
 	private $m_oModel;
 	private $m_oView;
