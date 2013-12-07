@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * Charset independent string helpers class.
+ * 
+ * @author Jelle Voet
+ * @version 1.0.0
+ */
 class Encoding {
 	
 	private static $s_sEncoding = 'UTF-8';

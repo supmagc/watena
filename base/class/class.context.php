@@ -43,8 +43,10 @@ class Context extends Object {
 					$this->m_aFilterGroups []= FilterGroup::create($sFiltersPath);
 				}
 			}
+			/*
 			// Add the last default filtergroup
 			$this->m_aFilterGroups []= FilterGroup::create(parent::getWatena()->getPath('b:filters'));
+			*/
 		}
 		return $this->m_aFilterGroups;
 	}
@@ -52,7 +54,7 @@ class Context extends Object {
 	/**
 	 * Retrieve the path of the specified file on the system
 	 * Their is an order of presedence:
-	 * 1) Check base path
+	 * 1) Check base path (deprecated)
 	 * 2) Check if file has a library prepending (lib$file)
 	 * 3) If a preferred library is set, check it
 	 * 4) Check all libraries on the system
@@ -67,9 +69,11 @@ class Context extends Object {
 		$aReturn = array();
 		$sSearch = "/$sDirectory/$sFile";
 
+		/*
 		// Check path in base directory
 		if(($sTemp = realpath(PATH_BASE . $sSearch)) !== false) 
 			if($bAllOfThem) $aReturn[$sTemp] = null; else return $sTemp;
+		*/
 
 		// Check path with predefined library
 		if(($nIndex = strpos($sFile, '$')) !== false && ($sTemp = realpath(PATH_LIBS . '/' . substr($sFile, 0, $nIndex) . "/$sDirectory/" . substr($sFile, $nIndex + 1))) !== false) 
