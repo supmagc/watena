@@ -41,7 +41,7 @@ function require_error($nCode, $sName) {
 		case REQERROR_CONTROLLERNOTFOUND : $sMessage = 'The required controller \'{name}\' could not be found in any of the libraries.'; break;
 		case REQERROR_CONTROLLERUNLOADABLE : $sMessage = 'A file matching the required cntroller \'{name}\' exists, but no class could be loaded.'; break;
 	}
-	require_logger()->warning($sMessage, array('code' => $nCode, 'name' => $sName));
+	require_logger()->error($sMessage, array('code' => $nCode, 'name' => $sName));
 }
 
 function require_logger() {
