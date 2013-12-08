@@ -53,10 +53,28 @@ class Watena extends Object {
 		
 		// Load the mapping and retrieve the appropriate controller
 		list($this->m_oModel, $this->m_oView, $this->m_oController) = $this->m_oContext->getMVC($this->m_oMapping);
-		while($this->m_oController) {
+		while($this->m_oController instanceof Controller) {
 			$this->m_oController->clearRemapping();
 			$this->m_oController->clearNewModel();
 			$this->m_oController->clearNewView();
+			
+			$sRequiredModelType = $this->m_oController->requiredModelType();
+			$sRequiredViewType = $this->m_oController->requiredViewType();
+			if(!empty($sRequiredModelType) && !empty($this->m_oModel) && !($this->m_oModel instanceof $sRequiredModelType)) {
+				$this->getLogger()->error("Model is required to be of type {type_correct} instead of {type_wrong} as indicated by {controller}.", array(
+					'type_correct' => $sRequiredModelType,
+					'type_wrong' => $this->m_oModel->toString(),
+					'controller' => $this->m_oController->toString(),
+				));
+			}
+			if(!empty($sRequiredViewType) && !empty($this->m_oView) && !($this->m_oView instanceof $sRequiredViewType)) {
+				$this->getLogger()->error("View is required to be of type {type_correct} instead of {type_wrong} as indicated by {controller}.", array(
+					'type_correct' => $sRequiredViewType,
+					'type_wrong' => $this->m_oView->toString(),
+					'controller' => $this->m_oController->toString(),
+				));
+			}
+				
 			$this->m_oController->process($this->m_oModel, $this->m_oView);
 			if($this->m_oController->hasRemapping()) {
 				$this->m_oMapping = $this->m_oController->getRemapping();
@@ -72,11 +90,20 @@ class Watena extends Object {
 				break;
 			}
 		}
-		if($this->m_oView) {
+		if($this->m_oView instanceof View) {
+			$sRequiredModelType = $this->m_oView->requiredModelType();
+			if(!empty($sRequiredModelType) && !($this->m_oModel instanceof $sRequiredModelType)) {
+				$this->getLogger()->error("Model is required to be of type {type_correct} instead of {type_wrong} as indicated by {view}.", array(
+					'type_correct' => $sRequiredModelType,
+					'type_wrong' => $this->m_oModel->toString(),
+					'view' => $this->m_oView->toString(),
+				));
+			}
+							
 			$this->m_oView->headers($this->m_oModel);
 		}
 		ob_end_flush();
-		if($this->m_oView)
+		if($this->m_oView instanceof View)
 			$this->m_oView->render($this->m_oModel);
 	
 		// Log the end of Watena
