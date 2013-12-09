@@ -9,6 +9,6 @@
 		<param name="template">admin.main.tpl</param>
 	</view>
 	<rules>
-		<rule variable="path" condition="pattern">^/admin((/|\?).*)?$</rule>
+		<rule variable="path" condition="begins">/admin</rule>
 	</rules>
 </filter>

@@ -7,6 +7,6 @@
 	<controller name="AdminAjaxController">
 	</controller>
 	<rules>
-		<rule variable="path" condition="pattern">^/admin/ajax((/|\?).*)?$</rule>
+		<rule variable="path" condition="begins">/admin/ajax</rule>
 	</rules>
 </filter>
