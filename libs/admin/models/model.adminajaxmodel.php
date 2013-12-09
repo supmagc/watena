@@ -1,7 +1,7 @@
 <?php
-require_model('AjaxModel');
+require_model('CallbackModel');
 
-class AdminAjaxModel extends AjaxModel {
+class AdminAjaxModel extends CallbackModel {
 
 	public function generateAjax() {
 		
