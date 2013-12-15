@@ -3,19 +3,51 @@
 class Context extends Object {
 	
 	private $m_aPlugins = array();
-	private $m_aDataFiles = array(); 
+	private $m_aDataFiles = array();
+	private $m_aLibraries = array();
 	private $m_aLibraryPaths = array();
 	private $m_aFilterGroups = null;
+	private $m_sPreferredLibrary = null;
 	private $m_bRequirementWatchdog = false;
+	private $m_oComponentFactory = null;
 	
 	public function __construct() {
-		$aProjects = parent::getWatena()->getConfig()->libraries();
-		foreach($aProjects as $sProject) {
-			$sProject = trim($sProject);
-			$sPath = realpath(PATH_LIBS . "/$sProject");
-			if($sPath === null) $this->getLogger()->warning("One of the specified library-paths could not be mapped, and seems to not exist: {library}", array('library' => $sProject));
-			else $this->m_aLibraryPaths []= $sPath;
+		$this->m_oComponentFactory = ComponentFactory::create(array());
+		$aLibraries = parent::getWatena()->getConfig()->libraries();
+		foreach($aLibraries as $sLibrary) {
+			$sLibrary = trim($sLibrary);
+			$sPath = realpath(PATH_LIBS . "/$sLibrary");
+			if($sPath === null) {
+				$this->getLogger()->warning("One of the specified library-paths could not be mapped, and seems to not exist: {library}", array('library' => $sProject));
+			}
+			else {
+				$this->m_aLibraries []= $sLibrary;
+				$this->m_aLibraryPaths []= $sPath;
+				
+				$sInitPath = realpath($sPath . '/init.php');
+				if(false != $sInitPath) {
+					$this->setPreferredLibrary($sLibrary);
+					include_safe($sInitPath);
+					$this->setPreferredLibrary(null);
+				}
+			}
 		}
+	}
+
+	/**
+	 * 
+	 * @return ComponentFactory
+	 */
+	public final function getComponentFactory() {
+		return $this->m_oComponentFactory;
+	}
+
+	/**
+	 * 
+	 * @return array
+	 */
+	public final function getLibraries() {
+		return $this->m_aLibraries;
 	}
 
 	/**
@@ -25,6 +57,14 @@ class Context extends Object {
 	 */
 	public final function getLibraryPaths() {
 		return $this->m_aLibraryPaths;
+	}
+	
+	public final function setPreferredLibrary($sPreferredLibrary) {
+		$this->m_sPreferredLibrary = $sPreferredLibrary;
+	}
+	
+	public final function getPreferredLibrary() {
+		return $this->m_sPreferredLibrary;
 	}
 	
 	/**
@@ -54,42 +94,68 @@ class Context extends Object {
 	/**
 	 * Retrieve the path of the specified file on the system
 	 * Their is an order of presedence:
-	 * 1) Check base path (deprecated)
-	 * 2) Check if file has a library prepending (lib$file)
-	 * 3) If a preferred library is set, check it
+	 * 1) Check if file has a library prepending (lib@file)
+	 * 2) If a local preferred library is set, check it
+	 * 3) If a global preferred library is set, check it
 	 * 4) Check all libraries on the system
 	 * 
 	 * @param string $sDirectory
 	 * @param string $sFile
 	 * @param string $sPreferredLibrary
+	 * @param mixed $o_mLibrary
 	 * 
-	 * @return string (or false)
+	 * @return string|false|array String when found, false when not found, array when $bAllOfThem is true.
 	 */
-	public final function getLibraryFilePath($sDirectory, $sFile, $bAllOfThem = false, $sPreferredLibrary = null) {
-		$aReturn = array();
-		$sSearch = "/$sDirectory/$sFile";
-
-		/*
-		// Check path in base directory
-		if(($sTemp = realpath(PATH_BASE . $sSearch)) !== false) 
-			if($bAllOfThem) $aReturn[$sTemp] = null; else return $sTemp;
-		*/
-
-		// Check path with predefined library
-		if(($nIndex = strpos($sFile, '$')) !== false && ($sTemp = realpath(PATH_LIBS . '/' . substr($sFile, 0, $nIndex) . "/$sDirectory/" . substr($sFile, $nIndex + 1))) !== false) 
-			if($bAllOfThem) $aReturn[$sTemp] = null; else return $sTemp;
+	public final function getLibraryFilePath($sDirectory, $sFile, $bAllOfThem = false, $sPreferredLibrary = null, &$o_mLibrary = null) {
+		$aReturnPaths = array();
+		$aReturnLibraries = array();
+		$aLibraries = array();
 		
-		// Check preferred library
-		if($sPreferredLibrary != null && ($sTemp = realpath(PATH_LIBS . "/$sPreferredLibrary" . $sSearch)) !== false) 
-			if($bAllOfThem) $aReturn[$sTemp] = null; else return $sTemp;
-		
-		// Check existing library directories
-		foreach($this->m_aLibraryPaths as $sPath) {
-			if(($sTemp = realpath($sPath . $sSearch)) !== false) 
-				if($bAllOfThem) $aReturn[$sTemp] = null; else return $sTemp;
+		// Start the ordered library list with prepended library
+		if(($nIndex = Encoding::indexOf($sFile, '@')) !== false) {
+			$sLibrary = Encoding::substring($sFile, 0, $nIndex);
+			$sFile = Encoding::substring($sFile, $nIndex + 1);
+			$aLibraries[$sLibrary] = null;
 		}
 		
-		return $bAllOfThem ? array_keys($aReturn) : false;
+		// Add the local preferred library to the ordered library list
+		if(!empty($sPreferredLibrary)) {
+			$aLibraries[$sPreferredLibrary] = null;
+		}
+
+		// Add the global preferred library to the ordered library list
+		if(!empty($this->m_sPreferredLibrary)) {
+			$aLibraries[$this->m_sPreferredLibrary] = null;
+		}
+		
+		// Add the remaining libraries to the ordered library list
+		foreach($this->m_aLibraries as $sLibrary) {
+			$aLibraries[$sLibrary] = null;
+		}
+
+		// Verify file existing in the ordered library list
+		$sSearch = !empty($sDirectory) ? "$sDirectory/$sFile" : $sFile;
+		foreach($aLibraries as $sLibrary => $ign) {
+			if(($sTemp = realpath(PATH_LIBS . "/$sLibrary/$sSearch")) !== false) {
+				if($bAllOfThem) {
+					$aReturnPaths []= $sTemp;
+					$aReturnLibraries []= $sLibrary;
+				}
+				else {
+					$o_mLibrary = $sLibrary;
+					return $sTemp;
+				}
+			}
+		}
+
+		// Return the array when $bAllOfThem is true, or false when none found
+		if($bAllOfThem) {
+			$o_mLibrary = $aReturnLibraries;
+			return $aReturnPaths;
+		}
+		else {
+			return false;
+		}
 	}
 	
 	/**
