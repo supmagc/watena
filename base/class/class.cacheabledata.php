@@ -13,7 +13,7 @@ class CacheableData extends Cacheable {
 			Logger::getInstance(get_called_class())->error('CacheableData cannot include the required file \'{file}\' to load \'{class}\'.', array('file' => $sIncludeFileName, 'class' => $sClassName));
 		}
 		else {
-			require_once $sIncludeFilePath;
+			include_safe($sIncludeFilePath);
 		}
 		$oLoader = new CacheLoader($sClassName, $aMembers, get_called_class());
 		$oLoader->addPathDependency($sIncludeFilePath);

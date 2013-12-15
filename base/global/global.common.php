@@ -56,6 +56,17 @@ function uchr($mCodes) {
 }
 
 /**
+ * Safe include function.
+ * This function only exposes it's $sPath parameter to the included file.
+ * It uses include_once and supresses any possible include warning.
+ * 
+ * @param string $sPath
+ */
+function include_safe($sPath) {
+	return @include_once $sPath;
+}
+
+/**
  * Assure the array structure exists as provided
  * The structure is as defined by the keys array
  * If an none existing key is found, it's created and set to the value

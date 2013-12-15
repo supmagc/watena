@@ -129,21 +129,22 @@ class Watena extends Object {
 	/**
 	 * Retrieve a valid watena/system path.
 	 * The input path should specify a protocol such as:
-	 * r (or R) => for Root
-	 * d (or D) => for Data
-	 * b (or B) => for Base
-	 * l (or L) => for Libs
+	 * r (or R, or root) => for Root
+	 * d (or D, or data) => for Data
+	 * l (or L, or libs) => for Libs
+	 * ex: data:/HelloWorld/data.txt
+	 * Or '@' use the library specifier:
+	 * ex library@folder/stuff.txt
 	 * 
 	 * @param string $sPath The path to resolve.
-	 * @param bool $bVerify Indicate if you cant the path to be verified for existance (retusn false on failure)
+	 * @param bool $bVerify Indicate if you cant the path to be verified for existance (returns false on failure)
 	 * @return string|bool
 	 */
 	public final function getPath($sPath, $bVerify = true) {
 		$aMatches = array();
-		if(Encoding::regFind('^([brdlBRDL])[:/\\\\]([^:/\\\\].*?)/?$', '' . $sPath, $aMatches)) {
+		$aPositions = array();
+		if(Encoding::regFind('^([rdl]|root|data|libs)[:/\\\\]([^:/\\\\].*?)/?$', '' . $sPath, $aMatches, $aPositions, 'msri')) {
 			switch($aMatches[1]) {
-				case 'b' :
-				case 'B' : $sPath = PATH_BASE . (Encoding::length($aMatches[2]) > 0 ? "/$aMatches[2]" : ''); break;
 				case 'd' :
 				case 'D' : $sPath = PATH_DATA . (Encoding::length($aMatches[2]) > 0 ? "/$aMatches[2]" : ''); break;
 				case 'r' :
@@ -151,6 +152,9 @@ class Watena extends Object {
 				case 'l' :
 				case 'L' : $sPath = PATH_LIBS . (Encoding::length($aMatches[2]) > 0 ? "/$aMatches[2]" : ''); break;
 			}
+		}
+		else if(Encoding::regFind('^([-a-z0-9_. ]+)@([^:/\\\\].*?)/?$', '' . $sPath, $aMatches, $aPositions, 'msri')) {
+			$sPath = PATH_LIBS . "/$aMatches[1]" . (Encoding::length($aMatches[2]) > 0 ? "/$aMatches[2]" : '');
 		}
 		if($bVerify) {
 			return realpath($sPath);
