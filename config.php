@@ -51,7 +51,7 @@ $conf['default']['timeformat'] = 'Y/m/d H:i:s';
 
 #
 # The cache-engine plugin.
-# Some defaults ar bundles with the base-system:
+# Some defaults are bundled with the default-library:
 # - CacheAPC
 # - CacheMemcache
 # - CachePEAR

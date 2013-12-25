@@ -63,7 +63,12 @@ function uchr($mCodes) {
  * @param string $sPath
  */
 function include_safe($sPath) {
-	return @include_once $sPath;
+	return @include_once watena()->getPath($sPath, true);
+}
+
+function filechangetime($sPath) {
+	$sPath = watena()->getPath($sPath, true);
+	return max(filemtime($sPath), filectime($sPath));
 }
 
 /**

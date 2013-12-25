@@ -12,7 +12,7 @@ class Context extends Object {
 	private $m_oComponentFactory = null;
 	
 	public function __construct() {
-		$this->m_oComponentFactory = ComponentFactory::create(array());
+		$this->m_oComponentFactory = new ComponentFactory();
 		$aLibraries = parent::getWatena()->getConfig()->libraries();
 		foreach($aLibraries as $sLibrary) {
 			$sLibrary = trim($sLibrary);
