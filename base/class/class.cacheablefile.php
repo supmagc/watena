@@ -21,8 +21,8 @@ class CacheableFile extends Cacheable {
 		echo file_get_contents($this->m_sFilePath);		
 	}
 	
-	public static function create($sFileName, array $aConfig = array()) {
-		$oLoader = new CacheLoaderFile(get_called_class(), $sFileName);
+	public static function create($sFileName, array $aMembers = array(), array $aConfig = array()) {
+		$oLoader = new CacheLoaderFile(get_called_class(), $sFileName, $aMembers);
 		return $oLoader->get($aConfig);
 	}
 }

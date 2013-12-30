@@ -48,8 +48,8 @@ class CacheableDirectory extends Cacheable {
 		return is_dir($this->m_sDirectoryPath . '/' . $sName);
 	}
 	
-	public static function create($sDirectoryName, array $aConfig = array()) {
-		$oLoader = new CacheLoaderDirectory(get_called_class(), $sDirectoryName);
+	public static function create($sDirectoryName, array $aMembers = array(), array $aConfig = array()) {
+		$oLoader = new CacheLoaderDirectory(get_called_class(), $sDirectoryName, $aMembers);
 		return $oLoader->get($aConfig);
 	}
 }

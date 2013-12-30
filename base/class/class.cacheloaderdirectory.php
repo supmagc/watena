@@ -2,13 +2,20 @@
 
 class CacheLoaderDirectory extends CacheLoader {
 	
-	public function __construct($sClassName, $sDirectoryName) {
+	public function __construct($sClassName, $sDirectoryName, array $aMembers = array()) {
 		$sDirectoryPath = parent::getWatena()->getPath($sDirectoryName);
-		if(!$sDirectoryPath || !is_readable($sDirectoryPath)) {
+		if(isset($aMembers['m_sDirectoryName'])) {
+			$this->getLogger()->warning('You shouldn\'t set a members variable for m_sDirectoryName as {directoryname} for this CacheLoaderDirectory.', array('directoryname' => $sDirectoryName, 'directorypath' => $sDirectoryPath));
+		}
+		if(isset($aMembers['m_sDirectoryPath'])) {
+			$this->getLogger()->warning('You shouldn\'t set a members variable for m_sDirectoryPath as {directorypath} for this CacheLoaderDirectory.', array('directoryname' => $sDirectoryName, 'directorypath' => $sDirectoryPath));
+		}
+		$aMembers['m_sDirectoryName'] = $sDirectoryName;
+		$aMembers['m_sDirectoryPath'] = $sDirectoryPath;
+		parent::__construct($sClassName, $aMembers, 'CacheableDirectory');
+		if(!$this->addPathDependency($sDirectoryPath)) {
 			$this->getLogger()->error('CacheLoaderDirectory cannot load \'{class}\' as the required directory \'{directory}\' is not readable.', array('class' => $sClassName, 'directory' => $sDirectoryName));
 		}
-		parent::__construct($sClassName, array('m_sDirectoryName' => $sDirectoryName, 'm_sDirectoryPath' => $sDirectoryPath), 'CacheableDirectory');
-		$this->addPathDependency($sDirectoryPath);
 	}
 }
 

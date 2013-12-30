@@ -51,19 +51,23 @@ class CacheLoader extends Object {
 	}
 	
 	public function addPathDependencies(array $aPaths) {
+		$bReturn = true;
 		foreach($aPaths as $sPath) {
-			$this->addPathDependency($sPath);
+			$bReturn = $this->addPathDependency($sPath) && $bReturn;
 		}
+		return $bReturn;
 	}
 	
 	public function addPathDependency($sPath) {
 		$sPath = parent::getWatena()->getPath($sPath);
 		if(!file_exists($sPath)) {
 			$this->getLogger()->warning('The path-dependency \'{path}\' for the CacheLoader does not exists.', array('path' => $sPath));
+			return false;
 		}
 		else {
 			$this->m_aIdentifiers []= $sPath;
 			$this->m_nLastChanged = max($this->m_nLastChanged, filemtime($sPath));
+			return true;
 		}
 	}
 	
