@@ -160,7 +160,7 @@ class TemplateFile extends CacheableFile implements IPCO_ICallbacks {
 			return null;
 		}
 		else {
-			return self::create($sFilePath, array('contentparser' => $oContentParser));
+			return self::create($sFilePath, array(), array('contentparser' => $oContentParser));
 		}
 	}
 }
