@@ -11,7 +11,7 @@ class Watena extends Object {
 	private $m_oTime = null;
 	private $m_oConfig;
 	
-	public function __construct(WatenaConfig $oConfig, $bUseMvc) {	
+	public function __construct(WatenaConfig $oConfig) {	
 		ob_start();
 		$nTime = microtime(true);	
 		parent::__construct();

@@ -58,14 +58,28 @@ function uchr($mCodes) {
 /**
  * Safe include function.
  * This function only exposes it's $sPath parameter to the included file.
- * It uses include_once and supresses any possible include warning.
+ * It uses include_once and checks if the file exists and is readble before 
+ * including, thus minimising the risk of an include warning.
+ * 
+ * !! Warning: don't use the error supression operator '@' since all errors 
+ * triggered by including the file will be ignored as well.
  * 
  * @param string $sPath
  */
 function include_safe($sPath) {
-	return @include_once watena()->getPath($sPath, true);
+	$sPath = watena()->getPath($sPath, true);
+	if(!is_readable($sPath))
+		return false;
+	include_once $sPath;
+	return true;
 }
 
+/**
+ * Get a timestamp when the file was last created or changed.
+ * 
+ * @param string $sPath
+ * @return int
+ */
 function filechangetime($sPath) {
 	$sPath = watena()->getPath($sPath, true);
 	return max(filemtime($sPath), filectime($sPath));

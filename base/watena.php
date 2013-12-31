@@ -56,6 +56,7 @@ class WatenaLoader {
 		require_once PATH_BASE . '/class/class.cacheabledata.php';
 		require_once PATH_BASE . '/class/class.context.php';
 		require_once PATH_BASE . '/class/class.callback.php';
+		require_once PATH_BASE . '/class/class.componentloader.php';
 		require_once PATH_BASE . '/class/class.componentfactory.php';
 		require_once PATH_BASE . '/class/class.requirementbuffer.php';
 		require_once PATH_BASE . '/class/class.filter.php';
@@ -118,7 +119,7 @@ class WatenaLoader {
 		if(!defined('NWATENA')) {
 			define('WATENA', true);
 			function watena() {return Watena::getWatena();}
-			return new Watena($oConf, !defined('NMVC'));
+			return new Watena($oConf);
 		}
 		else {
 			return null;

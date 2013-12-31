@@ -14,7 +14,7 @@ class CacheLoaderDirectory extends CacheLoader {
 		$aMembers['m_sDirectoryPath'] = $sDirectoryPath;
 		parent::__construct($sClassName, $aMembers, 'CacheableDirectory');
 		if(!$this->addPathDependency($sDirectoryPath)) {
-			$this->getLogger()->error('CacheLoaderDirectory cannot load \'{class}\' as the required directory \'{directory}\' is not readable.', array('class' => $sClassName, 'directory' => $sDirectoryName));
+			throw new WatCeption('CacheLoaderDirectory cannot load \'{class}\' as the required directory \'{directory}\' is not readable.', array('class' => $sClassName, 'directory' => $sDirectoryName));
 		}
 	}
 }

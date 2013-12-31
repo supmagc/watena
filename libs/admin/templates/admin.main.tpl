@@ -7,11 +7,12 @@
 <link href="/theme/admin/css/admin_main.css" rel="stylesheet" type="text/css" media="all" />
 <script type="text/javascript" src="/theme/admin/js/overlib.js"></script>
 <script type="text/javascript" src="/theme/admin/js/overlib_shadow.js"></script>
-<script type="text/javascript" src="/theme/admin/js/admin_logic.js"></script>
+<script type="text/javascript" src="/theme/admin/js/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="/theme/admin/js/watena-admin.js"></script>
 <title>Watena - {[getTitle()]}</title>
 {[getAjax()]}
 </head>
-<body onload="PTM_Init();">
+<body>
 <div id="overDiv" style="position:absolute; visibility:hidden; z-index:1000;"></div>
 <div id="Container"><img src="/theme/admin/logo.png" id="LogoImg" />
 	<div id="MenuGroup">

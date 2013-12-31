@@ -6,6 +6,7 @@ class ComponentFactory extends Object {
 	private $m_aLinkage = array();
 	
 	public final function registerComponent($sClass, $sPath, $sPreferredLibrary = null) {
+		$oComponent = ComponentLoader::create($sClass, $sPath);
 		if(!isset($this->m_aClasses)) {
 			if(empty($sPath) || include_safe($sPath)) {
 				if(class_exists($sClass)) {
