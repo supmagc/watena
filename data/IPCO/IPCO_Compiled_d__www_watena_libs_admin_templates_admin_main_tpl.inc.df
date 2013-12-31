@@ -45,7 +45,14 @@ class IPCO_Compiled_d__www_watena_libs_admin_templates_admin_main_tpl extends IP
 			$_ob []= '' . parent::callContentParser('addMappingRoot', array (
   0 => 'script',
   1 => 'src',
-  2 => '/theme/admin/js/admin_logic.js',
+  2 => '/theme/admin/js/jquery-1.10.2.min.js',
+));
+			$_ob []= '' . '"></script>
+<script type="text/javascript" src="';
+			$_ob []= '' . parent::callContentParser('addMappingRoot', array (
+  0 => 'script',
+  1 => 'src',
+  2 => '/theme/admin/js/watena-admin.js',
 ));
 			$_ob []= '' . '"></script>
 <title>Watena - ';
@@ -58,7 +65,7 @@ class IPCO_Compiled_d__www_watena_libs_admin_templates_admin_main_tpl extends IP
 ));
 			$_ob []= '' . '
 </head>
-<body onload="PTM_Init();">
+<body>
 <div id="overDiv" style="position:absolute; visibility:hidden; z-index:1000;"></div>
 <div id="Container"><img src="';
 			$_ob []= '' . parent::callContentParser('addMappingRoot', array (

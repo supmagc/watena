@@ -315,7 +315,7 @@ class Context extends Object {
 					// Load model
 					if(null != $oFilter->getModelData()) 
 						$oModel = $this->loadModel($oFilter->getModelData()->getName(), $oFilter->getModelData()->getParams());
-					
+						
 					// Load view
 					if(null != $oFilter->getViewData()) 
 						$oView = $this->loadView($oFilter->getViewData()->getName(), $oFilter->getViewData()->getParams());
