@@ -59,4 +59,11 @@ foreach($aData as $aRow) {
 		}
 	}
 }
+
+parent::processMethod('addJavascriptLink', 
+	array (
+		0 => parent::processMethod(\'url\', array (0 => \'((((parent::processMember(\\\'"\\\', null) / parent::processMember(\\\'theme\\\', null)) / parent::processMember(\\\'admin\\\', null)) / parent::processMember(\\\'js\\\', null)) / parent::processMember(\\\'js"\\\', parent::processMember(\\\'overlib\\\', null)))\',), null),
+	), 
+	null
+);
 ?>

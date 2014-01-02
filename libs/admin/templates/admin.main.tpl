@@ -5,10 +5,11 @@
 <meta http-equiv="Description" content="{[getDescription()]}">
 <meta http-equiv="Keywords" content="{[getKeywords()]}">
 <link href="/theme/admin/css/admin_main.css" rel="stylesheet" type="text/css" media="all" />
-<script type="text/javascript" src="/theme/admin/js/overlib.js"></script>
-<script type="text/javascript" src="/theme/admin/js/overlib_shadow.js"></script>
-<script type="text/javascript" src="/theme/admin/js/jquery-1.10.2.min.js"></script>
-<script type="text/javascript" src="/theme/admin/js/watena-admin.js"></script>
+{{call addJavascriptLink(url('/theme/admin/js/overlib.js'))}}
+{{call addJavascriptLink(url('/theme/admin/js/overlib_shadow.js'))}}
+{{call addJavascriptLink(url('/theme/admin/js/jquery-1.10.2.min.js'))}}
+{{call addJavascriptLink(url('/theme/admin/js/watena-admin.js'))}}
+{[getJavascriptLoader()]}
 <title>Watena - {[getTitle()]}</title>
 {[getAjax()]}
 </head>

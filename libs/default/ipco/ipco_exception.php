@@ -21,6 +21,7 @@ class IPCO_Exception extends Exception {
 	const FILTER_EXTENDS_INVALIDFILE = 25;
 	const FILTER_VAR_NOCOMMAND = 26;
 	const FILTER_VAR_NONAME = 27;
+	const FILTER_CALL_NODATA = 28;
 
 	public function __construct($nCode) {
 		parent::__construct(self::getCodedMessage($nCode), $nCode);

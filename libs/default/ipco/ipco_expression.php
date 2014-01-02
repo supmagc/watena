@@ -178,9 +178,9 @@ class IPCO_Expression extends IPCO_Base {
 				else if(($sName === 'current' || $sName === 'value') && $sBase == 'null')
 					$sReturn = IPCO_ParserSettings::getCallKeywordCurrent();
 				else if($sName === 'first')
-					$sReturn = IPCO_ParserSettings::getCallKeywordIndex($sBase);
+					$sReturn = IPCO_ParserSettings::getCallKeywordFirst($sBase);
 				else if($sName === 'last')
-					$sReturn = IPCO_ParserSettings::getCallKeywordIndex($sBase);
+					$sReturn = IPCO_ParserSettings::getCallKeywordLast($sBase);
 				else 
 					$this->_setError(self::ERROR_INVALIDKEYWORD, $sName);
 			}
@@ -188,7 +188,7 @@ class IPCO_Expression extends IPCO_Base {
 				$sReturn = IPCO_ParserSettings::getCallMember($sName, $sBase);
 			}
 			else {
-				$sReturn = IPCO_ParserSettings::getCallMethod($sName, $aParams, $sBase);
+				$sReturn = IPCO_ParserSettings::getCallMethod($sName, 'array('.implode(',', $aParams).')', $sBase);
 			}
 		}
 		foreach($aSlices as $sSlice) {
@@ -197,6 +197,14 @@ class IPCO_Expression extends IPCO_Base {
 		return $sReturn;
 	}
 	
+	/**
+	 * Returns an array with the content of the given string splitted by the given splitter.
+	 * The splitting is 'quote-aware' and will thus not break your stirngs.
+	 * 
+	 * @param string $sSplitter (1 char)
+	 * @param string $sExpression
+	 * @return array
+	 */
 	private function _parseListing($sSplitter, $sExpression) {
 		$aParams = array();
 		$nLength = Encoding::length($sExpression);
@@ -204,6 +212,8 @@ class IPCO_Expression extends IPCO_Base {
 		$nParentheses = 0;
 		$nState = 0;
 		$nMark = 0;
+		
+		// Split the given string by the provided splitter, correctly counting quotes as needed
 		for($i=0 ; ($i = $this->_continuePastString($sExpression, $i))<$nLength ; ++$i) {
 			$char = Encoding::substring($sExpression, $i, 1);
 			if($char === $sSplitter) {
@@ -211,10 +221,25 @@ class IPCO_Expression extends IPCO_Base {
 				$nMark = $i + 1;
 			}
 		}
+		// Add the left-over data
 		$aParams []= Encoding::substring($sExpression, $nMark, $nLength - $nMark);
+		
+		// return string data
 		return $aParams;
 	}
 	
+	/**
+	 * Return the given expression as a valid call that can be written to the template.
+	 * We support the following formats (listings are seperated by ','):
+	 * - method(parameters listing)
+	 * - variable[parameters listing]
+	 * - method(parameters listing)[parameter listing]...
+	 * - variable[parameters listing][parameter listing]...
+	 * 
+	 * @param string $sExpression
+	 * @param string $mBase
+	 * @return string
+	 */
 	private function _parseCall($sExpression, $mBase = null) {
 		$sExpression = Encoding::trim($sExpression);
 		$nLength = Encoding::length($sExpression);
@@ -225,6 +250,7 @@ class IPCO_Expression extends IPCO_Base {
 		$aParams = array();
 		$aSlices = array();
 		$i = 0;
+		// State mahine extracting method-/variable-name and params/indices
 		while($i<$nLength) {
 			$char = Encoding::substring($sExpression, $i, 1);
 			switch($nState) {
@@ -263,14 +289,23 @@ class IPCO_Expression extends IPCO_Base {
 			if($nState === 2 || $nState === 4) $i = $this->_continuePastString($sExpression, $i);
 		}
 		if($nState === 1 && $sName === null) $sName = Encoding::substring($sExpression, 0, $nLength);
+		
 		$sName = Encoding::trim($sName);
 		$aParams = array_map(array($this, '_parseExpression'), $aParams);
 		$aSlices = array_map(array($this, '_parseExpression'), $aSlices);
 		if($mBase === null) $mBase = 'null';
-
+		
+		// Return valid php code
 		return $this->_getPhpCall($sName, $aParams, $aSlices, $mBase);
 	}
 	
+	/**
+	 * Returns the expression as a valid value part that can be written to the template.
+	 * Single-quoted strings, numeric values, boolean values, and method calls.
+	 * 
+	 * @param string $sExpression
+	 * @return string
+	 */
 	private function _parseValue($sExpression) {
 		$sExpression = Encoding::trim($sExpression);
 		$nLength = Encoding::length($sExpression);
