@@ -32,6 +32,7 @@ class IPCO_ParserSettings extends IPCO_Base {
 	const CALL_KEYWORD_CURRENT	= "parent::getCurrent()\n";
 	const CALL_KEYWORD_FIRST	= "parent::processFirst(%s)\n";
 	const CALL_KEYWORD_LAST		= "parent::processLast(%s)\n";
+	const CALL_CALL				= "%s;\n";
 	const CALL_VAR_SET			= "parent::processVarSet(%s, %s);\n";
 	const CALL_VAR_INCREASE		= "parent::processVarIncrease(%s, %s);\n";
 	const CALL_VAR_DECREASE		= "parent::processVarDecrease(%s, %s);\n";
@@ -98,12 +99,8 @@ class IPCO_ParserSettings extends IPCO_Base {
 		return sprintf(self::VARIABLE, $sExpression);
 	}
 	
-	public static function getCallArray(array $aParams) {
-		return var_export($aParams, true);
-	}
-	
-	public static function getCallMethod($sName, array $aParams, $sBase) {
-		return sprintf(self::CALL_METHOD, $sName, self::getCallArray($aParams), $sBase);
+	public static function getCallMethod($sName, $sParams, $sBase) {
+		return sprintf(self::CALL_METHOD, $sName, $sParams, $sBase);
 	}
 	
 	public static function getCallMember($sName, $sBase) {
@@ -136,6 +133,10 @@ class IPCO_ParserSettings extends IPCO_Base {
 
 	public static function getCallRegion($sName) {
 		return sprintf(self::CALL_REGION, $sName, $sName);
+	}
+	
+	public static function getCallCall($sExpression) {
+		return sprintf(self::CALL_CALL, $sExpression);
 	}
 	
 	public static function getCallVarSet($sName, $sExpression) {

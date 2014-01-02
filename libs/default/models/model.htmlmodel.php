@@ -9,6 +9,7 @@ class HtmlModel extends Model {
 	private $m_aKeywords = null;
 	private $m_aHeads = array();
 	private $m_aBodies = array();
+	private $m_aJavascriptLinks = array();
 	
 	public function getRoot() {
 		return $this->getWatena()->getMapping()->getRoot();
@@ -103,6 +104,31 @@ class HtmlModel extends Model {
 	
 	public function getKeywords() {
 		return is_array($this->m_aKeywords) ? implode(', ', $this->m_aKeywords) : $this->getConfig('keywords', '');
+	}
+	
+	public function addJavascriptLink($sLink) {
+		$this->m_aJavascriptLinks []= $sLink;
+	}
+	
+	public function getJavascriptLoader() {
+		$sLinks = json_encode($this->m_aJavascriptLinks);
+		return <<<EOD
+<script language="javascript 1.8" type="text/javascript"><!--
+(function(doc, tag, src, ind, ele, tar) {
+	for(;ind<src.length;++ind) {
+		ele = doc.createElement(tag);
+		tar = doc.getElementsByTagName(tag)[0];
+		ele.async = 1;
+		ele.src = src[ind];
+		tar.parentNode.insertBefore(ele, tar)
+	}
+})(document, 'script', $sLinks);
+--></script>
+EOD;
+	}
+	
+	public function url($sUrl) {
+		return Request::make($sUrl)->toString();
 	}
 }
 

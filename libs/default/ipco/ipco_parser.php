@@ -162,7 +162,8 @@ class IPCO_Parser extends IPCO_Base {
 	}
 	
 	private function interpretFilter($sContent) {
-		$aParts = array_map(array('Encoding', 'trim'), explode(' ', Encoding::trim($sContent)));
+		// FIXME: what about quotes ?
+		$aParts = explode_trim(' ', Encoding::trim($sContent));
 		$sName = array_shift($aParts);
 		switch($sName) {
 			case 'if' : $this->interpretIf(new IPCO_Expression(implode(' ', $aParts), parent::getIpco())); break;
@@ -175,6 +176,7 @@ class IPCO_Parser extends IPCO_Base {
 			case 'extends' : $this->interpretExtends(count($aParts) > 0 ? $aParts[0] : null); break;
 			case 'include' : $this->interpretInclude(count($aParts) > 0 ? $aParts[0] : null); break;
 			case 'region' : $this->interpretRegion($aParts); break;
+			case 'call' : $this->interpretCall($aParts); break;
 			case 'var' : $this->interpretVar($aParts); break;
 		}
 	}
@@ -260,6 +262,16 @@ class IPCO_Parser extends IPCO_Base {
 		}
 		else {
 			throw new IPCO_Exception(IPCO_Exception::FILTER_REGION_NOCOMMAND);
+		}
+	}
+	
+	public function interpretCall(array $aParts) {
+		if(count($aParts) > 0) {
+			$sExpression = count($aParts) > 0 ? ('' . new IPCO_Expression(implode(' ', $aParts), parent::getIpco())) : 'null';
+			$this->m_oRegion->addLine($this->getDepthOffset() . IPCO_ParserSettings::getCallCall($sExpression));
+		}
+		else {
+			throw new IPCO_Exception(IPCO_Exception::FILTER_CALL_NODATA);
 		}
 	}
 	
