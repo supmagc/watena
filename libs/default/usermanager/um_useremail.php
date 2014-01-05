@@ -1,6 +1,6 @@
 <?php
 
-class UserEmail extends UserVerifiable {
+class UserEmail extends UserManagerVerifiable {
 	
 	public function getUserId() {
 		return $this->getDataValue('userId');

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <filter name="Admin Ajax" order="1001">
-	<model name="AdminAjaxModel">
+	<model name="AdminCallbackModel">
 	</model>
-	<view name="AjaxView">
+	<view name="CallbackView">
 	</view>
-	<controller name="AdminAjaxController">
+	<controller name="AdminCallbackController">
 	</controller>
 	<rules>
 		<rule variable="path" condition="begins">/admin/ajax</rule>

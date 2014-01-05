@@ -1,6 +1,6 @@
 <?php
 
-class UserVerifiable extends DbObject {
+class UserManagerVerifiable extends DbObject {
 	
 	public function isVerified() {
 		return (bool)$this->getDataValue('verified');

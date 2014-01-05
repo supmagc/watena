@@ -14,8 +14,7 @@ class AdminMainModel extends HtmlModel {
 	}
 	
 	public function getAjax() {
-		$sJavascriptFile = Request::make('/theme/default/js/ajax.js')->toString();
-		$oAjax = new AJAX_Client($sJavascriptFile);
+		$oAjax = new AJAX_Client(null);
 		
 		$oRequest = new AJAX_Request('/admin/ajax', 'requestContent');
 		$oAjax->registerRequest($oRequest);
@@ -24,7 +23,6 @@ class AdminMainModel extends HtmlModel {
 		$oAjax->registerRequest($oRequest);
 
 		$oRequest = new AJAX_Request('/admin/ajax', 'tester');
-		$oRequest->addValue('val', 'Hello World By Value!');
 		$oAjax->registerRequest($oRequest);
 		
 		return $oAjax->getOutput();

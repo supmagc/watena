@@ -28,19 +28,16 @@ class IPCO_Compiled_d__www_watena_libs_admin_templates_admin_main_tpl extends IP
 ));
 			$_ob []= '' . '" rel="stylesheet" type="text/css" media="all" />
 ';
-			parent::processMethod('addJavascriptLink', array(parent::processMethod('url', array('/theme/admin/js/overlib.js'), null)), null);
-			$_ob []= '' . '
-';
-			parent::processMethod('addJavascriptLink', array(parent::processMethod('url', array('/theme/admin/js/overlib_shadow.js'), null)), null);
-			$_ob []= '' . '
-';
 			parent::processMethod('addJavascriptLink', array(parent::processMethod('url', array('/theme/admin/js/jquery-1.10.2.min.js'), null)), null);
+			$_ob []= '' . '
+';
+			parent::processMethod('addJavascriptLink', array(parent::processMethod('url', array('/theme/default/js/ajax.js'), null)), null);
 			$_ob []= '' . '
 ';
 			parent::processMethod('addJavascriptLink', array(parent::processMethod('url', array('/theme/admin/js/watena-admin.js'), null)), null);
 			$_ob []= '' . '
 ';
-			$_ob []= '' . parent::processMember('getJavascriptLoader', null);
+			$_ob []= '' . parent::processMethod('getJavascriptLoader', array('loaderCallback'), null);
 			$_ob []= '' . '
 <title>Watena - ';
 			$_ob []= '' . parent::processMember('getTitle', null);

@@ -23,7 +23,7 @@ class AJAX_Request extends Object {
 	
 	private $m_sPath;
 	private $m_sTrigger;
-	private $m_sCallback;
+	private $m_sMethod;
 	private $m_aValues = array();
 	
 	/**
@@ -37,7 +37,7 @@ class AJAX_Request extends Object {
 	public function __construct($sPath, $sFunction) {
 		$this->m_sPath = $sPath;
 		$this->m_sTrigger = $sFunction;
-		$this->m_sCallback = $sFunction;
+		$this->m_sMethod = $sFunction;
 	}
 	
 	public function getPath() {
@@ -48,23 +48,8 @@ class AJAX_Request extends Object {
 		return $this->m_sTrigger;
 	}
 	
-	public function getPhpCallback() {
-		return $this->m_sCallback;
-	}
-	
-	/**
-	 * Set a static value to be processed by this request
-	 *
-	 * @param string $sName
-	 * @param string $sValue
-	 */
-	public function addValue($sName, $sValue) {
-		if(Encoding::regMatch('^[_a-zA-Z][a-zA-Z0-9_]+$', $sName)) {
-			$this->m_aValues[$sName] = $sValue;
-		}
-		else {
-			$this->getLogger()->warning('AJAX_Request invalid value-name \'{name}\'.', array('name' => $sName));
-		}
+	public function getPhpMethod() {
+		return $this->m_sMethod;
 	}
 	
 	/**
@@ -72,11 +57,11 @@ class AJAX_Request extends Object {
 	 *
 	 * @return string
 	 */
-	public function getOutput() {
+	public function getOutput($bDebug) {
 		$sRet = "function {$this->getJavascriptTrigger()}() {AJAX(";
 		$sRet .= "'" . rawurlencode(Request::make($this->getPath())->toString()) . "', ";
-		$sRet .= "'" . $this->getPhpCallback() . "', ";
-		$sRet .= "arguments, '" . rawurlencode(json_encode($this->m_aValues)) . "'";
+		$sRet .= "'" . $this->getPhpMethod() . "', ";
+		$sRet .= "arguments, " . ($bDebug ? '1' : '0');
 		$sRet .= ");}";
 		return $sRet;
 	}

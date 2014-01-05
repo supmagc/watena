@@ -4,22 +4,28 @@ var AJAX = (function() {
 	this.m_oRequest = null;
 	
 	// Show error
-	this.error = function(sMessage) {
-		alert(sMessage);
+	this.error = function(sMessage, sContent, bDebug) {
+		if(true || bDebug) {
+			console.log(sMessage);
+			if(sContent.length > 0) {
+			    oWin = window.open('', '', 'width=800,height=400,location=0,resizeable=1,scrollbars=1');
+			    oWin.document.write('<title>'+sMessage+'</title>'+sContent);
+			    oWin.document.close();
+			}
+		}
 	};
 	
 	// The customised ajax object
-	this.request = function(oRequest, sUrl, sPhpCallback, aArgs, sValues) {
+	this.request = function(oRequest, sUrl, sMethod, aArguments, bDebug) {
 		this.m_oRequest = oRequest;
 		this.m_sUrl = sUrl;
-		this.m_sPhpCallback = sPhpCallback;
-		this.m_aArgs = aArgs;
-		this.m_sValues = sValues;
+		this.m_bDebug = bDebug;
+		this.m_sMethod = sMethod;
+		this.m_aArguments = aArguments;
 		
 		this.getSendString = function() {
-			var sTmp = 'args='+encodeURIComponent(JSON.stringify(this.m_aArgs));
-			sTmp += '&callback='+this.m_sPhpCallback;
-			sTmp += '&values='+this.m_sValues;
+			var sTmp = 'arguments='+encodeURIComponent(JSON.stringify(this.m_aArguments));
+			sTmp += '&method='+this.m_sMethod;
 			return sTmp;
 		};
 	};
@@ -49,6 +55,7 @@ var AJAX = (function() {
 		if(m_oRequest == null && m_aRequest.length > 0) {
 			var oRequest = m_aRequest.shift();
 			m_oRequest = oRequest.m_oRequest;
+			m_oRequest.debug = oRequest.m_bDebug;
 			m_oRequest.open("POST", decodeURIComponent(oRequest.m_sUrl), true);
 			m_oRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 			m_oRequest.setRequestHeader("Connection", "close");
@@ -63,25 +70,41 @@ var AJAX = (function() {
 		if(this != null && this == m_oRequest && this.readyState == 4) {
 			if(this.status == 200) {
 				try {
-					eval(this.responseText);
+					oData = JSON.parse(this.responseText);
+					if(oData.code != undefined) {
+						if(oData.code == 1) {
+							error("Error when processing the ajax request on the server: (code:" + oData.error_code + ")", oData.error_message, this.debug);
+						}
+						else if(oData.code == 2) {
+							try {
+								eval(oData.data);
+							}
+							catch(err) {
+								error("Error evaluating the ajax-response: " + err, oData.data, this.debug);
+							}
+						}
+					}
+					else {
+						error("Error reading the ajax-response as no return-code could be found.", '', this.debug);
+					}
 				}
 				catch(err) {
-					error("Error parsing response: " + err + "\n" + this.responseText);
+					error("Error parsing an ajax-response as json: " + err, this.responseText, this.debug);
 				}
 	    	}
 	  		else {
-	    		error("Problem retrieving data: " + this.statusText);
+	    		error("Error retrieving an ajax-response: " + this.statusText, '', this.debug);
 	    	}
 	    	m_oRequest = null;
 	  		dispatch();
 	  	}
 	};
 	
-	return function(sUrl, sPhpCallback, aArgs, sValues) {
+	return function(sUrl, sMethod, aArguments, bDebug) {
 		console.log(request);
 		var oRequest = createRequest();
 		if(oRequest) {
-			m_aRequest.push(new request(oRequest, sUrl, sPhpCallback, aArgs, sValues));
+			m_aRequest.push(new request(oRequest, sUrl, sMethod, aArguments, bDebug));
 			return dispatch();
 		}
 		else {
