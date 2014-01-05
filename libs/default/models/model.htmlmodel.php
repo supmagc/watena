@@ -110,19 +110,29 @@ class HtmlModel extends Model {
 		$this->m_aJavascriptLinks []= $sLink;
 	}
 	
-	public function getJavascriptLoader() {
+	public function getJavascriptLoader($sNotify) {
 		$sLinks = json_encode($this->m_aJavascriptLinks);
 		return <<<EOD
 <script language="javascript 1.8" type="text/javascript"><!--
-(function(doc, tag, src, ind, ele, tar) {
-	for(;ind<src.length;++ind) {
-		ele = doc.createElement(tag);
-		tar = doc.getElementsByTagName(tag)[0];
-		ele.async = 1;
-		ele.src = src[ind];
-		tar.parentNode.insertBefore(ele, tar)
-	}
-})(document, 'script', $sLinks);
+new (function(l, n) {
+	this.jsLoader = {
+		'links': l,
+		'notify': n,
+		'callback': function(e) {
+			if(this.loader.links.length > 0) this.loader.load(this.loader); 
+			else if(window[this.loader.notify]) window[this.loader.notify].call(window);
+		},
+		'load': function(l) {
+			ele = document.createElement('script');
+			ele.async = 1;
+			ele.loader = l;
+			ele.src = l.links.shift();
+			ele.addEventListener('load', l.callback, false);
+			document.getElementsByTagName('head')[0].appendChild(ele);
+		}
+	};
+	this.jsLoader.load(this.jsLoader);
+})($sLinks, '$sNotify');
 --></script>
 EOD;
 	}

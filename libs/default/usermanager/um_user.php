@@ -1,6 +1,6 @@
 <?php
 
-class User extends UserVerifiable {
+class User extends UserManagerVerifiable {
 	
 	private $m_aConnections = null;
 	private $m_aEmails = null;

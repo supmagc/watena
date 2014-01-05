@@ -70,7 +70,7 @@ class DbConnection {
 	}
 	
 	public function query($sQuery, array $aParams = array()) {
-		$oStatement = $this->getPdo()->prepare($sQuery);
+		$oStatement = $this->m_oConnection->prepare($sQuery);
 		$oStatement->execute($aParams);
 		return $oStatement;
 	}
@@ -80,22 +80,22 @@ class DbConnection {
 		$sPartB = implode(', ', array_map(create_function('$a', 'return "@$a";'), $aReturns));
 		$sPartC = implode(', ', array_map(create_function('$a', 'return "@$a AS `$a`";'), $aReturns));
 		$sQuery = "CALL `$sName`(".$sPartA.(Encoding::Length($sPartA) > 0 && Encoding::Length($sPartB) > 0 ? ', ' : '').$sPartB.")";
-		$oStatement = System::PDO()->prepare($sQuery);
+		$oStatement = $this->m_oConnection->prepare($sQuery);
 		$oStatement->execute($aParams);
-		return $this->getPdo()->query("SELECT $sPartC");
+		return $this->m_oConnection->query("SELECT $sPartC");
 	}
 	
 	public function select($sTable, $mId = null, $mIdField = 'ID', $sConcatenation = 'AND') {
 		if($mId !== null || (is_array($mId) && count($mId) > 0)) {
 			list($sWhere, $aWheres) = $this->buildWhere($mId, $mIdField, $sConcatenation);
 			$sQuery = "SELECT * FROM `$sTable` WHERE $sWhere";
-			$oStatement = $this->getPdo()->prepare($sQuery);
+			$oStatement = $this->m_oConnection->prepare($sQuery);
 			$oStatement->execute($aWheres);
 			return $oStatement;
 		}
 		else {
 			$sQuery = "SELECT * FROM `$sTable`";
-			$oStatement = $this->getPdo()->prepare($sQuery);
+			$oStatement = $this->m_oConnection->prepare($sQuery);
 			$oStatement->execute();
 			return $oStatement;
 		}
@@ -107,17 +107,17 @@ class DbConnection {
 		$sFields = implode(', ', array_map(create_function('$a', 'return "`$a`";'), $aFields));
 		$sValues = implode(', ', array_map(create_function('$a', 'return ":$a";'), $aFields));
 		$sQuery = 'INSERT INTO `'.$sTable.'` ('.$sFields.') VALUES ('.$sValues.')';
-		if($bTransaction) $this->getPdo()->beginTransaction();
+		if($bTransaction) $this->m_oConnection->beginTransaction();
 		try {
-			$oStatement = $this->getPdo()->prepare($sQuery);
+			$oStatement = $this->m_oConnection->prepare($sQuery);
 			$oStatement->execute($aData);
 			$mId = $this->getPdo()->lastInsertId();
 		}
 		catch(PDOException $e) {
-			if($bTransaction) $this->getPdo()->rollBack();
+			if($bTransaction) $this->m_oConnection->rollBack();
 			throw $e;
 		}
-		if($bTransaction) $this->getPdo()->commit();
+		if($bTransaction) $this->m_oConnection->commit();
 		return $mId;
 	}
 	
@@ -125,14 +125,14 @@ class DbConnection {
 		list($sWhere, $aWheres) = $this->buildWhere($mId, $mIdField, $sConcatenation);
 		$sUpdates = implode(', ', array_map(create_function('$a', 'return "`$a` = :$a";'), array_keys($aData)));
 		$sQuery = "UPDATE `$sTable` SET ".$sUpdates." WHERE $sWhere";
-		$oStatement = $this->getPdo()->prepare($sQuery);
+		$oStatement = $this->m_oConnection->prepare($sQuery);
 		return $oStatement->execute(array_merge($aData, $aWheres));
 	}
 	
 	public function delete($sTable, $mId, $mIdField = 'ID', $sConcatenation = 'AND') {
 		list($sWhere, $aWheres) = $this->buildWhere($mId, $mIdField, $sConcatenation);
 		$sQuery = "DELETE FROM `$sTable` WHERE $sWhere";
-		$oStatement = $this->getPdo()->prepare($sQuery);
+		$oStatement = $this->m_oConnection->prepare($sQuery);
 		return $oStatement->execute($aWheres);
 	}
 

@@ -59,11 +59,20 @@ class Callback extends Object {
 	
 	public static function loadFromRequest() {
 		$aData = array();
+		$aArguments = array();
 		if(isset($_GET['method'])) $aData = $_GET;
 		if(isset($_POST['method'])) $aData = $_POST;
 		
 		if(!empty($aData)) {
 			$sMethod = $aData['method'];
+			
+			if(isset($aData['arguments'])) {
+				$aArguments = $aData['arguments'];
+			}
+			else if(isset($aData['args'])) {
+				$aArguments = $aData['args'];
+			}
+			
 			return new Callback($sMethod);
 		}
 		else {

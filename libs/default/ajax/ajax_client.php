@@ -1,9 +1,9 @@
 <?php
 
 /**
- * Client TMX class that processes all registered requests
+ * Client AJAX class that processes all registered requests
  *
- * @author Voet Jelle - ToMo-design
+ * @author Voet Jelle
  * @version 1.0.0 beta
  */
 class AJAX_Client {
@@ -12,12 +12,13 @@ class AJAX_Client {
 	private $m_sJavascriptLink;
 	
 	/**
-	 * Create a new client instance
+	 * Create a new client instance.
+	 * If no javascriptlink is provided, you take responsability to load the ajax.js file.
+	 * If indeed a links is provided, make sure it's absolute, no more processing will be done.
 	 *
-	 * @param string $sJSFile tha file with all the TMX-javascript code
-	 * @param string $sPrefix the prefix that will be used on the JS-funcrions
+	 * @param string $sJavascriptLink
 	 */
-	public function __construct($sJavascriptLink = '/theme/default/js/ajax.js') {
+	public function __construct($sJavascriptLink = null) {
 		$this->m_sJavascriptLink = $sJavascriptLink;
 	}
 	
@@ -30,6 +31,11 @@ class AJAX_Client {
 		if(!in_array($oRequest, $this->m_aRequests)) $this->m_aRequests []= $oRequest;
 	}
 	
+	/**
+	 * Return the javascript-links passed to the constructor.
+	 * 
+	 * @return string
+	 */
 	public function getJavascriptLink() {
 		return $this->m_sJavascriptLink;
 	}
@@ -41,7 +47,9 @@ class AJAX_Client {
 	 * @return string
 	 */
 	public function getOutput() {
-		$sRet = <<<EOT
+		$sRet = '';
+		if(!empty($this->m_sJavascriptLink))
+			$sRet .= <<<EOT
 <script language="javascript 1.8" type="text/javascript"><!--
 window['ajax'] = window['ajax'] || (function(doc, tag, src, ele, tar) {
 	ele = doc.createElement(tag);
@@ -52,7 +60,6 @@ window['ajax'] = window['ajax'] || (function(doc, tag, src, ele, tar) {
 })(document, 'script', '{$this->getJavascriptLink()}');
 --></script>
 EOT;
-//		$sRet .= '<script language="javascript 1.8" type="text/javascript" src="'.$this->m_sJSFile.'"></script><script language="javascript 1.8" type="text/javascript">TMX_sPrefix = "'.$this->m_sPrefix.'"' . "\n";
 		$sRet .= '<script language="javascript 1.8" type="text/javascript"><!--';
 		foreach($this->m_aRequests as $oReq) {
 			$sRet .= "\n" . $oReq->getOutput(false);

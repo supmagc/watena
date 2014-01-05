@@ -4,6 +4,10 @@ require_plugin('DatabaseManager');
 require_includeonce(dirname(__FILE__) . '/../usermanager/index.php');
 
 class UserManager extends Plugin {
+
+	const PERMISSION_UNDEFINED = 0;
+	const PERMISSION_GRANTED = 1;
+	const PERMISSION_REVOKED = 2;
 	
 	private $m_aConnectionProviders = null;
 	private $m_oDatabaseConnection = null;
@@ -114,11 +118,15 @@ class UserManager extends Plugin {
 	}
 	
 	public static function isValidEmail($sEmail) {
-		return is_email($sEmail);
+		return is_email($sEmail) && Encoding::length($sEmail) <= 128;
 	}
 	
 	public static function isValidPassword($sPassword) {
 		return Encoding::regMatch(self::getPasswordFormat(), $sPassword);
+	}
+	
+	public static function isValidPermission($nPermission) {
+		return $nPermission >= 0 && $nPermission <= 2;
 	}
 	
 	/**
