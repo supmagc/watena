@@ -26,3 +26,5 @@ class UserManagerVerifiable extends DbObject {
 		$this->setDataValue('verified', 0);
 	}
 }
+
+?>

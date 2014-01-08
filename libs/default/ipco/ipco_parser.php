@@ -231,8 +231,8 @@ class IPCO_Parser extends IPCO_Base {
 	}
 	
 	public function interpretInclude($sName = null) {
-		$sIncludeFilePath = $this->getIpco()->getCallbacks()->getFilePathForTemplate($sName);
-		$this->m_oRegion->addLine(IPCO_ParserSettings::getCallInclude($sIncludeFilePath));
+		//$sIncludeFilePath = $this->getIpco()->getCallbacks()->getFilePathForTemplate($sName);
+		$this->m_oRegion->addLine(IPCO_ParserSettings::getCallInclude($sName));
 	}
 	
 	public function interpretRegion(array $aParts) {

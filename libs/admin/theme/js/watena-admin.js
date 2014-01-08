@@ -4,5 +4,6 @@ function loaderCallback() {
 }
 
 function displayLogin() {
-	console.log('LOGINTIME!!!');
+	$("#LoadingTable").hide();
+	$("#LoginTable").show();
 }

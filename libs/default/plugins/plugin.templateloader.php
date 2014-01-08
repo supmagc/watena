@@ -120,7 +120,12 @@ class TemplateFile extends CacheableFile implements IPCO_ICallbacks {
 	 * @return IPCO_Processor
 	 */
 	public function getTemplateClassForFilePath($sFilePath) {
-		return TemplateFile::create($sFilePath, $this->getContentParser())->createTemplateClass();
+		$oTemplateFile = TemplateFile::createTemplateFile($sFilePath, $this->getContentParser());
+		if(empty($oTemplateFile)) {
+			$this->getLogger()->error('Templatefile does not exists in any of the libraries, unable to load.', array('template' => $sFilePath), $this);
+			return null;
+		}		
+		return $oTemplateFile->createTemplateClass();
 	}
 	
 	/**
@@ -146,7 +151,7 @@ class TemplateFile extends CacheableFile implements IPCO_ICallbacks {
 	
 	/**
 	 * Create a new, or load an existing TemplateFile instance.
-	 * This is more hany version of the TemplateFile::create().
+	 * This is more handy version of the TemplateFile::create().
 	 * 
 	 * @see CacheableFile::create()
 	 * @param string $sTemplate The name of the template which we will load.
@@ -156,7 +161,6 @@ class TemplateFile extends CacheableFile implements IPCO_ICallbacks {
 	public static function createTemplateFile($sTemplate, IPCO_IContentParser $oContentParser) {
 		$sFilePath = parent::getWatena()->getContext()->getLibraryFilePath('templates', $sTemplate);
 		if(!$sFilePath) {
-			$this->getLogger()->error('Templatefile does not exists in any of the libraries, unable to load.', array('template' => $sTemplate), $this);
 			return null;
 		}
 		else {
