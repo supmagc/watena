@@ -5,6 +5,7 @@
 <meta http-equiv="Description" content="{[getDescription()]}">
 <meta http-equiv="Keywords" content="{[getKeywords()]}">
 <link href="/theme/admin/css/admin_main.css" rel="stylesheet" type="text/css" media="all" />
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,400italic,600,600italic|Exo+2:400,600,400italic,600italic' rel='stylesheet' type='text/css'>
 {{call addJavascriptLink(url('/theme/admin/js/jquery-1.10.2.min.js'))}}
 {{call addJavascriptLink(url('/theme/default/js/ajax.js'))}}
 {{call addJavascriptLink(url('/theme/admin/js/watena-admin.js'))}}
