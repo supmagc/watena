@@ -16,10 +16,25 @@
 <body>
 	<div id="nav">
 		<div id="logo">Watena</div>
-		<div class="nav-item">Main</div>
-		<div class="nav-item">Users</div>
-		<div class="nav-item">Content</div>
-		<div class="nav-item">API's</div>
+		<div class="nav-item">
+			<span class="title">Main</span>
+			<ul>
+				<li>Dashboard</li>
+				<li>System-info</li>
+				<li>Preferences</li>
+				<li>Configuration</li>
+				<li>Logout</li>
+			</ul>
+		</div>
+		<div class="nav-item">
+			<span class="title">Users</span>
+		</div>
+		<div class="nav-item">
+			<span class="title">Content</span>
+		</div>
+		<div class="nav-item">
+			<span class="title">API's</span>
+		</div>
 	</div>
 	<div id="row"></div>
 	<div id="page">

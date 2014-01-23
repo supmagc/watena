@@ -8,6 +8,8 @@ html, body {
 }
 
 div#nav {
+	position: relative;
+	z-index: 1000;
 	height: 60px;
 	background: #333;
 }
@@ -25,6 +27,7 @@ div#nav {
 	}
 	
 	div.nav-item {
+		position: relative;
 		float: left;
 		background: url(../icons/icon_white_list.png) no-repeat;
 		background-position: 0px 15px;
@@ -36,7 +39,6 @@ div#nav {
 		font-weight: 400;
 		padding-left: 40px;
 		line-height: 74px;
-		color: #FFF;
 		cursor: pointer;
 	}
 	
@@ -45,6 +47,28 @@ div#nav {
 		background-position: 0px 15px;
 		background-size: 40px 45px;
 	}
+	
+	div.nav-item span.title {
+		color: #FFF;
+	}
+	
+	div.nav-item ul {
+		display: none;
+		position: absolute;
+		left: 0px;
+		top: 10px;
+	}
+	
+	div.nav-item:hover ul {
+		display: block;
+	}
+	
+	div.nav-item ul li {
+		width: 200px;
+		height: 30px;
+		border-top: 3px #333 solid;
+		background: #FF7F00;
+	}
 
 div#logo:first-letter {
 	color: #FF7F00;
@@ -52,11 +76,15 @@ div#logo:first-letter {
 }
 
 div#row {
+	position: relative;
+	z-index: 999;
 	height: 10px;
 	background: #ff7f00;
 }
 
 div#page {
+	position: relative;
+	z-index: 0;
 	background: #333 url(../bg.png) fixed;
 	position: absolute;
 	top: 70px;
