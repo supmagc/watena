@@ -55,8 +55,9 @@ div#nav {
 	div.nav-item ul {
 		display: none;
 		position: absolute;
-		left: 0px;
-		top: 10px;
+		margin-top: 40px;
+		left: -70px;
+		top: 30px;
 	}
 	
 	div.nav-item:hover ul {
@@ -64,10 +65,17 @@ div#nav {
 	}
 	
 	div.nav-item ul li {
-		width: 200px;
+		padding: 5px 10px;
+		display: block;
+		width: 210px;
 		height: 30px;
+		list-style: none;
 		border-top: 3px #333 solid;
 		background: #FF7F00;
+		line-height: 30px;
+		text-align: right;
+		font-size: 20px;
+		color: #FFF;
 	}
 
 div#logo:first-letter {
