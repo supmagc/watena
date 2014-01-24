@@ -28,6 +28,11 @@
 		</div>
 		<div class="nav-item">
 			<span class="title">Users</span>
+			<ul>
+				<li>Users</li>
+				<li>Permissions</li>
+				<li>Groups</li>
+			</ul>
 		</div>
 		<div class="nav-item">
 			<span class="title">Content</span>
