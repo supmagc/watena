@@ -53,11 +53,13 @@ div#nav {
 	}
 	
 	div.nav-item ul {
+		padding: 0px;
 		display: none;
 		position: absolute;
-		margin-top: 40px;
-		left: -70px;
-		top: 30px;
+		left: -10px;
+		top: 27px;
+		background: url(../submenu.png) no-repeat;
+		background-position: 18px 20px;
 	}
 	
 	div.nav-item:hover ul {
@@ -67,15 +69,29 @@ div#nav {
 	div.nav-item ul li {
 		padding: 5px 10px;
 		display: block;
-		width: 210px;
-		height: 30px;
+		width: 190px;
+		height: 25px;
 		list-style: none;
-		border-top: 3px #333 solid;
-		background: #FF7F00;
-		line-height: 30px;
+		border-top: 2px #333 solid;
+		background: #FF7F00 url(../icons/icon_white_globe.png) no-repeat;
+		background-size: 22px;
+		background-position: 17px 7px;
+		line-height: 25px;
 		text-align: right;
-		font-size: 20px;
+		font-size: 16px;
 		color: #FFF;
+		cursor: pointer;
+	}
+	
+	div.nav-item ul li:hover {
+		background: #F07000 url(../icons/icon_black_globe.png) no-repeat;
+		background-size: 22px;
+		background-position: 17px 7px;
+	}
+	
+	div.nav-item ul li:first-child {
+		margin-top: 30px;
+		border-top: none;
 	}
 
 div#logo:first-letter {
