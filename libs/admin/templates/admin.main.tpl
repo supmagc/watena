@@ -36,9 +36,20 @@
 		</div>
 		<div class="nav-item">
 			<span class="title">Content</span>
+			<ul>
+				<li>Pages</li>
+				<li>Images</li>
+				<li>Quotes</li>
+				<li>Templates</li>
+				<li>Styles</li>
+			</ul>
 		</div>
 		<div class="nav-item">
 			<span class="title">API's</span>
+			<ul>
+				<li>Trakt DVD's</li>
+				<li>Test-Realm</li>
+			</ul>
 		</div>
 	</div>
 	<div id="row"></div>
