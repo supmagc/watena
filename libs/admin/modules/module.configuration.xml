@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module>
+	<menu name="Configuration">
+		<category>Main</category>
+		<description>Global information about the system.</description>
+		<defaulttab>Version</defaulttab>
+		<tab name="Configuration">
+			<description>Versioning details about the system.</description>
+			<content type="text">UNDER CONSTRUCTION</content>
+		</tab>
+	</menu>
+</module>
