@@ -8,9 +8,5 @@
 			<description>Home page</description>
 			<content type="text">UNDER CONSTRUCTION</content>
 		</tab>
-		<tab name="Php-Info">
-			<description>Show the default phpinfo() output for the current system.</description>
-			<content type="php">phpinfo()</content>
-		</tab>
 	</menu>
 </module>

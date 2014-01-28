@@ -16,16 +16,16 @@
 <body>
 	<div id="nav">
 		<div id="logo">Watena</div>
+		{{foreach getCategories()}}
 		<div class="nav-item">
-			<span class="title">Main</span>
+			<span class="title">{[index]}</span>
 			<ul>
-				<li>Dashboard</li>
-				<li>System-info</li>
-				<li>Preferences</li>
-				<li>Configuration</li>
-				<li>Logout</li>
+				{{foreach value}}
+				<li>{[index]}</li>
+				{{end}}
 			</ul>
 		</div>
+		{{end}}
 		<div class="nav-item">
 			<span class="title">Users</span>
 			<ul>

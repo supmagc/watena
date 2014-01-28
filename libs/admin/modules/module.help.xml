@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module>
 	<menu name="About">
-		<category>Help</category>
+		<category>Main</category>
 		<description>Global information about the system.</description>
 		<defaulttab>Version</defaulttab>
 		<tab name="Version">
@@ -9,6 +9,10 @@
 			<content type="text">UNDER CONSTRUCTION</content>
 		</tab>
 		<tab name="Modules">
+			<description>Show the default phpinfo() output for the current system.</description>
+			<content type="php">phpinfo()</content>
+		</tab>
+		<tab name="Php-Info">
 			<description>Show the default phpinfo() output for the current system.</description>
 			<content type="php">phpinfo()</content>
 		</tab>
