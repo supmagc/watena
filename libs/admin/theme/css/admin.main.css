@@ -5,25 +5,56 @@ html, body {
 	height: 100%;
 	margin: 0px;
 	padding: 0px;
+	background-color: #333;
+	font-family: 'Droid Sans', sans-serif;
+	font-weight: 400;
+	font-size: 14px;
+	color: #555;
+	line-height: 18px;
+	letter-spacing: 1px;
+}
+
+div#nav, div#tabs, div.title {
+	font-family: 'Ubuntu', sans-serif;
+	font-weight: 400;
+}
+
+div#tabs, div#module, div#content {
+	background: rgba(255, 255, 255, 0.9);
+	border: #6b3500 1px solid;
+	padding: 14px 19px;
+}
+
+div.title {
+	color: #FF7F00;
+	line-height: 20px;
+	font-size: 30px;
+	border-bottom: #FF7F00 1px solid;
+	font-variant: small-caps;
+	padding-bottom: 10px;
+	margin-bottom: 10px;
 }
 
 div#nav {
 	position: relative;
 	z-index: 1000;
 	height: 60px;
-	background: #333;
 }
 
 	div#logo {
 		float: left;
 		width: 200px;
 		height: 60px;
-		font-family: 'Open Sans', sans-serif;
 		font-size: 30px;
-		font-weight: 600;
+		font-weight: 500;
 		color: #FFF;
 		padding-left: 10px;
 		line-height: 60px;
+	}
+
+	div#logo:first-letter {
+		color: #FF7F00;
+		font-size: 42px;
 	}
 	
 	div.nav-item {
@@ -34,9 +65,7 @@ div#nav {
 		background-size: 40px 45px;
 		width: 140px;
 		height: 60px;
-		font-family: 'Open Sans', sans-serif;
 		font-size: 26px;
-		font-weight: 400;
 		padding-left: 40px;
 		line-height: 74px;
 		cursor: pointer;
@@ -65,39 +94,34 @@ div#nav {
 	div.nav-item:hover ul {
 		display: block;
 	}
-	
-	div.nav-item ul li {
-		padding: 5px 10px;
-		display: block;
-		width: 190px;
-		height: 25px;
-		list-style: none;
-		border-top: 2px #333 solid;
-		background: #FF7F00 url(../icons/icon_white_globe.png) no-repeat;
-		background-size: 22px;
-		background-position: 17px 7px;
-		line-height: 25px;
-		text-align: right;
-		font-size: 16px;
-		color: #FFF;
-		cursor: pointer;
-	}
-	
-	div.nav-item ul li:hover {
-		background: #F07000 url(../icons/icon_black_globe.png) no-repeat;
-		background-size: 22px;
-		background-position: 17px 7px;
-	}
-	
-	div.nav-item ul li:first-child {
-		margin-top: 30px;
-		border-top: none;
-	}
-
-div#logo:first-letter {
-	color: #FF7F00;
-	font-size: 42px;
-}
+		
+		div.nav-item ul li {
+			padding: 5px 10px;
+			display: block;
+			width: 190px;
+			height: 25px;
+			list-style: none;
+			border-top: 2px #333 solid;
+			background: #FF7F00 url(../icons/icon_white_globe.png) no-repeat;
+			background-size: 22px;
+			background-position: 17px 7px;
+			line-height: 27px;
+			text-align: right;
+			font-size: 16px;
+			color: #FFF;
+			cursor: pointer;
+		}
+		
+		div.nav-item ul li:hover {
+			background: #FF7F00 url(../icons/icon_black_globe.png) no-repeat;
+			background-size: 22px;
+			background-position: 17px 7px;
+		}
+		
+		div.nav-item ul li:first-child {
+			margin-top: 30px;
+			border-top: none;
+		}
 
 div#row {
 	position: relative;
@@ -119,34 +143,54 @@ div#page {
 	
 	div#left {
 		position: absolute;
-		width: 230px;
+		width: 380px;
 	}
 	
 		div#tabs {
 			margin: 20px 0px 0px 90px;
-			width: 230px;
-			height: 200px;
+			width: 250px;
 		}
+		
+			div#tabs ul {
+				width: 250px;
+				padding: 0px;
+				margin: 0px;
+			}
+			
+				div#tabs ul li {
+					list-style-type: none;
+					background: url(../icons/icon_black_chevron-right.png) no-repeat;
+					background-size: 30px;
+					margin-top: 10px;
+					font-size: 22px;
+					font-weight: 300;
+					text-align: right;
+					line-height: 28px;
+					cursor: pointer;
+				}
+				
+				div#tabs ul li:hover {
+					background: url(../icons/icon_orange_chevron-right.png) no-repeat;
+					background-size: 30px;
+				}
 		
 		div#module {
 			margin: 20px 0px 0px 90px;
-			width: 230px;
-			height: 200px;
+			width: 250px;
 		}
 		
 		div#copy {
-			font-family: 'Exo 2', sans-serif;
 			font-size: 12px;
 			margin: 10px 0px 0px 90px;
-			width: 230px;
-			color: #333;
+			width: 280px;
+			color: #222;
 			text-align: center;
 		}
 	
 	div#right {
 		position: absolute;
-		left: 340px;
-		top: 00px;
+		left: 400px;
+		top: 0px;
 		right: 0px;
 		bottom: 0px;
 		overflow: auto;
@@ -155,8 +199,3 @@ div#page {
 		div#content {
 			margin: 20px 90px 20px 0px;
 		}
-
-div#tabs, div#module, div#content {
-	background: rgba(255, 255, 255, 0.8);
-	border: #6b3500 1px solid;
-}
