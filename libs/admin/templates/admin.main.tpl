@@ -55,7 +55,7 @@
 		</div>
 		<div id="search">
 			<form>
-				<input type="text" name="search_txt" />
+				<input type="text" name="search_txt" value="Search Watena" />
 				<input type="submit" name="search_sub" />
 			</form>
 		</div>
