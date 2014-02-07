@@ -1,0 +1,60 @@
+@CHARSET "UTF-8";
+
+div.overlay {
+	background: rgba(0, 0, 0, 0.7);
+	position: absolute;
+	z-index: 0;
+	top: 70px;
+	right: 0px;
+	bottom: 0px;
+	left: 0px;
+}
+
+	div.overlay_container {
+		width: 420px;
+		height: 300px;
+		margin: auto;
+		background: #FFF;
+		position: absolute;
+		top: 0px;
+		right: 0px;
+		bottom: 0px;
+		left: 0px;
+	}
+	
+		div.overlay_header, div.overlay_footer {
+			background: #FF7F00;
+			height: 40px;
+			position: absolute;
+			left: 10px;
+			right: 10px;
+			text-align: center;
+			line-height: 40px;
+			font-weight: 600;
+			font-size: 24px;
+			color: #FFF;
+		}
+		
+		div.overlay_header {
+			border-top-left-radius: 5px;
+			border-top-right-radius: 5px;
+			top: 10px;
+		}
+		
+		div.overlay_content {
+			position: absolute;
+			bottom: 50px;
+			left: 15px;
+			right: 15px;
+			top: 50px;
+		}
+		
+		div.overlay_footer {
+			border-bottom-left-radius: 5px;
+			border-bottom-right-radius: 5px;
+			bottom: 10px;
+		}
+
+div#overlay_login {
+	
+}
