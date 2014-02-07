@@ -3,8 +3,6 @@
 html, body {
 	width: 100%;
 	height: 100%;
-	margin: 0px;
-	padding: 0px;
 	background-color: #333;
 	font-family: 'Droid Sans', sans-serif;
 	font-weight: 400;
@@ -13,6 +11,12 @@ html, body {
 	line-height: 18px;
 	letter-spacing: 1px;
 }
+
+div, html, body {
+	margin: 0px;
+	padding: 0px;	
+}
+
 
 div#nav, div#tabs, div.title {
 	font-family: 'Ubuntu', sans-serif;
@@ -127,7 +131,7 @@ div#nav {
 		float: right;
 		margin: 12px;
 		width: 300px;
-		height: 34px;
+		height: 36px;
 		background: #444;
 	}
 		
@@ -144,6 +148,18 @@ div#nav {
 		}
 		
 		div#search [type="submit"] {
+			background: url(../icons/icon_orange_search.png);
+			background-size: 32px;
+			width: 32px;
+			height: 32px;
+			border: none;
+			margin: 0px;
+			cursor: pointer;
+		}
+		
+		div#search [type="submit"]:hover {
+			background: url(../icons/icon_white_search.png);
+			background-size: 32px;
 		}
 
 div#row {
@@ -154,10 +170,9 @@ div#row {
 }
 
 div#page {
-	position: relative;
-	z-index: 0;
 	background: #333 url(../bg.png) fixed;
 	position: absolute;
+	z-index: 0;
 	top: 70px;
 	right: 0px;
 	bottom: 0px;

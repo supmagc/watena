@@ -101,7 +101,6 @@ var AJAX = (function() {
 	};
 	
 	return function(sUrl, sMethod, aArguments, bDebug) {
-		console.log(request);
 		var oRequest = createRequest();
 		if(oRequest) {
 			m_aRequest.push(new request(oRequest, sUrl, sMethod, aArguments, bDebug));
