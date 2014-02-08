@@ -15,7 +15,14 @@ function loaderCallback() {
 		if(this.value == "")
 			this.value = oWatena.sSearchDefault;
 	});
+	
+	$(".overlay_close").click(function() {
+		$(".overlay").hide();
+	});
+	
+	displayLogin();
 }
 
 function displayLogin() {
+	$("#overlay_login").show();
 }
