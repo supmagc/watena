@@ -11,6 +11,7 @@ div.overlay {
 }
 
 	div.overlay_container {
+		box-shadow: 6px 8px 2px rgba(5, 5, 5, 0.8);
 		width: 420px;
 		height: 300px;
 		margin: auto;
@@ -38,8 +39,18 @@ div.overlay {
 		div.overlay_header {
 			border-top-left-radius: 5px;
 			border-top-right-radius: 5px;
+			border-bottom: 3px solid #666;
 			top: 10px;
 		}
+		
+			img.overlay_close {
+				position: absolute;
+				top: 4px;
+				right: 4px;
+				width: 32px;
+				height: 32px;
+				cursor: pointer;
+			}
 		
 		div.overlay_content {
 			position: absolute;
@@ -52,6 +63,7 @@ div.overlay {
 		div.overlay_footer {
 			border-bottom-left-radius: 5px;
 			border-bottom-right-radius: 5px;
+			border-top: 3px solid #666;
 			bottom: 10px;
 		}
 
