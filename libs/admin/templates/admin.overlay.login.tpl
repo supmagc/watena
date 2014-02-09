@@ -6,10 +6,16 @@
 		</div>
 		<div class="overlay_content content">
 			<form method="post">
-				<label for="login_usn">Username</label><br />
-				<input type="text" name="login_usn" /><br />
-				<label for="login_usn">Password</label><br />
-				<input type="password" name="login_pwd" />
+				<p>
+					<label for="login_usn">Username</label><br />
+					<input id="login_usn" name="login_usn" type="text" />
+					<span>&nbsp;</span>
+				</p>
+				<p>
+					<label for="login_usn">Password</label><br />
+					<input id="login_pwd" name="login_pwd" type="password" />
+					<span>&nbsp;</span>
+				</p>
 			</form>
 		</div>
 		<div class="overlay_footer">Submit</div>

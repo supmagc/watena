@@ -25,4 +25,5 @@ function loaderCallback() {
 
 function displayLogin() {
 	$("#overlay_login").show();
+	$("#login_usn").focus();
 }
