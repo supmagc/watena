@@ -103,5 +103,8 @@
 		</div>
 	</div>
 	{{include admin.overlay.login.tpl}}
+	{{include admin.overlay.error.tpl}}
+	{{include admin.overlay.succes.tpl}}
+	{{include admin.overlay.info.tpl}}
 </body>
 </html>

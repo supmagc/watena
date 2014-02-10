@@ -20,10 +20,25 @@ function loaderCallback() {
 		$(".overlay").hide();
 	});
 	
-	displayLogin();
+	displayInfo();
 }
 
 function displayLogin() {
 	$("#overlay_login").show();
 	$("#login_usn").focus();
+}
+
+function displayError(sMessage, sTitle, cbOk) {
+	$("#overlay_error").show();
+	$("#overlay_error content").text(sMessage);
+}
+
+function displaySucces(sMessage, sTitle, cbOk) {
+	$("#overlay_succes").show();
+	$("#overlay_succes content").text(sMessage);
+}
+
+function displayInfo(sMessage, sTitle, cbOk) {
+	$("#overlay_info").show();
+	$("#overlay_info content").text(sMessage);
 }

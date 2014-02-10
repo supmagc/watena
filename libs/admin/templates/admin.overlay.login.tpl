@@ -1,7 +1,8 @@
-<div id="overlay_login" class="overlay" style="display:none";>
+<div id="overlay_login" class="overlay" style="display:none;">
 	<div class="overlay_container">
 		<div class="overlay_header">
-			<span id="overlay_title">Login</span>
+			<img class="overlay_icon" src="/theme/admin/icons/icon_white_key.png" />
+			<span id="overlay_title title">Login</span>
 			<img class="overlay_close" src="/theme/admin/icons/icon_white_squared-cross.png" />
 		</div>
 		<div class="overlay_content content">
@@ -18,6 +19,8 @@
 				</p>
 			</form>
 		</div>
-		<div class="overlay_footer">Submit</div>
+		<div class="overlay_footer">
+			<span id="overlay_button button">Login</span>
+		</div>
 	</div>
 </div>
