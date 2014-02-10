@@ -1,5 +1,6 @@
 @CHARSET "UTF-8";
 
+/* General overlay stuff */
 div.overlay {
 	background: rgba(0, 0, 0, 0.7);
 	position: absolute;
@@ -19,11 +20,6 @@ div.overlay {
 		right: 0px;
 		bottom: 0px;
 		left: 0px;
-	}
-	
-	div#overlay_login div.overlay_container {
-		width: 350px;
-		height: 280px;
 	}
 	
 		div.overlay_header, div.overlay_footer {
@@ -46,6 +42,14 @@ div.overlay {
 			top: 10px;
 		}
 		
+			img.overlay_icon {
+				position: absolute;
+				top: 4px;
+				left: 4px;
+				width: 32px;
+				height: 32px;
+			}
+		
 			img.overlay_close {
 				position: absolute;
 				top: 4px;
@@ -62,16 +66,6 @@ div.overlay {
 			right: 15px;
 			top: 50px;
 		}
-			
-			div#overlay_login input {
-				width: 318px;
-				height: 30px;
-				background: #EEE;
-				border: 1px solid #666;
-				border-radius: 3px;
-				font-size: 24px;
-				color: #666;
-			}
 		
 		div.overlay_footer {
 			border-bottom-left-radius: 5px;
@@ -80,6 +74,61 @@ div.overlay {
 			bottom: 10px;
 		}
 
-div#overlay_login {
-	
+/* Login adjustments */
+div#overlay_login div.overlay_container {
+	width: 350px;
+	height: 280px;
 }
+	
+	div#overlay_login input {
+		width: 318px;
+		height: 30px;
+		background: #EEE;
+		border: 1px solid #666;
+		border-radius: 3px;
+		font-size: 24px;
+		color: #666;
+	}
+
+/* Error ajustments */
+div#overlay_error div.overlay_container {
+	width: 900px;
+	height: 300px;
+}
+
+	div#overlay_error div.overlay_header {
+		background: #F03;
+	}
+
+	div#overlay_error div.overlay_footer {
+		background: #F03;
+	}
+
+/* Succes ajustments */
+div#overlay_succes div.overlay_container {
+	width: 900px;
+	height: 300px;
+}
+
+	div#overlay_succes div.overlay_header {
+		background: #0C5;
+	}
+
+	div#overlay_succes div.overlay_footer {
+		background: #0C5;
+	}
+	
+/* Info ajustments */
+div#overlay_info div.overlay_container {
+	width: 900px;
+	height: 300px;
+}
+
+	div#overlay_info div.overlay_header {
+		background: #26B;
+	}
+
+	div#overlay_info div.overlay_footer {
+		background: #26B;
+	}
+		

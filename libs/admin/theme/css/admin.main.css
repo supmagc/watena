@@ -22,7 +22,7 @@ body, div, span {
 }
 
 
-div#nav, div#tabs, div.title, input {
+div#nav, div#tabs, .title, .button, input {
 	font-family: 'Ubuntu', sans-serif;
 	font-weight: 400;
 }
