@@ -20,7 +20,7 @@ function loaderCallback() {
 		$(".overlay").hide();
 	});
 	
-	displayInfo();
+	displayError("You are not logged in, proceed to verify your identity!");
 }
 
 function displayLogin() {
@@ -30,15 +30,15 @@ function displayLogin() {
 
 function displayError(sMessage, sTitle, cbOk) {
 	$("#overlay_error").show();
-	$("#overlay_error content").text(sMessage);
+	$("#overlay_error .content").text(sMessage);
 }
 
 function displaySucces(sMessage, sTitle, cbOk) {
 	$("#overlay_succes").show();
-	$("#overlay_succes content").text(sMessage);
+	$("#overlay_succes .content").text(sMessage);
 }
 
 function displayInfo(sMessage, sTitle, cbOk) {
 	$("#overlay_info").show();
-	$("#overlay_info content").text(sMessage);
+	$("#overlay_info .content").text(sMessage);
 }
