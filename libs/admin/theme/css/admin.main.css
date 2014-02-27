@@ -16,24 +16,24 @@ div, html, body {
 	padding: 0px;	
 }
 
-body, div, span {
+body, div, span, .content {
 	font-family: 'Droid Sans', sans-serif;
 	font-weight: 400;
 }
 
 
-div#nav, div#tabs, .title, .button, input {
-	font-family: 'Ubuntu', sans-serif;
+div#nav, div#tabs, .title, input {
+	font-family: 'Open Sans', sans-serif;
 	font-weight: 400;
 }
 
-div#tabs, div#module, div#content {
+div#main-tabs, div#main-module, div#main-content {
 	background: rgba(255, 255, 255, 0.9);
 	border: #6b3500 1px solid;
 	padding: 14px 19px;
 }
 
-div.title {
+div#main div.title {
 	color: #FF7F00;
 	line-height: 20px;
 	font-size: 30px;
@@ -49,7 +49,7 @@ div#nav {
 	height: 60px;
 }
 
-	div#logo {
+	div#nav-logo {
 		float: left;
 		width: 200px;
 		height: 60px;
@@ -131,7 +131,7 @@ div#nav {
 			border-top: none;
 		}
 	
-	div#search {
+	div#nav-search {
 		float: right;
 		margin: 12px;
 		width: 300px;
@@ -139,7 +139,7 @@ div#nav {
 		background: #444;
 	}
 		
-		div#search [type="text"] {
+		div#nav-search [type="text"] {
 			width: 250px;
 			height: 26px;
 			border: none;
@@ -151,7 +151,7 @@ div#nav {
 			font-style: italic;
 		}
 		
-		div#search [type="submit"] {
+		div#nav-search [type="submit"] {
 			background: url(../icons/icon_orange_search.png);
 			background-size: 32px;
 			width: 32px;
@@ -161,7 +161,7 @@ div#nav {
 			cursor: pointer;
 		}
 		
-		div#search [type="submit"]:hover {
+		div#nav-search [type="submit"]:hover {
 			background: url(../icons/icon_white_search.png);
 			background-size: 32px;
 		}
@@ -173,7 +173,7 @@ div#row {
 	background: #ff7f00;
 }
 
-div#page {
+div#main {
 	background: #333 url(../bg.png) fixed;
 	position: absolute;
 	z-index: 0;
@@ -183,23 +183,23 @@ div#page {
 	left: 0px;
 }
 	
-	div#left {
+	div#main-left {
 		position: absolute;
 		width: 380px;
 	}
 	
-		div#tabs {
+		div#main-tabs {
 			margin: 20px 0px 0px 90px;
 			width: 250px;
 		}
 		
-			div#tabs ul {
+			div#main-tabs ul {
 				width: 250px;
 				padding: 0px;
 				margin: 0px;
 			}
 			
-				div#tabs ul li {
+				div#main-tabs ul li {
 					list-style-type: none;
 					background: url(../icons/icon_black_chevron-right.png) no-repeat;
 					background-size: 30px;
@@ -211,17 +211,17 @@ div#page {
 					cursor: pointer;
 				}
 				
-				div#tabs ul li:hover {
+				div#main-tabs ul li:hover {
 					background: url(../icons/icon_orange_chevron-right.png) no-repeat;
 					background-size: 30px;
 				}
 		
-		div#module {
+		div#main-module {
 			margin: 20px 0px 0px 90px;
 			width: 250px;
 		}
 		
-		div#copy {
+		div#main-copy {
 			font-size: 12px;
 			margin: 10px 0px 0px 90px;
 			width: 280px;
@@ -229,7 +229,7 @@ div#page {
 			text-align: center;
 		}
 	
-	div#right {
+	div#main-right {
 		position: absolute;
 		left: 400px;
 		top: 0px;
@@ -238,6 +238,6 @@ div#page {
 		overflow: auto;
 	}
 	
-		div#content {
+		div#main-content {
 			margin: 20px 90px 20px 0px;
 		}

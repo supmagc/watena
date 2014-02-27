@@ -1,6 +1,8 @@
 
 var oWatena = new (function() {
 	this.sSearchDefault = '';
+	this.cbOverlayCross = null;
+	this.cbOverlayButton = null;
 })();
 
 function loaderCallback() {
@@ -18,9 +20,15 @@ function loaderCallback() {
 	
 	$(".overlay .close").click(function() {
 		$(".overlay").hide();
+		eval(oWatena.cbOberlayCross);
 	});
 	
-	displayError("You are not logged in, proceed to verify your identity!");
+	$(".overlay .footer").click(function() {
+		$(".overlay").hide();
+		eval(oWatena.cbOverlayButton);
+	});
+	
+	displayError("You are not logged in, proceed to verify your identity!", "Authentication Failure", "displayLogin()");
 }
 
 function displayLogin() {
@@ -30,7 +38,10 @@ function displayLogin() {
 
 function displayError(sMessage, sTitle, cbOk) {
 	$("#overlay_error").show();
-	$("#overlay_error .content").text(sMessage);
+	$("#overlay_error .center .title").text(sTitle);
+	$("#overlay_error .center .content").text(sMessage);
+	oWatena.cbOverlayCross = cbOk;
+	oWatena.cbOverlayButton = cbOk;
 }
 
 function displaySucces(sMessage, sTitle, cbOk) {

@@ -5,7 +5,7 @@
 			<span id="title">Login</span>
 			<img class="close" src="/theme/admin/icons/icon_white_squared-cross.png" />
 		</div>
-		<div class="content">
+		<div class="center">
 			<form method="post">
 				<p>
 					<label for="login_usn">Username</label><br />
@@ -20,7 +20,7 @@
 			</form>
 		</div>
 		<div class="footer">
-			<span class="button">Login</span>
+			<span class="title">Login</span>
 		</div>
 	</div>
 </div>
