@@ -9,6 +9,10 @@ class AdminCallbackModel extends Model implements IResult {
 	public function displayLogin() {
 		$this->m_sResult = 'displayLogin();';
 	}
+
+	public function displayError($sMessage, $sTitle) {
+		$this->m_sResult = 'displayError();';
+	}
 	
 	public function displayContent(AdminContent $oContent) {
 		

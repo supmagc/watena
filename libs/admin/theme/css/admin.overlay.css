@@ -39,6 +39,7 @@ div.overlay {
 			border-top-left-radius: 5px;
 			border-top-right-radius: 5px;
 			border-bottom: 3px solid #666;
+			font-size: 28px;
 			top: 10px;
 		}
 		
@@ -59,19 +60,36 @@ div.overlay {
 				cursor: pointer;
 			}
 		
-		div.overlay .content {
+		div.overlay .center {
 			position: absolute;
 			bottom: 50px;
-			left: 15px;
-			right: 15px;
+			left: 30px;
+			right: 30px;
 			top: 50px;
 		}
+		
+			div.overlay .center .title {
+				font-weight: 300;
+				font-size: 36px;
+				margin-top: 30px;
+				color: #F03;
+			}
+		
+			div.overlay .center .content {
+				margin-top: 10px;
+			}
 		
 		div.overlay .footer {
 			border-bottom-left-radius: 5px;
 			border-bottom-right-radius: 5px;
 			border-top: 3px solid #666;
 			bottom: 10px;
+			cursor: pointer;
+			font-size: 28px;
+		}
+		
+		div.overlay .footer:hover {
+			text-decoration: underline;
 		}
 
 /* Login adjustments */
@@ -81,7 +99,7 @@ div#overlay_login .container {
 }
 	
 	div#overlay_login input {
-		width: 318px;
+		width: 288px;
 		height: 30px;
 		background: #EEE;
 		border: 1px solid #666;

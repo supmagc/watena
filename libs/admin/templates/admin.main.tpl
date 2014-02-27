@@ -7,8 +7,8 @@
 	<title>Watena - {[getTitle()]}</title>
 	<link href="/theme/admin/css/admin.main.css" rel="stylesheet" type="text/css" media="all" />
 	<link href="/theme/admin/css/admin.overlay.css" rel="stylesheet" type="text/css" media="all" />
-	<link href='http://fonts.googleapis.com/css?family=Ubuntu:400,300,500|Droid+Sans:400,700' rel='stylesheet' type='text/css'>
-	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600|Exo+2:200,400,200italic,400italic' rel='stylesheet' type='text/css'>
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600|Droid+Sans:400,700' rel='stylesheet' type='text/css'>
+	<link href='http://fonts.googleapis.com/css?family=Ubuntu:400,300,500|Exo+2:200,400,200italic,400italic' rel='stylesheet' type='text/css'>
 	{{call addJavascriptLink(url('/theme/admin/js/jquery-1.10.2.min.js'))}}
 	{{call addJavascriptLink(url('/theme/default/js/ajax.js'))}}
 	{{call addJavascriptLink(url('/theme/admin/js/watena-admin.js'))}}
@@ -17,7 +17,7 @@
 </head>
 <body>
 	<div id="nav">
-		<div id="logo">Watena</div>
+		<div id="nav-logo">Watena</div>
 		{{foreach getCategories()}}
 		<div class="nav-item">
 			<span class="title">{[index]}</span>
@@ -54,7 +54,7 @@
 				<li>Test-Realm</li>
 			</ul>
 		</div>
-		<div id="search">
+		<div id="nav-search">
 			<form>
 				<input id="search_txt" name="search_txt" type="text" value="Search Watena" />
 				<input id="search_sub" name="search_sub" type="submit" value="" />
@@ -62,9 +62,9 @@
 		</div>
 	</div>
 	<div id="row"></div>
-	<div id="page">
-		<div id="left">
-			<div id="tabs">
+	<div id="main">
+		<div id="main-left">
+			<div id="main-tabs">
 				<div class="title">Dashboard</div>
 				<ul>
 					<li>Home</li>
@@ -72,17 +72,17 @@
 					<li>Session</li>
 				</ul>
 			</div>
-			<div id="module">
+			<div id="main-module">
 				<div class="title">Module-Info</div>
 				<u>Name</u>: AdminMain<br />
 				<u>Version</u>: 0.1.0 beta<br />
 				<br />
 				This module provides some basic welcome page functionality and is meant to be the default module when first visiting the backend.
 			</div>
-			<div id="copy">2013 &copy; Voet Jelle</div>
+			<div id="main-copy">2013 &copy; Voet Jelle</div>
 		</div>
-		<div id="right">
-			<div id="content">
+		<div id="main-right">
+			<div id="main-content">
 				<div class="title">Home</div>
 				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque consequat consectetur nisl nec facilisis. Vestibulum viverra dui at laoreet vulputate. Mauris elementum, ipsum eget adipiscing sollicitudin, est ante venenatis velit, id dictum turpis ligula vel arcu. Sed id velit sem. Vestibulum eu faucibus tortor. Nam cursus euismod magna, nec placerat purus faucibus a. Sed auctor augue orci, eu fringilla libero ullamcorper in. Etiam tincidunt tortor sit amet elementum aliquet. Morbi cursus lectus non tortor tincidunt, ac tincidunt urna sagittis. Integer mi ipsum, adipiscing eget nulla ac, malesuada cursus metus. Mauris non justo cursus turpis bibendum dignissim id non sapien. Sed a tortor non elit vulputate ultricies non vitae orci. Fusce sed nisi a enim aliquet dapibus. Sed sapien neque, tincidunt quis diam in, consequat convallis quam. Maecenas ullamcorper dictum tellus, quis hendrerit leo dapibus eget. Curabitur tempor dictum sapien sit amet tempor.</p>
 				<p>Vestibulum vehicula lorem tincidunt quam malesuada placerat. Nullam ut elit leo. Aliquam erat volutpat. Sed mollis nisi vitae ullamcorper tincidunt. Pellentesque malesuada lacinia justo, consectetur ultricies eros elementum vel. Mauris malesuada viverra turpis, vel rhoncus tellus tincidunt sit amet. Pellentesque malesuada sapien sodales felis adipiscing sollicitudin. Fusce arcu orci, ultrices nec venenatis nec, imperdiet a orci. Quisque ullamcorper purus et erat congue, sed vestibulum elit molestie. Curabitur ultricies augue ac adipiscing volutpat. Fusce lobortis viverra odio vel mattis. Morbi in lacus sit amet nisl luctus pharetra. Vestibulum tincidunt eleifend risus ut varius. Vivamus sit amet euismod nunc.</p>
