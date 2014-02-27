@@ -16,7 +16,7 @@ function loaderCallback() {
 			this.value = oWatena.sSearchDefault;
 	});
 	
-	$(".overlay_close").click(function() {
+	$(".overlay .close").click(function() {
 		$(".overlay").hide();
 	});
 	

@@ -11,7 +11,7 @@ div.overlay {
 	left: 0px;
 }
 
-	div.overlay_container {
+	div.overlay .container {
 		box-shadow: 6px 8px 2px rgba(5, 5, 5, 0.8);
 		margin: auto;
 		background: #FFF;
@@ -22,7 +22,7 @@ div.overlay {
 		left: 0px;
 	}
 	
-		div.overlay_header, div.overlay_footer {
+		div.overlay .header, div.overlay .footer {
 			background: #FF7F00;
 			height: 40px;
 			position: absolute;
@@ -35,14 +35,14 @@ div.overlay {
 			color: #FFF;
 		}
 		
-		div.overlay_header {
+		div.overlay .header {
 			border-top-left-radius: 5px;
 			border-top-right-radius: 5px;
 			border-bottom: 3px solid #666;
 			top: 10px;
 		}
 		
-			img.overlay_icon {
+			div.overlay .icon {
 				position: absolute;
 				top: 4px;
 				left: 4px;
@@ -50,7 +50,7 @@ div.overlay {
 				height: 32px;
 			}
 		
-			img.overlay_close {
+			div.overlay .close {
 				position: absolute;
 				top: 4px;
 				right: 4px;
@@ -59,7 +59,7 @@ div.overlay {
 				cursor: pointer;
 			}
 		
-		div.overlay_content {
+		div.overlay .content {
 			position: absolute;
 			bottom: 50px;
 			left: 15px;
@@ -67,7 +67,7 @@ div.overlay {
 			top: 50px;
 		}
 		
-		div.overlay_footer {
+		div.overlay .footer {
 			border-bottom-left-radius: 5px;
 			border-bottom-right-radius: 5px;
 			border-top: 3px solid #666;
@@ -75,7 +75,7 @@ div.overlay {
 		}
 
 /* Login adjustments */
-div#overlay_login div.overlay_container {
+div#overlay_login .container {
 	width: 350px;
 	height: 280px;
 }
@@ -91,44 +91,44 @@ div#overlay_login div.overlay_container {
 	}
 
 /* Error ajustments */
-div#overlay_error div.overlay_container {
+div#overlay_error .container {
 	width: 900px;
 	height: 300px;
 }
 
-	div#overlay_error div.overlay_header {
+	div#overlay_error .header {
 		background: #F03;
 	}
 
-	div#overlay_error div.overlay_footer {
+	div#overlay_error .footer {
 		background: #F03;
 	}
 
 /* Succes ajustments */
-div#overlay_succes div.overlay_container {
+div#overlay_succes .container {
 	width: 900px;
 	height: 300px;
 }
 
-	div#overlay_succes div.overlay_header {
+	div#overlay_succes .header {
 		background: #0C5;
 	}
 
-	div#overlay_succes div.overlay_footer {
+	div#overlay_succes .footer {
 		background: #0C5;
 	}
 	
 /* Info ajustments */
-div#overlay_info div.overlay_container {
+div#overlay_info .container {
 	width: 900px;
 	height: 300px;
 }
 
-	div#overlay_info div.overlay_header {
+	div#overlay_info .header {
 		background: #26B;
 	}
 
-	div#overlay_info div.overlay_footer {
+	div#overlay_info .footer {
 		background: #26B;
 	}
 		
