@@ -5,6 +5,10 @@ var oWatena = new (function() {
 	this.cbOverlayButton = null;
 })();
 
+function execute(sName, aParams) {
+	window[sName].apply(this, aParams);
+}
+
 function loaderCallback() {
 	requestContent();
 
