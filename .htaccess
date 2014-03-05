@@ -40,7 +40,7 @@ ErrorDocument 503 /503.error
   RewriteRule ^libs/([^/]+)/(files|theme)/ - [QSA,L,R=404]
 
   # When a url can qualify as a requests/-page, redirect it  
-  RewriteRule ^([^/]+\.(php|xml|txt|ico|png|jpg|gif)) requests/$1 [QSA,L,NC]
+  RewriteRule ^([^/]+\.(php|xml|txt|ico|png|jpg|gif|html|htm)) requests/$1 [QSA,L,NC]
 
   # Redirect the rest of requests to the index.php
   # This is the fallthrough for most requests.

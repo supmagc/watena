@@ -78,6 +78,7 @@ class WatenaLoader {
 		require_once PATH_BASE . '/class/class.webrequest.php';
 		require_once PATH_BASE . '/class/class.webresponse.php';
 		require_once PATH_BASE . '/class/class.zipfile.php';
+		require_once PATH_BASE . '/class/class.jsfunction.php';
 		require_once PATH_BASE . '/class/class.iniparser.php';
 		require_once PATH_BASE . '/class/class.mail.php';
 		require_once PATH_BASE . '/class/class.html2text.php';

@@ -13,6 +13,14 @@ class AdminCallbackModel extends Model implements IResult {
 	public function displayError($sMessage, $sTitle) {
 		$this->m_sResult = 'displayError();';
 	}
+
+	public function displayInfo($sMessage, $sTitle) {
+		$this->m_sResult = 'displayError();';
+	}
+
+	public function displaySucces($sMessage, $sTitle) {
+		$this->m_sResult = 'displayError();';
+	}
 	
 	public function displayContent(AdminContent $oContent) {
 		
@@ -32,6 +40,13 @@ class AdminCallbackModel extends Model implements IResult {
 	
 	public function getException() {
 		return $this->m_oException;
+	}
+	
+	public function formatCall($sFunction, array $aParams) {
+		$sReturn = $sFunction;
+		$sReturn .= '(';
+		$sReturn .= ')';
+		return $sReturn;
 	}
 }
 
