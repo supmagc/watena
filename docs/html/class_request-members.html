@@ -39,6 +39,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
+      <li><a href="files.html"><span>Files</span></a></li>
       <li><a href="examples.html"><span>Examples</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
@@ -71,7 +72,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -97,23 +98,24 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <tr><td class="entry"><a class="el" href="class_request.html#a0552dcea819c77f239bb6db060e17b47">init</a>()</td><td class="entry"><a class="el" href="class_request.html">Request</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="class_request.html#a8d58147bb9572424021c44b0ebb3f85a">isHttp</a>()</td><td class="entry"><a class="el" href="class_request.html">Request</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
   <tr><td class="entry"><a class="el" href="class_request.html#afab6f7cb93efa72b28f3e8b2eba901dd">isHttps</a>()</td><td class="entry"><a class="el" href="class_request.html">Request</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="class_request.html#ada5f08ac6d1754ad0cc7312c10b8c9a3">mapping</a>($nIndex=-1)</td><td class="entry"><a class="el" href="class_request.html">Request</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
-  <tr><td class="entry"><a class="el" href="class_request.html#a4d6813e2943a1ced4ae7159e3a382695">method</a>()</td><td class="entry"><a class="el" href="class_request.html">Request</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="class_request.html#a64f9327ac4a815b3f114d50fd6ba521b">offset</a>()</td><td class="entry"><a class="el" href="class_request.html">Request</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
-  <tr><td class="entry"><a class="el" href="class_request.html#a1ad0dec68fffe32c3b59e5130b63c1ba">password</a>()</td><td class="entry"><a class="el" href="class_request.html">Request</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="class_request.html#ae1725b521b1833602f3f554566142c51">path</a>()</td><td class="entry"><a class="el" href="class_request.html">Request</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
-  <tr><td class="entry"><a class="el" href="class_request.html#a495e06b9d24638c678259b6f3aefbcd6">port</a>()</td><td class="entry"><a class="el" href="class_request.html">Request</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="class_request.html#ab2b509ddd1e625547bd79a8f207670e3">post</a>($mIndex, $mDefault=null)</td><td class="entry"><a class="el" href="class_request.html">Request</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
-  <tr><td class="entry"><a class="el" href="class_request.html#a806349a06939db0150ce9d7d3e6f54f5">protocol</a>()</td><td class="entry"><a class="el" href="class_request.html">Request</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="class_request.html#a865d084fee04c82e9704b1144e5b4c84">make</a>($sPath, array $aGet=array())</td><td class="entry"><a class="el" href="class_request.html">Request</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
+  <tr><td class="entry"><a class="el" href="class_request.html#ada5f08ac6d1754ad0cc7312c10b8c9a3">mapping</a>($nIndex=-1)</td><td class="entry"><a class="el" href="class_request.html">Request</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="class_request.html#a4d6813e2943a1ced4ae7159e3a382695">method</a>()</td><td class="entry"><a class="el" href="class_request.html">Request</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
+  <tr><td class="entry"><a class="el" href="class_request.html#a64f9327ac4a815b3f114d50fd6ba521b">offset</a>()</td><td class="entry"><a class="el" href="class_request.html">Request</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="class_request.html#a1ad0dec68fffe32c3b59e5130b63c1ba">password</a>()</td><td class="entry"><a class="el" href="class_request.html">Request</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
+  <tr><td class="entry"><a class="el" href="class_request.html#ae1725b521b1833602f3f554566142c51">path</a>()</td><td class="entry"><a class="el" href="class_request.html">Request</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="class_request.html#a495e06b9d24638c678259b6f3aefbcd6">port</a>()</td><td class="entry"><a class="el" href="class_request.html">Request</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
+  <tr><td class="entry"><a class="el" href="class_request.html#ab2b509ddd1e625547bd79a8f207670e3">post</a>($mIndex, $mDefault=null)</td><td class="entry"><a class="el" href="class_request.html">Request</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="class_request.html#a6b69986e47c94186cce2336f11ad1f6e">root</a>()</td><td class="entry"><a class="el" href="class_request.html">Request</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
-  <tr><td class="entry"><a class="el" href="class_request.html#af0d98675f85be7ee4fca80e18942693b">session</a>($mIndex, $mDefault=null)</td><td class="entry"><a class="el" href="class_request.html">Request</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="class_request.html#abf1e0caab3f4027d508eec81489b260b">url</a>()</td><td class="entry"><a class="el" href="class_request.html">Request</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
-  <tr><td class="entry"><a class="el" href="class_request.html#a512dd9b95abef2346ad3af2e593d10c1">user</a>()</td><td class="entry"><a class="el" href="class_request.html">Request</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="class_request.html#a12099938e1500f4559b32b833de2088e">useragent</a>()</td><td class="entry"><a class="el" href="class_request.html">Request</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
+  <tr><td class="entry"><a class="el" href="class_request.html#a23d8c8dfb64e8f03ba857e83887a3f93">scheme</a>()</td><td class="entry"><a class="el" href="class_request.html">Request</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="class_request.html#af0d98675f85be7ee4fca80e18942693b">session</a>($mIndex, $mDefault=null)</td><td class="entry"><a class="el" href="class_request.html">Request</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
+  <tr><td class="entry"><a class="el" href="class_request.html#abf1e0caab3f4027d508eec81489b260b">url</a>()</td><td class="entry"><a class="el" href="class_request.html">Request</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="class_request.html#a512dd9b95abef2346ad3af2e593d10c1">user</a>()</td><td class="entry"><a class="el" href="class_request.html">Request</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
+  <tr><td class="entry"><a class="el" href="class_request.html#a12099938e1500f4559b32b833de2088e">useragent</a>()</td><td class="entry"><a class="el" href="class_request.html">Request</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
 </table></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Sep 29 2013 16:40:29 for Watena by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Mar 8 2014 17:22:22 for Watena by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.4
 </small></address>

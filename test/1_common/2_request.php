@@ -1,6 +1,4 @@
 <?php
-include_once realpath(dirname(__FILE__) . '/../../base/system/static.request.php');
-
 class RequestTest extends Test {
 	
 	private $m_sProtocol;

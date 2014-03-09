@@ -39,6 +39,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
+      <li><a href="files.html"><span>Files</span></a></li>
       <li><a href="examples.html"><span>Examples</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
@@ -71,7 +72,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -92,19 +93,21 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a45bed02e8628a14e0ae7f1be1b8553b7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_j_a_x___client.html#a45bed02e8628a14e0ae7f1be1b8553b7">__construct</a> ($sJSFile, $sPrefix= 'TMX')</td></tr>
-<tr class="separator:a45bed02e8628a14e0ae7f1be1b8553b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abbf82c39947b3452ff57b37859acc2da"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_j_a_x___client.html#abbf82c39947b3452ff57b37859acc2da">__construct</a> ($sJavascriptLink=null)</td></tr>
+<tr class="separator:abbf82c39947b3452ff57b37859acc2da"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6fe317ebce44e13e98c9ab24a61edbfe"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_j_a_x___client.html#a6fe317ebce44e13e98c9ab24a61edbfe">registerRequest</a> (<a class="el" href="class_a_j_a_x___request.html">AJAX_Request</a> $oRequest)</td></tr>
 <tr class="separator:a6fe317ebce44e13e98c9ab24a61edbfe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa979a925e3be08d3000522d672850a14"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_j_a_x___client.html#aa979a925e3be08d3000522d672850a14">getJavascriptLink</a> ()</td></tr>
+<tr class="separator:aa979a925e3be08d3000522d672850a14"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a01704f2374d8db6ee806d774958b66d9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_j_a_x___client.html#a01704f2374d8db6ee806d774958b66d9">getOutput</a> ()</td></tr>
 <tr class="separator:a01704f2374d8db6ee806d774958b66d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Client TMX class that processes all registered requests</p>
-<dl class="section author"><dt>Author</dt><dd>Voet Jelle - ToMo-design </dd></dl>
+<div class="textblock"><p>Client AJAX class that processes all registered requests</p>
+<dl class="section author"><dt>Author</dt><dd>Voet Jelle </dd></dl>
 <dl class="section version"><dt>Version</dt><dd>1.0.0 beta </dd></dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="a45bed02e8628a14e0ae7f1be1b8553b7"></a>
+<a class="anchor" id="abbf82c39947b3452ff57b37859acc2da"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -112,26 +115,15 @@ Public Member Functions</h2></td></tr>
           <td class="memname">AJAX_Client::__construct </td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>$sJSFile</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramname"><em>$sJavascriptLink</em> = <code>null</code>)</td><td></td>
           <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>$sPrefix</em> = <code>'TMX'</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Create a new client instance</p>
+<p>Create a new client instance. If no javascriptlink is provided, you take responsability to load the ajax.js file. If indeed a links is provided, make sure it's absolute, no more processing will be done.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramtype">string</td><td class="paramname">$sJSFile</td><td>tha file with all the TMX-javascript code </td></tr>
-    <tr><td class="paramtype">string</td><td class="paramname">$sPrefix</td><td>the prefix that will be used on the JS-funcrions </td></tr>
+    <tr><td class="paramtype">string</td><td class="paramname">$sJavascriptLink</td><td></td></tr>
   </table>
   </dd>
 </dl>
@@ -139,6 +131,23 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="aa979a925e3be08d3000522d672850a14"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">AJAX_Client::getJavascriptLink </td>
+          <td>(</td>
+          <td class="paramname">)</td><td></td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Return the javascript-links passed to the constructor.</p>
+<dl class="section return"><dt>Returns</dt><dd>string </dd></dl>
+
+</div>
+</div>
 <a class="anchor" id="a01704f2374d8db6ee806d774958b66d9"></a>
 <div class="memitem">
 <div class="memproto">
@@ -178,7 +187,7 @@ Public Member Functions</h2></td></tr>
 <p>Register a new request</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramtype">TMX_Request</td><td class="paramname">$oRequest</td><td></td></tr>
+    <tr><td class="paramtype"><a class="el" href="class_a_j_a_x___request.html">AJAX_Request</a></td><td class="paramname">$oRequest</td><td></td></tr>
   </table>
   </dd>
 </dl>
@@ -191,7 +200,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Sep 29 2013 16:40:28 for Watena by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Mar 8 2014 17:22:22 for Watena by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.4
 </small></address>

@@ -1,5 +1,5 @@
 <?php
-include_once realpath(dirname(__FILE__) . '/../../base/system/static.encoding.php');
+Encoding::init('UTF8');
 
 class EncodingTest extends Test {
 

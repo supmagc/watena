@@ -10,12 +10,12 @@
 				<p>
 					<label for="login_usn">Username</label><br />
 					<input id="login_usn" name="login_usn" type="text" />
-					<span>&nbsp;</span>
+					<span id="login_usn_error" class="error_message">&nbsp;</span>
 				</p>
 				<p>
 					<label for="login_usn">Password</label><br />
 					<input id="login_pwd" name="login_pwd" type="password" />
-					<span>&nbsp;</span>
+					<span id="login_pwd_error" class="error_message">&nbsp;</span>
 				</p>
 			</form>
 		</div>

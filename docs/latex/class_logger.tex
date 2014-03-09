@@ -43,7 +43,7 @@ static \hyperlink{class_logger_a3af4a199ee9ff77080b287d445fd7258}{get\-Default\-
 \item 
 static \hyperlink{class_logger_a7af0235d7605c027e8fc05014c5e8a02}{set\-Default\-Filter\-Level} (\$m\-Level)
 \item 
-static \hyperlink{class_logger_a67f68a274b78033665beb7e42c3367ad}{register\-Processor} (I\-Log\-Processor \$o\-Processor)
+static \hyperlink{class_logger_a745cf7ce062b1a552914d835be207fd6}{register\-Processor} (I\-Log\-Processor \$o\-Processor, \$b\-Clear\-Previous=false)
 \item 
 static \hyperlink{class_logger_a7cd51ad43efe88cfde3c1ebdc988940b}{get\-Generic\-Instance} ()
 \item 
@@ -314,13 +314,14 @@ P\-H\-P exception catcher. This function will try to redirect the exception to i
 Exception & {\em \$o\-Exception} & \\
 \hline
 \end{DoxyParams}
-\hypertarget{class_logger_a67f68a274b78033665beb7e42c3367ad}{\index{Logger@{Logger}!register\-Processor@{register\-Processor}}
+\hypertarget{class_logger_a745cf7ce062b1a552914d835be207fd6}{\index{Logger@{Logger}!register\-Processor@{register\-Processor}}
 \index{register\-Processor@{register\-Processor}!Logger@{Logger}}
 \subsubsection[{register\-Processor}]{\setlength{\rightskip}{0pt plus 5cm}static Logger\-::register\-Processor (
 \begin{DoxyParamCaption}
-\item[{I\-Log\-Processor}]{\$o\-Processor}
+\item[{I\-Log\-Processor}]{\$o\-Processor, }
+\item[{}]{\$b\-Clear\-Previous = {\ttfamily false}}
 \end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [final]}}}\label{class_logger_a67f68a274b78033665beb7e42c3367ad}
+)\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [final]}}}\label{class_logger_a745cf7ce062b1a552914d835be207fd6}
 Register a given I\-Log\-Processor. These will process and dispatch all received logger messages.
 
 

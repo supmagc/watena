@@ -4,19 +4,21 @@
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\hyperlink{class_a_j_a_x___client_a45bed02e8628a14e0ae7f1be1b8553b7}{\-\_\-\-\_\-construct} (\$s\-J\-S\-File, \$s\-Prefix= 'T\-M\-X')
+\hyperlink{class_a_j_a_x___client_abbf82c39947b3452ff57b37859acc2da}{\-\_\-\-\_\-construct} (\$s\-Javascript\-Link=null)
 \item 
 \hyperlink{class_a_j_a_x___client_a6fe317ebce44e13e98c9ab24a61edbfe}{register\-Request} (\hyperlink{class_a_j_a_x___request}{A\-J\-A\-X\-\_\-\-Request} \$o\-Request)
+\item 
+\hyperlink{class_a_j_a_x___client_aa979a925e3be08d3000522d672850a14}{get\-Javascript\-Link} ()
 \item 
 \hyperlink{class_a_j_a_x___client_a01704f2374d8db6ee806d774958b66d9}{get\-Output} ()
 \end{DoxyCompactItemize}
 
 
 \subsection{Detailed Description}
-Client T\-M\-X class that processes all registered requests
+Client A\-J\-A\-X class that processes all registered requests
 
 \begin{DoxyAuthor}{Author}
-Voet Jelle -\/ To\-Mo-\/design 
+Voet Jelle 
 \end{DoxyAuthor}
 \begin{DoxyVersion}{Version}
 1.\-0.\-0 beta 
@@ -24,26 +26,35 @@ Voet Jelle -\/ To\-Mo-\/design
 
 
 \subsection{Constructor \& Destructor Documentation}
-\hypertarget{class_a_j_a_x___client_a45bed02e8628a14e0ae7f1be1b8553b7}{\index{A\-J\-A\-X\-\_\-\-Client@{A\-J\-A\-X\-\_\-\-Client}!\-\_\-\-\_\-construct@{\-\_\-\-\_\-construct}}
+\hypertarget{class_a_j_a_x___client_abbf82c39947b3452ff57b37859acc2da}{\index{A\-J\-A\-X\-\_\-\-Client@{A\-J\-A\-X\-\_\-\-Client}!\-\_\-\-\_\-construct@{\-\_\-\-\_\-construct}}
 \index{\-\_\-\-\_\-construct@{\-\_\-\-\_\-construct}!AJAX_Client@{A\-J\-A\-X\-\_\-\-Client}}
 \subsubsection[{\-\_\-\-\_\-construct}]{\setlength{\rightskip}{0pt plus 5cm}A\-J\-A\-X\-\_\-\-Client\-::\-\_\-\-\_\-construct (
 \begin{DoxyParamCaption}
-\item[{}]{\$s\-J\-S\-File, }
-\item[{}]{\$s\-Prefix = {\ttfamily 'TMX'}}
+\item[{}]{\$s\-Javascript\-Link = {\ttfamily null}}
 \end{DoxyParamCaption}
-)}}\label{class_a_j_a_x___client_a45bed02e8628a14e0ae7f1be1b8553b7}
-Create a new client instance
+)}}\label{class_a_j_a_x___client_abbf82c39947b3452ff57b37859acc2da}
+Create a new client instance. If no javascriptlink is provided, you take responsability to load the ajax.\-js file. If indeed a links is provided, make sure it's absolute, no more processing will be done.
 
 
 \begin{DoxyParams}[1]{Parameters}
-string & {\em \$s\-J\-S\-File} & tha file with all the T\-M\-X-\/javascript code \\
-\hline
-string & {\em \$s\-Prefix} & the prefix that will be used on the J\-S-\/funcrions \\
+string & {\em \$s\-Javascript\-Link} & \\
 \hline
 \end{DoxyParams}
 
 
 \subsection{Member Function Documentation}
+\hypertarget{class_a_j_a_x___client_aa979a925e3be08d3000522d672850a14}{\index{A\-J\-A\-X\-\_\-\-Client@{A\-J\-A\-X\-\_\-\-Client}!get\-Javascript\-Link@{get\-Javascript\-Link}}
+\index{get\-Javascript\-Link@{get\-Javascript\-Link}!AJAX_Client@{A\-J\-A\-X\-\_\-\-Client}}
+\subsubsection[{get\-Javascript\-Link}]{\setlength{\rightskip}{0pt plus 5cm}A\-J\-A\-X\-\_\-\-Client\-::get\-Javascript\-Link (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_a_j_a_x___client_aa979a925e3be08d3000522d672850a14}
+Return the javascript-\/links passed to the constructor.
+
+\begin{DoxyReturn}{Returns}
+string 
+\end{DoxyReturn}
 \hypertarget{class_a_j_a_x___client_a01704f2374d8db6ee806d774958b66d9}{\index{A\-J\-A\-X\-\_\-\-Client@{A\-J\-A\-X\-\_\-\-Client}!get\-Output@{get\-Output}}
 \index{get\-Output@{get\-Output}!AJAX_Client@{A\-J\-A\-X\-\_\-\-Client}}
 \subsubsection[{get\-Output}]{\setlength{\rightskip}{0pt plus 5cm}A\-J\-A\-X\-\_\-\-Client\-::get\-Output (
@@ -72,7 +83,7 @@ Register a new request
 
 
 \begin{DoxyParams}[1]{Parameters}
-T\-M\-X\-\_\-\-Request & {\em \$o\-Request} & \\
+\hyperlink{class_a_j_a_x___request}{A\-J\-A\-X\-\_\-\-Request} & {\em \$o\-Request} & \\
 \hline
 \end{DoxyParams}
 

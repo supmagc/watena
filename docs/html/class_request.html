@@ -39,6 +39,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
+      <li><a href="files.html"><span>Files</span></a></li>
       <li><a href="examples.html"><span>Examples</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
@@ -71,7 +72,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -98,8 +99,8 @@ Static Public Member Functions</h2></td></tr>
 <tr class="separator:a8d58147bb9572424021c44b0ebb3f85a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afab6f7cb93efa72b28f3e8b2eba901dd"><td class="memItemLeft" align="right" valign="top">static&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_request.html#afab6f7cb93efa72b28f3e8b2eba901dd">isHttps</a> ()</td></tr>
 <tr class="separator:afab6f7cb93efa72b28f3e8b2eba901dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a806349a06939db0150ce9d7d3e6f54f5"><td class="memItemLeft" align="right" valign="top">static&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_request.html#a806349a06939db0150ce9d7d3e6f54f5">protocol</a> ()</td></tr>
-<tr class="separator:a806349a06939db0150ce9d7d3e6f54f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a23d8c8dfb64e8f03ba857e83887a3f93"><td class="memItemLeft" align="right" valign="top">static&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_request.html#a23d8c8dfb64e8f03ba857e83887a3f93">scheme</a> ()</td></tr>
+<tr class="separator:a23d8c8dfb64e8f03ba857e83887a3f93"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a512dd9b95abef2346ad3af2e593d10c1"><td class="memItemLeft" align="right" valign="top">static&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_request.html#a512dd9b95abef2346ad3af2e593d10c1">user</a> ()</td></tr>
 <tr class="separator:a512dd9b95abef2346ad3af2e593d10c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1ad0dec68fffe32c3b59e5130b63c1ba"><td class="memItemLeft" align="right" valign="top">static&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_request.html#a1ad0dec68fffe32c3b59e5130b63c1ba">password</a> ()</td></tr>
@@ -134,6 +135,8 @@ Static Public Member Functions</h2></td></tr>
 <tr class="separator:ad6b7fe8e73dd7eed912086488002ddd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2817486e88b192ef552ebca4c62d70af"><td class="memItemLeft" align="right" valign="top">static&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_request.html#a2817486e88b192ef552ebca4c62d70af">detail</a> ()</td></tr>
 <tr class="separator:a2817486e88b192ef552ebca4c62d70af"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a865d084fee04c82e9704b1144e5b4c84"><td class="memItemLeft" align="right" valign="top">static&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_request.html#a865d084fee04c82e9704b1144e5b4c84">make</a> ($sPath, array $aGet=array())</td></tr>
+<tr class="separator:a865d084fee04c82e9704b1144e5b4c84"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This class hold the request data for the current request. Before using it, you should make sure to call <a class="el" href="class_request.html#a0552dcea819c77f239bb6db060e17b47">Request::init()</a>. If this class is used as part of Watena, this will be done for you.</p>
@@ -161,7 +164,7 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <p>Retrieve the base portion of the current request.</p>
-<dl class="section see"><dt>See Also</dt><dd><a class="el" href="class_request.html#a806349a06939db0150ce9d7d3e6f54f5">Request::protocol()</a> </dd>
+<dl class="section see"><dt>See Also</dt><dd>Request::protocol() </dd>
 <dd>
 <a class="el" href="class_request.html#a512dd9b95abef2346ad3af2e593d10c1">Request::user()</a> </dd>
 <dd>
@@ -370,10 +373,10 @@ Static Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Determine if the current request is not using a secured protocol. This method is the opposite of <a class="el" href="class_request.html#afab6f7cb93efa72b28f3e8b2eba901dd">Request::isHttps()</a>. The return value is based on $_SERVER['HTTPS'] and will influence the behaviour of <a class="el" href="class_request.html#a806349a06939db0150ce9d7d3e6f54f5">Request::protocol()</a> and <a class="el" href="class_request.html#a495e06b9d24638c678259b6f3aefbcd6">Request::port()</a>.</p>
+<p>Determine if the current request is not using a secured protocol. This method is the opposite of <a class="el" href="class_request.html#afab6f7cb93efa72b28f3e8b2eba901dd">Request::isHttps()</a>. The return value is based on $_SERVER['HTTPS'] and will influence the behaviour of Request::protocol() and <a class="el" href="class_request.html#a495e06b9d24638c678259b6f3aefbcd6">Request::port()</a>.</p>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="class_request.html#afab6f7cb93efa72b28f3e8b2eba901dd">Request::isHttps()</a> </dd>
 <dd>
-<a class="el" href="class_request.html#a806349a06939db0150ce9d7d3e6f54f5">Request::protocol()</a> </dd>
+<a class="el" href="class_request.html#a23d8c8dfb64e8f03ba857e83887a3f93">Request::scheme()</a> </dd>
 <dd>
 <a class="el" href="class_request.html#a495e06b9d24638c678259b6f3aefbcd6">Request::port()</a> </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>boolean Indicates if the current request is not using https. (default: true) </dd></dl>
@@ -400,13 +403,57 @@ Static Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Determine if the current request is using a secured protocol. This method is the opposite of <a class="el" href="class_request.html#a8d58147bb9572424021c44b0ebb3f85a">Request::isHttp()</a>. The return value is based on $_SERVER['HTTPS'] and will influence the behaviour of <a class="el" href="class_request.html#a806349a06939db0150ce9d7d3e6f54f5">Request::protocol()</a> and <a class="el" href="class_request.html#a495e06b9d24638c678259b6f3aefbcd6">Request::port()</a>.</p>
+<p>Determine if the current request is using a secured protocol. This method is the opposite of <a class="el" href="class_request.html#a8d58147bb9572424021c44b0ebb3f85a">Request::isHttp()</a>. The return value is based on $_SERVER['HTTPS'] and will influence the behaviour of Request::protocol() and <a class="el" href="class_request.html#a495e06b9d24638c678259b6f3aefbcd6">Request::port()</a>.</p>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="class_request.html#afab6f7cb93efa72b28f3e8b2eba901dd">Request::isHttps()</a> </dd>
 <dd>
-<a class="el" href="class_request.html#a806349a06939db0150ce9d7d3e6f54f5">Request::protocol()</a> </dd>
+<a class="el" href="class_request.html#a23d8c8dfb64e8f03ba857e83887a3f93">Request::scheme()</a> </dd>
 <dd>
 <a class="el" href="class_request.html#a495e06b9d24638c678259b6f3aefbcd6">Request::port()</a> </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>boolean Indicates of the current request is using https. (default: false) </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a865d084fee04c82e9704b1144e5b4c84"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static Request::make </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>$sPath</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">array&#160;</td>
+          <td class="paramname"><em>$aGet</em> = <code>array()</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">final</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Make a local url instance using the same 'root' portion as the current request.</p>
+<dl class="section see"><dt>See Also</dt><dd><a class="el" href="class_request.html#a6b69986e47c94186cce2336f11ad1f6e">Request::root()</a> </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramtype">string</td><td class="paramname">$sPath</td><td></td></tr>
+    <tr><td class="paramtype">array</td><td class="paramname">$aGet</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Url </dd></dl>
 
 </div>
 </div>
@@ -614,34 +661,6 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a806349a06939db0150ce9d7d3e6f54f5"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static Request::protocol </td>
-          <td>(</td>
-          <td class="paramname">)</td><td></td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">final</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Retrieve the scheme/protocol of the current request. Currently the only two protocols supported are 'http' and 'https'. The return value is based on <a class="el" href="class_request.html#a8d58147bb9572424021c44b0ebb3f85a">Request::isHttp()</a> and <a class="el" href="class_request.html#afab6f7cb93efa72b28f3e8b2eba901dd">Request::isHttps()</a>.</p>
-<dl class="section see"><dt>See Also</dt><dd><a class="el" href="class_request.html#a8d58147bb9572424021c44b0ebb3f85a">Request::isHttp()</a> </dd>
-<dd>
-<a class="el" href="class_request.html#afab6f7cb93efa72b28f3e8b2eba901dd">Request::isHttps()</a> </dd></dl>
-<dl class="section return"><dt>Returns</dt><dd>string Return value should be 'http' or 'https'. (default: 'http') </dd></dl>
-
-</div>
-</div>
 <a class="anchor" id="a6b69986e47c94186cce2336f11ad1f6e"></a>
 <div class="memitem">
 <div class="memproto">
@@ -667,6 +686,34 @@ Static Public Member Functions</h2></td></tr>
 <dd>
 <a class="el" href="class_request.html#a64f9327ac4a815b3f114d50fd6ba521b">Request::offset()</a> </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>string http[s]://[user[:password]@]example.com[:80][/path-to-install] </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a23d8c8dfb64e8f03ba857e83887a3f93"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static Request::scheme </td>
+          <td>(</td>
+          <td class="paramname">)</td><td></td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">final</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Retrieve the scheme/protocol of the current request. Currently the only two protocols supported are 'http' and 'https'. The return value is based on <a class="el" href="class_request.html#a8d58147bb9572424021c44b0ebb3f85a">Request::isHttp()</a> and <a class="el" href="class_request.html#afab6f7cb93efa72b28f3e8b2eba901dd">Request::isHttps()</a>.</p>
+<dl class="section see"><dt>See Also</dt><dd><a class="el" href="class_request.html#a8d58147bb9572424021c44b0ebb3f85a">Request::isHttp()</a> </dd>
+<dd>
+<a class="el" href="class_request.html#afab6f7cb93efa72b28f3e8b2eba901dd">Request::isHttps()</a> </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>string Return value should be 'http' or 'https'. (default: 'http') </dd></dl>
 
 </div>
 </div>
@@ -798,7 +845,7 @@ Static Public Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Sep 29 2013 16:40:29 for Watena by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Mar 8 2014 17:22:22 for Watena by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.4
 </small></address>

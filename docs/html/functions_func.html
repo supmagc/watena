@@ -39,6 +39,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
+      <li><a href="files.html"><span>Files</span></a></li>
       <li><a href="examples.html"><span>Examples</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
@@ -81,13 +82,11 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="#index_c"><span>c</span></a></li>
       <li><a href="#index_d"><span>d</span></a></li>
       <li><a href="#index_e"><span>e</span></a></li>
-      <li><a href="#index_f"><span>f</span></a></li>
       <li><a href="#index_g"><span>g</span></a></li>
       <li><a href="#index_h"><span>h</span></a></li>
       <li><a href="#index_i"><span>i</span></a></li>
       <li><a href="#index_l"><span>l</span></a></li>
       <li><a href="#index_m"><span>m</span></a></li>
-      <li><a href="#index_n"><span>n</span></a></li>
       <li><a href="#index_o"><span>o</span></a></li>
       <li><a href="#index_p"><span>p</span></a></li>
       <li><a href="#index_r"><span>r</span></a></li>
@@ -104,7 +103,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -120,14 +119,13 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>__construct()
 : <a class="el" href="class_cacheable.html#a16d53ddf3c4ac7217c32df7f0d763454">Cacheable</a>
 , <a class="el" href="classhtml2text.html#ac404b5212f8b30c6b3b2e86806a5f5b2">html2text</a>
-, <a class="el" href="class_a_j_a_x___request.html#ac2740cb109bab254475f45cde36a7c51">AJAX_Request</a>
-, <a class="el" href="class_facebook_api_exception.html#a9e40d3c27096359975b952fe04752d19">FacebookApiException</a>
+, <a class="el" href="class_a_j_a_x___client.html#abbf82c39947b3452ff57b37859acc2da">AJAX_Client</a>
 , <a class="el" href="class_base_facebook.html#af8ca4863484827e521f5052f5dfed642">BaseFacebook</a>
-, <a class="el" href="class_a_j_a_x___response.html#ad375f00a3cb840edc05a9bd76a018306">AJAX_Response</a>
 , <a class="el" href="class_facebook.html#a764229508830d143551d167e786c42f4">Facebook</a>
-, <a class="el" href="class_a_j_a_x___client.html#a45bed02e8628a14e0ae7f1be1b8553b7">AJAX_Client</a>
-, <a class="el" href="class_a_j_a_x___server.html#ad2c59b18389118835d24ffa708c28592">AJAX_Server</a>
-, <a class="el" href="class_t_m_x___ajax_page.html#a387f7ddcd307f49c5fe17700052a937b">TMX_AjaxPage</a>
+, <a class="el" href="class_a_j_a_x___request.html#af52fb2396a94ebf19dd21d3d619c1f72">AJAX_Request</a>
+, <a class="el" href="class_j_s_function.html#ac9dc958434b754eb91570166baea4b83">JSFunction</a>
+, <a class="el" href="class_a_j_a_x___server.html#adfc5e2ea55215e07ced413bf46e3a8f4">AJAX_Server</a>
+, <a class="el" href="class_facebook_api_exception.html#a9e40d3c27096359975b952fe04752d19">FacebookApiException</a>
 </li>
 <li>__toString()
 : <a class="el" href="class_facebook_api_exception.html#a9c262b52fe807aad1c2770a0ad2ee919">FacebookApiException</a>
@@ -151,21 +149,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 
 <h3><a class="anchor" id="index_a"></a>- a -</h3><ul>
-<li>AddCode()
-: <a class="el" href="class_a_j_a_x___response.html#aaf1fce395bcbe3abf2b468900269b847">AJAX_Response</a>
-</li>
-<li>AddCSSFile()
-: <a class="el" href="class_a_j_a_x___response.html#a95a747316bd4618b45d438a8bea385f4">AJAX_Response</a>
-</li>
-<li>AddJSFile()
-: <a class="el" href="class_a_j_a_x___response.html#a698c3b7ce0a35fb6dfc31f13073c8fa2">AJAX_Response</a>
-</li>
-<li>AddSlashes()
-: <a class="el" href="class_a_j_a_x___response.html#a1dc591d51f6abe3a7026a38efdb2e45c">AJAX_Response</a>
-</li>
-<li>Alert()
-: <a class="el" href="class_a_j_a_x___response.html#a88ef970898b2eaa6f1e00cc2f8ab525d">AJAX_Response</a>
-</li>
 <li>api()
 : <a class="el" href="class_base_facebook.html#a22d6a4c1b6dec331c3bc3f7af02849f5">BaseFacebook</a>
 </li>
@@ -190,20 +173,11 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 
 <h3><a class="anchor" id="index_c"></a>- c -</h3><ul>
-<li>CallFunction()
-: <a class="el" href="class_a_j_a_x___response.html#acd8296b7efd8f5a68f9a01b55b743b78">AJAX_Response</a>
+<li>callFunction()
+: <a class="el" href="class_j_s_function.html#a93a20458a06de1cad66ba0eb98d6d540">JSFunction</a>
 </li>
 <li>checkSignature()
 : <a class="el" href="class_o_auth_signature_method.html#aedd9a3e183880b2d1ea47fe06c988240">OAuthSignatureMethod</a>
-</li>
-<li>Childs()
-: <a class="el" href="class_a_j_a_x___selector.html#a35540abd81d6ad25022599531890770c">AJAX_Selector</a>
-</li>
-<li>ClassChange()
-: <a class="el" href="class_a_j_a_x___response.html#a07e89d4407b8c3d2ace81fd5cb162be5">AJAX_Response</a>
-</li>
-<li>ClassChangeByID()
-: <a class="el" href="class_a_j_a_x___response.html#a83aedd965664793eca47a68de5ac1273">AJAX_Response</a>
 </li>
 <li>clearAllPersistentData()
 : <a class="el" href="class_base_facebook.html#a2f98dbe9b9b63d3e76ba7f1971d80c91">BaseFacebook</a>
@@ -213,12 +187,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </li>
 <li>cookie()
 : <a class="el" href="class_request.html#ad6b7fe8e73dd7eed912086488002ddd0">Request</a>
-</li>
-<li>Create()
-: <a class="el" href="class_a_j_a_x___selector.html#adc1bdf2f113bca7cf716793855c63b4c">AJAX_Selector</a>
-</li>
-<li>CreateErrorResponse()
-: <a class="el" href="class_a_j_a_x___response.html#ad3c0f052bfa7658aa4b8e1dfa1224496">AJAX_Response</a>
 </li>
 <li>createTemplateClass()
 : <a class="el" href="class_template_file.html#ad6ded534b21256f5c40f02d19504bcaf">TemplateFile</a>
@@ -239,24 +207,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>detail()
 : <a class="el" href="class_request.html#a2817486e88b192ef552ebca4c62d70af">Request</a>
 </li>
-<li>DOMChange()
-: <a class="el" href="class_a_j_a_x___response.html#a07eaac9c29789b66c057e91000fb6154">AJAX_Response</a>
-</li>
-<li>DOMChangeByID()
-: <a class="el" href="class_a_j_a_x___response.html#add7ea7d572b0d9dc1667e1647c3afbf6">AJAX_Response</a>
-</li>
-<li>DOMClean()
-: <a class="el" href="class_a_j_a_x___response.html#a4e50a8d73c499058854b6ef469487a2f">AJAX_Response</a>
-</li>
-<li>DOMCleanByID()
-: <a class="el" href="class_a_j_a_x___response.html#a1fa313b00bf5d79b31995f6ba7e5118a">AJAX_Response</a>
-</li>
-<li>DOMRemove()
-: <a class="el" href="class_a_j_a_x___response.html#ac23f48ef808f969afbc2f21204430584">AJAX_Response</a>
-</li>
-<li>DOMRemoveByID()
-: <a class="el" href="class_a_j_a_x___response.html#a2f63ac10071f1df881cfd6832ff2d97e">AJAX_Response</a>
-</li>
 </ul>
 
 
@@ -272,13 +222,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </li>
 <li>exception()
 : <a class="el" href="class_logger.html#a902fc7ccc16f872126f96c5f1c459193">Logger</a>
-</li>
-</ul>
-
-
-<h3><a class="anchor" id="index_f"></a>- f -</h3><ul>
-<li>FirstChild()
-: <a class="el" href="class_a_j_a_x___selector.html#a3e1f0f6f7116bebfe0d5153ded42820e">AJAX_Selector</a>
 </li>
 </ul>
 
@@ -311,6 +254,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>getCacheData()
 : <a class="el" href="class_cacheable.html#a3825ea17270319f96d27540ae347fcde">Cacheable</a>
 </li>
+<li>getCallback()
+: <a class="el" href="class_j_s_function.html#ab7e7c06eb044ab3bd1ab3ee8880aa940">JSFunction</a>
+</li>
 <li>getCode()
 : <a class="el" href="class_base_facebook.html#a63452f26d5a4fc7fbcb1732920c1758e">BaseFacebook</a>
 </li>
@@ -319,9 +265,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </li>
 <li>getConfiguration()
 : <a class="el" href="class_cacheable.html#a1a737bc8da70a953cc9d21a7654aab6d">Cacheable</a>
-</li>
-<li>GetContent()
-: <a class="el" href="class_t_m_x___ajax_page.html#ac98232f9db9c62594da2ababa6920edb">TMX_AjaxPage</a>
 </li>
 <li>getCurrentUrl()
 : <a class="el" href="class_base_facebook.html#a5746a277eddefc701ad5308285252465">BaseFacebook</a>
@@ -341,6 +284,12 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>getFilterLevel()
 : <a class="el" href="class_logger.html#aaffe36d440a09bceb9f27f7667fd7625">Logger</a>
 </li>
+<li>getFunction()
+: <a class="el" href="class_j_s_function.html#a6b3f79ff3c91a373799474eb34b7e66d">JSFunction</a>
+</li>
+<li>getFunctionName()
+: <a class="el" href="class_j_s_function.html#a3c0720b6f99335be1f31e3dcd9158722">JSFunction</a>
+</li>
 <li>getGenericInstance()
 : <a class="el" href="class_logger.html#a7cd51ad43efe88cfde3c1ebdc988940b">Logger</a>
 </li>
@@ -349,6 +298,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </li>
 <li>getInstance()
 : <a class="el" href="class_logger.html#aed3978ed47955016b1f2e36fa9242495">Logger</a>
+</li>
+<li>getJavascriptLink()
+: <a class="el" href="class_a_j_a_x___client.html#aa979a925e3be08d3000522d672850a14">AJAX_Client</a>
 </li>
 <li>getLevelConstant()
 : <a class="el" href="class_logger.html#aba0511b6a8e0338bfe1edf5fb6eb4b59">Logger</a>
@@ -375,14 +327,11 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 : <a class="el" href="class_o_auth_signature_method.html#ad42c31991e3a144fd7ac46bb268df758">OAuthSignatureMethod</a>
 </li>
 <li>getOutput()
-: <a class="el" href="class_a_j_a_x___request.html#a56516da4748a2fb29e8043fa05727ff0">AJAX_Request</a>
-, <a class="el" href="class_a_j_a_x___client.html#a01704f2374d8db6ee806d774958b66d9">AJAX_Client</a>
+: <a class="el" href="class_a_j_a_x___client.html#a01704f2374d8db6ee806d774958b66d9">AJAX_Client</a>
+, <a class="el" href="class_a_j_a_x___request.html#ae3d7238e5ffb444784b47be69a9e740a">AJAX_Request</a>
 </li>
-<li>GetPage()
-: <a class="el" href="class_a_j_a_x___server.html#a275ad9d504f5d6c0536b0c394128f856">AJAX_Server</a>
-</li>
-<li>GetPath()
-: <a class="el" href="class_a_j_a_x___selector.html#afd0c18f7697ae67e3e7ada01c89b84a1">AJAX_Selector</a>
+<li>getParameters()
+: <a class="el" href="class_j_s_function.html#ac64109018bb50dd46daa4edb9f64dee8">JSFunction</a>
 </li>
 <li>getPersistentData()
 : <a class="el" href="class_base_facebook.html#ad383ccec6f7433c2ab9bb50550df2ce6">BaseFacebook</a>
@@ -452,8 +401,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>isHttps()
 : <a class="el" href="class_request.html#afab6f7cb93efa72b28f3e8b2eba901dd">Request</a>
 </li>
-<li>IsValid()
-: <a class="el" href="class_a_j_a_x___selector.html#a26e086617bbc3ffa1dd4d4b889523345">AJAX_Selector</a>
+<li>isValidFunctionName()
+: <a class="el" href="class_j_s_function.html#ab83d99420a69ae7293df271732c01acf">JSFunction</a>
 </li>
 <li>isVideoPost()
 : <a class="el" href="class_base_facebook.html#a59ec8025b618af99293ac5efc9d88a59">BaseFacebook</a>
@@ -462,9 +411,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 
 <h3><a class="anchor" id="index_l"></a>- l -</h3><ul>
-<li>LastChild()
-: <a class="el" href="class_a_j_a_x___selector.html#aaafef1531c800b05118b6d4466aa827f">AJAX_Selector</a>
-</li>
 <li>load()
 : <a class="el" href="class_template_loader.html#a703dbe2d24cc3173f2f5a9b52a3d53e8">TemplateLoader</a>
 </li>
@@ -474,6 +420,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <h3><a class="anchor" id="index_m"></a>- m -</h3><ul>
 <li>make()
 : <a class="el" href="class_cacheable.html#a1443eacff201d0317e4481cda75eb44b">Cacheable</a>
+, <a class="el" href="class_request.html#a865d084fee04c82e9704b1144e5b4c84">Request</a>
 , <a class="el" href="class_template_file.html#aa36f590b760493569c9c9349915ba6a2">TemplateFile</a>
 </li>
 <li>makeRequest()
@@ -484,13 +431,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </li>
 <li>method()
 : <a class="el" href="class_request.html#a4d6813e2943a1ced4ae7159e3a382695">Request</a>
-</li>
-</ul>
-
-
-<h3><a class="anchor" id="index_n"></a>- n -</h3><ul>
-<li>Name()
-: <a class="el" href="class_a_j_a_x___selector.html#a5b1af0ac2d1ad898ec4a845b7874ed97">AJAX_Selector</a>
 </li>
 </ul>
 
@@ -524,9 +464,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>print_text()
 : <a class="el" href="classhtml2text.html#aa1a63a82736ee37ea305e2e17b1b2cc9">html2text</a>
 </li>
-<li>Process()
-: <a class="el" href="class_a_j_a_x___server.html#ad0383584d768341adee4af6d26776b62">AJAX_Server</a>
-, <a class="el" href="class_a_j_a_x___response.html#aa23febfae44d7e28875d88dbcd1cd305">AJAX_Response</a>
+<li>process()
+: <a class="el" href="class_a_j_a_x___server.html#ae6059a2c59fc8b99b525d6651f35e2a9">AJAX_Server</a>
 </li>
 <li>processError()
 : <a class="el" href="class_logger.html#ab19e37ceb28c720c85dbd1190247f094">Logger</a>
@@ -534,30 +473,15 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>processException()
 : <a class="el" href="class_logger.html#ab6ff3cbd5cae35325708da45422f9ddb">Logger</a>
 </li>
-<li>protocol()
-: <a class="el" href="class_request.html#a806349a06939db0150ce9d7d3e6f54f5">Request</a>
-</li>
 </ul>
 
 
 <h3><a class="anchor" id="index_r"></a>- r -</h3><ul>
 <li>registerProcessor()
-: <a class="el" href="class_logger.html#a67f68a274b78033665beb7e42c3367ad">Logger</a>
+: <a class="el" href="class_logger.html#a745cf7ce062b1a552914d835be207fd6">Logger</a>
 </li>
 <li>registerRequest()
 : <a class="el" href="class_a_j_a_x___client.html#a6fe317ebce44e13e98c9ab24a61edbfe">AJAX_Client</a>
-</li>
-<li>RemoveCSSFile()
-: <a class="el" href="class_a_j_a_x___response.html#aca7ea3ab30272291eafe98d41b602700">AJAX_Response</a>
-</li>
-<li>RemoveJSFile()
-: <a class="el" href="class_a_j_a_x___response.html#aeebbe6e31801e025b95b56a5fcff0850">AJAX_Response</a>
-</li>
-<li>ReplaceCSSFile()
-: <a class="el" href="class_a_j_a_x___response.html#a020923f6c33bf4201b0ee0b7509208c3">AJAX_Response</a>
-</li>
-<li>ReplaceJSFile()
-: <a class="el" href="class_a_j_a_x___response.html#a0a9d5da413c619c7d2820573da104e3a">AJAX_Response</a>
 </li>
 <li>root()
 : <a class="el" href="class_request.html#a6b69986e47c94186cce2336f11ad1f6e">Request</a>
@@ -566,6 +490,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 
 <h3><a class="anchor" id="index_s"></a>- s -</h3><ul>
+<li>scheme()
+: <a class="el" href="class_request.html#a23d8c8dfb64e8f03ba857e83887a3f93">Request</a>
+</li>
 <li>session()
 : <a class="el" href="class_request.html#af0d98675f85be7ee4fca80e18942693b">Request</a>
 </li>
@@ -590,9 +517,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>setAppSecret()
 : <a class="el" href="class_base_facebook.html#ac25a51d73a78e3d3308523fc03c93a05">BaseFacebook</a>
 </li>
-<li>setArgCount()
-: <a class="el" href="class_a_j_a_x___request.html#a18241531ebf16a4314b84e3e6c59b807">AJAX_Request</a>
-</li>
 <li>setDefaultFilterLevel()
 : <a class="el" href="class_logger.html#a7af0235d7605c027e8fc05014c5e8a02">Logger</a>
 </li>
@@ -605,40 +529,25 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>setFilterLevel()
 : <a class="el" href="class_logger.html#ad960882fc5dd94fe18c9d0417c3985f2">Logger</a>
 </li>
-<li>SetHeaders()
-: <a class="el" href="class_t_m_x___ajax_page.html#a9c28ea558dd714e20a5e7174cd6f7411">TMX_AjaxPage</a>
-</li>
 <li>setPersistentData()
 : <a class="el" href="class_base_facebook.html#a26198ff065bea23f358854facbafa7db">BaseFacebook</a>
 , <a class="el" href="class_facebook.html#a8f094cc1c798c533283018a8100dffdf">Facebook</a>
 </li>
-<li>setUrl()
-: <a class="el" href="class_a_j_a_x___request.html#a46eda702ebc8b0c5b40582faa54d4430">AJAX_Request</a>
-</li>
-<li>setValue()
-: <a class="el" href="class_a_j_a_x___request.html#a155a570af13c465ce28a1db0600a15ed">AJAX_Request</a>
-</li>
 <li>shouldRetainParam()
 : <a class="el" href="class_base_facebook.html#a47e7827a14b19657e2a760afa5324dad">BaseFacebook</a>
-</li>
-<li>StyleChange()
-: <a class="el" href="class_a_j_a_x___response.html#a7a8236facfbbb8af103eef5b597e4bbe">AJAX_Response</a>
-</li>
-<li>StyleChangeByID()
-: <a class="el" href="class_a_j_a_x___response.html#aee268771716be54ef20ed7e5518745ca">AJAX_Response</a>
 </li>
 </ul>
 
 
 <h3><a class="anchor" id="index_t"></a>- t -</h3><ul>
-<li>Tag()
-: <a class="el" href="class_a_j_a_x___selector.html#ab8259e16335cbd7db818073845982dd5">AJAX_Selector</a>
-</li>
 <li>terminate()
 : <a class="el" href="class_logger.html#ad2c4a0987a107ccdfe2676d5c7daa0c6">Logger</a>
 </li>
 <li>throwAPIException()
 : <a class="el" href="class_base_facebook.html#a83875df5a95a05bbbb4857460e743404">BaseFacebook</a>
+</li>
+<li>toString()
+: <a class="el" href="class_j_s_function.html#a87ff9cd433c24738e62f68ea28b1c0df">JSFunction</a>
 </li>
 </ul>
 
@@ -675,7 +584,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Sep 29 2013 16:40:29 for Watena by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Mar 8 2014 17:22:22 for Watena by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.4
 </small></address>

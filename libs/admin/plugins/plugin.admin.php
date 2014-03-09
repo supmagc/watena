@@ -1,6 +1,8 @@
 <?php
 define('PATH_ADMIN', realpath(dirname(__FILE__) . '/../'));
 
+require_once PATH_ADMIN . '/system/class.adminmodule.php';
+require_once PATH_ADMIN . '/system/class.adminmodulegroup.php';
 require_once PATH_ADMIN . '/system/class.adminmenu.php';
 require_once PATH_ADMIN . '/system/class.admintab.php';
 require_once PATH_ADMIN . '/system/class.admincontent.php';

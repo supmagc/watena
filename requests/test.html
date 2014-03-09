@@ -7,7 +7,7 @@
 function test(sMessage) {
 	alert(sMessage);
 }
-var bla = function() {window['test'].apply(this, ['Hello Alerted World !']);}
+/*var bla = */(function() {window['test'].apply(this, ['Hello Alerted World !']);})()
 //bla();
 </script>
 </head>

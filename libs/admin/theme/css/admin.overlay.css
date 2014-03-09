@@ -149,4 +149,27 @@ div#overlay_info .container {
 	div#overlay_info .footer {
 		background: #26B;
 	}
-		
+	
+/* Loading ajustments */
+div#overlay_loading .container {
+	width: 300px;
+	height: 100px;
+}
+
+	div#overlay_loading .header {
+		background: #26B;
+		border-bottom: none;
+	}
+
+	div#overlay_loading .center {
+		text-align: center;
+		border: #26B solid 1px;
+		border-top: none;
+		border-bottom-left-radius: 5px;
+		border-bottom-right-radius: 5px;
+		padding-top: 10px;
+		left: 10px;
+		right: 10px;
+		bottom: 10px;
+	}
+				
