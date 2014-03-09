@@ -10,7 +10,7 @@ static \hyperlink{class_request_a8d58147bb9572424021c44b0ebb3f85a}{is\-Http} ()
 \item 
 static \hyperlink{class_request_afab6f7cb93efa72b28f3e8b2eba901dd}{is\-Https} ()
 \item 
-static \hyperlink{class_request_a806349a06939db0150ce9d7d3e6f54f5}{protocol} ()
+static \hyperlink{class_request_a23d8c8dfb64e8f03ba857e83887a3f93}{scheme} ()
 \item 
 static \hyperlink{class_request_a512dd9b95abef2346ad3af2e593d10c1}{user} ()
 \item 
@@ -45,6 +45,8 @@ static \hyperlink{class_request_af0d98675f85be7ee4fca80e18942693b}{session} (\$m
 static \hyperlink{class_request_ad6b7fe8e73dd7eed912086488002ddd0}{cookie} (\$m\-Index, \$m\-Default=null)
 \item 
 static \hyperlink{class_request_a2817486e88b192ef552ebca4c62d70af}{detail} ()
+\item 
+static \hyperlink{class_request_a865d084fee04c82e9704b1144e5b4c84}{make} (\$s\-Path, array \$a\-Get=array())
 \end{DoxyCompactItemize}
 
 
@@ -70,7 +72,7 @@ Jelle Voet
 Retrieve the base portion of the current request.
 
 \begin{DoxySeeAlso}{See Also}
-\hyperlink{class_request_a806349a06939db0150ce9d7d3e6f54f5}{Request\-::protocol()} 
+Request\-::protocol() 
 
 \hyperlink{class_request_a512dd9b95abef2346ad3af2e593d10c1}{Request\-::user()} 
 
@@ -181,12 +183,12 @@ Initialize and cache the correct values for the current request. \hypertarget{cl
 {}
 \end{DoxyParamCaption}
 )\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [final]}}}\label{class_request_a8d58147bb9572424021c44b0ebb3f85a}
-Determine if the current request is not using a secured protocol. This method is the opposite of \hyperlink{class_request_afab6f7cb93efa72b28f3e8b2eba901dd}{Request\-::is\-Https()}. The return value is based on \$\-\_\-\-S\-E\-R\-V\-E\-R\mbox{[}'H\-T\-T\-P\-S'\mbox{]} and will influence the behaviour of \hyperlink{class_request_a806349a06939db0150ce9d7d3e6f54f5}{Request\-::protocol()} and \hyperlink{class_request_a495e06b9d24638c678259b6f3aefbcd6}{Request\-::port()}.
+Determine if the current request is not using a secured protocol. This method is the opposite of \hyperlink{class_request_afab6f7cb93efa72b28f3e8b2eba901dd}{Request\-::is\-Https()}. The return value is based on \$\-\_\-\-S\-E\-R\-V\-E\-R\mbox{[}'H\-T\-T\-P\-S'\mbox{]} and will influence the behaviour of Request\-::protocol() and \hyperlink{class_request_a495e06b9d24638c678259b6f3aefbcd6}{Request\-::port()}.
 
 \begin{DoxySeeAlso}{See Also}
 \hyperlink{class_request_afab6f7cb93efa72b28f3e8b2eba901dd}{Request\-::is\-Https()} 
 
-\hyperlink{class_request_a806349a06939db0150ce9d7d3e6f54f5}{Request\-::protocol()} 
+\hyperlink{class_request_a23d8c8dfb64e8f03ba857e83887a3f93}{Request\-::scheme()} 
 
 \hyperlink{class_request_a495e06b9d24638c678259b6f3aefbcd6}{Request\-::port()} 
 \end{DoxySeeAlso}
@@ -200,17 +202,40 @@ boolean Indicates if the current request is not using https. (default\-: true)
 {}
 \end{DoxyParamCaption}
 )\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [final]}}}\label{class_request_afab6f7cb93efa72b28f3e8b2eba901dd}
-Determine if the current request is using a secured protocol. This method is the opposite of \hyperlink{class_request_a8d58147bb9572424021c44b0ebb3f85a}{Request\-::is\-Http()}. The return value is based on \$\-\_\-\-S\-E\-R\-V\-E\-R\mbox{[}'H\-T\-T\-P\-S'\mbox{]} and will influence the behaviour of \hyperlink{class_request_a806349a06939db0150ce9d7d3e6f54f5}{Request\-::protocol()} and \hyperlink{class_request_a495e06b9d24638c678259b6f3aefbcd6}{Request\-::port()}.
+Determine if the current request is using a secured protocol. This method is the opposite of \hyperlink{class_request_a8d58147bb9572424021c44b0ebb3f85a}{Request\-::is\-Http()}. The return value is based on \$\-\_\-\-S\-E\-R\-V\-E\-R\mbox{[}'H\-T\-T\-P\-S'\mbox{]} and will influence the behaviour of Request\-::protocol() and \hyperlink{class_request_a495e06b9d24638c678259b6f3aefbcd6}{Request\-::port()}.
 
 \begin{DoxySeeAlso}{See Also}
 \hyperlink{class_request_afab6f7cb93efa72b28f3e8b2eba901dd}{Request\-::is\-Https()} 
 
-\hyperlink{class_request_a806349a06939db0150ce9d7d3e6f54f5}{Request\-::protocol()} 
+\hyperlink{class_request_a23d8c8dfb64e8f03ba857e83887a3f93}{Request\-::scheme()} 
 
 \hyperlink{class_request_a495e06b9d24638c678259b6f3aefbcd6}{Request\-::port()} 
 \end{DoxySeeAlso}
 \begin{DoxyReturn}{Returns}
 boolean Indicates of the current request is using https. (default\-: false) 
+\end{DoxyReturn}
+\hypertarget{class_request_a865d084fee04c82e9704b1144e5b4c84}{\index{Request@{Request}!make@{make}}
+\index{make@{make}!Request@{Request}}
+\subsubsection[{make}]{\setlength{\rightskip}{0pt plus 5cm}static Request\-::make (
+\begin{DoxyParamCaption}
+\item[{}]{\$s\-Path, }
+\item[{array}]{\$a\-Get = {\ttfamily array()}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [final]}}}\label{class_request_a865d084fee04c82e9704b1144e5b4c84}
+Make a local url instance using the same 'root' portion as the current request.
+
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{class_request_a6b69986e47c94186cce2336f11ad1f6e}{Request\-::root()} 
+\end{DoxySeeAlso}
+
+\begin{DoxyParams}[1]{Parameters}
+string & {\em \$s\-Path} & \\
+\hline
+array & {\em \$a\-Get} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Url 
 \end{DoxyReturn}
 \hypertarget{class_request_ada5f08ac6d1754ad0cc7312c10b8c9a3}{\index{Request@{Request}!mapping@{mapping}}
 \index{mapping@{mapping}!Request@{Request}}
@@ -317,23 +342,6 @@ mixed & {\em \$m\-Default} & Default value when index does not exist. \\
 \begin{DoxyReturn}{Returns}
 mixed The value specified by \$m\-Index in \$\-\_\-\-P\-O\-S\-T, of \$m\-Default. 
 \end{DoxyReturn}
-\hypertarget{class_request_a806349a06939db0150ce9d7d3e6f54f5}{\index{Request@{Request}!protocol@{protocol}}
-\index{protocol@{protocol}!Request@{Request}}
-\subsubsection[{protocol}]{\setlength{\rightskip}{0pt plus 5cm}static Request\-::protocol (
-\begin{DoxyParamCaption}
-{}
-\end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [final]}}}\label{class_request_a806349a06939db0150ce9d7d3e6f54f5}
-Retrieve the scheme/protocol of the current request. Currently the only two protocols supported are 'http' and 'https'. The return value is based on \hyperlink{class_request_a8d58147bb9572424021c44b0ebb3f85a}{Request\-::is\-Http()} and \hyperlink{class_request_afab6f7cb93efa72b28f3e8b2eba901dd}{Request\-::is\-Https()}.
-
-\begin{DoxySeeAlso}{See Also}
-\hyperlink{class_request_a8d58147bb9572424021c44b0ebb3f85a}{Request\-::is\-Http()} 
-
-\hyperlink{class_request_afab6f7cb93efa72b28f3e8b2eba901dd}{Request\-::is\-Https()} 
-\end{DoxySeeAlso}
-\begin{DoxyReturn}{Returns}
-string Return value should be 'http' or 'https'. (default\-: 'http') 
-\end{DoxyReturn}
 \hypertarget{class_request_a6b69986e47c94186cce2336f11ad1f6e}{\index{Request@{Request}!root@{root}}
 \index{root@{root}!Request@{Request}}
 \subsubsection[{root}]{\setlength{\rightskip}{0pt plus 5cm}static Request\-::root (
@@ -350,6 +358,23 @@ Retrieve the root portion of the current request. This is the concatenation of \
 \end{DoxySeeAlso}
 \begin{DoxyReturn}{Returns}
 string http\mbox{[}s\mbox{]}\-://\mbox{[}user\mbox{[}\-:password\mbox{]}@\mbox{]}example.\-com\mbox{[}\-:80\mbox{]}\mbox{[}/path-\/to-\/install\mbox{]} 
+\end{DoxyReturn}
+\hypertarget{class_request_a23d8c8dfb64e8f03ba857e83887a3f93}{\index{Request@{Request}!scheme@{scheme}}
+\index{scheme@{scheme}!Request@{Request}}
+\subsubsection[{scheme}]{\setlength{\rightskip}{0pt plus 5cm}static Request\-::scheme (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [final]}}}\label{class_request_a23d8c8dfb64e8f03ba857e83887a3f93}
+Retrieve the scheme/protocol of the current request. Currently the only two protocols supported are 'http' and 'https'. The return value is based on \hyperlink{class_request_a8d58147bb9572424021c44b0ebb3f85a}{Request\-::is\-Http()} and \hyperlink{class_request_afab6f7cb93efa72b28f3e8b2eba901dd}{Request\-::is\-Https()}.
+
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{class_request_a8d58147bb9572424021c44b0ebb3f85a}{Request\-::is\-Http()} 
+
+\hyperlink{class_request_afab6f7cb93efa72b28f3e8b2eba901dd}{Request\-::is\-Https()} 
+\end{DoxySeeAlso}
+\begin{DoxyReturn}{Returns}
+string Return value should be 'http' or 'https'. (default\-: 'http') 
 \end{DoxyReturn}
 \hypertarget{class_request_af0d98675f85be7ee4fca80e18942693b}{\index{Request@{Request}!session@{session}}
 \index{session@{session}!Request@{Request}}

@@ -106,5 +106,6 @@
 	{{include admin.overlay.error.tpl}}
 	{{include admin.overlay.succes.tpl}}
 	{{include admin.overlay.info.tpl}}
+	{{include admin.overlay.loading.tpl}}
 </body>
 </html>

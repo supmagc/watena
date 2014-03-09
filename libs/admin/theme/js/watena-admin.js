@@ -5,8 +5,15 @@ var oWatena = new (function() {
 	this.cbOverlayButton = null;
 })();
 
-function execute(sName, aParams) {
-	window[sName].apply(this, aParams);
+function TEST() {
+	alert(JSON.stringify(arguments));
+}
+
+function execute(callback) {
+	if(typeof callback == 'string' || callback instanceof String)
+		eval('('+callback+')()');
+	else
+		callback();
 }
 
 function loaderCallback() {
@@ -24,23 +31,38 @@ function loaderCallback() {
 	
 	$(".overlay .close").click(function() {
 		$(".overlay").hide();
-		eval(oWatena.cbOberlayCross);
+		execute(oWatena.cbOverlayCross);
 	});
 	
 	$(".overlay .footer").click(function() {
 		$(".overlay").hide();
-		eval(oWatena.cbOverlayButton);
+		execute(oWatena.cbOverlayButton);
 	});
-	
-	displayError("You are not logged in, proceed to verify your identity!", "Authentication Failure", "displayLogin()");
 }
 
-function displayLogin() {
+function displayLogin(sUserName, sUserNameError, sPasswordError) {
+	$(".overlay").hide();
 	$("#overlay_login").show();
+	$("#login_usn").val(sUserName);
+	$("#login_usn_error").text(sUserNameError);
+	$("#login_pwd_error").text(sPasswordError);
 	$("#login_usn").focus();
+	oWatena.cbOverlayCross = function() {
+		requestContent();
+	};
+	oWatena.cbOverlayButton = function() {
+		displayLoading("Processing login", function() {
+			requestLogin(
+				$("#login_usn").val(),
+				$("#login_pwd").val()
+			);
+			
+		});
+	};
 }
 
 function displayError(sMessage, sTitle, cbOk) {
+	$(".overlay").hide();
 	$("#overlay_error").show();
 	$("#overlay_error .center .title").text(sTitle);
 	$("#overlay_error .center .content").text(sMessage);
@@ -49,11 +71,24 @@ function displayError(sMessage, sTitle, cbOk) {
 }
 
 function displaySucces(sMessage, sTitle, cbOk) {
+	$(".overlay").hide();
 	$("#overlay_succes").show();
 	$("#overlay_succes .content").text(sMessage);
 }
 
 function displayInfo(sMessage, sTitle, cbOk) {
+	$(".overlay").hide();
 	$("#overlay_info").show();
 	$("#overlay_info .content").text(sMessage);
+}
+
+function displayLoading(sTitle, cbTimeout) {
+	if(sTitle != undefined && sTitle != "") {
+		$("#overlay_error .header .title").text(sTitle);
+	}
+	$(".overlay").hide();
+	$("#overlay_loading").show();
+	if(cbTimeout != undefined && cbTimeout != "") {
+		setTimeout(cbTimeout, 1000);
+	}
 }

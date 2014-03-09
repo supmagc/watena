@@ -41,11 +41,11 @@ class Callback extends Object {
 				return false;
 			}
 			
-			return call_user_func_array($this->m_sMethod, array());
+			return call_user_func_array($this->m_sMethod, $this->m_aArguments);
 		}
 		else {
 			if(!is_object($oTarget)) {
-				$this->getLogger()->warning('Callback requires thetarget variable to be an object.', array('method' => $this->getMethod(), 'target' => $this->getMethod()));
+				$this->getLogger()->warning('Callback requires the target variable to be an object.', array('method' => $this->getMethod(), 'target' => $this->getMethod()));
 				return false;
 			}
 			if(!method_exists($oTarget, $this->m_sMethod)) {
@@ -53,7 +53,7 @@ class Callback extends Object {
 				return false;
 			}
 			
-			return call_user_func_array(array($oTarget, $this->m_sMethod), array());
+			return call_user_func_array(array($oTarget, $this->m_sMethod), $this->m_aArguments);
 		}
 	}
 	
@@ -67,13 +67,13 @@ class Callback extends Object {
 			$sMethod = $aData['method'];
 			
 			if(isset($aData['arguments'])) {
-				$aArguments = $aData['arguments'];
+				$aArguments = json_decode($aData['arguments'], true);
 			}
 			else if(isset($aData['args'])) {
-				$aArguments = $aData['args'];
+				$aArguments = json_decode($aData['args'], true);
 			}
 			
-			return new Callback($sMethod);
+			return new Callback($sMethod, $aArguments);
 		}
 		else {
 			return null;

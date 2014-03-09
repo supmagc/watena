@@ -28,11 +28,13 @@ class Test {
 		
 		$this->teardown();
 		
-		if(count($this->m_aErrors) == 0) {
-			echo '--ok--';
-		}
-		else {
-			echo "--no--\r\n" . implode("\r\n", $this->m_aErrors);
+		if(ob_get_length() == 0) {
+			if(count($this->m_aErrors) == 0) {
+				echo '--ok--';
+			}
+			else {
+				echo "--no--\r\n" . implode("\r\n", $this->m_aErrors);
+			}
 		}
 	}
 	

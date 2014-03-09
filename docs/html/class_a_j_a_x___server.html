@@ -39,6 +39,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
+      <li><a href="files.html"><span>Files</span></a></li>
       <li><a href="examples.html"><span>Examples</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
@@ -71,7 +72,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -92,12 +93,10 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ad2c59b18389118835d24ffa708c28592"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_j_a_x___server.html#ad2c59b18389118835d24ffa708c28592">__construct</a> ($bAutoProcessAndExit=true, $sPrefix= 'TMX')</td></tr>
-<tr class="separator:ad2c59b18389118835d24ffa708c28592"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a275ad9d504f5d6c0536b0c394128f856"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_j_a_x___server.html#a275ad9d504f5d6c0536b0c394128f856">GetPage</a> ()</td></tr>
-<tr class="separator:a275ad9d504f5d6c0536b0c394128f856"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad0383584d768341adee4af6d26776b62"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_j_a_x___server.html#ad0383584d768341adee4af6d26776b62">Process</a> ($bAutoExit=true)</td></tr>
-<tr class="separator:ad0383584d768341adee4af6d26776b62"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adfc5e2ea55215e07ced413bf46e3a8f4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_j_a_x___server.html#adfc5e2ea55215e07ced413bf46e3a8f4">__construct</a> ()</td></tr>
+<tr class="separator:adfc5e2ea55215e07ced413bf46e3a8f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae6059a2c59fc8b99b525d6651f35e2a9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_j_a_x___server.html#ae6059a2c59fc8b99b525d6651f35e2a9">process</a> ($oContext=null)</td></tr>
+<tr class="separator:ae6059a2c59fc8b99b525d6651f35e2a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Class processing a TMX-request server-sided</p>
@@ -113,33 +112,22 @@ Public Member Functions</h2></td></tr>
 <li>Anticipated all the changes within TMX_Request </li>
 </ul>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="ad2c59b18389118835d24ffa708c28592"></a>
+<a class="anchor" id="adfc5e2ea55215e07ced413bf46e3a8f4"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">AJAX_Server::__construct </td>
           <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>$bAutoProcessAndExit</em> = <code>true</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramname">)</td><td></td>
           <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>$sPrefix</em> = <code>'TMX'</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 <p>Create a new Server-class that will automatically try to process a TMX-request</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramtype">bool</td><td class="paramname">$bAutoExit</td><td>automatically call exit after dataprocessing and your <a class="el" href="class_t_m_x___ajax_page.html">TMX_AjaxPage</a> is flushed </td></tr>
+    <tr><td class="paramtype">bool</td><td class="paramname">$bAutoExit</td><td>automatically call exit after dataprocessing and your TMX_AjaxPage is flushed </td></tr>
     <tr><td class="paramtype">string</td><td class="paramname">$sPrefix</td><td></td></tr>
   </table>
   </dd>
@@ -148,32 +136,15 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="a275ad9d504f5d6c0536b0c394128f856"></a>
+<a class="anchor" id="ae6059a2c59fc8b99b525d6651f35e2a9"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">AJAX_Server::GetPage </td>
-          <td>(</td>
-          <td class="paramname">)</td><td></td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Retrieve the ourput-page</p>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="class_t_m_x___ajax_page.html">TMX_AjaxPage</a> </dd></dl>
-
-</div>
-</div>
-<a class="anchor" id="ad0383584d768341adee4af6d26776b62"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">AJAX_Server::Process </td>
+          <td class="memname">AJAX_Server::process </td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>$bAutoExit</em> = <code>true</code>)</td><td></td>
+          <td class="paramname"><em>$oContext</em> = <code>null</code>)</td><td></td>
           <td></td>
         </tr>
       </table>
@@ -194,7 +165,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Sep 29 2013 16:40:28 for Watena by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Mar 8 2014 17:22:22 for Watena by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.4
 </small></address>

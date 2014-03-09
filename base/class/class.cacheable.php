@@ -3,15 +3,19 @@
 /**
  * Base class for caching behaviour.
  * The caching protocol works as follows:
- * 1) The user calls the create on one of the child classes with the approrpiate arguments.
- * 2) This will create an instance of CacheData which holds the indentifier and 'time last change'.
- * 3) Based on the cachedata the current caching engine will look for a match.
- * 4) If a match is found the object will be loaded from cache. ( continue with 7)
- * 5) If no match is found, an instance of the object will be created.
- * 6) On the newly created object the make(...) method will be called with the arguments passed to the initial create.
- * 7) The init(...) method will be called on the actual instance.
- * 8) The fully initialised object will be returned.
+ *  1) The user calls the create on one of the child classes with the approrpiate arguments.
+ *  2) This will create an instance of CacheLoader which will control the required dependencies.
+ *  3) The loader will generate the corretc identifiersand see if an existing object can be loaded.
+ *  4) If such and object is found, it will be loaded from cache (continue 8) and the provided config will be injected.
+ *  5) The freshly loaded object will be given a last chance to invalidate itself during the validate(...) call.
+ *  6) If such an object is unknown a CacheData instance containing the identifiers will be created.
+ *  7) The system will try to find a match for the given members and set them if applicable.
+ *  8) On the newly created object the make(...) method will be called with the arguments passed to the initial create.
+ *  9) The init(...) method will be called on the actual instance.
+ * 10) The fully initialised object will be returned.
  * 
+ * @see CacheData
+ * @see CacheLoader
  * @see CacheableData
  * @see CacheableDirectory
  * @see CacheableFile
@@ -57,7 +61,7 @@ abstract class Cacheable extends Object {
 	}
 
 	/**
-	 * This is ashort
+	 * This is a shorthand for the configuration data in the CacheData
 	 * 
 	 * @return mixed
 	 */

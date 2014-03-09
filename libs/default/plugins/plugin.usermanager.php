@@ -149,7 +149,7 @@ class UserManager extends Plugin {
 		
 		// Get and check the matching UserId
 		$oUser = User::Load(self::getUserIdByName($sName));
-		if($oUser !== false) 
+		if($oUser === false) 
 			throw new UserUnknownNameException($sName);
 
 		// Try to log the user in with the provided password

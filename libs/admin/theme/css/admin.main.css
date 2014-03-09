@@ -16,7 +16,7 @@ div, html, body {
 	padding: 0px;	
 }
 
-body, div, span, .content {
+body, div, span, .content, .error_message {
 	font-family: 'Droid Sans', sans-serif;
 	font-weight: 400;
 }
@@ -31,6 +31,11 @@ div#main-tabs, div#main-module, div#main-content {
 	background: rgba(255, 255, 255, 0.9);
 	border: #6b3500 1px solid;
 	padding: 14px 19px;
+}
+
+.error_message {
+	color: #F06;
+	font-size: 12px;
 }
 
 div#main div.title {

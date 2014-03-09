@@ -39,6 +39,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
+      <li><a href="files.html"><span>Files</span></a></li>
       <li><a href="examples.html"><span>Examples</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
@@ -71,7 +72,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -132,8 +133,8 @@ Static Public Member Functions</h2></td></tr>
 <tr class="separator:a3af4a199ee9ff77080b287d445fd7258"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7af0235d7605c027e8fc05014c5e8a02"><td class="memItemLeft" align="right" valign="top">static&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_logger.html#a7af0235d7605c027e8fc05014c5e8a02">setDefaultFilterLevel</a> ($mLevel)</td></tr>
 <tr class="separator:a7af0235d7605c027e8fc05014c5e8a02"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a67f68a274b78033665beb7e42c3367ad"><td class="memItemLeft" align="right" valign="top">static&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_logger.html#a67f68a274b78033665beb7e42c3367ad">registerProcessor</a> (ILogProcessor $oProcessor)</td></tr>
-<tr class="separator:a67f68a274b78033665beb7e42c3367ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a745cf7ce062b1a552914d835be207fd6"><td class="memItemLeft" align="right" valign="top">static&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_logger.html#a745cf7ce062b1a552914d835be207fd6">registerProcessor</a> (ILogProcessor $oProcessor, $bClearPrevious=false)</td></tr>
+<tr class="separator:a745cf7ce062b1a552914d835be207fd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7cd51ad43efe88cfde3c1ebdc988940b"><td class="memItemLeft" align="right" valign="top">static&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_logger.html#a7cd51ad43efe88cfde3c1ebdc988940b">getGenericInstance</a> ()</td></tr>
 <tr class="separator:a7cd51ad43efe88cfde3c1ebdc988940b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a01709c6e4bc16337f430ab0d657f187f"><td class="memItemLeft" align="right" valign="top">static&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_logger.html#a01709c6e4bc16337f430ab0d657f187f">getLevelName</a> ($nLevel)</td></tr>
@@ -680,7 +681,7 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a67f68a274b78033665beb7e42c3367ad"></a>
+<a class="anchor" id="a745cf7ce062b1a552914d835be207fd6"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -691,8 +692,18 @@ Static Public Member Functions</h2></td></tr>
           <td class="memname">static Logger::registerProcessor </td>
           <td>(</td>
           <td class="paramtype">ILogProcessor&#160;</td>
-          <td class="paramname"><em>$oProcessor</em>)</td><td></td>
+          <td class="paramname"><em>$oProcessor</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>$bClearPrevious</em> = <code>false</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -895,7 +906,7 @@ Static Public Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Sep 29 2013 16:40:28 for Watena by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Mar 8 2014 17:22:22 for Watena by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.4
 </small></address>
