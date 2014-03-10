@@ -65,7 +65,7 @@ div#nav {
 		line-height: 60px;
 	}
 
-	div#logo:first-letter {
+	div#nav-logo:first-letter {
 		color: #FF7F00;
 		font-size: 42px;
 	}

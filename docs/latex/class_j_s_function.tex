@@ -1,0 +1,184 @@
+\hypertarget{class_j_s_function}{\section{J\-S\-Function Class Reference}
+\label{class_j_s_function}\index{J\-S\-Function@{J\-S\-Function}}
+}
+
+
+Inherits Object.
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_j_s_function_ac9dc958434b754eb91570166baea4b83}{\-\_\-\-\_\-construct} (\$s\-Function\-Name, array \$a\-Params=array())
+\item 
+\hyperlink{class_j_s_function_a3c0720b6f99335be1f31e3dcd9158722}{get\-Function\-Name} ()
+\item 
+\hyperlink{class_j_s_function_ac64109018bb50dd46daa4edb9f64dee8}{get\-Parameters} ()
+\item 
+\hyperlink{class_j_s_function_a6b3f79ff3c91a373799474eb34b7e66d}{get\-Function} ()
+\item 
+\hyperlink{class_j_s_function_ab7e7c06eb044ab3bd1ab3ee8880aa940}{get\-Callback} (\$s\-Callback\-Name, \$b\-Close\-Statement=true)
+\item 
+\hyperlink{class_j_s_function_a93a20458a06de1cad66ba0eb98d6d540}{call\-Function} (\$b\-Close\-Statement=true)
+\item 
+\hyperlink{class_j_s_function_a87ff9cd433c24738e62f68ea28b1c0df}{to\-String} ()
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \hyperlink{class_j_s_function_ab83d99420a69ae7293df271732c01acf}{is\-Valid\-Function\-Name} (\$s\-Function\-Name)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Class encapsulating a call to an onpage Java\-Script Function. With this class you can define and execute a Java\-Script callback.
+
+\begin{DoxyAuthor}{Author}
+Jelle Voet 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+1.\-0.\-0 
+\end{DoxyVersion}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_j_s_function_ac9dc958434b754eb91570166baea4b83}{\index{J\-S\-Function@{J\-S\-Function}!\-\_\-\-\_\-construct@{\-\_\-\-\_\-construct}}
+\index{\-\_\-\-\_\-construct@{\-\_\-\-\_\-construct}!JSFunction@{J\-S\-Function}}
+\subsubsection[{\-\_\-\-\_\-construct}]{\setlength{\rightskip}{0pt plus 5cm}J\-S\-Function\-::\-\_\-\-\_\-construct (
+\begin{DoxyParamCaption}
+\item[{}]{\$s\-Function\-Name, }
+\item[{array}]{\$a\-Params = {\ttfamily array()}}
+\end{DoxyParamCaption}
+)}}\label{class_j_s_function_ac9dc958434b754eb91570166baea4b83}
+Create a new Java\-Script Function instance. The \$a\-Params parameter is optional but should only contains values. If you still provide an associative array, the keys will be stripped. If \$s\-Function\-Name is not valid a warning will be triggered.
+
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{class_j_s_function_ab83d99420a69ae7293df271732c01acf}{J\-S\-Function\-::is\-Valid\-Function\-Name()} 
+\end{DoxySeeAlso}
+
+\begin{DoxyParams}[1]{Parameters}
+string & {\em \$s\-Function\-Name} & \\
+\hline
+array & {\em \$a\-Params} & \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_j_s_function_a93a20458a06de1cad66ba0eb98d6d540}{\index{J\-S\-Function@{J\-S\-Function}!call\-Function@{call\-Function}}
+\index{call\-Function@{call\-Function}!JSFunction@{J\-S\-Function}}
+\subsubsection[{call\-Function}]{\setlength{\rightskip}{0pt plus 5cm}J\-S\-Function\-::call\-Function (
+\begin{DoxyParamCaption}
+\item[{}]{\$b\-Close\-Statement = {\ttfamily true}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [final]}}}\label{class_j_s_function_a93a20458a06de1cad66ba0eb98d6d540}
+Get a valid call for the function defined as functionname.
+
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{class_j_s_function_a6b3f79ff3c91a373799474eb34b7e66d}{J\-S\-Function\-::get\-Function()} 
+\end{DoxySeeAlso}
+
+\begin{DoxyParams}[1]{Parameters}
+string & {\em \$b\-Close\-Statement} & Do you cant to close the statement. (append ';') \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+string 
+\end{DoxyReturn}
+\hypertarget{class_j_s_function_ab7e7c06eb044ab3bd1ab3ee8880aa940}{\index{J\-S\-Function@{J\-S\-Function}!get\-Callback@{get\-Callback}}
+\index{get\-Callback@{get\-Callback}!JSFunction@{J\-S\-Function}}
+\subsubsection[{get\-Callback}]{\setlength{\rightskip}{0pt plus 5cm}J\-S\-Function\-::get\-Callback (
+\begin{DoxyParamCaption}
+\item[{}]{\$s\-Callback\-Name, }
+\item[{}]{\$b\-Close\-Statement = {\ttfamily true}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [final]}}}\label{class_j_s_function_ab7e7c06eb044ab3bd1ab3ee8880aa940}
+Get a valid callback variable declaration containing a call to the defined functionname.
+
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{class_j_s_function_a6b3f79ff3c91a373799474eb34b7e66d}{J\-S\-Function\-::get\-Function()} 
+\end{DoxySeeAlso}
+
+\begin{DoxyParams}[1]{Parameters}
+string & {\em \$s\-Callback\-Name} & The callback variable name. \\
+\hline
+string & {\em \$b\-Close\-Statement} & Do you cant to close the statement. (append ';') \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+string 
+\end{DoxyReturn}
+\hypertarget{class_j_s_function_a6b3f79ff3c91a373799474eb34b7e66d}{\index{J\-S\-Function@{J\-S\-Function}!get\-Function@{get\-Function}}
+\index{get\-Function@{get\-Function}!JSFunction@{J\-S\-Function}}
+\subsubsection[{get\-Function}]{\setlength{\rightskip}{0pt plus 5cm}J\-S\-Function\-::get\-Function (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [final]}}}\label{class_j_s_function_a6b3f79ff3c91a373799474eb34b7e66d}
+Get a valid javascript function definition containing a call to the defined functionname. Format\-: function() \{window\mbox{[}'functionname'\mbox{]}.apply(this, \mbox{[}parameters\mbox{]});\}
+
+\begin{DoxyReturn}{Returns}
+string 
+\end{DoxyReturn}
+\hypertarget{class_j_s_function_a3c0720b6f99335be1f31e3dcd9158722}{\index{J\-S\-Function@{J\-S\-Function}!get\-Function\-Name@{get\-Function\-Name}}
+\index{get\-Function\-Name@{get\-Function\-Name}!JSFunction@{J\-S\-Function}}
+\subsubsection[{get\-Function\-Name}]{\setlength{\rightskip}{0pt plus 5cm}J\-S\-Function\-::get\-Function\-Name (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [final]}}}\label{class_j_s_function_a3c0720b6f99335be1f31e3dcd9158722}
+Get the Java\-Script function name as provided during construction.
+
+\begin{DoxyReturn}{Returns}
+string 
+\end{DoxyReturn}
+\hypertarget{class_j_s_function_ac64109018bb50dd46daa4edb9f64dee8}{\index{J\-S\-Function@{J\-S\-Function}!get\-Parameters@{get\-Parameters}}
+\index{get\-Parameters@{get\-Parameters}!JSFunction@{J\-S\-Function}}
+\subsubsection[{get\-Parameters}]{\setlength{\rightskip}{0pt plus 5cm}J\-S\-Function\-::get\-Parameters (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [final]}}}\label{class_j_s_function_ac64109018bb50dd46daa4edb9f64dee8}
+Get the values of the Java\-Script function parameters array you provided during construction.
+
+\begin{DoxyReturn}{Returns}
+array 
+\end{DoxyReturn}
+\hypertarget{class_j_s_function_ab83d99420a69ae7293df271732c01acf}{\index{J\-S\-Function@{J\-S\-Function}!is\-Valid\-Function\-Name@{is\-Valid\-Function\-Name}}
+\index{is\-Valid\-Function\-Name@{is\-Valid\-Function\-Name}!JSFunction@{J\-S\-Function}}
+\subsubsection[{is\-Valid\-Function\-Name}]{\setlength{\rightskip}{0pt plus 5cm}static J\-S\-Function\-::is\-Valid\-Function\-Name (
+\begin{DoxyParamCaption}
+\item[{}]{\$s\-Function\-Name}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [final]}}}\label{class_j_s_function_ab83d99420a69ae7293df271732c01acf}
+Check if the given functionname is valid. Valid format\-: /$^\wedge$\mbox{[}a-\/z\-\_\-\mbox{]}\mbox{[}a-\/z0-\/9\-\_\-\mbox{]}$\ast$\$/i
+
+
+\begin{DoxyParams}[1]{Parameters}
+string & {\em \$s\-Function\-Name} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+boolean 
+\end{DoxyReturn}
+\hypertarget{class_j_s_function_a87ff9cd433c24738e62f68ea28b1c0df}{\index{J\-S\-Function@{J\-S\-Function}!to\-String@{to\-String}}
+\index{to\-String@{to\-String}!JSFunction@{J\-S\-Function}}
+\subsubsection[{to\-String}]{\setlength{\rightskip}{0pt plus 5cm}J\-S\-Function\-::to\-String (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [final]}}}\label{class_j_s_function_a87ff9cd433c24738e62f68ea28b1c0df}
+Returns the same as \hyperlink{class_j_s_function_a6b3f79ff3c91a373799474eb34b7e66d}{J\-S\-Function\-::get\-Function()}. This enabled the class to be used and concatenated as string variable.
+
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{class_j_s_function_a6b3f79ff3c91a373799474eb34b7e66d}{J\-S\-Function\-::get\-Function()} 
+
+Object\-::to\-String() 
+\end{DoxySeeAlso}
+\begin{DoxyReturn}{Returns}
+string 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+class.\-jsfunction.\-php\end{DoxyCompactItemize}
