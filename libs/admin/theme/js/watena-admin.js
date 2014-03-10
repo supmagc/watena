@@ -5,10 +5,6 @@ var oWatena = new (function() {
 	this.cbOverlayButton = null;
 })();
 
-function TEST() {
-	alert(JSON.stringify(arguments));
-}
-
 function execute(callback) {
 	if(typeof callback == 'string' || callback instanceof String)
 		eval('('+callback+')()');
@@ -17,7 +13,7 @@ function execute(callback) {
 }
 
 function loaderCallback() {
-	requestContent();
+	requestContent('/');
 
 	oWatena.sSearchDefault = $("#search_txt").val();
 	$("#search_txt").focus(function() {
@@ -82,6 +78,21 @@ function displayInfo(sMessage, sTitle, cbOk) {
 	$("#overlay_info .content").text(sMessage);
 }
 
+function displayModuleTabs() {
+	$(".overlay").hide();
+	
+}
+
+function displayModuleInfo() {
+	$(".overlay").hide();
+	
+}
+
+function displayModuleContent() {
+	$(".overlay").hide();
+	
+}
+
 function displayLoading(sTitle, cbTimeout) {
 	if(sTitle != undefined && sTitle != "") {
 		$("#overlay_error .header .title").text(sTitle);
@@ -91,4 +102,10 @@ function displayLoading(sTitle, cbTimeout) {
 	if(cbTimeout != undefined && cbTimeout != "") {
 		setTimeout(cbTimeout, 1000);
 	}
+}
+
+function requestLoadingContent(sMapping) {
+	displayLoading("Get content", function() {
+		requestContent(sMapping);
+	});
 }

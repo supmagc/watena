@@ -12,13 +12,24 @@ class AdminCallbackController extends CallbackController {
 		return watena()->getContext()->getPlugin('UserManager');
 	}
 	
-	public function requestContent($sModule = null, $sTab = null) {
+	public function requestContent($sMapping = '/') {
 		$oUser = $this->getUserManager()->getLoggedInUser();
 		if(null == $oUser) {
 			$this->getModel()->displayLogin();
 		}
 		else {
-			$this->getModel()->displayContent(Admin::getLoader()->get)
+			// TODO: continue here !
+			$oItem = Admin::getLoader()->getModuleItem($sMapping);
+			$oTab = Admin::getLoader()->getModuleTab($sMapping);
+			$oContent = Admin::getLoader()->getModuleContent($sMapping);
+			if($oTab !== false) {
+				$this->getModel()->displayModuleTabs($oTab);
+				$this->getModel()->displayModuleInfo($oTab);
+				$this->getModel()->displayModuleContent($oTab);
+			}
+			else {
+				$this->getModel()->displayError("The given mapping could not be matched to an existing module.", "Module 404", $this->getModel()->makeRequestLoadingContent('/'));
+			}
 		}
 	}
 	

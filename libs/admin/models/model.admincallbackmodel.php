@@ -17,6 +17,18 @@ class AdminCallbackModel extends Model implements IResult {
 	public function displaySucces($sMessage, $sTitle, JSFunction $oCallback = null) {
 		$this->m_sResult = $this->makeDisplaySucces($sMessage, $sTitle, $oCallback)->callFunction();
 	}
+
+	public function displayModuleTabs(AdminModuleItem $oItem) {
+		$this->m_sResult = $this->makeDisplayModuleTabs($oTab);
+	}
+
+	public function displayModuleInfo(AdminModuleItem $oItem) {
+		$this->m_sResult = $this->makeDisplayModuleInfo($oItem);
+	}
+	
+	public function displayModuleContent(AdminModuleContent $oContent) {
+		$this->m_sResult = $this->makeDisplayModuleContent($oContent);
+	}
 	
 	public function makeDisplayLogin($sUserName = '', $sUserNameError = '', $sPasswordError = '') {
 		return new JSFunction('displayLogin', array($sUserName, $sUserNameError, $sPasswordError));
@@ -28,6 +40,22 @@ class AdminCallbackModel extends Model implements IResult {
 
 	public function makeDisplaySucces($sMessage, $sTitle, JSFunction $oCallback = null) {
 		return new JSFunction('displaySucces', array($sMessage, $sTitle, empty($oCallback) ? null : $oCallback->getFunction()));
+	}
+
+	public function makeDisplayModuleTabs(AdminModuleItem $oItem) {
+		return '';
+	}
+
+	public function makeDisplayModuleInfo(AdminModuleItem $oItem) {
+		return '';
+	}
+	
+	public function makeDisplayModuleContent(AdminModuleContent $oContent) {
+		return '';
+	}
+	
+	public function makeRequestLoadingContent($sMapping) {
+		return new JSFunction('requestLoadingContent', array($sMapping));
 	}
 	
 	public function getResult() {

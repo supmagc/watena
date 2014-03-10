@@ -1,13 +1,11 @@
 <?php
 define('PATH_ADMIN', realpath(dirname(__FILE__) . '/../'));
 
-require_once PATH_ADMIN . '/system/class.adminmodule.php';
-require_once PATH_ADMIN . '/system/class.adminmodulegroup.php';
-require_once PATH_ADMIN . '/system/class.adminmenu.php';
-require_once PATH_ADMIN . '/system/class.admintab.php';
-require_once PATH_ADMIN . '/system/class.admincontent.php';
+require_once PATH_ADMIN . '/system/class.adminmoduletab.php';
+require_once PATH_ADMIN . '/system/class.adminmoduleItem.php';
+require_once PATH_ADMIN . '/system/class.adminmodulecontent.php';
 
-require_plugin('AdminLoader');
+require_plugin('AdminModuleLoader');
 
 class Admin extends Plugin {
 	
@@ -16,7 +14,7 @@ class Admin extends Plugin {
 	
 	public function init() {
 		self::$s_oSingleton = $this;
-		$this->m_oLoader = parent::getWatena()->getContext()->getPlugin('AdminLoader');
+		$this->m_oLoader = parent::getWatena()->getContext()->getPlugin('AdminModuleLoader');
 	}
 	
 	public static function getLoader() {

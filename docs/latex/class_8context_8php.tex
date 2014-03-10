@@ -1,0 +1,22 @@
+\hypertarget{class_8context_8php}{\section{class.\-context.\-php File Reference}
+\label{class_8context_8php}\index{class.\-context.\-php@{class.\-context.\-php}}
+}
+
+
+\subsection{Detailed Description}
+Retrieve the path of the specified file on the system Their is an order of presedence\-: 1) Check if file has a library prepending (lib 2) If a local preferred library is set, check it 3) If a global preferred library is set, check it 4) Check all libraries on the system
+
+
+\begin{DoxyParams}[1]{Parameters}
+string & {\em \$s\-Directory} & \\
+\hline
+string & {\em \$s\-File} & \\
+\hline
+string & {\em \$s\-Preferred\-Library} & \\
+\hline
+mixed & {\em \$o\-\_\-m\-Library} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+string$|$false$|$array String when found, false when not found, array when \$b\-All\-Of\-Them is true. 
+\end{DoxyReturn}
