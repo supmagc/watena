@@ -61,15 +61,27 @@ class AdminModuleLoader extends Plugin {
 	}
 	
 	public function getDefaultModuleItemMapping() {
-		return $this->getConfig('MAPPING_DEFAULT', 'main');
+		return $this->getConfig('MAPPING_DEFAULT', '/main');
 	}
 	
  	public function getCategories() {
  		return $this->m_aCategories;
  	}
 	
-	public function getModules() {
+	public function getModuleItems() {
 		return $this->m_aModuleItems;
+	}
+	
+	public function getModuleItem($sMapping) {
+		
+	}
+
+	public function getModuleTab($sMapping) {
+	
+	}
+
+	public function getModuleContent($sMapping) {
+	
 	}
 	
 	public function getByMapping($sMapping) {
