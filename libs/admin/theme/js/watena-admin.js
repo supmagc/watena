@@ -78,17 +78,17 @@ function displayInfo(sMessage, sTitle, cbOk) {
 	$("#overlay_info .content").text(sMessage);
 }
 
-function displayModuleTabs() {
+function displayModuleTabs(sTitle, aTabs) {
 	$(".overlay").hide();
 	
 }
 
-function displayModuleInfo() {
+function displayModuleInfo(sName, sVersion, sDescription) {
 	$(".overlay").hide();
 	
 }
 
-function displayModuleContent() {
+function displayModuleContent(sTitle sContent) {
 	$(".overlay").hide();
 	
 }
