@@ -80,17 +80,27 @@ function displayInfo(sMessage, sTitle, cbOk) {
 
 function displayModuleTabs(sTitle, aTabs) {
 	$(".overlay").hide();
-	
+	$("#tabs-title").text(sTitle);
+	var oTemplate = $(".tabs-item").first().clone();
+	$('.tabs-item').remove();
+	$.each(aTabs, function(nIndex, lElement) {
+		oTemplate.text(lElement.name);
+		oTemplate.click(function() {requestLoadingContent(lElement.mapping);});
+		$('#tabs-list').append(oTemplate.clone(true));
+	});
 }
 
 function displayModuleInfo(sName, sVersion, sDescription) {
 	$(".overlay").hide();
-	
+	$("#module-name").text(sName);
+	$("#module-version").text(sVersion);
+	$("#module-description").text(sDescription);
 }
 
-function displayModuleContent(sTitle sContent) {
+function displayModuleContent(sTitle, sContent) {
 	$(".overlay").hide();
-	
+	$("#content-title").text(sTitle);
+	$("#content-content").html(sContent);
 }
 
 function displayLoading(sTitle, cbTimeout) {

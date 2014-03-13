@@ -47,7 +47,7 @@ class AdminModuleLoader extends Plugin {
 		foreach($this->m_aModuleItems as $oItem) {
 			$this->m_aMappings[$oItem->getMapping()] = $oItem->getDefaultModuleTab();
 			foreach($oItem->getModuleTabs() as $oTab) {
-				$this->m_aMappings[$oItem->getMapping() . $oTab->GetMapping()] = $oTab;
+				$this->m_aMappings[$oTab->GetMapping()] = $oTab;
 			}
 			array_assure($this->m_aCategories, array($oItem->getCategory(), $oItem->getName()), $oItem);
 		}
@@ -72,18 +72,6 @@ class AdminModuleLoader extends Plugin {
 		return $this->m_aModuleItems;
 	}
 	
-	public function getModuleItem($sMapping) {
-		
-	}
-
-	public function getModuleTab($sMapping) {
-	
-	}
-
-	public function getModuleContent($sMapping) {
-	
-	}
-	
 	public function getByMapping($sMapping) {
 		$sMapping = Encoding::toLower($sMapping);
 		return isset($this->m_aMappings[$sMapping]) ? $this->m_aMappings[$sMapping]  : false;
@@ -102,7 +90,7 @@ class AdminModuleLoader extends Plugin {
 				$sTabDescription = '' . $oXmlTab->description;
 				$sTabContent = '' . $oXmlTab->content;
 				$sTabContentType = !empty($sTabContent) ? ('' . $oXmlTab->content['type']) : '';
-				$oMenu->addModuleTab(new AdminModuleTab($sTabName, $sTabDescription, $sTabContentType, $sTabContent));
+				$oMenu->addModuleTab(new AdminModuleTab($oMenu, $sTabName, $sTabDescription, $sTabContentType, $sTabContent));
 			}
 			$this->m_aModuleItems []= $oMenu;
 		}
