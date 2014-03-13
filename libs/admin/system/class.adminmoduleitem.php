@@ -7,7 +7,7 @@ class AdminModuleItem extends Object {
 	private $m_sDescription;
 	private $m_sDefaultTab;
 	private $m_oDefaultTab;
-	private $m_aModuleTabs;
+	private $m_aTabs;
 	
 	public function __construct($sName, $sCategory, $sDescription, $sDefaultTab) {
 		$this->m_sName = $sName;
@@ -41,7 +41,7 @@ class AdminModuleItem extends Object {
 	}
 	
 	public function addModuleTab(AdminModuleTab $oTab) {
-		$this->m_aModuleTabs[$oTab->getName()] = $oTab;
+		$this->m_aTabs[$oTab->getName()] = $oTab;
 		if($this->m_sDefaultTab == Encoding::toLower($oTab->getName())) {
 			$this->m_oDefaultTab = $oTab;
 		}
@@ -49,11 +49,11 @@ class AdminModuleItem extends Object {
 	
 	public function getModuleTab($sMapping) {
 		$sMapping = Encoding::toLower($sMapping);
-		return isset($this->m_aModuleTabs[$sMapping]) ? $this->m_aModuleTabs[$sMapping] : null;
+		return isset($this->m_aTabs[$sMapping]) ? $this->m_aTabs[$sMapping] : null;
 	}
 	
 	public function getModuleTabs() {
-		return $this->m_aModuleTabs;
+		return $this->m_aTabs;
 	}
 }
 

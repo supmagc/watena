@@ -5,7 +5,9 @@
 			<span id="title">Succes</span>
 			<img class="close" src="/theme/admin/icons/icon_white_squared-cross.png" />
 		</div>
-		<div class="content">
+		<div class="center">
+			<div class="title"></div>
+			<div class="content"></div>
 		</div>
 		<div class="footer">
 			<span class="button">Ok</span>
