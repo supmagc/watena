@@ -13,7 +13,10 @@ function execute(callback) {
 }
 
 function loaderCallback() {
-	requestContent('/');
+	if(location.hash.length > 0)
+		requestLoadingContent(location.hash.substr(1));
+	else
+		requestLoadingContent('/');
 
 	oWatena.sSearchDefault = $("#search_txt").val();
 	$("#search_txt").focus(function() {
@@ -80,13 +83,12 @@ function displayInfo(sMessage, sTitle, cbOk) {
 
 function displayModuleTabs(sTitle, aTabs) {
 	$(".overlay").hide();
-	$("#tabs-title").text(sTitle);
-	var oTemplate = $(".tabs-item").first().clone();
 	$('.tabs-item').remove();
+	$("#tabs-title").text(sTitle);
 	$.each(aTabs, function(nIndex, lElement) {
-		oTemplate.text(lElement.name);
-		oTemplate.click(function() {requestLoadingContent(lElement.mapping);});
-		$('#tabs-list').append(oTemplate.clone(true));
+		oItem = $('<li class="tabs-item"></li>').text(lElement.name);
+		oItem.click(function() {requestLoadingContent(lElement.mapping);});
+		$('#tabs-list').append(oItem);
 	});
 }
 
@@ -116,6 +118,7 @@ function displayLoading(sTitle, cbTimeout) {
 
 function requestLoadingContent(sMapping) {
 	displayLoading("Get content", function() {
+		location.hash = '#' + sMapping;
 		requestContent(sMapping);
 	});
 }

@@ -2,18 +2,28 @@
 
 class AdminModuleItem extends Object {
 	
+	private $m_oModule;
 	private $m_sName;
 	private $m_sCategory;
 	private $m_sDescription;
-	private $m_sDefaultTab;
-	private $m_oDefaultTab;
-	private $m_aTabs;
+	private $m_sMapping;
+	private $m_sDefaultModuleTabName;
+	private $m_sDefaultModuleTabMapping;
+	private $m_oDefaultModuleTabObject = null;
+	private $m_aModuleTabs = array();
 	
-	public function __construct($sName, $sCategory, $sDescription, $sDefaultTab) {
+	public function __construct(AdminModule $oModule, $sName, $sCategory, $sDescription, $sDefaultTab) {
+		$this->m_oModule = $oModule;
 		$this->m_sName = $sName;
 		$this->m_sCategory = $sCategory;
 		$this->m_sDescription = $sDescription;
-		$this->m_sDefaultTab = Encoding::toLower($sDefaultTab);
+		$this->m_sMapping = AdminModuleLoader::convertToMapping($sName);
+		$this->m_sDefaultModuleTabName = $sDefaultTab;
+		$this->m_sDefaultModuleTabMapping = $this->m_sMapping . AdminModuleLoader::convertToMapping($sDefaultTab);
+	}
+	
+	public function getModule() {
+		return $this->m_oModule;
 	}
 	
 	public function getName() {
@@ -25,35 +35,43 @@ class AdminModuleItem extends Object {
 	}
 	
 	public function getMapping() {
-		return '/' . Encoding::toLower($this->getName());
+		return $this->m_sMapping;
 	}
 	
 	public function getDescription() {
 		return $this->m_sDescription;
 	}
 	
-	public function getDefaultTabMapping() {
-		return $this->m_sDefaultTab;
+	public function getDefaultModuleTabName() {
+		return $this->m_sDefaultModuleTabName;
+	}
+
+	public function getDefaultModuleTabMapping() {
+		return $this->m_sDefaultModuleTabMapping;
 	}
 	
 	public function getDefaultModuleTab() {
-		return $this->m_oDefaultTab ?: false;
+		return $this->m_oDefaultModuleTabObject ?: false;
 	}
 	
-	public function addModuleTab(AdminModuleTab $oTab) {
-		$this->m_aTabs[$oTab->getName()] = $oTab;
-		if($this->m_sDefaultTab == Encoding::toLower($oTab->getName())) {
-			$this->m_oDefaultTab = $oTab;
+	public function addModuleTab(AdminModuleTab $oModuleTab) {
+		$this->m_aModuleTabs[$oModuleTab->getMapping()] = $oModuleTab;
+		if($this->m_sDefaultModuleTabName == $oModuleTab->getName()) {
+			$this->m_oDefaultModuleTabObject = $oModuleTab;
 		}
 	}
 	
-	public function getModuleTab($sMapping) {
-		$sMapping = Encoding::toLower($sMapping);
-		return isset($this->m_aTabs[$sMapping]) ? $this->m_aTabs[$sMapping] : null;
+	public function getModuleTabByName($sName) {
+		$sMapping = AdminModuleLoader::convertToMapping($sName);
+		return $this->getModuleTabByMapping($sMapping);
+	}
+
+	public function getModuleTabByMapping($sMapping) {
+		return isset($this->m_aModuleTabs[$sMapping]) ? $this->m_aModuleTabs[$sMapping] : false;
 	}
 	
 	public function getModuleTabs() {
-		return $this->m_aTabs;
+		return $this->m_aModuleTabs;
 	}
 }
 

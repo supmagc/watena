@@ -2,22 +2,22 @@
 
 class AdminModuleTab extends Object {
 
-	private $m_oItem;
+	private $m_oModuleItem;
 	private $m_sName;
 	private $m_sDescription;
-	private $m_sType;
-	private $m_sContent;
+	private $m_sMapping;
+	private $m_oModuleContent;
 	
-	public function __construct(AdminModuleItem $oItem, $sName, $sDescription, $sType, $sContent) {
-		$this->m_oItem = $oItem;
+	public function __construct(AdminModuleItem $oModuleItem, $sName, $sDescription, AdminModuleContent $oModuleContent) {
+		$this->m_oModuleItem = $oModuleItem;
 		$this->m_sName = $sName;
 		$this->m_sDescription = $sDescription;
-		$this->m_sType = $sType;
-		$this->m_sContent = $sContent;
+		$this->m_sMapping = $this->m_oModuleItem->getMapping() . AdminModuleLoader::convertToMapping($sName);
+		$this->m_oModuleContent = $oModuleContent;
 	}
 	
 	public function getModuleItem() {
-		return $this->m_oItem;
+		return $this->m_oModuleItem;
 	}
 
 	public function getName() {
@@ -29,11 +29,11 @@ class AdminModuleTab extends Object {
 	}
 	
 	public function getMapping() {
-		return '/' . Encoding::toLower($this->m_oItem->getMapping()) . '/' . Encoding::toLower($this->getName());
+		return $this->m_sMapping;
 	}
 	
-	public function getContent() {
-		return null;
+	public function getModuleContent() {
+		return $this->m_oModuleContent;
 	}
 }
 

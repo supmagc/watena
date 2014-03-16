@@ -18,16 +18,16 @@ class AdminCallbackModel extends Model implements IResult {
 		$this->m_sResult .= $this->makeDisplaySucces($sMessage, $sTitle, $oCallback)->callFunction();
 	}
 
-	public function displayModuleTabs(AdminModuleTab $oTab) {
-		$this->m_sResult .= $this->makeDisplayModuleTabs($oTab)->callFunction();
+	public function displayModuleTabs(AdminModuleTab $oModuleTab) {
+		$this->m_sResult .= $this->makeDisplayModuleTabs($oModuleTab)->callFunction();
 	}
 
-	public function displayModuleInfo(AdminModuleItem $oItem) {
-		$this->m_sResult .= $this->makeDisplayModuleInfo($oItem)->callFunction();
+	public function displayModuleInfo(AdminModuleTab $oModuleTab) {
+		$this->m_sResult .= $this->makeDisplayModuleInfo($oModuleTab)->callFunction();
 	}
 	
-	public function displayModuleContent(AdminModuleContent $oContent) {
-		$this->m_sResult .= $this->makeDisplayModuleContent($oContent)->callFunction();
+	public function displayModuleContent(AdminModuleTab $oModuleTab) {
+		$this->m_sResult .= $this->makeDisplayModuleContent($oModuleTab)->callFunction();
 	}
 	
 	public function makeDisplayLogin($sUserName = '', $sUserNameError = '', $sPasswordError = '') {
@@ -42,24 +42,25 @@ class AdminCallbackModel extends Model implements IResult {
 		return new JSFunction('displaySucces', array($sMessage, $sTitle, empty($oCallback) ? null : $oCallback->getFunction()));
 	}
 
-	public function makeDisplayModuleTabs(AdminModuleTab $oTab) {
+	public function makeDisplayModuleTabs(AdminModuleTab $oModuleTab) {
 		$aTabs = array();
-		foreach($oTab->getModuleItem()->getModuleTabs() as $oItemTab) {
+		foreach($oModuleTab->getModuleItem()->getModuleTabs() as $oItemTab) {
 			$aTabs []= array(
 				'name' => $oItemTab->getName(),
 				'mapping' => $oItemTab->getMapping(),
 				'description' => $oItemTab->getDescription(),
 			);
 		}
-		return new JSFunction('displayModuleTabs', array($oTab->getName(), $aTabs));
+		return new JSFunction('displayModuleTabs', array($oModuleTab->getName(), $aTabs));
 	}
 
-	public function makeDisplayModuleInfo(AdminModuleItem $oItem) {
-		return new JSFunction('displayModuleInfo', array('', '', ''));
+	public function makeDisplayModuleInfo(AdminModuleTab $oModuleTab) {
+		$oModule = $oModuleTab->getModuleItem()->getModule();
+		return new JSFunction('displayModuleInfo', array($oModule->getName(), $oModule->getVersion(), $oModule->getDescription()));
 	}
 	
-	public function makeDisplayModuleContent(AdminModuleContent $oContent) {
-		return new JSFunction('displayModuleContent', array('TEST CONTENT TITLE', ''));
+	public function makeDisplayModuleContent(AdminModuleTab $oModuleTab) {
+		return new JSFunction('displayModuleContent', array($oModuleTab->getName(), $oModuleTab->getModuleContent()->generate()));
 	}
 	
 	public function makeRequestLoadingContent($sMapping) {

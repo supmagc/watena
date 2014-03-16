@@ -22,8 +22,8 @@ class AdminCallbackController extends CallbackController {
 			$oTab = Admin::getLoader()->getByMapping($sMapping);
 			if($oTab !== false) {
 				$this->getModel()->displayModuleTabs($oTab);
-				$this->getModel()->displayModuleInfo($oTab->getModuleItem());
-				//$this->getModel()->displayModuleContent($oTab->getContent());
+				$this->getModel()->displayModuleInfo($oTab);
+				$this->getModel()->displayModuleContent($oTab);
 			}
 			else {
 				$this->getModel()->displayError("The given mapping could not be matched to an existing module.", "Module 404", $this->getModel()->makeRequestLoadingContent('/'));
