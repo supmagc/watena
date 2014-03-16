@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module>
-	<name>Dashboard Module</name>
+<module name="Dashboard">
 	<version>0.1.0 dev</version>
 	<description>The future default home module.</description>
 	<menu name="Dashboard">
 		<category>Main</category>
 		<description>Go back to the dashboard/home of the system.</description>
-		<defaulttab>home</defaulttab>
+		<defaulttab>Home</defaulttab>
 		<tab name="Home">
 			<description>Home page</description>
 			<content type="text">UNDER CONSTRUCTION</content>
@@ -17,7 +16,7 @@
 		</tab>
 		<tab name="Session">
 			<description>Session page</description>
-			<content type="text">UNDER CONSTRUCTION</content>
+			<content type="function">phpinfo</content>
 		</tab>
 	</menu>
 </module>

@@ -5,7 +5,7 @@ class AdminModuleLoader extends Plugin {
 	private $m_nLastChange = 0;
 	private $m_aWatchPaths = array();
 	
-	private $m_aModuleItems = array();
+	private $m_aModules = array();
 	private $m_aMappings = array();
 	private $m_aCategories = array();
 	
@@ -44,32 +44,34 @@ class AdminModuleLoader extends Plugin {
 		}
 		
 		// Parse all the menus into a mapping retrieval listing
-		foreach($this->m_aModuleItems as $oItem) {
-			$this->m_aMappings[$oItem->getMapping()] = $oItem->getDefaultModuleTab();
-			foreach($oItem->getModuleTabs() as $oTab) {
-				$this->m_aMappings[$oTab->GetMapping()] = $oTab;
+		foreach($this->m_aModules as $oModule) {
+			foreach($oModule->getModuleItems() as $oModuleItem) {
+				$this->m_aMappings[$oModuleItem->getMapping()] = $oModuleItem->getDefaultModuleTab();
+				foreach($oModuleItem->getModuleTabs() as $oModuleTab) {
+					$this->m_aMappings[$oModuleTab->GetMapping()] = $oModuleTab;
+				}
+				array_assure($this->m_aCategories, array($oModuleItem->getCategory(), $oModuleItem->getName()), $oModuleItem);
 			}
-			array_assure($this->m_aCategories, array($oItem->getCategory(), $oItem->getName()), $oItem);
 		}
 				
-		if(isset($this->m_aMappings[$this->getDefaultModuleItemMapping()])) {
-			$this->m_aMappings['/'] = $this->m_aMappings[$this->getDefaultModuleItemMapping()];
+		if(isset($this->m_aMappings[$this->getDefaultMapping()])) {
+			$this->m_aMappings['/'] = $this->m_aMappings[$this->getDefaultMapping()];
 		}
 		else {
-			$this->getLogger()->error('The default mapping \'{mapping}\' for the AdminLoader could not be found.', array('mapping' => $this->getDefaultModuleItemMapping()));
+			$this->getLogger()->error('The default mapping \'{mapping}\' for the AdminLoader could not be found.', array('mapping' => $this->getDefaultMapping()));
 		}
 	}
 	
-	public function getDefaultModuleItemMapping() {
-		return $this->getConfig('MAPPING_DEFAULT', '/main');
+	public function getDefaultMapping() {
+		return self::convertToMapping($this->getConfig('MODULEITEM_DEFAULT', 'dashboard'));
 	}
 	
  	public function getCategories() {
  		return $this->m_aCategories;
  	}
 	
-	public function getModuleItems() {
-		return $this->m_aModuleItems;
+	public function getModules() {
+		return $this->m_aModules;
 	}
 	
 	public function getByMapping($sMapping) {
@@ -79,21 +81,26 @@ class AdminModuleLoader extends Plugin {
 	
 	private function parseModuleFile($sFilePath) {
 		$oXml = new SimpleXMLElement($sFilePath, null, true);
+		$sName = '' . $oXml['name'];
+		$sVersion = '' . $oXml->version;
+		$sDescription = '' . $oXml->description;
+		$oModule = new AdminModule($sName, $sVersion, $sDescription);
 		foreach($oXml->menu as $oXmlMenu) {
 			$sName = '' . $oXmlMenu['name'];
 			$sCategory = '' . $oXmlMenu->category;
 			$sDefaultTab = '' . $oXmlMenu->defaulttab;
 			$sDescription = '' . $oXmlMenu->description;
-			$oMenu = new AdminModuleItem($sName, $sCategory, $sDescription, $sDefaultTab);
+			$oModuleItem = new AdminModuleItem($oModule, $sName, $sCategory, $sDescription, $sDefaultTab);
 			foreach($oXmlMenu->tab as $oXmlTab) {
 				$sTabName = '' . $oXmlTab['name'];
 				$sTabDescription = '' . $oXmlTab->description;
-				$sTabContent = '' . $oXmlTab->content;
-				$sTabContentType = !empty($sTabContent) ? ('' . $oXmlTab->content['type']) : '';
-				$oMenu->addModuleTab(new AdminModuleTab($oMenu, $sTabName, $sTabDescription, $sTabContentType, $sTabContent));
+				$sTabData = '' . $oXmlTab->content;
+				$sTabType = !empty($sTabData) ? ('' . $oXmlTab->content['type']) : '';
+				$oModuleItem->addModuleTab(new AdminModuleTab($oModuleItem, $sTabName, $sTabDescription, AdminModuleContent::process($sTabType, $sTabData)));
 			}
-			$this->m_aModuleItems []= $oMenu;
+			$oModule->addModuleItem($oModuleItem);
 		}
+		$this->m_aModules []= $oModule;
 	}
 	
 	/**
@@ -111,6 +118,10 @@ class AdminModuleLoader extends Plugin {
 			'build' => 1,
 			'state' => 'dev'
 		);
+	}
+	
+	public static function convertToMapping($sName) {
+		return '/' . Encoding::regReplace('[^-a-z0-9_]', '_', Encoding::toLower($sName));
 	}
 }
 

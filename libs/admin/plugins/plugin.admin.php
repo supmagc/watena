@@ -1,8 +1,9 @@
 <?php
 define('PATH_ADMIN', realpath(dirname(__FILE__) . '/../'));
 
+require_once PATH_ADMIN . '/system/class.adminmodule.php';
 require_once PATH_ADMIN . '/system/class.adminmoduletab.php';
-require_once PATH_ADMIN . '/system/class.adminmoduleItem.php';
+require_once PATH_ADMIN . '/system/class.adminmoduleitem.php';
 require_once PATH_ADMIN . '/system/class.adminmodulecontent.php';
 
 require_plugin('AdminModuleLoader');
