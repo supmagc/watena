@@ -72,7 +72,6 @@ div.overlay {
 				font-weight: 300;
 				font-size: 36px;
 				margin-top: 30px;
-				color: #F03;
 			}
 		
 			div.overlay .center .content {
@@ -117,6 +116,10 @@ div#overlay_error .container {
 	div#overlay_error .header {
 		background: #F03;
 	}
+	
+	div#overlay_error .center .title {
+		color: #F03;
+	}
 
 	div#overlay_error .footer {
 		background: #F03;
@@ -131,6 +134,10 @@ div#overlay_succes .container {
 	div#overlay_succes .header {
 		background: #0C5;
 	}
+	
+	div#overlay_succes .center .title {
+		color: #0C5;
+	}
 
 	div#overlay_succes .footer {
 		background: #0C5;
@@ -144,6 +151,10 @@ div#overlay_info .container {
 
 	div#overlay_info .header {
 		background: #26B;
+	}
+	
+	div#overlay_info .center .title {
+		color: #26B;
 	}
 
 	div#overlay_info .footer {
