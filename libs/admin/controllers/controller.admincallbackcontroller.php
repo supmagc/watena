@@ -15,10 +15,9 @@ class AdminCallbackController extends CallbackController {
 	public function requestContent($sMapping = '/') {
 		$oUser = $this->getUserManager()->getLoggedInUser();
 		if(null == $oUser) {
-			$this->getModel()->displayLogin();
+			$this->getModel()->displayLogin('', '', '', $sMapping);
 		}
 		else {
-			// TODO: continue here !
 			$oTab = Admin::getLoader()->getByMapping($sMapping);
 			if($oTab !== false) {
 				$this->getModel()->displayModuleTabs($oTab);
@@ -31,10 +30,10 @@ class AdminCallbackController extends CallbackController {
 		}
 	}
 	
-	public function requestLogin($sUserName, $sPassword) {
+	public function requestLogin($sUserName, $sPassword, $sContinueMapping) {
 		try {
 			$oUser = $this->getUserManager()->loginByName($sUserName, $sPassword);
-			$this->getModel()->displaySucces("You are now logged in, enjoy your stay!", "Welcome " . $oUser->getName());
+			$this->getModel()->displaySucces("You are now logged in, enjoy your stay!", "Welcome " . $oUser->getName(), $this->getModel()->makeRequestLoadingContent($sContinueMapping));
 		}
 		catch(UserInvalidNameException $oUserException) {
 			$this->getModel()->displayLogin($sUserName, 'Invalid username!', '');

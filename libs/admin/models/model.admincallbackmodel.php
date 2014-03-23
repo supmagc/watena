@@ -6,8 +6,8 @@ class AdminCallbackModel extends Model implements IResult {
 	private $m_oException;
 	private $m_sResult;
 	
-	public function displayLogin($sUserName = '', $sUserNameError = '', $sPasswordError = '') {
-		$this->m_sResult .= $this->makeDisplayLogin($sUserName, $sUserNameError, $sPasswordError)->callFunction();
+	public function displayLogin($sUserName = '', $sUserNameError = '', $sPasswordError = '', $sContinueMapping = '/') {
+		$this->m_sResult .= $this->makeDisplayLogin($sUserName, $sUserNameError, $sPasswordError, $sContinueMapping)->callFunction();
 	}
 
 	public function displayError($sMessage, $sTitle, JSFunction $oCallback = null) {
@@ -25,13 +25,17 @@ class AdminCallbackModel extends Model implements IResult {
 	public function displayModuleInfo(AdminModuleTab $oModuleTab) {
 		$this->m_sResult .= $this->makeDisplayModuleInfo($oModuleTab)->callFunction();
 	}
+
+	public function makeDisplayContent(AdminModuleTab $oModuleTab) {
+		$this->m_sResult .= $this->makeDisplayModuleContent($oModuleTab)->callFunction();
+	}
 	
 	public function displayModuleContent(AdminModuleTab $oModuleTab) {
 		$this->m_sResult .= $this->makeDisplayModuleContent($oModuleTab)->callFunction();
 	}
 	
-	public function makeDisplayLogin($sUserName = '', $sUserNameError = '', $sPasswordError = '') {
-		return new JSFunction('displayLogin', array($sUserName, $sUserNameError, $sPasswordError));
+	public function makeDisplayLogin($sUserName = '', $sUserNameError = '', $sPasswordError = '', $sContinueMapping = '/') {
+		return new JSFunction('displayLogin', array($sUserName, $sUserNameError, $sPasswordError, $sContinueMapping));
 	}
 	
 	public function makeDisplayError($sMessage, $sTitle, JSFunction $oCallback = null) {

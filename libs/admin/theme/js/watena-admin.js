@@ -3,6 +3,7 @@ var oWatena = new (function() {
 	this.sSearchDefault = '';
 	this.cbOverlayCross = null;
 	this.cbOverlayButton = null;
+	this.sContinueMapping = null;
 })();
 
 function execute(callback) {
@@ -39,23 +40,24 @@ function loaderCallback() {
 	});
 }
 
-function displayLogin(sUserName, sUserNameError, sPasswordError) {
+function displayLogin(sUserName, sUserNameError, sPasswordError, sContinueMapping) {
 	$(".overlay").hide();
 	$("#overlay_login").show();
 	$("#login_usn").val(sUserName);
 	$("#login_usn_error").text(sUserNameError);
 	$("#login_pwd_error").text(sPasswordError);
 	$("#login_usn").focus();
+	oWatena.sContinueMapping = sContinueMapping;
 	oWatena.cbOverlayCross = function() {
-		requestContent();
+		requestLoadingContent(sContinueMapping);
 	};
 	oWatena.cbOverlayButton = function() {
 		displayLoading("Processing login", function() {
 			requestLogin(
 				$("#login_usn").val(),
-				$("#login_pwd").val()
+				$("#login_pwd").val(),
+				oWatena.sContinueMapping
 			);
-			
 		});
 	};
 }
@@ -72,7 +74,10 @@ function displayError(sMessage, sTitle, cbOk) {
 function displaySucces(sMessage, sTitle, cbOk) {
 	$(".overlay").hide();
 	$("#overlay_succes").show();
-	$("#overlay_succes .content").text(sMessage);
+	$("#overlay_succes .center .title").text(sTitle);
+	$("#overlay_succes .center .content").text(sMessage);
+	oWatena.cbOverlayCross = cbOk;
+	oWatena.cbOverlayButton = cbOk;
 }
 
 function displayInfo(sMessage, sTitle, cbOk) {

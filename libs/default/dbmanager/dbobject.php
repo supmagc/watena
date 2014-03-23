@@ -44,7 +44,7 @@ class DbObject extends Object {
 	}
 	
 	public static final function loadObject($sClass, DbTable $oTable, $mData) {
-		if($sClass == get_class() || !class_exists($sClass) || !is_a($sClass, get_class()))
+		if($sClass == get_class() || !class_exists($sClass) || !is_subclass_of($sClass, get_class()))
 			return false;
 		if(!isset(self::$s_aObjectInstances[$sClass]))
 			self::$s_aObjectInstances[$sClass] = array();
