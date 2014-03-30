@@ -1,7 +1,9 @@
 <?php
 require_plugin('TemplateLoader');
 
-class AdminModuleData extends Object {
+class AdminModuleData extends Object implements IPCO_IContentParser {
+	
+	private $m_sContent;
 	
 	public function __construct() {
 		
@@ -20,15 +22,19 @@ class AdminModuleData extends Object {
 	}
 	
 	public function setContentText($sContent) {
-		
+		$this->m_sContent = $sContent;
 	}
 
 	public function setContentTemplate($sTemplateName, Model $oModel = null) {
-	
+		$oGenerator = TemplateLoader::load($sTemplateName, $this);
+		if(!empty($oGenerator))
+			$oGenerator->componentPush($oModel);
+		
+		$this->m_sContent = $oGenerator->generate();
 	}
 	
-	public function setContentFunction(JSFunction $oFunction) {
-		
+	public function parseContent(&$sContent) {
+		return array();
 	}
 } 
 

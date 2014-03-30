@@ -96,7 +96,7 @@ class AdminModuleLoader extends Plugin {
 				$sTabDescription = '' . $oXmlTab->description;
 				$sTabData = '' . $oXmlTab->content;
 				$sTabType = !empty($sTabData) ? ('' . $oXmlTab->content['type']) : '';
-				$oModuleItem->addModuleTab(new AdminModuleTab($oModuleItem, $sTabName, $sTabDescription, AdminModuleContent::process($sTabType, $sTabData)));
+				$oModuleItem->addModuleTab(new AdminModuleTab($oModuleItem, $sTabName, $sTabDescription, AdminModuleContent::load($sTabType, $sTabData)));
 			}
 			$oModule->addModuleItem($oModuleItem);
 		}
