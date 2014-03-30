@@ -10,7 +10,6 @@ interface IPCO_IContentParser {
 	 * Each of these instances represents a function call with a defines set of parameters.
 	 * 
 	 * @param string $sContent
-	 * 
 	 * @return array (optional)
 	 */
 	public function parseContent(&$sContent);

@@ -2,9 +2,9 @@
 
 abstract class AdminModuleContent extends Object {
 	
-	public abstract function generate();
+	public abstract function generate(AdminModuleData $oData);
 	
-	public static function process($sType, $sData) {
+	public static function load($sType, $sData) {
 		switch($sType) {
 			case 'text' : return new AdminModuleContentText($sData);
 			case 'function' : return new AdminModuleContentFunction($sData);
@@ -22,8 +22,8 @@ class AdminModuleContentText extends AdminModuleContent {
 		$this->m_sText = $sData;
 	}
 	
-	public function generate() {
-		return $this->m_sText;
+	public function generate(AdminModuleData $oData) {
+		$oData->setContentText($this->m_sText);
 	}
 }
 
@@ -35,7 +35,7 @@ class AdminModuleContentFunction extends AdminModuleContent {
 		$this->m_sFunction = $sData;
 	}
 	
-	public function generate() {
+	public function generate(AdminModuleData $oData) {
 		if(function_exists($this->m_sFunction)) {
 			ob_start();
 			$sReturn = '' . call_user_func($this->m_sFunction);
@@ -54,7 +54,7 @@ class AdminModuleContentCustom extends AdminModuleContent {
 	public function __construct($sData) {
 	}
 	
-	public function generate() {
+	public function generate(AdminModuleData $oData) {
 		return null;
 	}
 }
