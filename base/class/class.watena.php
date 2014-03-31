@@ -143,6 +143,7 @@ class Watena extends Object {
 	public final function getPath($sPath, $bVerify = true) {
 		$aMatches = array();
 		$aPositions = array();
+		// TODO: optimize with indexOf
 		if(Encoding::regFind('^([rdl]|root|data|libs)[:/\\\\]([^:/\\\\].*?)/?$', '' . $sPath, $aMatches, $aPositions, 'msri')) {
 			switch($aMatches[1]) {
 				case 'd' :
