@@ -5,6 +5,7 @@ require_once PATH_ADMIN . '/system/class.adminmodule.php';
 require_once PATH_ADMIN . '/system/class.adminmoduletab.php';
 require_once PATH_ADMIN . '/system/class.adminmoduleitem.php';
 require_once PATH_ADMIN . '/system/class.adminmodulecontent.php';
+require_once PATH_ADMIN . '/system/class.adminmoduledata.php';
 
 require_plugin('AdminModuleLoader');
 

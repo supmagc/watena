@@ -65,7 +65,16 @@ class AdminCallbackModel extends Model implements IResult {
 	
 	public function makeDisplayModuleContent(AdminModuleTab $oModuleTab) {
 		$oData = new AdminModuleData();
-		return new JSFunction('displayModuleContent', array($oModuleTab->getName(), $oModuleTab->getModuleContent()->generate($oData)));
+		$oModuleTab->getModuleContent()->generate($oData);
+		if($oData->hasError()) {
+			return new JSFunction('displayModuleContent', array($oData->getErrorTitle(), $oData->getErrorMessage()));
+		}
+		else {
+			$sTitle = $oModuleTab->getName();
+			if($oData->hasTitle())
+				$sTitle .= ': ' . $oData->getTitle();
+			return new JSFunction('displayModuleContent', array($sTitle, $oData->getContent()));
+		}
 	}
 	
 	public function makeRequestLoadingContent($sMapping) {

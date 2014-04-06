@@ -16,7 +16,7 @@
 		</tab>
 		<tab name="Session">
 			<description>Session page</description>
-			<content type="function">phpinfo</content>
+			<content type="eval">phpinfo_clean();</content>
 		</tab>
 	</menu>
 </module>
