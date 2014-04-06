@@ -86,6 +86,23 @@ function filechangetime($sPath) {
 }
 
 /**
+ * Retrieve a more cleaned version of the phpinfo(...) data.
+ * This will remove the <html>, <head> and <body> tags.
+ * Notice that this function will also echo it's content.
+ * 
+ * @param int $nWhat 
+ */
+function phpinfo_clean($nWhat = INFO_ALL) {
+	ob_start();
+	phpinfo($nWhat);
+	$sData = ob_get_clean();
+	$nIndexStart = Encoding::indexOf($sData, '<body>');
+	$nIndexStop = Encoding::indexOf($sData, '</body>');
+	$nIndexStart += Encoding::length($nIndexStart) + 2;
+	echo Encoding::substring($sData, $nIndexStart, $nIndexStop - $nIndexStart);
+}
+
+/**
  * Assure the array structure exists as provided
  * The structure is as defined by the keys array
  * If an none existing key is found, it's created and set to the value

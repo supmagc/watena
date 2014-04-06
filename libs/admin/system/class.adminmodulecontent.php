@@ -2,13 +2,23 @@
 
 abstract class AdminModuleContent extends Object {
 	
+	private $m_aParams;
+	
 	public abstract function generate(AdminModuleData $oData);
 	
-	public static function load($sType, $sData) {
+	protected function __construct(array $aParams) {
+		$this->m_aParams = $aParams;
+	}
+	
+	public final function getParams() {
+		return $this->m_aParams;
+	}
+	
+	public static final function load($sType, $sData) {
 		switch($sType) {
 			case 'text' : return new AdminModuleContentText($sData);
-			case 'function' : return new AdminModuleContentFunction($sData);
-			case 'custom' : return new AdminModuleContentCustom($sData);
+			case 'eval' : return new AdminModuleContentEval($sData);
+			case 'plugin' : return new AdminModuleContentPlugin($sData);
 			default : return new AdminModuleContentText($sData);
 		}
 	}
@@ -27,29 +37,25 @@ class AdminModuleContentText extends AdminModuleContent {
 	}
 }
 
-class AdminModuleContentFunction extends AdminModuleContent {
+class AdminModuleContentEval extends AdminModuleContent {
 
-	private $m_sFunction;
+	private $m_sEval;
 	
 	public function __construct($sData) {
-		$this->m_sFunction = $sData;
+		$this->m_sEval = $sData;
 	}
 	
 	public function generate(AdminModuleData $oData) {
-		if(function_exists($this->m_sFunction)) {
-			ob_start();
-			$sReturn = '' . call_user_func($this->m_sFunction);
-			$sReturn .= ob_get_contents();
-			ob_end_clean();
-			return $sReturn;
-		}
-		else {
-			return null;
-		}
+		ob_start();
+		$sData = '' . eval($this->m_sEval);
+		if(ob_get_length() > 0)
+			$sData = ob_get_contents();
+		ob_end_clean();
+		$oData->setContentText($sData);
 	}
 }
 
-class AdminModuleContentCustom extends AdminModuleContent {
+class AdminModuleContentPlugin extends AdminModuleContent {
 
 	public function __construct($sData) {
 	}
