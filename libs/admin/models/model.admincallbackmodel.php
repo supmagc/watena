@@ -17,6 +17,10 @@ class AdminCallbackModel extends Model implements IResult {
 	public function displaySucces($sMessage, $sTitle, JSFunction $oCallback = null) {
 		$this->m_sResult .= $this->makeDisplaySucces($sMessage, $sTitle, $oCallback)->callFunction();
 	}
+	
+	public function displayNavItems(AdminModuleLoader $oLoader) {
+		$this->m_sResult .= $this->makeDisplayNavItems($oLoader)->callFunction();
+	}
 
 	public function displayModuleTabs(AdminModuleTab $oModuleTab) {
 		$this->m_sResult .= $this->makeDisplayModuleTabs($oModuleTab)->callFunction();
@@ -44,6 +48,25 @@ class AdminCallbackModel extends Model implements IResult {
 
 	public function makeDisplaySucces($sMessage, $sTitle, JSFunction $oCallback = null) {
 		return new JSFunction('displaySucces', array($sMessage, $sTitle, empty($oCallback) ? null : $oCallback->getFunction()));
+	}
+	
+	public function makeDisplayNavItems(AdminModuleLoader $oLoader) {
+		$aNavs = array();
+		foreach($oLoader->getCategories() as $sCategory => $lSubItems) {
+			$aSubItems = array();
+			foreach($lSubItems as $sSubItem => $oSubItem) {
+				$aSubItems []= array(
+					'name' => $sSubItem,
+					'mapping' => $oSubItem->getMapping(),
+					'description' => $oSubItem->getDescription()
+				);
+			}
+			$aNavs []= array(
+				'name' => $sCategory,
+				'subitems' => $aSubItems
+			);
+		}
+		return new JSFunction('displayNavItems', array($aNavs));
 	}
 
 	public function makeDisplayModuleTabs(AdminModuleTab $oModuleTab) {

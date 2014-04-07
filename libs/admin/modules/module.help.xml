@@ -10,11 +10,11 @@
 		</tab>
 		<tab name="Modules">
 			<description>Show the default phpinfo() output for the current system.</description>
-			<content type="php">phpinfo()</content>
+			<content type="text">UNDER CONSTRUCTION</content>
 		</tab>
 		<tab name="Php-Info">
 			<description>Show the default phpinfo() output for the current system.</description>
-			<content type="php">phpinfo()</content>
+			<content type="eval">phpinfo_clean(INFO_ALL ^ (INFO_LICENSE | INFO_CREDITS | INFO_VARIABLES));</content>
 		</tab>
 	</menu>
 </module>

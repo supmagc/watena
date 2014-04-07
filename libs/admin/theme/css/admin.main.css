@@ -94,7 +94,7 @@ div#nav {
 		color: #FFF;
 	}
 	
-	div.nav-item ul {
+	div.nav-item ul.nav-itemlist {
 		padding: 0px;
 		display: none;
 		position: absolute;
@@ -108,7 +108,7 @@ div#nav {
 		display: block;
 	}
 		
-		div.nav-item ul li {
+		div.nav-item ul li.nav-subitem {
 			padding: 5px 10px;
 			display: block;
 			width: 190px;
@@ -125,13 +125,13 @@ div#nav {
 			cursor: pointer;
 		}
 		
-		div.nav-item ul li:hover {
+		div.nav-item ul li.nav-subitem:hover {
 			background: #FF7F00 url(../icons/icon_black_globe.png) no-repeat;
 			background-size: 22px;
 			background-position: 17px 7px;
 		}
 		
-		div.nav-item ul li:first-child {
+		div.nav-item ul li.nav-subitem:first-child {
 			margin-top: 30px;
 			border-top: none;
 		}
