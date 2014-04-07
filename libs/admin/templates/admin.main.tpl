@@ -18,16 +18,12 @@
 <body>
 	<div id="nav">
 		<div id="nav-logo">Watena</div>
-		{{foreach getCategories()}}
-		<div class="nav-item">
-			<span class="title">{[index]}</span>
+		<!--<div class="nav-item">
+			<span class="title"></span>
 			<ul>
-				{{foreach value}}
-				<li>{[index]}</li>
-				{{end}}
+				<li></li>
 			</ul>
-		</div>
-		{{end}}
+		</div>-->
 		
 		<div id="nav-search">
 			<form>

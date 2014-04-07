@@ -30,9 +30,17 @@ class AdminCallbackController extends CallbackController {
 		}
 	}
 	
+	public function requestNavItems() {
+		$oUser = $this->getUserManager()->getLoggedInUser();
+		if(null != $oUser) {
+			$this->getModel()->displayNavItems(Admin::getLoader());
+		}
+	}
+	
 	public function requestLogin($sUserName, $sPassword, $sContinueMapping) {
 		try {
 			$oUser = $this->getUserManager()->loginByName($sUserName, $sPassword);
+			$this->getModel()->displayNavItems(Admin::getLoader());
 			$this->getModel()->displaySucces("You are now logged in, enjoy your stay!", "Welcome " . $oUser->getName(), $this->getModel()->makeRequestLoadingContent($sContinueMapping));
 		}
 		catch(UserInvalidNameException $oUserException) {

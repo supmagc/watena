@@ -18,6 +18,9 @@ class AdminMainModel extends HtmlModel {
 
 		$oRequest = new AJAX_Request('/admin/ajax', 'requestContent');
 		$oAjax->registerRequest($oRequest);
+
+		$oRequest = new AJAX_Request('/admin/ajax', 'requestNavItems');
+		$oAjax->registerRequest($oRequest);
 		
 		$oRequest = new AJAX_Request('/admin/ajax', 'requestLogin');
 		$oAjax->registerRequest($oRequest);

@@ -14,6 +14,8 @@ function execute(callback) {
 }
 
 function loaderCallback() {
+	requestNavItems();
+	
 	if(location.hash.length > 0)
 		requestLoadingContent(location.hash.substr(1));
 	else
@@ -84,6 +86,20 @@ function displayInfo(sMessage, sTitle, cbOk) {
 	$(".overlay").hide();
 	$("#overlay_info").show();
 	$("#overlay_info .content").text(sMessage);
+}
+
+function displayNavItems(aNavs) {
+	$('.nav-item').remove();
+	$.each(aNavs, function(nIndx, lElement) {
+		oItem = $('<div class="nav-item"><span class="title"></span><ul class="nav-itemlist"></ul></div>');
+		oItem.find('.title').text(lElement.name);
+		$.each(lElement.subitems, function(nSubIndex, lSubElement) {
+			oSubItem = $('<li class="nav-subitem"></li>').text(lSubElement.name);
+			oSubItem.click(function() {requestLoadingContent(lSubElement.mapping);});
+			oItem.find('.nav-itemlist').append(oSubItem);
+		});
+		$('#nav-logo, .nav-item').last().after(oItem);
+	});
 }
 
 function displayModuleTabs(sTitle, aTabs) {
