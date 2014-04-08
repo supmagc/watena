@@ -99,7 +99,10 @@ function phpinfo_clean($nWhat = INFO_ALL) {
 	$nIndexStart = Encoding::indexOf($sData, '<body>');
 	$nIndexStop = Encoding::indexOf($sData, '</body>');
 	$nIndexStart += Encoding::length($nIndexStart) + 2;
-	echo Encoding::substring($sData, $nIndexStart, $nIndexStop - $nIndexStart);
+	$sData = Encoding::substring($sData, $nIndexStart, $nIndexStop - $nIndexStart);
+	$sData = Encoding::regReplace('<a href="http://www.php.net/">(.*?)</a>', '', $sData);
+	$sData = Encoding::replace(' width="600"', '', $sData);
+	echo $sData;
 }
 
 /**
