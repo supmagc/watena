@@ -70,7 +70,7 @@ div#nav {
 		font-size: 42px;
 	}
 	
-	div.nav-item {
+	div.nav-category {
 		position: relative;
 		float: left;
 		background: url(../icons/icon_white_list.png) no-repeat;
@@ -84,17 +84,17 @@ div#nav {
 		cursor: pointer;
 	}
 	
-	div.nav-item:hover {
+	div.nav-category:hover {
 		background: url(../icons/icon_orange_list.png) no-repeat;
 		background-position: 0px 15px;
 		background-size: 40px 45px;
 	}
 	
-	div.nav-item span.title {
+	div.nav-category span.title {
 		color: #FFF;
 	}
 	
-	div.nav-item ul.nav-itemlist {
+	div.nav-category ul.nav-list {
 		padding: 0px;
 		display: none;
 		position: absolute;
@@ -104,11 +104,11 @@ div#nav {
 		background-position: 18px 20px;
 	}
 	
-	div.nav-item:hover ul {
+	div.nav-category:hover ul.nav-list {
 		display: block;
 	}
 		
-		div.nav-item ul li.nav-subitem {
+		div.nav-category ul.nav-list li.nav-item {
 			padding: 5px 10px;
 			display: block;
 			width: 190px;
@@ -125,13 +125,13 @@ div#nav {
 			cursor: pointer;
 		}
 		
-		div.nav-item ul li.nav-subitem:hover {
+		div.nav-category ul.nav-list li.nav-item:hover {
 			background: #FF7F00 url(../icons/icon_black_globe.png) no-repeat;
 			background-size: 22px;
 			background-position: 17px 7px;
 		}
 		
-		div.nav-item ul li.nav-subitem:first-child {
+		div.nav-category ul.nav-list li.nav-item:first-child {
 			margin-top: 30px;
 			border-top: none;
 		}
@@ -194,6 +194,7 @@ div#main {
 	}
 	
 		div#main-tabs {
+			display: none;
 			margin: 20px 0px 0px 90px;
 			width: 250px;
 		}
@@ -222,6 +223,7 @@ div#main {
 				}
 		
 		div#main-module {
+			display: none;
 			margin: 20px 0px 0px 90px;
 			width: 250px;
 		}
@@ -244,5 +246,6 @@ div#main {
 	}
 	
 		div#main-content {
+			display: none;
 			margin: 20px 90px 20px 0px;
 		}

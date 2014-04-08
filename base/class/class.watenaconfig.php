@@ -74,10 +74,6 @@ class WatenaConfig {
 	public function loggerProcessors() {
 		return $this->m_aConfig['logprocessors'];		
 	}
-	
-	public function version() {
-		return self::VERSION;
-	}
 }
 
 ?>

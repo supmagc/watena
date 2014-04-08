@@ -1,15 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module>
+<module name="Help">
+	<version>0.1.0 dev</version>
+	<description>All help/versioning/documentation you'll need.</description>
+	<menu name="Support">
+		<category>Help</category>
+		<description>Support and contact information.</description>
+	</menu>
+	<menu name="License">
+		<category>Help</category>
+		<description>Licensing for Watena, it's plugins and third-party components.</description>
+		<defaulttab>Watena</defaulttab>
+		<tab name="Watena">
+			<description>Licensing details for Watena.</description>
+			<content type="text"></content>
+		</tab>
+		<tab name="Plugins">
+			<description>Licensing details for included plugins.</description>
+			<content type="text"></content>
+		</tab>
+		<tab name="Third-Party">
+			<description>Licensing details for included third-party components.</description>
+			<content type="text"></content>
+		</tab>
+	</menu>
 	<menu name="About">
-		<category>Main</category>
-		<description>Global information about the system.</description>
+		<category>Help</category>
+		<description>System and session information about Watena.</description>
 		<defaulttab>Version</defaulttab>
 		<tab name="Version">
 			<description>Versioning details about the system.</description>
+			<content type="eval">$a = watena()->getVersion(); echo "$a[major].$a[minor].$a[build] $a[state]";</content>
+		</tab>
+		<tab name="Plugins">
+			<description>Show all the installed plugins on the current system.</description>
 			<content type="text">UNDER CONSTRUCTION</content>
 		</tab>
 		<tab name="Modules">
-			<description>Show the default phpinfo() output for the current system.</description>
+			<description>Show all the installed modules on the current system.</description>
 			<content type="text">UNDER CONSTRUCTION</content>
 		</tab>
 		<tab name="Php-Info">

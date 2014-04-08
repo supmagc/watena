@@ -91,39 +91,44 @@ function displayInfo(sMessage, sTitle, cbOk) {
 function displayNavItems(aNavs) {
 	$('.nav-item').remove();
 	$.each(aNavs, function(nIndx, lElement) {
-		oItem = $('<div class="nav-item"><span class="title"></span><ul class="nav-itemlist"></ul></div>');
-		oItem.find('.title').text(lElement.name);
+		oCategory = $('<div class="nav-category"><span class="title"></span><ul class="nav-list"></ul></div>');
+		oCategory.find('.title').text(lElement.name);
 		$.each(lElement.subitems, function(nSubIndex, lSubElement) {
-			oSubItem = $('<li class="nav-subitem"></li>').text(lSubElement.name);
-			oSubItem.click(function() {requestLoadingContent(lSubElement.mapping);});
-			oItem.find('.nav-itemlist').append(oSubItem);
+			oItem = $('<li class="nav-item"></li>').text(lSubElement.name);
+			//oItem.attr('title', lSubElement.description).tooltip();
+			oItem.click(function() {requestLoadingContent(lSubElement.mapping);});
+			oCategory.find('.nav-list').append(oItem);
 		});
-		$('#nav-logo, .nav-item').last().after(oItem);
+		$('#nav-logo, .nav-category').last().after(oCategory);
 	});
 }
 
-function displayModuleTabs(sTitle, aTabs) {
-	$(".overlay").hide();
+function displayModuleTabs(sTitle, sDescription, aTabs) {
+	$('.overlay').hide();
+	$('#main-tabs').show();
 	$('.tabs-item').remove();
-	$("#tabs-title").text(sTitle);
+	$('#tabs-title').text(sTitle).attr('title', sDescription).tooltip();
 	$.each(aTabs, function(nIndex, lElement) {
 		oItem = $('<li class="tabs-item"></li>').text(lElement.name);
+		oItem.attr('title', lElement.description).tooltip();
 		oItem.click(function() {requestLoadingContent(lElement.mapping);});
 		$('#tabs-list').append(oItem);
 	});
 }
 
 function displayModuleInfo(sName, sVersion, sDescription) {
-	$(".overlay").hide();
-	$("#module-name").text(sName);
-	$("#module-version").text(sVersion);
-	$("#module-description").text(sDescription);
+	$('.overlay').hide();
+	$('#main-module').show();
+	$('#module-name').text(sName);
+	$('#module-version').text(sVersion);
+	$('#module-description').text(sDescription);
 }
 
-function displayModuleContent(sTitle, sContent) {
-	$(".overlay").hide();
-	$("#content-title").text(sTitle);
-	$("#content-content").html(sContent);
+function displayModuleContent(sTitle, sDescription, sContent) {
+	$('.overlay').hide();
+	$('#main-content').show();
+	$('#content-title').text(sTitle).attr('title', sDescription).tooltip();
+	$('#content-content').html(sContent);
 }
 
 function displayLoading(sTitle, cbTimeout) {
