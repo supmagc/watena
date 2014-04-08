@@ -52,18 +52,18 @@ class AdminCallbackModel extends Model implements IResult {
 	
 	public function makeDisplayNavItems(AdminModuleLoader $oLoader) {
 		$aNavs = array();
-		foreach($oLoader->getCategories() as $sCategory => $lSubItems) {
-			$aSubItems = array();
-			foreach($lSubItems as $sSubItem => $oSubItem) {
-				$aSubItems []= array(
-					'name' => $sSubItem,
-					'mapping' => $oSubItem->getMapping(),
-					'description' => $oSubItem->getDescription()
+		foreach($oLoader->getCategories() as $sCategory => $lItems) {
+			$aItems = array();
+			foreach($lItems as $sItem => $oItem) {
+				$aItems []= array(
+					'name' => $sItem,
+					'mapping' => $oItem->getMapping(),
+					'description' => $oItem->getDescription()
 				);
 			}
 			$aNavs []= array(
 				'name' => $sCategory,
-				'subitems' => $aSubItems
+				'items' => $aItems
 			);
 		}
 		return new JSFunction('displayNavItems', array($aNavs));

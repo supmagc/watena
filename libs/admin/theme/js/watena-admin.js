@@ -93,7 +93,7 @@ function displayNavItems(aNavs) {
 	$.each(aNavs, function(nIndx, lElement) {
 		oCategory = $('<div class="nav-category"><span class="title"></span><ul class="nav-list"></ul></div>');
 		oCategory.find('.title').text(lElement.name);
-		$.each(lElement.subitems, function(nSubIndex, lSubElement) {
+		$.each(lElement.items, function(nSubIndex, lSubElement) {
 			oItem = $('<li class="nav-item"></li>').text(lSubElement.name);
 			//oItem.attr('title', lSubElement.description).tooltip();
 			oItem.click(function() {requestLoadingContent(lSubElement.mapping);});
