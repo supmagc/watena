@@ -177,12 +177,17 @@ class Watena extends Object {
 	}
 	
 	/**
-	 * String based rpresentation of the version
+	 * String based representation of the version
 	 * 
 	 * @return string
 	 */
 	public final function getVersion() {
-		return "{$this->m_aConfig['VERSION_NAME']} - {$this->m_aConfig['VERSION_MAJOR']}.{$this->m_aConfig['VERSION_MINOR']}.{$this->m_aConfig['VERSION_BUILD']} ({$this->m_aConfig['VERSION_STATE']})";
+		return array(
+			'major' => 0,
+			'minor' => 1,
+			'build' => 0,
+			'state' => 'dev'
+		);
 	}
 
 	/**

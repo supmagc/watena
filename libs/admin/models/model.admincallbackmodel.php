@@ -78,7 +78,7 @@ class AdminCallbackModel extends Model implements IResult {
 				'description' => $oItemTab->getDescription(),
 			);
 		}
-		return new JSFunction('displayModuleTabs', array($oModuleTab->getName(), $aTabs));
+		return new JSFunction('displayModuleTabs', array($oModuleTab->getModuleItem()->getName(), $oModuleTab->getModuleItem()->getDescription(), $aTabs));
 	}
 
 	public function makeDisplayModuleInfo(AdminModuleTab $oModuleTab) {
@@ -89,14 +89,15 @@ class AdminCallbackModel extends Model implements IResult {
 	public function makeDisplayModuleContent(AdminModuleTab $oModuleTab) {
 		$oData = new AdminModuleData();
 		$oModuleTab->getModuleContent()->generate($oData);
+		$sTitle = $oModuleTab->getName();
 		if($oData->hasError()) {
-			return new JSFunction('displayModuleContent', array($oData->getErrorTitle(), $oData->getErrorMessage()));
+			$sTitle .= ': ' . $oData->getErrorTitle();
+			return new JSFunction('displayModuleContent', array($sTitle, '', $oData->getErrorMessage()));
 		}
 		else {
-			$sTitle = $oModuleTab->getName();
 			if($oData->hasTitle())
 				$sTitle .= ': ' . $oData->getTitle();
-			return new JSFunction('displayModuleContent', array($sTitle, $oData->getContent()));
+			return new JSFunction('displayModuleContent', array($sTitle, $oModuleTab->getDescription(), $oData->getContent()));
 		}
 	}
 	
