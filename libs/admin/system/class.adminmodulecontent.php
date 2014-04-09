@@ -57,11 +57,18 @@ class AdminModuleContentEval extends AdminModuleContent {
 
 class AdminModuleContentPlugin extends AdminModuleContent {
 
+	private $m_sPlugin;
+	
 	public function __construct($sData) {
+		$this->m_sPlugin = $sData;
 	}
 	
 	public function generate(AdminModuleData $oData) {
-		return null;
+		$oPlugin = parent::getWatena()->getContext()->getPlugin($this->m_sPlugin, 'IAdminGeneratable');
+		if(!empty($oPlugin))
+			$oPlugin->generate($oData);
+		else
+			$oData->setError('AdminModule plugin not found', 'The requested content is supposed to be provided by '.$this->m_sPlugin.' but the plugin could not be found.');
 	}
 }
 

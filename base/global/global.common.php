@@ -190,7 +190,7 @@ function array_value(array &$arr, $aKeys, $mDefault = null) {
 }
 
 /**
- * Traverse the given array and check if the prvided callback yields true for all values
+ * Traverse the given array and check if the provided callback yields true for all values
  * 
  * @param callback $mCallback
  * @param array $aData
