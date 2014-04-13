@@ -21,7 +21,7 @@ class IPCO_ParserSettings extends IPCO_Base {
 	const FILTER_END_IF			= "}\n";
 	const FILTER_END_FOREACH	= "parent::indexPop(); parent::componentPop();}\n";
 	const FILTER_END_WHILE		= "}\n";
-	const FILTER_END_REGION		= "\t\t\treturn implode('', \$_ob);\n\t\t} catch(Exception \$e) { throw new WatCeption('Unable to create template-output.', array(), null, \$e); }\n\t}\n";
+	const FILTER_END_REGION		= "\t\t\treturn implode('', \$_ob);\n\t\t} catch(Exception \$e) { throw new WatCeption('Unable to create template-output: '.\$e->getMessage(), array(), null, \$e); }\n\t}\n";
 	
 	const CALL_METHOD			= "parent::processMethod('%s', %s, %s)";
 	const CALL_MEMBER			= "parent::processMember('%s', %s)";

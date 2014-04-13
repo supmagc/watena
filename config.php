@@ -26,10 +26,15 @@ $conf['product'] = array();
 
 #
 # The libraries that will be loaded and used.
-# Their order can be of some importance if multiple libraries contain identical content.
-# Priority is given to the libraries that are defined first.
+# Their order can be of some importance if multiple libraries contain
+# identical content, or if some libraries depend on each other.
+# A rule of thumb can be to define more specific libraries as last.
 #
-$conf['default']['libraries'] = array('admin', 'default');
+# Priority is given as follows:
+# - Loading and initialisation of libraries: first to last
+# - Content retrieval, mapping/filter processing: last to first
+#
+$conf['default']['libraries'] = array('default', 'admin');
 
 #
 # Charset used throughout the system.

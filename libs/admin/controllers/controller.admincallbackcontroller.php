@@ -12,17 +12,21 @@ class AdminCallbackController extends CallbackController {
 		return watena()->getContext()->getPlugin('UserManager');
 	}
 	
-	public function requestContent($sMapping = '/') {
+	public function requestContent($sLastMapping = '', $sNextMapping = '/', $sAction = null, array $aData = array(), array $aState = array()) {
 		$oUser = $this->getUserManager()->getLoggedInUser();
 		if(null == $oUser) {
 			$this->getModel()->displayLogin('', '', '', $sMapping);
 		}
 		else {
-			$oTab = Admin::getLoader()->getByMapping($sMapping);
-			if($oTab !== false) {
-				$this->getModel()->displayModuleTabs($oTab);
-				$this->getModel()->displayModuleInfo($oTab);
-				$this->getModel()->displayModuleContent($oTab);
+			$oLastTab = Admin::getLoader()->getByMapping($sLastMapping);
+			$oNextTab = Admin::getLoader()->getByMapping($sNextMapping);
+			if($oNextTab !== false) {
+				$oRequest = new AdminModuleContentRequest($oNextTab, $sAction, $aData, $aState);
+				if(empty($oLastTab) || $oLastTab->getModuleItem() != $oNextTab->getModuleItem()) {
+					$this->getModel()->displayModuleTabs($oRequest);
+					$this->getModel()->displayModuleInfo($oRequest);
+				}
+				$this->getModel()->displayModuleContent($oRequest);
 			}
 			else {
 				$this->getModel()->displayError("The given mapping could not be matched to an existing module.", "Module 404", $this->getModel()->makeRequestLoadingContent('/'));

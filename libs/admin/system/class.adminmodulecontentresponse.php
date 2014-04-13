@@ -1,7 +1,7 @@
 <?php
 require_plugin('TemplateLoader');
 
-class AdminModuleData extends Object implements IPCO_IContentParser {
+class AdminModuleContentResponse extends Object implements IPCO_IContentParser {
 	
 	private $m_sTitle;
 	private $m_sContent;
@@ -16,9 +16,13 @@ class AdminModuleData extends Object implements IPCO_IContentParser {
 		
 	}
 	
+	public function getMappingFull() {
+		
+	}
+	
 	public function setError($sTitle, $sMessage) {
 		$this->m_sErrorTitle = $sTitle;
-		$this->m_sErrorContent = $sMessage;
+		$this->m_sErrorMessage = $sMessage;
 	}
 	
 	public function hasError() {
@@ -49,10 +53,10 @@ class AdminModuleData extends Object implements IPCO_IContentParser {
 		$this->m_sContent = $sContent;
 	}
 
-	public function setContentTemplate($sTemplateName, Model $oModel = null) {
+	public function setContentTemplate($sTemplateName, $mData) {
 		$oGenerator = TemplateLoader::load($sTemplateName, $this);
 		if(!empty($oGenerator))
-			$oGenerator->componentPush($oModel);
+			$oGenerator->componentPush($mData);
 		
 		$this->m_sContent = $oGenerator->generate();
 	}

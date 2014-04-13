@@ -24,11 +24,7 @@ abstract class IPCO_Processor extends IPCO_Base {
 	}
 	
 	public function componentPush($mComponent) {
-		if(!empty($mComponent)) {
-			array_push($this->m_aComponents, IPCO_ComponentWrapper::createComponentWrapper($mComponent, parent::getIpco()));
-			return true;
-		}
-		return false;
+		array_push($this->m_aComponents, IPCO_ComponentWrapper::createComponentWrapper($mComponent, parent::getIpco()));
 	}
 	
 	public function componentPop() {
@@ -36,11 +32,7 @@ abstract class IPCO_Processor extends IPCO_Base {
 	}
 	
 	public function indexPush($mIndex) {
-		if(!empty($mIndex)) {
-			array_push($this->m_aIndices, $mIndex);
-			return true;
-		}
-		return false;
+		array_push($this->m_aIndices, $mIndex);
 	}
 	
 	public function indexPop() {

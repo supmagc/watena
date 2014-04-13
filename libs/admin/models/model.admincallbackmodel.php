@@ -22,20 +22,16 @@ class AdminCallbackModel extends Model implements IResult {
 		$this->m_sResult .= $this->makeDisplayNavItems($oLoader)->callFunction();
 	}
 
-	public function displayModuleTabs(AdminModuleTab $oModuleTab) {
-		$this->m_sResult .= $this->makeDisplayModuleTabs($oModuleTab)->callFunction();
+	public function displayModuleTabs(AdminModuleContentRequest $oRequest) {
+		$this->m_sResult .= $this->makeDisplayModuleTabs($oRequest)->callFunction();
 	}
 
-	public function displayModuleInfo(AdminModuleTab $oModuleTab) {
-		$this->m_sResult .= $this->makeDisplayModuleInfo($oModuleTab)->callFunction();
-	}
-
-	public function makeDisplayContent(AdminModuleTab $oModuleTab) {
-		$this->m_sResult .= $this->makeDisplayModuleContent($oModuleTab)->callFunction();
+	public function displayModuleInfo(AdminModuleContentRequest $oRequest) {
+		$this->m_sResult .= $this->makeDisplayModuleInfo($oRequest)->callFunction();
 	}
 	
-	public function displayModuleContent(AdminModuleTab $oModuleTab) {
-		$this->m_sResult .= $this->makeDisplayModuleContent($oModuleTab)->callFunction();
+	public function displayModuleContent(AdminModuleContentRequest $oRequest) {
+		$this->m_sResult .= $this->makeDisplayModuleContent($oRequest)->callFunction();
 	}
 	
 	public function makeDisplayLogin($sUserName = '', $sUserNameError = '', $sPasswordError = '', $sContinueMapping = '/') {
@@ -69,35 +65,36 @@ class AdminCallbackModel extends Model implements IResult {
 		return new JSFunction('displayNavItems', array($aNavs));
 	}
 
-	public function makeDisplayModuleTabs(AdminModuleTab $oModuleTab) {
+	public function makeDisplayModuleTabs(AdminModuleContentRequest $oRequest) {
+		$oTab = $oRequest->getTab();
 		$aTabs = array();
-		foreach($oModuleTab->getModuleItem()->getModuleTabs() as $oItemTab) {
+		foreach($oTab->getModuleItem()->getModuleTabs() as $oItemTab) {
 			$aTabs []= array(
 				'name' => $oItemTab->getName(),
 				'mapping' => $oItemTab->getMapping(),
 				'description' => $oItemTab->getDescription(),
 			);
 		}
-		return new JSFunction('displayModuleTabs', array($oModuleTab->getModuleItem()->getName(), $oModuleTab->getModuleItem()->getDescription(), $aTabs));
+		return new JSFunction('displayModuleTabs', array($oTab->getModuleItem()->getName(), $oTab->getModuleItem()->getDescription(), $aTabs));
 	}
 
-	public function makeDisplayModuleInfo(AdminModuleTab $oModuleTab) {
-		$oModule = $oModuleTab->getModuleItem()->getModule();
+	public function makeDisplayModuleInfo(AdminModuleContentRequest $oRequest) {
+		$oModule = $oRequest->getTab()->getModuleItem()->getModule();
 		return new JSFunction('displayModuleInfo', array($oModule->getName(), $oModule->getVersion(), $oModule->getDescription()));
 	}
 	
-	public function makeDisplayModuleContent(AdminModuleTab $oModuleTab) {
-		$oData = new AdminModuleData();
-		$oModuleTab->getModuleContent()->generate($oData);
-		$sTitle = $oModuleTab->getName();
-		if($oData->hasError()) {
-			$sTitle .= ': ' . $oData->getErrorTitle();
-			return new JSFunction('displayModuleContent', array($sTitle, '', $oData->getErrorMessage()));
+	public function makeDisplayModuleContent(AdminModuleContentRequest $oRequest) {
+		$oResponse = new AdminModuleContentResponse();
+		$oRequest->getTab()->getModuleContent()->generate($oRequest, $oResponse);
+		$sTitle = $oRequest->getTab()->getName();
+		if($oResponse->hasError()) {
+			$sTitle .= ': ' . $oResponse->getErrorTitle();
+			return new JSFunction('displayModuleContent', array($sTitle, '', $oResponse->getErrorMessage()));
 		}
 		else {
-			if($oData->hasTitle())
-				$sTitle .= ': ' . $oData->getTitle();
-			return new JSFunction('displayModuleContent', array($sTitle, $oModuleTab->getDescription(), $oData->getContent()));
+			if($oResponse->hasTitle())
+				$sTitle .= ': ' . $oResponse->getTitle();
+			return new JSFunction('displayModuleContent', array($sTitle, $oRequest->getTab()->getDescription(), $oResponse->getContent()));
 		}
 	}
 	

@@ -33,11 +33,11 @@
 		</tab>
 		<tab name="Plugins">
 			<description>Show all the installed plugins on the current system.</description>
-			<content type="text">UNDER CONSTRUCTION</content>
+			<content type="plugin">AdminHelp</content>
 		</tab>
 		<tab name="Modules">
 			<description>Show all the installed modules on the current system.</description>
-			<content type="text">UNDER CONSTRUCTION</content>
+			<content type="plugin">AdminHelp</content>
 		</tab>
 		<tab name="Php-Info">
 			<description>Show the default phpinfo() output for the current system.</description>

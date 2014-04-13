@@ -12,7 +12,7 @@ class IPCO_Expression extends IPCO_Base {
 	private $m_sOriginalExpression;
 	private $m_sCleanedExpression;
 	private $m_aOperators = array(' or ', '||', '|', ' and ', '&&', '&', '<', '>', '<=', '>=', ' is not ', '!=', '<>', ' is ', '==', '=', '-', '+', '/', '*', '%', '^');
-	private $m_aKeywords = array('key', 'index', 'value', 'first', 'last');
+	private $m_aKeywords = array('key', 'index', 'value', 'current', 'this', 'self', 'first', 'last');
 	
 	public function __construct($sExpression, IPCO $ipco) {
 		$this->m_sOriginalExpression = $sExpression;
@@ -175,7 +175,7 @@ class IPCO_Expression extends IPCO_Base {
 			if(in_array($sName, $this->m_aKeywords)) {
 				if(($sName === 'key' || $sName === 'index') && $sBase == 'null')
 					$sReturn = IPCO_ParserSettings::getCallKeywordIndex();
-				else if(($sName === 'current' || $sName === 'value') && $sBase == 'null')
+				else if(($sName === 'self' || $sName === 'this' || $sName === 'current' || $sName === 'value') && $sBase == 'null')
 					$sReturn = IPCO_ParserSettings::getCallKeywordCurrent();
 				else if($sName === 'first')
 					$sReturn = IPCO_ParserSettings::getCallKeywordFirst($sBase);

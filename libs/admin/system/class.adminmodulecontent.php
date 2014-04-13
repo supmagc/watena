@@ -4,7 +4,7 @@ abstract class AdminModuleContent extends Object {
 	
 	private $m_aParams;
 	
-	public abstract function generate(AdminModuleData $oData);
+	public abstract function generate(AdminModuleContentRequest $oRequest, AdminModuleContentResponse $oResponse);
 	
 	protected function __construct(array $aParams) {
 		$this->m_aParams = $aParams;
@@ -32,8 +32,8 @@ class AdminModuleContentText extends AdminModuleContent {
 		$this->m_sText = $sData;
 	}
 	
-	public function generate(AdminModuleData $oData) {
-		$oData->setContentText($this->m_sText);
+	public function generate(AdminModuleContentRequest $oRequest, AdminModuleContentResponse $oResponse) {
+		$oResponse->setContentText($this->m_sText);
 	}
 }
 
@@ -45,13 +45,13 @@ class AdminModuleContentEval extends AdminModuleContent {
 		$this->m_sEval = $sData;
 	}
 	
-	public function generate(AdminModuleData $oData) {
+	public function generate(AdminModuleContentRequest $oRequest, AdminModuleContentResponse $oResponse) {
 		ob_start();
 		$sData = '' . eval($this->m_sEval);
 		if(ob_get_length() > 0)
 			$sData = ob_get_contents();
 		ob_end_clean();
-		$oData->setContentText($sData);
+		$oResponse->setContentText($sData);
 	}
 }
 
@@ -63,12 +63,12 @@ class AdminModuleContentPlugin extends AdminModuleContent {
 		$this->m_sPlugin = $sData;
 	}
 	
-	public function generate(AdminModuleData $oData) {
+	public function generate(AdminModuleContentRequest $oRequest, AdminModuleContentResponse $oResponse) {
 		$oPlugin = parent::getWatena()->getContext()->getPlugin($this->m_sPlugin, 'IAdminGeneratable');
 		if(!empty($oPlugin))
-			$oPlugin->generate($oData);
+			$oPlugin->generate($oRequest, $oResponse);
 		else
-			$oData->setError('AdminModule plugin not found', 'The requested content is supposed to be provided by '.$this->m_sPlugin.' but the plugin could not be found.');
+			$oResponse->setError('AdminModule plugin not found', 'The requested content is supposed to be provided by '.$this->m_sPlugin.' but the plugin could not be found.');
 	}
 }
 
