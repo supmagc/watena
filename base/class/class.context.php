@@ -13,7 +13,18 @@ class Context extends Object {
 	
 	public function __construct() {
 		$this->m_oComponentFactory = new ComponentFactory();
-		$aLibraries = parent::getWatena()->getConfig()->libraries();
+	}
+
+	/**
+	 * Load the given libraries.
+	 * This makes all content inside any valid libary available for loading.
+	 * 
+	 * You must call this method seperatly after loading and initializing the Watena object since
+	 * It's possible that some libaries require Watena to be fully loaded on init.
+	 * 
+	 * @param array $aLibraries
+	 */
+	public final function loadLibraries(array $aLibraries) {
 		foreach($aLibraries as $sLibrary) {
 			$sLibrary = trim($sLibrary);
 			$sPath = realpath(PATH_LIBS . "/$sLibrary");
@@ -21,9 +32,9 @@ class Context extends Object {
 				$this->getLogger()->warning("One of the specified library-paths could not be mapped, and seems to not exist: {library}", array('library' => $sProject));
 			}
 			else {
-				$this->m_aLibraries []= $sLibrary;
-				$this->m_aLibraryPaths []= $sPath;
-				
+				array_unshift($this->m_aLibraries, $sLibrary);
+				array_unshift($this->m_aLibraryPaths, $sPath);
+		
 				$sInitPath = realpath($sPath . '/init.php');
 				if(false != $sInitPath) {
 					$this->setPreferredLibrary($sLibrary);
@@ -75,7 +86,6 @@ class Context extends Object {
 	 */
 	public final function getFilterGroups() {
 		if($this->m_aFilterGroups === null) {
-			$this->m_aFilterGroups = array();
 			foreach($this->m_aLibraryPaths as $sLibrary) {
 				$sFiltersPath = realpath($sLibrary . '/filters/');
 				if($sFiltersPath !== false) {
@@ -83,10 +93,6 @@ class Context extends Object {
 					$this->m_aFilterGroups []= FilterGroup::create($sFiltersPath);
 				}
 			}
-			/*
-			// Add the last default filtergroup
-			$this->m_aFilterGroups []= FilterGroup::create(parent::getWatena()->getPath('b:filters'));
-			*/
 		}
 		return $this->m_aFilterGroups;
 	}

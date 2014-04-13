@@ -3,7 +3,8 @@ var oWatena = new (function() {
 	this.sSearchDefault = '';
 	this.cbOverlayCross = null;
 	this.cbOverlayButton = null;
-	this.sContinueMapping = null;
+	this.sLastMapping = null;
+	this.sNextMapping = null;
 })();
 
 function execute(callback) {
@@ -15,7 +16,6 @@ function execute(callback) {
 
 function loaderCallback() {
 	requestNavItems();
-	
 	if(location.hash.length > 0)
 		requestLoadingContent(location.hash.substr(1));
 	else
@@ -42,23 +42,23 @@ function loaderCallback() {
 	});
 }
 
-function displayLogin(sUserName, sUserNameError, sPasswordError, sContinueMapping) {
+function displayLogin(sUserName, sUserNameError, sPasswordError, sNextMapping) {
 	$(".overlay").hide();
 	$("#overlay_login").show();
 	$("#login_usn").val(sUserName);
 	$("#login_usn_error").text(sUserNameError);
 	$("#login_pwd_error").text(sPasswordError);
 	$("#login_usn").focus();
-	oWatena.sContinueMapping = sContinueMapping;
+	oWatena.sNextMapping = sNextMapping;
 	oWatena.cbOverlayCross = function() {
-		requestLoadingContent(sContinueMapping);
+		requestLoadingContent(sNextMapping);
 	};
 	oWatena.cbOverlayButton = function() {
 		displayLoading("Processing login", function() {
 			requestLogin(
 				$("#login_usn").val(),
 				$("#login_pwd").val(),
-				oWatena.sContinueMapping
+				oWatena.sNextMapping
 			);
 		});
 	};
@@ -138,13 +138,14 @@ function displayLoading(sTitle, cbTimeout) {
 	$(".overlay").hide();
 	$("#overlay_loading").show();
 	if(cbTimeout != undefined && cbTimeout != "") {
-		setTimeout(cbTimeout, 1000);
+		setTimeout(cbTimeout, 500);
 	}
 }
 
-function requestLoadingContent(sMapping) {
+function requestLoadingContent(sMapping, sAction, aData, aState) {
 	displayLoading("Get content", function() {
 		location.hash = '#' + sMapping;
-		requestContent(sMapping);
+		requestContent(oWatena.sLastMapping, sMapping, sAction, aData, aState);
+		oWatena.sLastMapping = sMapping;
 	});
 }

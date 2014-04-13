@@ -85,7 +85,7 @@ class TemplateFile extends CacheableFile implements IPCO_ICallbacks {
 	 */
 	public function init() {
 		$oContentParser = $this->getContentParser();
-		if(!$oContentParser || !is_a($oContentParser, 'IPCO_IContentParser')) {
+		if(!$oContentParser || !($oContentParser instanceof IPCO_IContentParser)) {
 			$this->getLogger()->error('The additional content parsers you provided for the selected template is not an IPCO_IContentParser.', array(
 					'contentparser' => is_object($oContentParser) ? get_class($oContentParser) : 'None Object',
 					'file' => parent::getFilePath()

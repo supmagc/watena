@@ -167,7 +167,7 @@ class Logger {
 	 * @param Exception $oException
 	 */
 	public final function exception(Exception $oException) {
-		if(method_exists($oException, 'getInnerException') && is_a($oException->getInnerException(), 'Exception'))
+		if(method_exists($oException, 'getInnerException') && $oException->getInnerException() instanceof Exception)
 			$this->exception($oException->getInnerException());
 		
 		$aData = array();
@@ -224,7 +224,7 @@ class Logger {
 		
 		if($this->approveFilterLevel($nLevel)) {
 			$bLoggable = true;
-			if(is_a($this->getFilter(), 'ILogFilter')) {
+			if($this->getFilter() instanceof ILogFilter) {
 				$sCpyIdentifier = $this->getIdentifier();
 				$nCpyLevel = $nLevel;
 				$bLoggable = $this->getFilter()->loggerFilter($sCpyIdentifier, $nCpyLevel, $sFile, $nLine, $sMessage, $aData, $aTrace);
@@ -300,19 +300,19 @@ class Logger {
 	 * @param Exception $oException
 	 */
 	public static final function processException(Exception $oException) {
-		if(method_exists($oException, 'getInnerException') && is_a($oException->getInnerException(), 'Exception')) {
+		if(method_exists($oException, 'getInnerException') && $oException->getInnerException() instanceof Exception) {
 			self::processException($oException->getInnerException());
 		}
 		
 		$aTrace = $oException->getTrace();
-		if(is_a($oException, 'ErrorException'))
+		if($oException instanceof ErrorException)
 			 array_shift($aTrace);
 		
 		$aData = array();
 		if(method_exists($oException, 'getData') && is_array($oException->getData()))
 			$aData = $oException->getData();
 		
-		if(method_exists($oException, 'getContext') && method_exists($oException->getContext(), 'getLogger') && is_a($oException->getContext()->getLogger(), 'Logger')) {
+		if(method_exists($oException, 'getContext') && method_exists($oException->getContext(), 'getLogger') && $oException->getContext()->getLogger() instanceof Logger) {
 			$oLogger = $oException->getContext()->getLogger();
 		}
 		else if(isset($aTrace[0]) && isset($aTrace[0]['class'])) {

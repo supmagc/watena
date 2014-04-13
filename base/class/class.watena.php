@@ -27,6 +27,9 @@ class Watena extends Object {
 		$this->m_oContext = new Context();
 		$this->m_oMapping = Mapping::LoadFromRequest();
 		
+		// Load the required libraries
+		$this->m_oContext->loadLibraries($this->getConfig()->libraries());
+		
 		// Load all specified logProcessors
 		Logger::setDefaultFilterLevel($this->getConfig()->loggerLevel());
 		$aLogProcessors = $this->getConfig()->loggerProcessors();

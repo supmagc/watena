@@ -2,7 +2,7 @@
 
 interface IAdminGeneratable {
 	
-	public function Generate(AdminModuleData $oData);
+	public function generate(AdminModuleContentRequest $oRequest, AdminModuleContentResponse $oResponse);
 }
 
 ?>

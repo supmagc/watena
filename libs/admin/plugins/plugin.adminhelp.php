@@ -1,8 +1,21 @@
 <?php
 
 class AdminHelp extends AdminPlugin {
+
+	public function requestMappings() {
+		$this->addMapping('/about/plugins', 'generatePlugins');
+		$this->addMapping('/about/modules', 'generateModules');
+	}
 	
-	public abstract function getVersion() {
+	public function generatePlugins(AdminModuleContentRequest $oRequest, AdminModuleContentResponse $oResponse) {
+		$oResponse->setContentTemplate('admin.help.plugins.tpl', array());
+	}
+
+	public function generateModules(AdminModuleContentRequest $oRequest, AdminModuleContentResponse $oResponse) {
+		$oResponse->setContentText('MODULES');
+	}
+	
+	public function getVersion() {
 		return array(
 			'major' => 0,
 			'minor' => 1,
@@ -10,7 +23,6 @@ class AdminHelp extends AdminPlugin {
 			'state' => 'dev'
 		);
 	}
-	
 }
 
 ?>

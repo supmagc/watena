@@ -59,7 +59,7 @@ class IPCO_ObjectComponentWrapper extends IPCO_ComponentWrapper {
 	}
 	
 	public function getFirst() {
-		if(is_a($this->m_oComponent, 'Iterator')) {
+		if($this->m_oComponent instanceof Iterator) {
 			$this->m_oComponent->rewind();
 			return $this->m_oComponent->valid() ? $this->m_oComponent->current() : false;
 		}
@@ -67,7 +67,7 @@ class IPCO_ObjectComponentWrapper extends IPCO_ComponentWrapper {
 	}
 	
 	public function getLast() {
-		if(is_a($this->m_oComponent, 'Iterator')) {
+		if($this->m_oComponent instanceof Iterator) {
 			$mReturn = false;
 			while($this->m_oComponent->next()) {
 				$mReturn = $this->m_oComponent->current();
@@ -78,23 +78,23 @@ class IPCO_ObjectComponentWrapper extends IPCO_ComponentWrapper {
 	}
 	
 	public function current() {
-		return is_a($this->m_oComponent, 'Iterator') ? $this->m_oComponent->current() : false;
+		return $this->m_oComponent instanceof Iterator ? $this->m_oComponent->current() : false;
 	}
 	
 	public function key() {
-		return is_a($this->m_oComponent, 'Iterator') ? $this->m_oComponent->key() : false;
+		return $this->m_oComponent instanceof Iterator ? $this->m_oComponent->key() : false;
 	}
 	
 	public function next() {
-		return is_a($this->m_oComponent, 'Iterator') ? $this->m_oComponent->next() : false;
+		return $this->m_oComponent instanceof Iterator ? $this->m_oComponent->next() : false;
 	}
 	
 	public function rewind() {
-		return is_a($this->m_oComponent, 'Iterator') ? $this->m_oComponent->rewind() : false;
+		return $this->m_oComponent instanceof Iterator ? $this->m_oComponent->rewind() : false;
 	}
 	
 	public function valid() {
-		return is_a($this->m_oComponent, 'Iterator') ? $this->m_oComponent->valid() : false;
+		return $this->m_oComponent instanceof Iterator ? $this->m_oComponent->valid() : false;
 	}
 }
 
