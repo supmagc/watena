@@ -29,7 +29,7 @@
 		<defaulttab>Version</defaulttab>
 		<tab name="Version">
 			<description>Versioning details about the system.</description>
-			<content type="eval">$a = watena()->getVersion(); echo "$a[major].$a[minor].$a[build] $a[state]";</content>
+			<content type="eval">echo version2string(watena()->getVersion());</content>
 		</tab>
 		<tab name="Plugins">
 			<description>Show all the installed plugins on the current system.</description>

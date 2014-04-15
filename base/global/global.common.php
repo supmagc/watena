@@ -56,6 +56,21 @@ function uchr($mCodes) {
 }
 
 /**
+ * Convert the array version format to it's string representation.
+ * 
+ * @param array $aVersion
+ * @return string
+ */
+function version2string(array $aVersion) {
+	return sprintf('%d.%d.%d-%s', 
+		array_value($aVersion, array('major'), 0), 
+		array_value($aVersion, array('minor'), 0), 
+		array_value($aVersion, array('build'), 0), 
+		array_value($aVersion, array('state'), 'unknown')
+	);
+}
+
+/**
  * Safe include function.
  * This function only exposes it's $sPath parameter to the included file.
  * It uses include_once and checks if the file exists and is readble before 

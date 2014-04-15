@@ -1,3 +1,9 @@
-{{foreach this}}
-<h1>test</h1>
-{{end}}
+<table>
+	{{foreach this}}
+	<tr>
+		<td>{[name]}</td>
+		<td>{[version]}</td>
+		<td>{[library]}</td>
+	</tr>
+	{{end}}
+</table>

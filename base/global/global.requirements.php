@@ -68,7 +68,7 @@ function require_pear($mName) {
 	if(is_array($mName)) return array_all('require_pear', $mName);
 	else {
 		$nOld = error_reporting(E_ERROR);
-		$bReturn = @include_once('PEAR.php') && @include_once($sPear.'.php');
+		$bReturn = @include_once('PEAR.php') && @include_once($mName.'.php');
 		error_reporting($nOld);
 		return $bReturn || require_error(REQERROR_PEARUNLOADABLE, $mName);
 	}
