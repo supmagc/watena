@@ -1,4 +1,5 @@
 <?php
+//require_pear('Cache');
 
 class CachePEAR extends Plugin implements ICache {
 
@@ -14,7 +15,7 @@ class CachePEAR extends Plugin implements ICache {
 	}
 	
 	public function init() {
-		$this->m_oCache = new Cache($this->m_sContainer, $this->m_aOptions);
+		//$this->m_oCache = new Cache($this->m_sContainer, $this->m_aOptions);
 	}
 	
 	public function retrieve($sKey, $cbRetriever, $nExpirationSec = 0, array $aParams = array(), $bForceRefresh = false) {
@@ -48,10 +49,6 @@ class CachePEAR extends Plugin implements ICache {
 	
 	public function getVersion() {
 		return array('major' => 0, 'minor' => 1, 'build' => 1, 'state' => 'dev');
-	}
-
-	public static function getRequirements() {
-		return array('pear' => 'Cache');
 	}
 }
 

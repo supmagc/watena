@@ -5,6 +5,7 @@ class IniParser extends CacheableData {
 	const FALLBACK = 'default';
 	
 	private $m_aData = array();
+	private $m_aFiles = array();
 	private $m_aInheritance = array();
 		
 	public function make(array $aMembers) {
@@ -12,13 +13,13 @@ class IniParser extends CacheableData {
 		$sFile = $this->getConfig('file', null);
 		$aFiles = $this->getConfig('files', array());
 		
-		if($sFile) $sContent .= "\n" . file_get_contents($sFile);
-		foreach($aFiles as $sFile) $sContent .= "\n" . file_get_contents($sFile);
+		if($sFile) {$this->m_aFiles []= $sFile; $sContent .= "\n" . file_get_contents($sFile);}
+		foreach($aFiles as $sFile) {$this->m_aFiles []= $sFile; $sContent .= "\n" . file_get_contents($sFile);}
 		
 		$aParsing = parse_ini_string($sContent, true);
 				
 		if($aParsing === false) {
-			$this->getLogger()->warning('Unable to parse *.ini data.', array('data' => $this->m_sContent));
+			$this->getLogger()->warning('Unable to parse *.ini data.', array('data' => $sContent));
 		}
 		else {
 			foreach($aParsing as $sSection => $aData) {
@@ -26,7 +27,7 @@ class IniParser extends CacheableData {
 					$this->processSection($sSection, $aData);
 				}
 				else {
-					$this->getLogger()->warning('Invalid/none-section data found in *.ini file: {path}', array('path' => $this->getFilePath()));
+					$this->getLogger()->warning('Invalid/none-section data found in *.ini file(s): {files}', array('files' => implode(', ', $this->m_aFiles)));
 				}
 			}
 		}
@@ -44,7 +45,7 @@ class IniParser extends CacheableData {
 			else return $aData;
 		}
 		else {
-			$this->getLogger()->warning('Unknown ini-section \'{section}\' in {file}', array('section' => $sSection, 'file' => $this->getFilePath()));
+			$this->getLogger()->warning('Unknown ini-section \'{section}\' in {files}', array('section' => $sSection, 'files' => implode(', ', $this->m_aFiles)));
 			return array();
 		}
 	}
