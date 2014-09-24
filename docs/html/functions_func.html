@@ -118,14 +118,15 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <h3><a class="anchor" id="index__"></a>- _ -</h3><ul>
 <li>__construct()
 : <a class="el" href="class_cacheable.html#a16d53ddf3c4ac7217c32df7f0d763454">Cacheable</a>
-, <a class="el" href="classhtml2text.html#ac404b5212f8b30c6b3b2e86806a5f5b2">html2text</a>
-, <a class="el" href="class_a_j_a_x___client.html#abbf82c39947b3452ff57b37859acc2da">AJAX_Client</a>
-, <a class="el" href="class_base_facebook.html#af8ca4863484827e521f5052f5dfed642">BaseFacebook</a>
-, <a class="el" href="class_facebook.html#a764229508830d143551d167e786c42f4">Facebook</a>
-, <a class="el" href="class_a_j_a_x___request.html#af52fb2396a94ebf19dd21d3d619c1f72">AJAX_Request</a>
-, <a class="el" href="class_j_s_function.html#ac9dc958434b754eb91570166baea4b83">JSFunction</a>
-, <a class="el" href="class_a_j_a_x___server.html#adfc5e2ea55215e07ced413bf46e3a8f4">AJAX_Server</a>
+, <a class="el" href="class_callback.html#a863d80b6321cb84596a04dda89c29f46">Callback</a>
+, <a class="el" href="class_j_s_function.html#a3eff8017c95b8d506b5681059146a622">JSFunction</a>
 , <a class="el" href="class_facebook_api_exception.html#a9e40d3c27096359975b952fe04752d19">FacebookApiException</a>
+, <a class="el" href="class_base_facebook.html#af8ca4863484827e521f5052f5dfed642">BaseFacebook</a>
+, <a class="el" href="class_a_j_a_x___client.html#abbf82c39947b3452ff57b37859acc2da">AJAX_Client</a>
+, <a class="el" href="class_facebook.html#a764229508830d143551d167e786c42f4">Facebook</a>
+, <a class="el" href="classhtml2text.html#ac404b5212f8b30c6b3b2e86806a5f5b2">html2text</a>
+, <a class="el" href="class_a_j_a_x___request.html#af52fb2396a94ebf19dd21d3d619c1f72">AJAX_Request</a>
+, <a class="el" href="class_a_j_a_x___server.html#adfc5e2ea55215e07ced413bf46e3a8f4">AJAX_Server</a>
 </li>
 <li>__toString()
 : <a class="el" href="class_facebook_api_exception.html#a9c262b52fe807aad1c2770a0ad2ee919">FacebookApiException</a>
@@ -173,9 +174,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 
 <h3><a class="anchor" id="index_c"></a>- c -</h3><ul>
-<li>callFunction()
-: <a class="el" href="class_j_s_function.html#a93a20458a06de1cad66ba0eb98d6d540">JSFunction</a>
-</li>
 <li>checkSignature()
 : <a class="el" href="class_o_auth_signature_method.html#aedd9a3e183880b2d1ea47fe06c988240">OAuthSignatureMethod</a>
 </li>
@@ -251,11 +249,17 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>getAppSecret()
 : <a class="el" href="class_base_facebook.html#ae53e6a3cfd3b6ca1dba5c1f5568720ec">BaseFacebook</a>
 </li>
+<li>getAsCall()
+: <a class="el" href="class_j_s_function.html#a9d71e63e6f1e8ce69c42450fc8c64600">JSFunction</a>
+</li>
+<li>getAsDelegate()
+: <a class="el" href="class_j_s_function.html#ac6e0fe0bfa0b910bed8c4c49bc6232c4">JSFunction</a>
+</li>
+<li>getAsVariable()
+: <a class="el" href="class_j_s_function.html#a0474531891a84bbfcb91f0b1b798c98a">JSFunction</a>
+</li>
 <li>getCacheData()
 : <a class="el" href="class_cacheable.html#a3825ea17270319f96d27540ae347fcde">Cacheable</a>
-</li>
-<li>getCallback()
-: <a class="el" href="class_j_s_function.html#ab7e7c06eb044ab3bd1ab3ee8880aa940">JSFunction</a>
 </li>
 <li>getCode()
 : <a class="el" href="class_base_facebook.html#a63452f26d5a4fc7fbcb1732920c1758e">BaseFacebook</a>
@@ -286,9 +290,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </li>
 <li>getFunction()
 : <a class="el" href="class_j_s_function.html#a6b3f79ff3c91a373799474eb34b7e66d">JSFunction</a>
-</li>
-<li>getFunctionName()
-: <a class="el" href="class_j_s_function.html#a3c0720b6f99335be1f31e3dcd9158722">JSFunction</a>
 </li>
 <li>getGenericInstance()
 : <a class="el" href="class_logger.html#a7cd51ad43efe88cfde3c1ebdc988940b">Logger</a>
@@ -323,6 +324,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>getMetadataCookieName()
 : <a class="el" href="class_base_facebook.html#ac73bdb41c831a2176eaea8902fdb7d71">BaseFacebook</a>
 </li>
+<li>getMethod()
+: <a class="el" href="class_callback.html#a0f8bdf3326b31265c012b81c58b26c2f">Callback</a>
+</li>
 <li>getName()
 : <a class="el" href="class_o_auth_signature_method.html#ad42c31991e3a144fd7ac46bb268df758">OAuthSignatureMethod</a>
 </li>
@@ -330,8 +334,19 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 : <a class="el" href="class_a_j_a_x___client.html#a01704f2374d8db6ee806d774958b66d9">AJAX_Client</a>
 , <a class="el" href="class_a_j_a_x___request.html#ae3d7238e5ffb444784b47be69a9e740a">AJAX_Request</a>
 </li>
+<li>getParameter()
+: <a class="el" href="class_callback.html#a9f8449702ea4b227ca9c2a334ce0679d">Callback</a>
+, <a class="el" href="class_j_s_function.html#afa6f628d619faf5430e20cd48a37d195">JSFunction</a>
+</li>
+<li>getParameterLength()
+: <a class="el" href="class_j_s_function.html#a27551e888b7a1be5acbcf53ced73b402">JSFunction</a>
+</li>
 <li>getParameters()
-: <a class="el" href="class_j_s_function.html#ac64109018bb50dd46daa4edb9f64dee8">JSFunction</a>
+: <a class="el" href="class_callback.html#adc9e53421dc3f000614c0846504e941b">Callback</a>
+, <a class="el" href="class_j_s_function.html#ac64109018bb50dd46daa4edb9f64dee8">JSFunction</a>
+</li>
+<li>getParametersLength()
+: <a class="el" href="class_callback.html#a82a3160b5712285a9bf1791f359d0f7b">Callback</a>
 </li>
 <li>getPersistentData()
 : <a class="el" href="class_base_facebook.html#ad383ccec6f7433c2ab9bb50550df2ce6">BaseFacebook</a>
@@ -401,8 +416,11 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>isHttps()
 : <a class="el" href="class_request.html#afab6f7cb93efa72b28f3e8b2eba901dd">Request</a>
 </li>
-<li>isValidFunctionName()
-: <a class="el" href="class_j_s_function.html#ab83d99420a69ae7293df271732c01acf">JSFunction</a>
+<li>isValidFunction()
+: <a class="el" href="class_j_s_function.html#ae4c32fc6bd754da66c4cbe0290065257">JSFunction</a>
+</li>
+<li>isValidMethod()
+: <a class="el" href="class_callback.html#a0525569a85e6e7183a1a4b0d201d3c2d">Callback</a>
 </li>
 <li>isVideoPost()
 : <a class="el" href="class_base_facebook.html#a59ec8025b618af99293ac5efc9d88a59">BaseFacebook</a>
@@ -413,6 +431,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <h3><a class="anchor" id="index_l"></a>- l -</h3><ul>
 <li>load()
 : <a class="el" href="class_template_loader.html#a703dbe2d24cc3173f2f5a9b52a3d53e8">TemplateLoader</a>
+</li>
+<li>loadFromRequest()
+: <a class="el" href="class_callback.html#a6f515eea83208a3272a5a8e0e23b9b7e">Callback</a>
 </li>
 </ul>
 
@@ -466,6 +487,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </li>
 <li>process()
 : <a class="el" href="class_a_j_a_x___server.html#ae6059a2c59fc8b99b525d6651f35e2a9">AJAX_Server</a>
+, <a class="el" href="class_callback.html#a4db5df546b0cfb38bc4e48694dd422cc">Callback</a>
 </li>
 <li>processError()
 : <a class="el" href="class_logger.html#ab19e37ceb28c720c85dbd1190247f094">Logger</a>
@@ -584,7 +606,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Mar 8 2014 17:22:22 for Watena by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Sep 24 2014 19:04:08 for Watena by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.4
 </small></address>

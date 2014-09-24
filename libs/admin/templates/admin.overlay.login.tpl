@@ -2,7 +2,7 @@
 	<div class="container">
 		<div class="header">
 			<img class="icon" src="/theme/admin/icons/icon_white_key.png" />
-			<span id="title">Login</span>
+			<span id="title">Authenticate</span>
 			<img class="close" src="/theme/admin/icons/icon_white_squared-cross.png" />
 		</div>
 		<div class="center">

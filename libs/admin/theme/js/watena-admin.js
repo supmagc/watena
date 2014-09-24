@@ -42,6 +42,10 @@ function loaderCallback() {
 	});
 }
 
+function saveMapping(sMapping) {
+	
+}
+
 function displayLogin(sUserName, sUserNameError, sPasswordError, sNextMapping) {
 	$(".overlay").hide();
 	$("#overlay_login").show();
@@ -129,6 +133,7 @@ function displayModuleContent(sTitle, sDescription, sContent) {
 	$('#main-content').show();
 	$('#content-title').text(sTitle).attr('title', sDescription).tooltip();
 	$('#content-content').html(sContent);
+	oWatena.sLastMapping = location.hash.substr(1);
 }
 
 function displayLoading(sTitle, cbTimeout) {
@@ -146,6 +151,5 @@ function requestLoadingContent(sMapping, sAction, aData, aState) {
 	displayLoading("Get content", function() {
 		location.hash = '#' + sMapping;
 		requestContent(oWatena.sLastMapping, sMapping, sAction, aData, aState);
-		oWatena.sLastMapping = sMapping;
 	});
 }

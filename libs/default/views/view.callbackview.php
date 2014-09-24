@@ -18,6 +18,8 @@ class CallbackView extends View {
 			$aReturn['code'] = 1;
 			$aReturn['error_code'] = $oModel->getException()->getCode();
 			$aReturn['error_message'] = $oModel->getException()->getMessage();
+			$aReturn['error_file'] = $oModel->getException()->getFile();
+			$aReturn['error_line'] = $oModel->getException()->getLine();
 		}
 		else if(!empty($mResult)) {
 			$aReturn['code'] = 2;
