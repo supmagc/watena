@@ -15,7 +15,7 @@ class AdminCallbackController extends CallbackController {
 	public function requestContent($sLastMapping = '', $sNextMapping = '/', $sAction = null, array $aData = array(), array $aState = array()) {
 		$oUser = $this->getUserManager()->getLoggedInUser();
 		if(null == $oUser) {
-			$this->getModel()->displayLogin('', '', '', $sMapping);
+			$this->getModel()->displayLogin('', '', '', $sNextMapping);
 		}
 		else {
 			$oLastTab = Admin::getLoader()->getByMapping($sLastMapping);

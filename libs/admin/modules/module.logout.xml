@@ -3,7 +3,7 @@
 	<menu name="Logout">
 		<category>Main</category>
 		<description>Global information about the system.</description>
-		<defaulttab>Version</defaulttab>
+		<defaulttab>Logout</defaulttab>
 		<tab name="Logout">
 			<description>Versioning details about the system.</description>
 			<content type="text">UNDER CONSTRUCTION</content>

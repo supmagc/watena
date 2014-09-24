@@ -3,7 +3,6 @@ var searchData=
   ['cacheable',['Cacheable',['../class_cacheable.html',1,'']]],
   ['callback',['Callback',['../class_callback.html',1,'']]],
   ['callbackmodel',['CallbackModel',['../class_callback_model.html',1,'']]],
-  ['callfunction',['callFunction',['../class_j_s_function.html#a93a20458a06de1cad66ba0eb98d6d540',1,'JSFunction']]],
   ['checksignature',['checkSignature',['../class_o_auth_signature_method.html#aedd9a3e183880b2d1ea47fe06c988240',1,'OAuthSignatureMethod']]],
   ['class_2econtext_2ephp',['class.context.php',['../class_8context_8php.html',1,'']]],
   ['clearallpersistentdata',['clearAllPersistentData',['../class_base_facebook.html#a2f98dbe9b9b63d3e76ba7f1971d80c91',1,'BaseFacebook']]],

@@ -7,31 +7,31 @@ class AdminCallbackModel extends Model implements IResult {
 	private $m_sResult;
 	
 	public function displayLogin($sUserName = '', $sUserNameError = '', $sPasswordError = '', $sContinueMapping = '/') {
-		$this->m_sResult .= $this->makeDisplayLogin($sUserName, $sUserNameError, $sPasswordError, $sContinueMapping)->callFunction();
+		$this->m_sResult .= $this->makeDisplayLogin($sUserName, $sUserNameError, $sPasswordError, $sContinueMapping)->getAsCall();
 	}
 
 	public function displayError($sMessage, $sTitle, JSFunction $oCallback = null) {
-		$this->m_sResult .= $this->makeDisplayError($sMessage, $sTitle, $oCallback)->callFunction();
+		$this->m_sResult .= $this->makeDisplayError($sMessage, $sTitle, $oCallback)->getAsCall();
 	}
 
 	public function displaySucces($sMessage, $sTitle, JSFunction $oCallback = null) {
-		$this->m_sResult .= $this->makeDisplaySucces($sMessage, $sTitle, $oCallback)->callFunction();
+		$this->m_sResult .= $this->makeDisplaySucces($sMessage, $sTitle, $oCallback)->getAsCall();
 	}
 	
 	public function displayNavItems(AdminModuleLoader $oLoader) {
-		$this->m_sResult .= $this->makeDisplayNavItems($oLoader)->callFunction();
+		$this->m_sResult .= $this->makeDisplayNavItems($oLoader)->getAsCall();
 	}
 
 	public function displayModuleTabs(AdminModuleContentRequest $oRequest) {
-		$this->m_sResult .= $this->makeDisplayModuleTabs($oRequest)->callFunction();
+		$this->m_sResult .= $this->makeDisplayModuleTabs($oRequest)->getAsCall();
 	}
 
 	public function displayModuleInfo(AdminModuleContentRequest $oRequest) {
-		$this->m_sResult .= $this->makeDisplayModuleInfo($oRequest)->callFunction();
+		$this->m_sResult .= $this->makeDisplayModuleInfo($oRequest)->getAsCall();
 	}
 	
 	public function displayModuleContent(AdminModuleContentRequest $oRequest) {
-		$this->m_sResult .= $this->makeDisplayModuleContent($oRequest)->callFunction();
+		$this->m_sResult .= $this->makeDisplayModuleContent($oRequest)->getAsCall();
 	}
 	
 	public function makeDisplayLogin($sUserName = '', $sUserNameError = '', $sPasswordError = '', $sContinueMapping = '/') {
@@ -39,11 +39,11 @@ class AdminCallbackModel extends Model implements IResult {
 	}
 	
 	public function makeDisplayError($sMessage, $sTitle, JSFunction $oCallback = null) {
-		return new JSFunction('displayError', array($sMessage, $sTitle, empty($oCallback) ? null : $oCallback->getFunction()));
+		return new JSFunction('displayError', array($sMessage, $sTitle, empty($oCallback) ? null : $oCallback->getAsDelegate()));
 	}
 
 	public function makeDisplaySucces($sMessage, $sTitle, JSFunction $oCallback = null) {
-		return new JSFunction('displaySucces', array($sMessage, $sTitle, empty($oCallback) ? null : $oCallback->getFunction()));
+		return new JSFunction('displaySucces', array($sMessage, $sTitle, empty($oCallback) ? null : $oCallback->getAsDelegate()));
 	}
 	
 	public function makeDisplayNavItems(AdminModuleLoader $oLoader) {
@@ -84,7 +84,7 @@ class AdminCallbackModel extends Model implements IResult {
 	}
 	
 	public function makeDisplayModuleContent(AdminModuleContentRequest $oRequest) {
-		$oResponse = new AdminModuleContentResponse();
+		$oResponse = new AdminModuleContentResponse($this);
 		$oRequest->getTab()->getModuleContent()->generate($oRequest, $oResponse);
 		$sTitle = $oRequest->getTab()->getName();
 		if($oResponse->hasError()) {

@@ -12,7 +12,7 @@ class CallbackController extends Controller {
 		$this->m_oView = $oView;
 		
 		if(!empty($this->m_oCallback)) {
-			$this->getLogger()->info('Callback-data loaded {object}::{method)({arguments})', array('object' => $this, 'method' => $this->m_oCallback->getMethod(), 'arguments' => $this->m_oCallback->getArguments()));
+			$this->getLogger()->info('Callback-data loaded {object}::{method)({parameters})', array('object' => $this, 'method' => $this->m_oCallback->getMethod(), 'parameters' => $this->m_oCallback->getParameters()));
 			try {
 				$mResult = $this->m_oCallback->process($this);
 				if(!empty($mResult) && $oModel instanceof ResultModel) {

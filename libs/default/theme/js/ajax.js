@@ -73,7 +73,7 @@ var AJAX = (function() {
 					oData = JSON.parse(this.responseText);
 					if(oData.code != undefined) {
 						if(oData.code == 1) {
-							error("Error when processing the ajax request on the server: (code:" + oData.error_code + ")", oData.error_message, this.debug);
+							error("Error when processing the ajax request on the server: (code:" + oData.error_code + ")", oData.error_message + "<br/>" + oData.error_file + " (line: " + oData.error_line + ")", this.debug);
 						}
 						else if(oData.code == 2) {
 							try {

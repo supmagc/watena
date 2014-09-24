@@ -7,8 +7,9 @@ class AdminModuleContentResponse extends Object implements IPCO_IContentParser {
 	private $m_sContent;
 	private $m_sErrorTitle;
 	private $m_sErrorMessage;
+	private $m_oModel;
 	
-	public function __construct() {
+	public function __construct(AdminCallbackModel $oModel) {
 		
 	}
 	
@@ -18,6 +19,13 @@ class AdminModuleContentResponse extends Object implements IPCO_IContentParser {
 	
 	public function getMappingFull() {
 		
+	}
+
+	/**
+	 * @return AdminCallbackModel
+	 */
+	public function getModel() {
+		return $this->m_oModel;
 	}
 	
 	public function setError($sTitle, $sMessage) {
