@@ -3,6 +3,20 @@ require_model('CallbackModel');
 
 class AdminCallbackModel extends Model implements IResult {
 	
+	const CONTENT_TEXT = 0;
+	const CONTENT_LOGIN = 1;
+	const CONTENT_ERROR = 2;
+	const CONTENT_SUCCES = 3;
+	
+	const REQUEST_MODULETABS = 4;
+	const REQUEST_MODULEINFO = 5;
+	const REQUEST_MODULECONTENT = 6;
+	
+	const CLEAR_NAVITEMS = 7;
+	const CLEAR_MODULETABS = 8;
+	const CLEAR_MODULEINFO = 9;
+	const CLEAR_MODULECONTENT = 10;
+	
 	private $m_oException;
 	private $m_sResult;
 	
