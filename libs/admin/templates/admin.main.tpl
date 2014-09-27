@@ -27,6 +27,9 @@
 			</ul>
 		</div>-->
 		
+		<div id="nav-logout">
+		</div>
+		
 		<div id="nav-search">
 			<form>
 				<input id="search_txt" name="search_txt" type="text" value="Search Watena" />

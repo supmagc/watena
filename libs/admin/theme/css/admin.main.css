@@ -170,6 +170,21 @@ div#nav {
 			background: url(../icons/icon_white_search.png);
 			background-size: 32px;
 		}
+		
+	div#nav-logout {
+		float: right;
+		width: 36px;
+		height: 36px;
+		margin: 12px;
+		background: url(../icons/icon_orange_logout.png);
+		background-size: 36px;
+		cursor: pointer;;
+	}
+	
+	div#nav-logout:hover {
+		background: url(../icons/icon_white_logout.png);
+		background-size: 36px;
+	}
 
 div#row {
 	position: relative;

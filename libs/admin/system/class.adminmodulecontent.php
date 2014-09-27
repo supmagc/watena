@@ -19,7 +19,6 @@ abstract class AdminModuleContent extends Object {
 			case 'text' : return new AdminModuleContentText($sData);
 			case 'eval' : return new AdminModuleContentEval($sData);
 			case 'plugin' : return new AdminModuleContentPlugin($sData);
-			case 'callback' : return new AdminModuleContentPlugin($sData);
 			default : return new AdminModuleContentText($sData);
 		}
 	}

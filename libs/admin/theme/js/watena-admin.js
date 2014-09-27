@@ -40,10 +40,10 @@ function loaderCallback() {
 		$(".overlay").hide();
 		execute(oWatena.cbOverlayButton);
 	});
-}
-
-function saveMapping(sMapping) {
 	
+	$("#nav-logout").click(function() {
+		requestLogout();
+	});
 }
 
 function displayLogin(sUserName, sUserNameError, sPasswordError, sNextMapping) {

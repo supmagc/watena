@@ -203,7 +203,7 @@ class UserManager extends Plugin {
 	 * @throws UserInvalidPasswordException The given password is invalid.
 	 * @return User
 	 */
-	public static function Login(User $oUser, $sPassword) {
+	public static function login(User $oUser, $sPassword) {
 		// Check if verified
 		if(!$oUser->isVerified())
 			throw new UserUnverifiedUserException($oUser);
@@ -218,6 +218,13 @@ class UserManager extends Plugin {
 
 		self::setLoggedInUser($oUser);
 		return $oUser;
+	}
+
+	/**
+	 * Logout the user active in the current session.
+	 */
+	public static function logout() {
+		self::setLoggedInUser(null);
 	}
 	
 	/**
@@ -251,6 +258,12 @@ class UserManager extends Plugin {
 		return $oUser;
 	}
 	
+	/**
+	 * Set the given user as currently logged in for the active session.
+	 * If the given instance if null, this will invalidate the logged in user.
+	 * 
+	 * @param User $oUser
+	 */
 	public static function setLoggedInUser(User $oUser = null) {
 		if(self::$s_oLoggedInUser != $oUser) {
 			self::$s_oLoggedInUser = $oUser;
