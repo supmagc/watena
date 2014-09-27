@@ -9,5 +9,6 @@ require_once PATH_ADMIN . '/system/class.adminmoduleitem.php';
 require_once PATH_ADMIN . '/system/class.adminmodulecontent.php';
 require_once PATH_ADMIN . '/system/class.adminmodulecontentrequest.php';
 require_once PATH_ADMIN . '/system/class.adminmodulecontentresponse.php';
+require_once PATH_ADMIN . '/system/class.adminjsfunctions.php';
 require_once PATH_ADMIN . '/system/class.adminplugin.php';
 ?>

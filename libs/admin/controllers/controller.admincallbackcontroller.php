@@ -29,7 +29,7 @@ class AdminCallbackController extends CallbackController {
 				$this->getModel()->displayModuleContent($oRequest);
 			}
 			else {
-				$this->getModel()->displayError("The given mapping could not be matched to an existing module.", "Module 404", $this->getModel()->makeRequestLoadingContent('/'));
+				$this->getModel()->displayError("The given mapping could not be matched to an existing module.", "Module 404", AdminJSFunctions::makeRequestLoadingContent('/'));
 			}
 		}
 	}
@@ -45,7 +45,7 @@ class AdminCallbackController extends CallbackController {
 		try {
 			$oUser = $this->getUserManager()->loginByName($sUserName, $sPassword);
 			$this->getModel()->displayNavItems(Admin::getLoader());
-			$this->getModel()->displaySucces("You are now logged in, enjoy your stay!", "Welcome " . $oUser->getName(), $this->getModel()->makeRequestLoadingContent($sContinueMapping));
+			$this->getModel()->displaySucces("You are now logged in, enjoy your stay!", "Welcome " . $oUser->getName(), AdminJSFunctions::makeRequestLoadingContent($sContinueMapping));
 		}
 		catch(UserInvalidNameException $oUserException) {
 			$this->getModel()->displayLogin($sUserName, 'Invalid username!', '');
@@ -62,6 +62,11 @@ class AdminCallbackController extends CallbackController {
 		catch(UserInvalidPasswordException $oUserException) {
 			$this->getModel()->displayLogin($sUserName, '', 'Invalid password!');
 		}
+	}
+	
+	public function requestLogout() {
+		$this->getUserManager()->logout();
+		$this->getModel()->displaySucces("Your session has been deactivated!", "See you next time!", AdminJSFunctions::makeDisplayLogin());
 	}
 }
 
