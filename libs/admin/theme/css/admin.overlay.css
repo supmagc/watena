@@ -39,7 +39,6 @@ div.overlay {
 			border-top-left-radius: 5px;
 			border-top-right-radius: 5px;
 			border-bottom: 3px solid #666;
-			font-size: 28px;
 			top: 10px;
 		}
 		
@@ -84,7 +83,6 @@ div.overlay {
 			border-top: 3px solid #666;
 			bottom: 10px;
 			cursor: pointer;
-			font-size: 28px;
 		}
 		
 		div.overlay .footer:hover {
@@ -160,6 +158,49 @@ div#overlay_info .container {
 	div#overlay_info .footer {
 		background: #26B;
 	}
+	
+/* Confirm ajustments */
+div#overlay_confirm .container {
+	width: 900px;
+	height: 300px;
+}
+
+	div#overlay_confirm .header {
+		background: #26B;
+	}
+	
+	div#overlay_confirm .center .title {
+		color: #26B;
+	}
+
+	div#overlay_confirm .footer {
+		background: none;
+		border: none;
+	}
+
+		div#overlay_confirm .footer .cancel, div#overlay_confirm .footer .confirm {
+			position: static;
+			background: #26B;
+			bottom: 0px;
+			left: 0px;
+			right: 0px;
+			width: 439px;
+			cursor: pointer;
+		}
+
+		div#overlay_confirm .footer .cancel:hover, div#overlay_confirm .footer .confirm:hover {
+			text-decoration: underline;
+		}
+		
+		div#overlay_confirm .footer .cancel {
+			border-bottom-left-radius: 5px;
+			float: left;
+		}
+	
+		div#overlay_confirm .footer .confirm {
+			border-bottom-right-radius: 5px;
+			float: right;
+		}
 	
 /* Loading ajustments */
 div#overlay_loading .container {

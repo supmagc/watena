@@ -13,6 +13,14 @@ class AdminJSFunctions extends Object {
 	public static function makeDisplaySucces($sMessage, $sTitle, JSFunction $oCallback = null) {
 		return new JSFunction('displaySucces', array($sMessage, $sTitle, empty($oCallback) ? null : $oCallback->getAsDelegate()));
 	}
+
+	public static function makeDisplayConfirm($sMessage, $sTitle, JSFunction $oCallback = null) {
+		return new JSFunction('displayConfirm', array($sMessage, $sTitle, empty($oCallback) ? null : $oCallback->getAsDelegate()));
+	}
+	
+	public static function makeClearOverlay() {
+		return new JSFunction('clearOverlay');
+	}
 	
 	public static function makeDisplayNavItems(AdminModuleLoader $oLoader) {
 		$aNavs = array();
@@ -32,6 +40,10 @@ class AdminJSFunctions extends Object {
 		}
 		return new JSFunction('displayNavItems', array($aNavs));
 	}
+
+	public static function makeClearNavItems() {
+		return new JSFunction('clearNavItems');
+	}
 	
 	public static function makeDisplayModuleTabs(AdminModuleContentRequest $oRequest) {
 		$oTab = $oRequest->getTab();
@@ -45,10 +57,18 @@ class AdminJSFunctions extends Object {
 		}
 		return new JSFunction('displayModuleTabs', array($oTab->getModuleItem()->getName(), $oTab->getModuleItem()->getDescription(), $aTabs));
 	}
+
+	public static function makeClearModuleTabs() {
+		return new JSFunction('clearModuleTabs');
+	}
 	
 	public static function makeDisplayModuleInfo(AdminModuleContentRequest $oRequest) {
 		$oModule = $oRequest->getTab()->getModuleItem()->getModule();
 		return new JSFunction('displayModuleInfo', array($oModule->getName(), $oModule->getVersion(), $oModule->getDescription()));
+	}
+
+	public static function makeClearModuleInfo() {
+		return new JSFunction('clearModuleInfo');
 	}
 	
 	public static function makeDisplayModuleContent(AdminModuleContentRequest $oRequest) {
@@ -64,6 +84,10 @@ class AdminJSFunctions extends Object {
 				$sTitle .= ': ' . $oResponse->getTitle();
 			return new JSFunction('displayModuleContent', array($sTitle, $oRequest->getTab()->getDescription(), $oResponse->getContent()));
 		}
+	}
+
+	public static function makeClearModuleContent() {
+		return new JSFunction('clearModuleContent');
 	}
 	
 	public static function makeRequestLoadingContent($sMapping) {
