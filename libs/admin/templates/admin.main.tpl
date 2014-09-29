@@ -68,5 +68,6 @@
 	{{include admin.overlay.succes.tpl}}
 	{{include admin.overlay.info.tpl}}
 	{{include admin.overlay.loading.tpl}}
+	{{include admin.overlay.confirm.tpl}}
 </body>
 </html>

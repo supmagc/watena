@@ -66,6 +66,10 @@ class AdminCallbackController extends CallbackController {
 	
 	public function requestLogout() {
 		$this->getUserManager()->logout();
+		$this->getModel()->clearNavItems();
+		$this->getModel()->clearModuleTabs();
+		$this->getModel()->clearModuleInfo();
+		$this->getModel()->clearModuleContent();
 		$this->getModel()->displaySucces("Your session has been deactivated!", "See you next time!", AdminJSFunctions::makeDisplayLogin());
 	}
 }
