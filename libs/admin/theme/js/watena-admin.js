@@ -15,11 +15,10 @@ function execute(callback) {
 }
 
 function loaderCallback() {
-	requestNavItems();
 	if(location.hash.length > 0)
-		requestLoadingContent(location.hash.substr(1));
+		requestLoadingContent(true, location.hash.substr(1));
 	else
-		requestLoadingContent('/');
+		requestLoadingContent(true, '/');
 
 	oWatena.sSearchDefault = $("#search_txt").val();
 	$("#search_txt").focus(function() {
@@ -48,6 +47,20 @@ function loaderCallback() {
 	});
 }
 
+function setShowSearch(bShow) {
+	if(bShow)
+		$("#nav-search").show();
+	else
+		$("#nav-search").hide();
+}
+
+function setShowLogout(bShow) {
+	if(bShow)
+		$("#nav-logout").show();
+	else
+		$("#nav-logout").hide();
+}
+
 function displayLogin(sUserName, sUserNameError, sPasswordError, sNextMapping) {
 	clearOverlay();
 	$("#overlay_login").show();
@@ -57,7 +70,7 @@ function displayLogin(sUserName, sUserNameError, sPasswordError, sNextMapping) {
 	$("#login_usn").focus();
 	oWatena.sNextMapping = sNextMapping;
 	oWatena.cbOverlayCancel = function() {
-		requestLoadingContent(sNextMapping);
+		requestLoadingContent(true, sNextMapping);
 	};
 	oWatena.cbOverlayButton = function() {
 		clearOverlay();
@@ -130,7 +143,7 @@ function displayNavItems(aNavs) {
 		$.each(lElement.items, function(nSubIndex, lSubElement) {
 			oItem = $('<li class="nav-item"></li>').text(lSubElement.name);
 			//oItem.attr('title', lSubElement.description).tooltip();
-			oItem.click(function() {requestLoadingContent(lSubElement.mapping);});
+			oItem.click(function() {requestLoadingContent(false, lSubElement.mapping);});
 			oCategory.find('.nav-list').append(oItem);
 		});
 		$('#nav-logo, .nav-category').last().after(oCategory);
@@ -149,7 +162,7 @@ function displayModuleTabs(sTitle, sDescription, aTabs) {
 	$.each(aTabs, function(nIndex, lElement) {
 		oItem = $('<li class="tabs-item"></li>').text(lElement.name);
 		oItem.attr('title', lElement.description).tooltip();
-		oItem.click(function() {requestLoadingContent(lElement.mapping);});
+		oItem.click(function() {requestLoadingContent(false, lElement.mapping);});
 		$('#tabs-list').append(oItem);
 	});
 }
@@ -183,9 +196,9 @@ function clearModuleContent() {
 	$('#main-content').hide();	
 }
 
-function requestLoadingContent(sMapping, sAction, aData, aState) {
+function requestLoadingContent(bInit, sMapping, sAction, aData, aState) {
 	displayLoading("Get content", function() {
 		location.hash = '#' + sMapping;
-		requestContent(oWatena.sLastMapping, sMapping, sAction, aData, aState);
+		requestContent(bInit, oWatena.sLastMapping, sMapping, sAction, aData, aState);
 	});
 }

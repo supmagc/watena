@@ -6,6 +6,14 @@ class AdminCallbackModel extends Model implements IResult {
 	private $m_oException;
 	private $m_sResult;
 	
+	public function setShowSearch($bShow) {
+		$this->m_sResult .= AdminJSFunctions::makeSetShowSearch($bShow)->getAsCall();
+	}
+
+	public function setShowLogout($bShow) {
+		$this->m_sResult .= AdminJSFunctions::makeSetShowLogout($bShow)->getAsCall();
+	}
+	
 	public function displayLogin($sUserName = '', $sUserNameError = '', $sPasswordError = '', $sContinueMapping = '/') {
 		$this->m_sResult .= AdminJSFunctions::makeDisplayLogin($sUserName, $sUserNameError, $sPasswordError, $sContinueMapping)->getAsCall();
 	}
