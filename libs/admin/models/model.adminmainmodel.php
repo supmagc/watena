@@ -16,22 +16,16 @@ class AdminMainModel extends HtmlModel {
 	public function getAjax() {
 		$oAjax = new AJAX_Client(null);
 
-		$oRequest = new AJAX_Request('/admin/ajax', 'requestContent');
+		$oRequest = new AJAX_Request('/admin/ajax', 'requestInit');
 		$oAjax->registerRequest($oRequest);
-
-		$oRequest = new AJAX_Request('/admin/ajax', 'requestNavItems');
+		
+		$oRequest = new AJAX_Request('/admin/ajax', 'requestContent');
 		$oAjax->registerRequest($oRequest);
 		
 		$oRequest = new AJAX_Request('/admin/ajax', 'requestLogin');
 		$oAjax->registerRequest($oRequest);
 
 		$oRequest = new AJAX_Request('/admin/ajax', 'requestLogout');
-		$oAjax->registerRequest($oRequest);
-		
-		$oRequest = new AJAX_Request('/admin/ajax', 'alertHelloWorld');
-		$oAjax->registerRequest($oRequest);
-
-		$oRequest = new AJAX_Request('/admin/ajax', 'tester');
 		$oAjax->registerRequest($oRequest);
 		
 		return $oAjax->getOutput();

@@ -2,6 +2,14 @@
 
 class AdminJSFunctions extends Object {
 
+	public static function makeSetShowSearch($bShow) {
+		return new JSFunction('setShowSearch', array($bShow));
+	}
+	
+	public static function makeSetShowLogout($bShow) {
+		return new JSFunction('setShowLogout', array($bShow));
+	}
+	
 	public static function makeDisplayLogin($sUserName = '', $sUserNameError = '', $sPasswordError = '', $sContinueMapping = '/') {
 		return new JSFunction('displayLogin', array($sUserName, $sUserNameError, $sPasswordError, $sContinueMapping));
 	}
@@ -90,8 +98,8 @@ class AdminJSFunctions extends Object {
 		return new JSFunction('clearModuleContent');
 	}
 	
-	public static function makeRequestLoadingContent($sMapping) {
-		return new JSFunction('requestLoadingContent', array($sMapping));
+	public static function makeRequestLoadingContent($bInit, $sMapping) {
+		return new JSFunction('requestLoadingContent', array($bInit, $sMapping));
 	}
 	
 }
