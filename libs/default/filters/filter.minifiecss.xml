@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<filter name="Minifie css filter" order="2">
+	<model name="ThemeFileModel">
+	</model>
+	<view name="MinifieCssView">
+	</view>
+	<rules>
+		<rule variable="mapping.0" condition="is">minifie</rule>
+		<rule variable="mapping.1" condition="is">theme</rule>
+		<rule variable="path" condition="ends">.css</rule>
+	</rules>
+</filter>

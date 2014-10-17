@@ -79,7 +79,7 @@ class CacheLoader extends Object {
 		$oInstance = null;
 		ksort($this->m_aMembers);
 		sort($this->m_aIdentifiers);
-		$sIdentifier = md5($this->getClassName() . serialize($this->m_aMembers) . serialize($this->m_aIdentifiers));
+		$sIdentifier = md5($this->getClassName() . serialize($this->m_aMembers) . serialize($this->m_aIdentifiers) . serialize(call_user_func(array($this->getClassName(), 'coarseCacheIdentifier'))));
 		$sIdentifierInstance = "W_CACHE_{$sIdentifier}_INSTANCE";
 		$sIdentifierLastChanged = "W_CACHE_{$sIdentifier}_LASTCHANGED";
 		$nLastChanged = parent::getWatena()->getCache()->get($sIdentifierLastChanged, 0);

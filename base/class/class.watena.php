@@ -53,6 +53,7 @@ class Watena extends Object {
 	
 	public final function mvc() {
 		$nTime = microtime(true);
+		$bCached = false;
 		
 		// Load the mapping and retrieve the appropriate controller
 		list($this->m_oModel, $this->m_oView, $this->m_oController) = $this->m_oContext->getMVC($this->m_oMapping);
@@ -93,20 +94,25 @@ class Watena extends Object {
 				break;
 			}
 		}
+		
 		if($this->m_oView instanceof View) {
 			$sRequiredModelType = $this->m_oView->requiredModelType();
 			if(!empty($sRequiredModelType) && !($this->m_oModel instanceof $sRequiredModelType)) {
 				$this->getLogger()->error("Model is required to be of type {type_correct} instead of {type_wrong} as indicated by {view}.", array(
 					'type_correct' => $sRequiredModelType,
-					'type_wrong' => $this->m_oModel->toString(),
-					'view' => $this->m_oView->toString(),
+					'type_wrong' => $this->m_oModel ? $this->m_oModel->toString() : 'null',
+					'view' => $this->m_oView ? $this->m_oView->toString() : 'null'
 				));
 			}
-							
+			
+			// Sent headers
 			$this->m_oView->headers($this->m_oModel);
+			
+			// Check cache validation
+			$bCached = $this->m_oView->validateCache($this->m_oModel);
 		}
 		ob_end_flush();
-		if($this->m_oView instanceof View)
+		if($this->m_oView instanceof View && !$bCached)
 			$this->m_oView->render($this->m_oModel);
 	
 		// Log the end of Watena

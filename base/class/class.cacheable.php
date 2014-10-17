@@ -42,6 +42,18 @@ abstract class Cacheable extends Object {
 	 */
 	public function init() {}
 	
+	/**
+	 * This method gets called before creating the cacheable instance.
+	 * It serves to expand the cache identifier, and thus allows for a more fine-grained
+	 * cache identifier based on custom data.
+	 * If the cacheable object for example requires some request data, you could it it here.
+	 * 
+	 * Since this function gets called before creating the instance, it should always be static!
+	 * 
+	 * @return mixed
+	 */
+	public static function coarseCacheIdentifier() {}
+	
 	private $m_oData;
 
 	/**

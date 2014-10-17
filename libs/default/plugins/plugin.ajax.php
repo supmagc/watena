@@ -1,7 +1,16 @@
 <?php
 require_includeonce(dirname(__FILE__) . '/../ajax/ajax.php');
+require_model('HtmlModel');
 
 class Ajax extends Plugin {
+	
+	public static function prepareHtmlModel(HtmlModel $oModel) {
+		$oModel->addJavascriptLink(self::getJsLink());
+	}
+	
+	public static function getJsLink() {
+		
+	}
 		
 	/**
 	 * Retrieve version information of this plugin.

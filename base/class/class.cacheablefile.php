@@ -5,6 +5,10 @@ class CacheableFile extends Cacheable {
 	private $m_sFileName;
 	private $m_sFilePath;
 	
+	public function getFileTimestamp() {
+		return filechangetime($this->m_sFilePath);
+	}
+	
 	public function getFileName() {
 		return $this->m_sFileName;
 	}

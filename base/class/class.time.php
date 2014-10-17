@@ -7,9 +7,7 @@ class Time extends Object {
 	
 	private $m_oTimestamp;
 	
-	public function __construct($mTimestamp = null, $mTimezone = null) {
-		parent::__construct();
-		if(!$mTimestamp) $mTimestamp = time();
+	public function __construct($mTimestamp = 'now', $mTimezone = 'UTC') {
 		$this->m_oTimestamp = new DateTime(self::formatTimestamp($mTimestamp), new DateTimeZone(self::formatTimezone($mTimezone)));
 	}
 	
@@ -113,11 +111,15 @@ class Time extends Object {
 	
 	public function difference(Time $oTime) {
 		$oTimeInterval = $this->m_oTimestamp->diff($oTime->m_oTimestamp);
-		NYEI();
+		NYI();
+	}
+	
+	public static function getUtcTime() {
+		return self::createUTCTime('now');
 	}
 	
 	public static function getSystemTime() {
-		return new Time(self::getSystemTimestamp());
+		return self::createSystemTime('now');
 	}
 	
 	public static function getSystemTimezone() {
@@ -130,16 +132,22 @@ class Time extends Object {
 		return $oTimezone->getOffset($oDateTime);
 	}
 	
-	public static function getSystemTimestamp() {
+	/*
+	public static function getTimestamp() {
 		return time();
 	}
+	*/
 	
 	public static function getDefaultFormat() {
 		return self::$s_sDefaultFormat;
 	}
+
+	public static function createUtcTime($mTime) {
+		return new Time($mTime, 'UTC');
+	}
 	
-	public static function create($mTime = null, $sTimezone = null) {
-		return new Time($mTime ?: time(), $sTimezone ?: self::getSystemTimezone());
+	public static function createSystemTime($mTime) {
+		return new Time($mTime, self::getSystemTimezone());
 	}
 	
 	public static function init($sTimezone, $sDefaultFormat) {

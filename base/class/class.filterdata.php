@@ -3,11 +3,10 @@
 class FilterData extends Object {
 	
 	private $m_sName;
-	private $m_aParams;
+	private $m_aParams = array();
 	
 	public final function __construct($sName) {
 		$this->m_sName = $sName;
-		$this->m_aParams = array();
 	}
 	
 	public final function addParam($sName, $sValue) {

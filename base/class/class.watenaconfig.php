@@ -16,7 +16,13 @@ class WatenaConfig {
 		'cachengine' => 'CacheMemcache',
 		'cachexpiration' => 30,
 		'loglevel' => 'WARNING',
-		'logprocessors' => array()
+		'logprocessors' => array(),
+		'debugdefault' => false,
+		'debugdefine' => false,
+		'debugsession' => false,
+		'debugcookie' => false,
+		'debugget' => false,
+		'debugpost' => false
 	);
 	
 	public final function __construct(array $aConfig, $sConfigName = self::CONFIGNAME_DEFAULT) {
@@ -73,6 +79,26 @@ class WatenaConfig {
 	
 	public function loggerProcessors() {
 		return $this->m_aConfig['logprocessors'];		
+	}
+	
+	public function debugDefine() {
+		return $this->m_aConfig['debugdefine'];
+	}
+	
+	public function debugSession() {
+		return $this->m_aConfig['debugsession'];
+	}
+	
+	public function debugCookie() {
+		return $this->m_aConfig['debugcookie'];
+	}
+	
+	public function debugGet() {
+		return $this->m_aConfig['debugget'];
+	}
+	
+	public function debugPost() {
+		return $this->m_aConfig['debugpost'];
 	}
 }
 

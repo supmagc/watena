@@ -56,7 +56,6 @@ div.overlay {
 				right: 4px;
 				width: 32px;
 				height: 32px;
-				cursor: pointer;
 			}
 		
 		div.overlay .center {
@@ -82,7 +81,6 @@ div.overlay {
 			border-bottom-right-radius: 5px;
 			border-top: 3px solid #666;
 			bottom: 10px;
-			cursor: pointer;
 		}
 		
 		div.overlay .footer:hover {
