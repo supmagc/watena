@@ -38,6 +38,10 @@ class DataFile extends Object {
 		return $this->exists() ? filechangetime($this->m_sFullPath) : 0;
 	}
 	
+	public function getFileSize() {
+		return $this->exists() ? filesize($this->m_sFullPath) : 0;
+	}
+	
 	public function readContent() {
 		return $this->exists() ? file_get_contents($this->m_sFullPath, false) : null;
 	}
