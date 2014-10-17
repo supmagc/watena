@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module>
+<module name="Configuration">
+	<version></version>
+	<description></description>
 	<menu name="Configuration">
 		<category>Main</category>
 		<description>Global information about the system.</description>

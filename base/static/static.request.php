@@ -27,6 +27,8 @@ class Request {
 		'base' => 'http://localhost',
 		'root' => 'http://localhost',
 		'url' => 'http://localhost/',
+		'lastmodified' => null,
+		'etag' => null,
 		'detail' => '[GET] http://localhost/? (watena)',
 	);
 	
@@ -80,7 +82,15 @@ class Request {
 		if(!empty($_SERVER['DOCUMENT_ROOT'])) {
 			self::$s_aData['offset'] = Encoding::replace('\\', '/', Encoding::substring(PATH_ROOT, Encoding::length($_SERVER['DOCUMENT_ROOT'])));
 		}
+		
+		if(!empty($_SERVER['HTTP_IF_MODIFIED_SINCE'])) {
+			self::$s_aData['lastmodified'] = $_SERVER['HTTP_IF_MODIFIED_SINCE'];
+		}
 
+		if(!empty($_SERVER['HTTP_IF_NONE_MATCH'])) {
+			self::$s_aData['etag'] = $_SERVER['HTTP_IF_NONE_MATCH'];
+		}
+		
 		$sPath = '';
 		if(isset($_SERVER['REDIRECT_URL'])) {
 			$sPath = $_SERVER['REDIRECT_URL'];
@@ -298,12 +308,33 @@ class Request {
 	 * This will automatically save the useragent to a session.
 	 * If a subsequent request with useragent * / * should occur, the session-value will be used instead.
 	 * If no useragent is specified, this will default to 'Unknown'.
-	 * The return valies is based 
 	 *
 	 * @return string The persistent useragent data from the previous and current requests.
 	 */
 	public final static function useragent() {
 		return self::$s_aData['useragent'];
+	}
+	
+	/**
+	 * Retrieve the if_modified_since information from the current request.
+	 * This header is only valid when sent on a repeated request where the earlier response had the last-modified header.
+	 * You can check this value later on to validate the requirement to sent possibly cached content.
+	 * 
+	 * @return string|null
+	 */
+	public final static function lastModified() {
+		return self::$s_aData['lastmodified'];
+	}
+
+	/**
+	 * Retrieve the if_none_match information from the current request.
+	 * This header is only valid when sent on a repeated request where the earlier response had the etag header.
+	 * You can check this value later on to validate the requirement to sent possibly cached content.
+	 * 
+	 * @return string|null
+	 */
+	public final static function eTag() {
+		return self::$s_aData['etag'];
 	}
 	
 	/**

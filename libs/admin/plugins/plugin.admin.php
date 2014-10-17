@@ -11,6 +11,11 @@ class Admin extends Plugin {
 		$this->m_oLoader = parent::getWatena()->getContext()->getPlugin('AdminModuleLoader');
 	}
 	
+	/**
+	 * Get the main loader for the admin modules.
+	 * 
+	 * @return AdminModuleLoader
+	 */
 	public static function getLoader() {
 		return self::$s_oSingleton->m_oLoader;
 	}

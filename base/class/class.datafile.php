@@ -16,6 +16,10 @@ class DataFile extends Object {
 		$this->m_sFullPath = PATH_DATA . '/' . $sPath . '.df';
 	}
 	
+	public function __sleep() {
+		return array('m_sPath', 'm_sFullPath');
+	}
+	
 	public function exists() {
 		return file_exists($this->m_sFullPath);
 	}
@@ -31,7 +35,7 @@ class DataFile extends Object {
 	}
 	
 	public function getTimestamp() {
-		return $this->exists() ? filemtime($this->m_sFullPath) : 0;
+		return $this->exists() ? filechangetime($this->m_sFullPath) : 0;
 	}
 	
 	public function readContent() {
@@ -47,15 +51,21 @@ class DataFile extends Object {
 	}
 	
 	public function includeFile() {
-		if($this->exists()) {
-			return include $this->m_sFullPath;
-		}
+		return $this->exists() ? include $this->m_sFullPath : false;
 	}
 	
 	public function includeFileOnce() {
+		return $this->exists() ? include_once $this->m_sFullPath : false;
+	}
+	
+	public function printContent() {
 		if($this->exists()) {
-			return include_once $this->m_sFullPath;
+			echo file_get_contents($this->m_sFullPath);
 		}
+	}
+	
+	public static final function makeNameSafe($sFileName) {
+		return Encoding::regReplace('[^-a-zA-Z0-9_.]', '_', $sFileName);
 	}
 }
 

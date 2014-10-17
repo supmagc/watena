@@ -8,6 +8,7 @@ class Filter extends CacheableFile {
 	private $m_oView = null;
 	private $m_oController = null;
 	private $m_aRules = array();
+	private $m_aDependencies = array();
 	
 	public function make(array $aMembers) {
 		$oXml = new SimpleXMLElement(parent::getFilePath(), 0, true);
@@ -67,6 +68,10 @@ class Filter extends CacheableFile {
 	
 	public function getRules() {
 		return $this->m_aRules;
+	}
+	
+	public function getDependencies() {
+		return $this->m_aDependencies;
 	}
 	
 	public final function matches(Mapping $oMapping) {

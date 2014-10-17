@@ -1,4 +1,4 @@
-<table>
+<table cellspacing="5">
 	{{foreach this}}
 	<tr>
 		<td>{[name]}</td>

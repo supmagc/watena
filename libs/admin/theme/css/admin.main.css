@@ -38,6 +38,10 @@ div#main-tabs, div#main-module, div#main-content {
 	font-size: 12px;
 }
 
+.clickable {
+	cursor: pointer;
+}
+
 div#main div.title {
 	color: #FF7F00;
 	line-height: 20px;

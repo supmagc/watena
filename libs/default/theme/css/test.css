@@ -1,0 +1,11 @@
+@CHARSET "UTF-8";
+
+/* BLA BLA */
+
+test {
+	bla: boehoeh;
+}
+	
+	test a:hover {
+		background: #000;
+	}

@@ -35,7 +35,8 @@ class AdminHelp extends AdminPlugin {
 	}
 
 	public function generateModules(AdminModuleContentRequest $oRequest, AdminModuleContentResponse $oResponse) {
-		$oResponse->setContentText('MODULES');
+		$aModules = Admin::getLoader()->getModules();
+		$oResponse->setContentTemplate('admin.help.modules.tpl', $aModules);
 	}
 	
 	public function getVersion() {
