@@ -30,10 +30,10 @@ class Filter extends CacheableFile {
 		}
 		if(!empty($oXml->rules)) {
 			foreach($oXml->rules->rule as $oRule) {
-				$aVariable = empty($oXml->rules->rule['variable']) ? 'url' : ('' . $oXml->rules->rule['variable']);
-				$sCondition = empty($oXml->rules->rule['condition']) ? 'patern' : ('' . $oXml->rules->rule['condition']);
+				$aVariable = empty($oRule['variable']) ? 'url' : ('' . $oRule['variable']);
+				$sCondition = empty($oRule['condition']) ? 'patern' : ('' . $oRule['condition']);
 				if(count($aVariable) > 0) {
-					$this->m_aRules []= new FilterRule($aVariable, $sCondition, '' .$oXml->rules->rule);
+					$this->m_aRules []= new FilterRule($aVariable, $sCondition, '' .$oRule);
 				}
 			}
 		}

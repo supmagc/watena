@@ -44,6 +44,10 @@ class ThemeFileModel extends Model {
 		return $this->m_nFileChangeDate;
 	}
 	
+	public function getFileSize() {
+		return filesize($this->m_sFilePath);
+	}
+	
 	public function getFileContent() {
 		return file_get_contents($this->m_sFilePath);
 	}

@@ -2,6 +2,9 @@
 
 class MinifieJsView extends View {
 	
+	private $m_nOriginalSize;
+	private $m_nMinifiedSize;
+	
 	public function requiredModelType() {
 		return 'ThemeFileModel';
 	}
@@ -16,9 +19,17 @@ class MinifieJsView extends View {
 		if($oDataFile->getTimestamp() < $oModel->getLastModified()) {
 			$this->getWatena()->getContext()->loadPlugin('JShrink');
 			$oDataFile->writeContent(JShrink::minifie($oModel->getFileContent()));
+			$this->m_nOriginalSize = $oModel->getFileSize();
+			$this->m_nMinifiedSize = $oDataFile->getFileSize();
+			$this->getCacheData()->update($this);
+			
+			$this->getLogger()->info("Minified the js-file {path} from {original} bytes to {minified} bytes.", array('path' => $oModel->getFilePath(), 'original' => $this->m_nOriginalSize, 'minified' => $this->m_nMinifiedSize));
+		}
+		else {
+			$this->getLogger()->info("Served an earlier cached js-file {path} from {original} bytes to {minified} bytes.", array('path' => $oModel->getFilePath(), 'original' => $this->m_nOriginalSize, 'minified' => $this->m_nMinifiedSize));
 		}
 		
-		if(false)
+		if(true)
 			$oDataFile->printContent();
 		else 
 			$oModel->printFileContent();

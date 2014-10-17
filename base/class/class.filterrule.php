@@ -63,6 +63,7 @@ class FilterRule extends Object {
 			case 'equals': if($this->m_sContent == $mVariable) return true; break;
 			default: return false;
 		}
+		return false;
 	}
 }
 
