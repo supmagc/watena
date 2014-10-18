@@ -69,10 +69,40 @@ $conf['default']['cachengine'] = ''; //CacheMemcache';
 #
 $conf['default']['cachexpiration'] = 30;
 
-
+#
+# Default log filter-level for newly initiated logprocessors.
+# Available values:
+# - ALWAYS: Show all
+# - INFO: Used for information messages about the processing of the request.
+# - DEBUG: Used for debug messages when things get wrong.
+# - EXCEPTION: Used for displaying exception messages when not catched.
+# - WARNING: Used for warning messages when things happen that should be fixed or clarified.
+# - ERROR: Used for error messages when something goes wrong.
+# - TERMINATE: Used to terminate the system with a logger message.
+# - NONE: Show none
+#
 $conf['default']['loglevel'] = 'WARNING';
+
+#
+# A list with all additionaly loaded logprocessors.
+# The echoLog-class will be auto-loaded on an earlier stage.
+# If so desired, you can clear the EchoLog-class later on.
+#
 $conf['default']['logprocessors'] = array();
+
+#
+# The webroot offset of the watena install.
+#
 $conf['default']['webroot'] = 'watena';
+
+$conf['default']['debugdefault'] = false;
+$conf['testing']['debugdefault'] = true;
+
+$conf['default']['debugdefine'] = false;
+
+$conf['default']['debugsession'] = false;
+
+$conf['default']['debugrequest'] = false;
 
 #
 # Disable the advanced logging system

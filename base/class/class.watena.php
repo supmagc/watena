@@ -9,6 +9,7 @@ class Watena extends Object {
 	private $m_oView = null;
 	private $m_oController = null;
 	private $m_oTime = null;
+	private $m_bDebug = false;
 	private $m_oConfig;
 	
 	public function __construct(WatenaConfig $oConfig) {	
@@ -17,6 +18,20 @@ class Watena extends Object {
 		parent::__construct();
 		$this->m_oConfig = $oConfig;
 		
+		// Load debug flag
+		$this->m_bDebug = $oConfig->debugDefault();
+		if($oConfig->debugDefine() && defined('DEBUG')) {
+			$this->m_bDebug |= (bool)DEBUG;
+		}
+		if($oConfig->debugSession() && isset($_SESSION['DEBUG'])) {
+			$this->m_bDebug |= (bool)$_SESSION['DEBUG'];
+		}
+		if($oConfig->debugDefine() && isset($_REQUEST['DEBUG'])) {
+			$this->m_bDebug |= (bool)$_REQUEST['DEBUG'];
+		}
+		function isDebug() {return watena()->isDebug();}
+		
+		// Init some static classes
 		Encoding::init($this->getConfig()->charset());
 		Request::init();
 		Time::init($this->getConfig()->timeZone(), $this->getConfig()->timeFormat());
@@ -48,7 +63,11 @@ class Watena extends Object {
 		}
 		
 		// Log the end of the init
-		$this->getLogger()->debug('Watena was succesfully initialised in {time} sec.', array('time' => round(microtime(true) - $nTime, 5)));
+		$this->getLogger()->info('Watena was succesfully initialised in {time} sec.', array('time' => round(microtime(true) - $nTime, 5)));
+	}
+	
+	public final function isDebug() {
+		return $this->m_bDebug;
 	}
 	
 	public final function mvc() {
