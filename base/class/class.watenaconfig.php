@@ -20,9 +20,7 @@ class WatenaConfig {
 		'debugdefault' => false,
 		'debugdefine' => false,
 		'debugsession' => false,
-		'debugcookie' => false,
-		'debugget' => false,
-		'debugpost' => false
+		'debugrequest' => false,
 	);
 	
 	public final function __construct(array $aConfig, $sConfigName = self::CONFIGNAME_DEFAULT) {
@@ -80,6 +78,10 @@ class WatenaConfig {
 	public function loggerProcessors() {
 		return $this->m_aConfig['logprocessors'];		
 	}
+
+	public function debugDefault() {
+		return $this->m_aConfig['debugdefault'];
+	}
 	
 	public function debugDefine() {
 		return $this->m_aConfig['debugdefine'];
@@ -90,15 +92,7 @@ class WatenaConfig {
 	}
 	
 	public function debugCookie() {
-		return $this->m_aConfig['debugcookie'];
-	}
-	
-	public function debugGet() {
-		return $this->m_aConfig['debugget'];
-	}
-	
-	public function debugPost() {
-		return $this->m_aConfig['debugpost'];
+		return $this->m_aConfig['debugrequest'];
 	}
 }
 
