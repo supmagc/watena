@@ -125,6 +125,10 @@ Static Public Member Functions</h2></td></tr>
 <tr class="separator:a4d6813e2943a1ced4ae7159e3a382695"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a12099938e1500f4559b32b833de2088e"><td class="memItemLeft" align="right" valign="top">static&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_request.html#a12099938e1500f4559b32b833de2088e">useragent</a> ()</td></tr>
 <tr class="separator:a12099938e1500f4559b32b833de2088e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aced74b3005542537ca7f3b4592545cbb"><td class="memItemLeft" align="right" valign="top">static&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_request.html#aced74b3005542537ca7f3b4592545cbb">lastModified</a> ()</td></tr>
+<tr class="separator:aced74b3005542537ca7f3b4592545cbb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac55d4834ecde0026dfacef5d9545a29c"><td class="memItemLeft" align="right" valign="top">static&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_request.html#ac55d4834ecde0026dfacef5d9545a29c">eTag</a> ()</td></tr>
+<tr class="separator:ac55d4834ecde0026dfacef5d9545a29c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af0cfa5de39cd1b78dd183f8755c5881a"><td class="memItemLeft" align="right" valign="top">static&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_request.html#af0cfa5de39cd1b78dd183f8755c5881a">get</a> ($mIndex, $mDefault=null)</td></tr>
 <tr class="separator:af0cfa5de39cd1b78dd183f8755c5881a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab2b509ddd1e625547bd79a8f207670e3"><td class="memItemLeft" align="right" valign="top">static&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_request.html#ab2b509ddd1e625547bd79a8f207670e3">post</a> ($mIndex, $mDefault=null)</td></tr>
@@ -250,6 +254,31 @@ Static Public Member Functions</h2></td></tr>
 <dd>
 <a class="el" href="class_request.html#a12099938e1500f4559b32b833de2088e">Request::useragent()</a> </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>string [GET] http[s]://[user[:password]@]example.com[:80][/path-to-install]/[path/mapping]?[param0=foo&amp;param1=bar] (useragent) </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="ac55d4834ecde0026dfacef5d9545a29c"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static Request::eTag </td>
+          <td>(</td>
+          <td class="paramname">)</td><td></td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">final</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Retrieve the if_none_match information from the current request. This header is only valid when sent on a repeated request where the earlier response had the etag header. You can check this value later on to validate the requirement to sent possibly cached content.</p>
+<dl class="section return"><dt>Returns</dt><dd>string|null </dd></dl>
 
 </div>
 </div>
@@ -410,6 +439,31 @@ Static Public Member Functions</h2></td></tr>
 <dd>
 <a class="el" href="class_request.html#a495e06b9d24638c678259b6f3aefbcd6">Request::port()</a> </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>boolean Indicates of the current request is using https. (default: false) </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="aced74b3005542537ca7f3b4592545cbb"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static Request::lastModified </td>
+          <td>(</td>
+          <td class="paramname">)</td><td></td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">final</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Retrieve the if_modified_since information from the current request. This header is only valid when sent on a repeated request where the earlier response had the last-modified header. You can check this value later on to validate the requirement to sent possibly cached content.</p>
+<dl class="section return"><dt>Returns</dt><dd>string|null </dd></dl>
 
 </div>
 </div>
@@ -834,7 +888,7 @@ Static Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Retrieve the useragent of the current request. This will automatically save the useragent to a session. If a subsequent request with useragent * / * should occur, the session-value will be used instead. If no useragent is specified, this will default to 'Unknown'. The return valies is based</p>
+<p>Retrieve the useragent of the current request. This will automatically save the useragent to a session. If a subsequent request with useragent * / * should occur, the session-value will be used instead. If no useragent is specified, this will default to 'Unknown'.</p>
 <dl class="section return"><dt>Returns</dt><dd>string The persistent useragent data from the previous and current requests. </dd></dl>
 
 </div>
@@ -845,7 +899,7 @@ Static Public Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Sep 24 2014 19:04:08 for Watena by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Oct 19 2014 00:25:54 for Watena by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.4
 </small></address>

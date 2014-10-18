@@ -36,6 +36,10 @@ static \hyperlink{class_request_a4d6813e2943a1ced4ae7159e3a382695}{method} ()
 \item 
 static \hyperlink{class_request_a12099938e1500f4559b32b833de2088e}{useragent} ()
 \item 
+static \hyperlink{class_request_aced74b3005542537ca7f3b4592545cbb}{last\-Modified} ()
+\item 
+static \hyperlink{class_request_ac55d4834ecde0026dfacef5d9545a29c}{e\-Tag} ()
+\item 
 static \hyperlink{class_request_af0cfa5de39cd1b78dd183f8755c5881a}{get} (\$m\-Index, \$m\-Default=null)
 \item 
 static \hyperlink{class_request_ab2b509ddd1e625547bd79a8f207670e3}{post} (\$m\-Index, \$m\-Default=null)
@@ -129,6 +133,18 @@ Retrieve the full detailed string containing the current request state. Currentl
 \begin{DoxyReturn}{Returns}
 string \mbox{[}G\-E\-T\mbox{]} http\mbox{[}s\mbox{]}\-://\mbox{[}user\mbox{[}\-:password\mbox{]}@\mbox{]}example.\-com\mbox{[}\-:80\mbox{]}\mbox{[}/path-\/to-\/install\mbox{]}/\mbox{[}path/mapping\mbox{]}?\mbox{[}param0=foo\&param1=bar\mbox{]} (useragent) 
 \end{DoxyReturn}
+\hypertarget{class_request_ac55d4834ecde0026dfacef5d9545a29c}{\index{Request@{Request}!e\-Tag@{e\-Tag}}
+\index{e\-Tag@{e\-Tag}!Request@{Request}}
+\subsubsection[{e\-Tag}]{\setlength{\rightskip}{0pt plus 5cm}static Request\-::e\-Tag (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [final]}}}\label{class_request_ac55d4834ecde0026dfacef5d9545a29c}
+Retrieve the if\-\_\-none\-\_\-match information from the current request. This header is only valid when sent on a repeated request where the earlier response had the etag header. You can check this value later on to validate the requirement to sent possibly cached content.
+
+\begin{DoxyReturn}{Returns}
+string$|$null 
+\end{DoxyReturn}
 \hypertarget{class_request_af0cfa5de39cd1b78dd183f8755c5881a}{\index{Request@{Request}!get@{get}}
 \index{get@{get}!Request@{Request}}
 \subsubsection[{get}]{\setlength{\rightskip}{0pt plus 5cm}static Request\-::get (
@@ -213,6 +229,18 @@ Determine if the current request is using a secured protocol. This method is the
 \end{DoxySeeAlso}
 \begin{DoxyReturn}{Returns}
 boolean Indicates of the current request is using https. (default\-: false) 
+\end{DoxyReturn}
+\hypertarget{class_request_aced74b3005542537ca7f3b4592545cbb}{\index{Request@{Request}!last\-Modified@{last\-Modified}}
+\index{last\-Modified@{last\-Modified}!Request@{Request}}
+\subsubsection[{last\-Modified}]{\setlength{\rightskip}{0pt plus 5cm}static Request\-::last\-Modified (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [final]}}}\label{class_request_aced74b3005542537ca7f3b4592545cbb}
+Retrieve the if\-\_\-modified\-\_\-since information from the current request. This header is only valid when sent on a repeated request where the earlier response had the last-\/modified header. You can check this value later on to validate the requirement to sent possibly cached content.
+
+\begin{DoxyReturn}{Returns}
+string$|$null 
 \end{DoxyReturn}
 \hypertarget{class_request_a865d084fee04c82e9704b1144e5b4c84}{\index{Request@{Request}!make@{make}}
 \index{make@{make}!Request@{Request}}
@@ -435,7 +463,7 @@ string The user portion of the current request. (default\-: '')
 {}
 \end{DoxyParamCaption}
 )\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [final]}}}\label{class_request_a12099938e1500f4559b32b833de2088e}
-Retrieve the useragent of the current request. This will automatically save the useragent to a session. If a subsequent request with useragent $\ast$ / $\ast$ should occur, the session-\/value will be used instead. If no useragent is specified, this will default to 'Unknown'. The return valies is based
+Retrieve the useragent of the current request. This will automatically save the useragent to a session. If a subsequent request with useragent $\ast$ / $\ast$ should occur, the session-\/value will be used instead. If no useragent is specified, this will default to 'Unknown'.
 
 \begin{DoxyReturn}{Returns}
 string The persistent useragent data from the previous and current requests. 
