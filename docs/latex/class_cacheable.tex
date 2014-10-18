@@ -26,7 +26,11 @@ Inherited by Cacheable\-Data, Cacheable\-Directory, Cacheable\-File, and Plugin.
 \item 
 \hyperlink{class_cacheable_a525b1b070b6f528c6bbe1df12194fab1}{get\-Config} (\$s\-Key, \$m\-Default=null)
 \end{DoxyCompactItemize}
-\subsection*{Additional Inherited Members}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \hyperlink{class_cacheable_ab6090f0ed75d626d969d6f88b0cbf882}{coarse\-Cache\-Identifier} ()
+\end{DoxyCompactItemize}
 
 
 \subsection{Detailed Description}
@@ -67,6 +71,20 @@ Cache\-Data & {\em \$o\-Data} & \\
 
 
 \subsection{Member Function Documentation}
+\hypertarget{class_cacheable_ab6090f0ed75d626d969d6f88b0cbf882}{\index{Cacheable@{Cacheable}!coarse\-Cache\-Identifier@{coarse\-Cache\-Identifier}}
+\index{coarse\-Cache\-Identifier@{coarse\-Cache\-Identifier}!Cacheable@{Cacheable}}
+\subsubsection[{coarse\-Cache\-Identifier}]{\setlength{\rightskip}{0pt plus 5cm}static Cacheable\-::coarse\-Cache\-Identifier (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{class_cacheable_ab6090f0ed75d626d969d6f88b0cbf882}
+This method gets called before creating the cacheable instance. It serves to expand the cache identifier, and thus allows for a more fine-\/grained cache identifier based on custom data. If the cacheable object for example requires some request data, you could it it here.
+
+Since this function gets called before creating the instance, it should always be static!
+
+\begin{DoxyReturn}{Returns}
+mixed 
+\end{DoxyReturn}
 \hypertarget{class_cacheable_a3825ea17270319f96d27540ae347fcde}{\index{Cacheable@{Cacheable}!get\-Cache\-Data@{get\-Cache\-Data}}
 \index{get\-Cache\-Data@{get\-Cache\-Data}!Cacheable@{Cacheable}}
 \subsubsection[{get\-Cache\-Data}]{\setlength{\rightskip}{0pt plus 5cm}Cacheable\-::get\-Cache\-Data (

@@ -85,6 +85,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="class_cacheable-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Cacheable Class Reference</div>  </div>
@@ -115,8 +116,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a797e6c27797d8a7451734ff0ef5790e8 inherit pub_methods_class_object"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><b>getLogger</b> ()</td></tr>
 <tr class="separator:a797e6c27797d8a7451734ff0ef5790e8 inherit pub_methods_class_object"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
-Additional Inherited Members</h2></td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:ab6090f0ed75d626d969d6f88b0cbf882"><td class="memItemLeft" align="right" valign="top">static&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_cacheable.html#ab6090f0ed75d626d969d6f88b0cbf882">coarseCacheIdentifier</a> ()</td></tr>
+<tr class="separator:ab6090f0ed75d626d969d6f88b0cbf882"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_static_methods_class_object"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_class_object')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="class_object.html">Object</a></td></tr>
 <tr class="memitem:aba842d932a1f6114135d704bc22a9b17 inherit pub_static_methods_class_object"><td class="memItemLeft" align="right" valign="top">static&#160;</td><td class="memItemRight" valign="bottom"><b>getRequirements</b> ()</td></tr>
 <tr class="separator:aba842d932a1f6114135d704bc22a9b17 inherit pub_static_methods_class_object"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -160,6 +163,32 @@ CacheableFile</dd></dl>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="ab6090f0ed75d626d969d6f88b0cbf882"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static Cacheable::coarseCacheIdentifier </td>
+          <td>(</td>
+          <td class="paramname">)</td><td></td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This method gets called before creating the cacheable instance. It serves to expand the cache identifier, and thus allows for a more fine-grained cache identifier based on custom data. If the cacheable object for example requires some request data, you could it it here.</p>
+<p>Since this function gets called before creating the instance, it should always be static!</p>
+<dl class="section return"><dt>Returns</dt><dd>mixed </dd></dl>
+
+</div>
+</div>
 <a class="anchor" id="a3825ea17270319f96d27540ae347fcde"></a>
 <div class="memitem">
 <div class="memproto">
@@ -282,7 +311,7 @@ CacheableFile</dd></dl>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Sep 24 2014 19:04:08 for Watena by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Oct 19 2014 00:25:54 for Watena by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.4
 </small></address>
