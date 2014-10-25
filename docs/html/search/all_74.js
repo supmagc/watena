@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['takecookies',['takeCookies',['../class_web_request.html#a10c9c7cd782bc1084e9da4bfef6617f3',1,'WebRequest']]],
   ['templatefile',['TemplateFile',['../class_template_file.html',1,'']]],
   ['templateloader',['TemplateLoader',['../class_template_loader.html',1,'']]],
   ['terminate',['terminate',['../class_logger.html#ad2c4a0987a107ccdfe2676d5c7daa0c6',1,'Logger']]],

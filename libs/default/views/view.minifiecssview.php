@@ -2,6 +2,7 @@
 /**
  * Serve a minified version of a specified css file to the end user.
  * This view expetcs data from a ThemeFileModel-instance.
+ * 
  * Configuration:
  * - minifieifdebug: Indicate if we still should server minified files when debugging. (default: false)
  *

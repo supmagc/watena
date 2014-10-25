@@ -1,6 +1,10 @@
 <?php
 /**
- * This model extracts a filename form the Request::path() data to serve a 
+ * This model extracts a filename form the Request::path() data to serve
+ * the specified file using a custom view.
+ * 
+ * Configuration:
+ * - cacheduration: the duration the file may be cached by the browser. (default: 3600)
  * 
  * @author Jelle
  * @version 0.1.0
@@ -38,6 +42,10 @@ class ThemeFileModel extends Model {
 
 	public function validate() {
 		return filechangetime($this->m_sFilePath) <= $this->m_nFileChangeDate;
+	}
+	
+	public function getCacheDuration() {
+		return $this->getConfig('cacheduration', 3600);
 	}
 	
 	public function getLastModified() {
