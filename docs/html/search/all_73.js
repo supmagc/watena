@@ -1,6 +1,7 @@
 var searchData=
 [
   ['scheme',['scheme',['../class_request.html#a23d8c8dfb64e8f03ba857e83887a3f93',1,'Request']]],
+  ['send',['send',['../class_web_request.html#a6e57fabfb9dfe3c8032d61c24174492b',1,'WebRequest']]],
   ['session',['session',['../class_request.html#af0d98675f85be7ee4fca80e18942693b',1,'Request']]],
   ['sessionguard',['SessionGuard',['../class_session_guard.html',1,'']]],
   ['set_5fallowed_5ftags',['set_allowed_tags',['../classhtml2text.html#a426f32b8fc504be6eb0e2af96d9e11f6',1,'html2text']]],
@@ -14,6 +15,10 @@ var searchData=
   ['setfileuploadsupport',['setFileUploadSupport',['../class_base_facebook.html#a9cd44296e92bd602f54c26d613decefc',1,'BaseFacebook']]],
   ['setfilter',['setFilter',['../class_logger.html#a54e5e4ead59460c6345d38ed4385e3fc',1,'Logger']]],
   ['setfilterlevel',['setFilterLevel',['../class_logger.html#ad960882fc5dd94fe18c9d0417c3985f2',1,'Logger']]],
+  ['setmethod',['setMethod',['../class_web_request.html#ae9602e5fcf317610432d73b7643d19f7',1,'WebRequest']]],
   ['setpersistentdata',['setPersistentData',['../class_base_facebook.html#a26198ff065bea23f358854facbafa7db',1,'BaseFacebook\setPersistentData()'],['../class_facebook.html#a8f094cc1c798c533283018a8100dffdf',1,'Facebook\setPersistentData()']]],
+  ['setpostdataappend',['setPostDataAppend',['../class_web_request.html#a00298e5aae2ab0f3c0bf751096a463fe',1,'WebRequest']]],
+  ['setsslcertificate',['setSslCertificate',['../class_web_request.html#aa22c1b13009bf613f4975bc126d3d730',1,'WebRequest']]],
+  ['setuseragent',['setUseragent',['../class_web_request.html#a2bd29dc50643ea7c186e06f9cdd49bc7',1,'WebRequest']]],
   ['shouldretainparam',['shouldRetainParam',['../class_base_facebook.html#a47e7827a14b19657e2a760afa5324dad',1,'BaseFacebook']]]
 ];

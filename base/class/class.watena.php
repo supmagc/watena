@@ -8,6 +8,7 @@ class Watena extends Object {
 	private $m_oModel = null;
 	private $m_oView = null;
 	private $m_oController = null;
+	private $m_oOutput = null;
 	private $m_oTime = null;
 	private $m_bDebug = false;
 	private $m_oConfig;
@@ -39,6 +40,7 @@ class Watena extends Object {
 		// Create a default context and default cache
 		$this->m_oTime = new Time();
 		$this->m_oCache = new CacheEmpty();
+		$this->m_oOutput = new OutputControl();
 		$this->m_oContext = new Context();
 		$this->m_oMapping = Mapping::LoadFromRequest();
 		
@@ -114,25 +116,30 @@ class Watena extends Object {
 			}
 		}
 		
-		if($this->m_oView instanceof View) {
-			$sRequiredModelType = $this->m_oView->requiredModelType();
-			if(!empty($sRequiredModelType) && !($this->m_oModel instanceof $sRequiredModelType)) {
-				$this->getLogger()->error("Model is required to be of type {type_correct} instead of {type_wrong} as indicated by {view}.", array(
-					'type_correct' => $sRequiredModelType,
-					'type_wrong' => $this->m_oModel ? $this->m_oModel->toString() : 'null',
-					'view' => $this->m_oView ? $this->m_oView->toString() : 'null'
-				));
+		// Check cache validation if we have a model
+		if(null === $this->m_oModel || !$this->m_oOutput->validateCache($this->m_oModel)) {
+			if($this->m_oView instanceof View) {
+				$sRequiredModelType = $this->m_oView->requiredModelType();
+				if(!empty($sRequiredModelType) && !($this->m_oModel instanceof $sRequiredModelType)) {
+					$this->getLogger()->error("Model is required to be of type {type_correct} instead of {type_wrong} as indicated by {view}.", array(
+							'type_correct' => $sRequiredModelType,
+							'type_wrong' => $this->m_oModel ? $this->m_oModel->toString() : 'null',
+							'view' => $this->m_oView ? $this->m_oView->toString() : 'null'
+					));
+				}
+					
+				// Sent headers
+				$this->m_oView->headers($this->m_oModel);
 			}
+			ob_end_flush();
 			
-			// Sent headers
-			$this->m_oView->headers($this->m_oModel);
-			
-			// Check cache validation
-			$bCached = $this->m_oView->validateCache($this->m_oModel);
+			// Try output compression
+			$this->m_oOutput->validateCompression($this->m_oModel);
+
+			// Final rendering
+			if($this->m_oView instanceof View && !$bCached)
+				$this->m_oView->render($this->m_oModel);
 		}
-		ob_end_flush();
-		if($this->m_oView instanceof View && !$bCached)
-			$this->m_oView->render($this->m_oModel);
 	
 		// Log the end of Watena
 		$this->getLogger()->debug('Watena loaded and rendered the page in {time} sec.', array('time' => round(microtime(true) - $nTime, 5)));
@@ -152,6 +159,15 @@ class Watena extends Object {
 	 */
 	public final function getContext() {
 		return $this->m_oContext;
+	}
+	
+	/**
+	 * Retrieve the current output-control.
+	 * 
+	 * @return OutputControl
+	 */
+	public final function getOutputControl() {
+		return $this->m_oOutput;
 	}
 	
 	/**

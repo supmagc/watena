@@ -1,5 +1,16 @@
 <?php
-
+/**
+ * Handles the response after a webrequest.
+ * On creation this class extracts the needed data from a given url-resource.
+ * Most functions are helpers to handle the response data.
+ * 
+ * Update Notes:
+ * 0.1.0
+ * - Initial version
+ * 
+ * @author Jelle Voet
+ * @version 0.1.0
+ */
 class WebResponse extends Object {
 
 	private $m_sHeaders;
