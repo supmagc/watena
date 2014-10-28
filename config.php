@@ -104,6 +104,8 @@ $conf['default']['debugsession'] = false;
 
 $conf['default']['debugrequest'] = false;
 
+$conf['default']['compression'] = true;
+
 #
 # Disable the advanced logging system
 #

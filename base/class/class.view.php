@@ -30,20 +30,7 @@ abstract class View extends CacheableData {
 	protected final function setContentType($sContentType = null, $sCharset = null) {
 		if($sCharset) $this->m_sCharset = $sCharset;
 		if($sContentType) $this->m_sContentType = $sContentType;
-		return $this->header(sprintf('Content-Type: %s;charset=%s', $this->getContentType(), $this->getCharset()), true);
-	}
-	
-	protected final function header($sLine, $bOverwrite = false) {
-		$sFile = '';
-		$nLine = 0;
-		if(!headers_sent($sFile, $nLine)) {
-			header($sLine, $bOverwrite);
-			return true;
-		}
-		else {
-			$this->getLogger()->warning('Headers are allready sent at {file} (line: {line})', array('file' => $sFile, 'line' => $nLine));
-		}
-		return false;
+		return watena()->getOutputControl()->header(sprintf('Content-Type: %s;charset=%s', $this->getContentType(), $this->getCharset()));
 	}
 }
 

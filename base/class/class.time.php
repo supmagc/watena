@@ -186,7 +186,7 @@ class Time extends Object {
 	}
 	
 	public static function formatTimestamp($mTimestamp) {
-		if(is_numeric($mTimestamp)) return date('', $mTimestamp);
+		if(is_numeric($mTimestamp)) return '@'.$mTimestamp;
 		else return $mTimestamp;
 	}
 }

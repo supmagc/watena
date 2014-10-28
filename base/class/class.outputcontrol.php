@@ -3,24 +3,28 @@
 class OutputControl extends Object {
 	
 	public final function validateCache(Model $oModel) {
-		// Check if page should be served from cache
-		if(Request::lastModified() && Request::lastModified() >= $oModel->getLastModified()) {
-			header('HTTP/1.0 304 Not Modified');
-			return true;
-		}
+		$bReturn = false;
 		
-		if(Request::eTag() && Request::eTag() == $oModel->getCacheTag()) {
-			header('HTTP/1.0 304 Not Modified');
-			return true;
+		// Check if page should be served from cache
+		if(!watena()->isDebug()) {
+			$oModified = new Time(Request::lastModified());
+			if(Request::lastModified() && $oModified->getTimestamp() >= $oModel->getLastModified()) {
+				header('HTTP/1.0 304 Not Modified');
+				$bReturn = true;
+			}
+			
+			if(Request::eTag() && Request::eTag() == $oModel->getCacheTag()) {
+				header('HTTP/1.0 304 Not Modified');
+				$bReturn = true;
+			}
 		}
 
 		// If no early return, try to set the caching headers
 		$nDuration = $oModel->getCacheDuration();
-		if($nDuration > 0) {
+		if(!watena()->isDebug() && $nDuration > 0) {
 			// Expires if the more simple (and older) solution for cache control.
 			// This header comes form the original HTTP specifications.
-			$oExpires = Time::getUtcTime();
-			$oExpires->add(new Interval(0, 0, 0, 0, 0, $nDuration));
+			$oExpires = Time::getUtcTime()->add(new Interval(0, 0, 0, 0, 0, $nDuration));
 			$this->header('Expires: '.$oExpires->formatRfc1123());
 		
 			// Cache-Control enables a more fine-grained level of control
@@ -41,20 +45,35 @@ class OutputControl extends Object {
 		// No caching required
 		else {
 			$this->header('Expires: 0');
-			$this->header('Cache-Control: no-store, no-cache, private');
+			$this->header('Cache-Control: max-age=0, must-revalidate, private, no-store, no-cache');
 		}
 		
-		return false;
+		return $bReturn;
 	}
 	
 	public final function validateCompression(Model $oModel) {
-		
+		if(watena()->getConfig()->compression() && $oModel->hasCompressionSupport()) {
+			if(Request::compressionSupport('gzip')) {
+				ob_start(array($this, '_compressGzip'));
+			}
+			else if(Request::compressionSupport('deflate')) {
+				ob_start(array($this, '_compressDeflate'));
+			}
+		}
 	}
 	
-	protected final function setContentType($sContentType = null, $sCharset = null) {
-		if($sCharset) $this->m_sCharset = $sCharset;
-		if($sContentType) $this->m_sContentType = $sContentType;
-		return $this->header(sprintf('Content-Type: %s;charset=%s', $this->getContentType(), $this->getCharset()), true);
+	public final function _compressGzip($sContent) {
+		$sContent = gzencode($sContent, 5);
+		$this->header('Content-Length: ' . Encoding::length($sContent));
+		$this->header('Content-Encoding: gzip');
+		return $sContent;
+	}
+	
+	public final function _compressDeflate($sContent) {
+		$sContent = gzdeflate($sContent, 5);
+		$this->header('Content-Length: ' . Encoding::length($sContent));
+		$this->header('Content-Encoding: deflate');
+		return $sContent;
 	}
 	
 	public final function header($sLine, $bOverwrite = true) {

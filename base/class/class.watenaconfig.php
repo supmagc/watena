@@ -21,6 +21,7 @@ class WatenaConfig {
 		'debugdefine' => false,
 		'debugsession' => false,
 		'debugrequest' => false,
+		'compression' => true
 	);
 	
 	public final function __construct(array $aConfig, $sConfigName = self::CONFIGNAME_DEFAULT) {
@@ -93,6 +94,10 @@ class WatenaConfig {
 	
 	public function debugCookie() {
 		return $this->m_aConfig['debugrequest'];
+	}
+	
+	public function compression() {
+		return $this->m_aConfig['compression'];
 	}
 }
 
