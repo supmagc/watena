@@ -278,6 +278,24 @@ class Watena extends Object {
 	public final function getController() {
 		return $this->m_oController;
 	}
+	
+	/**
+	 * Check some install prerequisites
+	 */
+	public final function validate() {
+		// Check data folder
+		if(!is_writable(PATH_DATA)) {
+			$this->getLogger()->warning("The data folder '".PATH_DATA."' should be writable.");
+		}
+		
+		// Check compression and zlib settings
+		if($this->getConfig()->compression()) {
+			$bZlibIni = ini_get('zlib.output_compression');
+			if($bZlibIni && Encoding::toLower($bZlibIni) !== "off") {
+				$this->getLogger()->warning("Global compression can not be enabled when 'zlib.output_compression' is true.");
+			}
+		}
+	}
 }
 
 ?>

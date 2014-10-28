@@ -30,6 +30,7 @@ class Request {
 		'lastmodified' => null,
 		'etag' => null,
 		'detail' => '[GET] http://localhost/? (watena)',
+		'compression' => array()
 	);
 	
 	/**
@@ -89,6 +90,10 @@ class Request {
 
 		if(!empty($_SERVER['HTTP_IF_NONE_MATCH'])) {
 			self::$s_aData['etag'] = $_SERVER['HTTP_IF_NONE_MATCH'];
+		}
+
+		if(!empty($_SERVER['HTTP_ACCEPT_ENCODING'])) {
+			self::$s_aData['compression'] = explode_trim(',', Encoding::toLower($_SERVER['HTTP_ACCEPT_ENCODING']));
 		}
 		
 		$sPath = '';
@@ -313,6 +318,27 @@ class Request {
 	 */
 	public final static function useragent() {
 		return self::$s_aData['useragent'];
+	}
+	
+	/**
+	 * Retrieve an array with lowercase allowed compression techniques of teh request.
+	 * The content of the array is parsed from the Accept-Encoding header, and split by comma.
+	 * 
+	 * @return array
+	 */
+	public final static function compressions() {
+		return self::$s_aData['compression'];
+	}
+
+	/**
+	 * Check if the given compression is supported for the current request.
+	 * 
+	 * @see Request::compression()
+	 * @param string $sCompression
+	 * @return boolean
+	 */
+	public final static function compressionSupport($sCompression) {
+		return in_array(Encoding::toLower($sCompression), self::$s_aData['compression']);
 	}
 	
 	/**
