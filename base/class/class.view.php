@@ -30,7 +30,7 @@ abstract class View extends CacheableData {
 	protected final function setContentType($sContentType = null, $sCharset = null) {
 		if($sCharset) $this->m_sCharset = $sCharset;
 		if($sContentType) $this->m_sContentType = $sContentType;
-		return watena()->getOutputControl()->header(sprintf('Content-Type: %s;charset=%s', $this->getContentType(), $this->getCharset()));
+		return Output::header(sprintf('Content-Type: %s;charset=%s', $this->getContentType(), $this->getCharset()));
 	}
 }
 

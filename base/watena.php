@@ -34,6 +34,8 @@ class WatenaLoader {
 		require_once PATH_BASE . '/static/static.encoding.php';
 		require_once PATH_BASE . '/static/static.logger.php';
 		require_once PATH_BASE . '/static/static.request.php';
+		require_once PATH_BASE . '/static/static.output.php';
+		require_once PATH_BASE . '/static/static.events.php';
 		require_once PATH_BASE . '/interface/interface.icomponent.php';
 		require_once PATH_BASE . '/interface/interface.ilogprocessor.php';
 		require_once PATH_BASE . '/interface/interface.ilogfilter.php';
@@ -54,7 +56,6 @@ class WatenaLoader {
 		require_once PATH_BASE . '/class/class.cacheloaderfile.php';
 		require_once PATH_BASE . '/class/class.cacheloaderdirectory.php';
 		require_once PATH_BASE . '/class/class.cacheabledata.php';
-		require_once PATH_BASE . '/class/class.outputcontrol.php';
 		require_once PATH_BASE . '/class/class.context.php';
 		require_once PATH_BASE . '/class/class.callback.php';
 		require_once PATH_BASE . '/class/class.componentloader.php';

@@ -21,54 +21,20 @@ class HtmlModel extends Model {
 	private $m_sContentType = null;
 	private $m_sTitle = null;
 	private $m_sDescription = null;
-	private $m_aKeywords = array();
-	private $m_aHeads = array();
-	private $m_aBodies = array();
+	private $m_sKeywords = null;
 	private $m_aJavascriptLinks = array();
 	private $m_aCssLinks = array();
 	
 	public function getRoot() {
-		return $this->getWatena()->getMapping()->getRoot();
+		return Request::root();
 	}
 	
 	public function getHost() {
-		return $this->getWatena()->getMapping()->getHost();
+		return Request::host();
 	}
 	
-	public function getLocal() {
-		return $this->getWatena()->getMapping()->getLocal();
-	}
-	
-	public function addHead($mContent) {
-		$this->m_aHeads []= '' . $mContent;
-	}
-	
-	public function setHead($mContent) {
-		$this->m_aHeads = array('' . $mContent);
-	}
-	
-	public function getHead() {
-		return implode("\n", $this->m_aHeads);
-	}
-	
-	public function clearHead() {
-		$this->m_aHeads = array();
-	}
-	
-	public function addBody($mContent) {
-		$this->m_aBodies []= '' . $mContent;
-	}
-	
-	public function setBody($mContent) {
-		$this->m_aBodies = array('' . $mContent);
-	}
-	
-	public function getBody() {
-		return implode("\n", $this->m_aBodies);
-	}
-	
-	public function clearBody() {
-		$this->m_aBodies = array();
+	public function getPath() {
+		return Request::path();
 	}
 	
 	public function setTitle($sTitle) {
@@ -102,25 +68,13 @@ class HtmlModel extends Model {
 	public function getDescription() {
 		return $this->m_sDescription ?: $this->getConfig('description', '');
 	}
-
-	public function addKeyword($sKeyword, $sSplitter = ',') {
-		$this->addKeywords(explode_trim($sSplitter, $sKeyword));
-	}
 	
-	public function addKeywords(array $aKeywords) {
-		$this->m_aKeywords = array_merge($this->m_aKeywords, $aKeywords);
-	}
-	
-	public function setKeywords(array $aKeywords) {
-		$this->m_aKeywords = $aKeywords;
+	public function setKeywords($sKeywords) {
+		$this->m_sKeywords = $aKeywords;
 	}
 	
 	public function getKeywords() {
-		return count($this->m_aKeywords) > 0 ? implode(', ', $this->m_aKeywords) : $this->getConfig('keywords', '');
-	}
-
-	public function clearKeywords() {
-		$this->m_aKeywords = array();
+		return $this->m_sKeywords ?: $this->getConfig('keywords', '');
 	}
 	
 	public function addJavascriptLink($sLink, $bAbsolute = false) {
@@ -179,6 +133,31 @@ EOD;
 	
 	public function url($sUrl) {
 		return Request::make($sUrl)->toString();
+	}
+	
+	public function prepare() {
+		Events::invoke('prepareHtmlModel', array($this));
+	}
+	
+	public function getHeadAsString() {
+		$aReturn = array();
+		
+		$aReturn []= "<title>{$this->getTitle()}</title>";
+		$aReturn []= "<meta http-equiv=\"Content-Type\" content=\"{$this->getContentType()}; charset={$this->getCharset()}\" />";
+		$aReturn []= "<meta http-equiv=\"Description\" content=\"{$this->getDescription()}\" />";
+		$aReturn []= "<meta http-equiv=\"Keywords\" content=\"{$this->getKeywords()}\" />";
+		
+		foreach($this->m_aCssLinks as $aCssLink) {
+			$sLink = $aCssLink['link'];
+			if(!$aCssLink['absolute']) $sLink = $this->getRoot() . '/minifie/' . $sLink;
+			$aReturn []= "<link href=\"$sLink\" rel=\"stylesheet\" type=\"text/css\" media=\"$aCssLink[media]\" />";
+		}
+		
+		return implode("\r\n", $aReturn);
+	}
+	
+	public function getBodyAsString() {
+		return '';
 	}
 }
 

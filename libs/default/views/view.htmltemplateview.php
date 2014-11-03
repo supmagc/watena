@@ -41,12 +41,16 @@ class HtmlTemplateView extends View implements IPCO_IContentParser {
 		'script' => 'src'
 	);
 	
+	public function requiredModelType() {
+		return 'HtmlModel';
+	}
+	
 	public function headers(Model $oModel = null) {
-		$this->setContentType($oModel instanceof HtmlModel ? $oModel->getContentType() : 'text/html', $oModel instanceof HtmlModel ? $oModel->getCharset() : Encoding::charset());
+		$this->setContentType($oModel->getContentType(), $oModel->getCharset());
 	}
 	
 	public function render(Model $oModel = null) {
-		if($oModel instanceof HtmlModel) $this->m_oHtmlModel = $oModel;
+		$this->m_oHtmlModel = $oModel;
 		$oPlugin = parent::getWatena()->getContext()->getPlugin('TemplateLoader');
 		$oGenerator = $oPlugin->load(parent::getConfig('template', 'index.tpl'), $this);
 		$oGenerator->componentPush($oModel);
@@ -58,12 +62,12 @@ class HtmlTemplateView extends View implements IPCO_IContentParser {
 		return Request::root() . $sValue;
 	}
 	
-	public function addHead() {
-		return $this->m_oHtmlModel ? $this->m_oHtmlModel->getHead() : '';
+	public function getHeadInjection() {
+		return $this->m_oHtmlModel->getHeadAsString();
 	}
 	
-	public function addBody() {
-		return $this->m_oHtmlModel ? $this->m_oHtmlModel->getBody() : '';
+	public function getBodyInjection() {
+		return $this->m_oHtmlModel->getBodyAsString();
 	}
 	
 	public function parseContent(&$sContent) {
@@ -164,10 +168,10 @@ class HtmlTemplateView extends View implements IPCO_IContentParser {
 					if($sChar === self::CHAR_ELEMENT_END) {
 						$sEnd = Encoding::toLower(Encoding::trim(Encoding::substring($sContent, $nBegin, $i - $nBegin + 1)));
 						if($sEnd == $this->m_sHeadFilter) {
-							$aParts []= new IPCO_ContentParserPart($nBegin - 1, 0, 'addHead');
+							$aParts []= new IPCO_ContentParserPart($nBegin - 1, 0, 'getHeadInjection');
 						}
 						if($sEnd == $this->m_sBodyFilter) {
-							$aParts []= new IPCO_ContentParserPart($nBegin - 1, 0, 'addBody');
+							$aParts []= new IPCO_ContentParserPart($nBegin - 1, 0, 'getBodyInjection');
 						}
 						$nState = self::STATE_NORMAL;
 					}
