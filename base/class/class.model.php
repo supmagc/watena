@@ -8,7 +8,9 @@ abstract class Model extends CacheableData {
 	
 	public function getCacheTag() {return null;}
 	
-	public function hasCompressionSupport() {return true;}
+	public function compressionSupport() {return true;}
+	
+	public function prepare() {}
 }
 
 ?>

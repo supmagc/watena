@@ -8,7 +8,6 @@ class Watena extends Object {
 	private $m_oModel = null;
 	private $m_oView = null;
 	private $m_oController = null;
-	private $m_oOutput = null;
 	private $m_oTime = null;
 	private $m_bDebug = false;
 	private $m_oConfig;
@@ -40,7 +39,6 @@ class Watena extends Object {
 		// Create a default context and default cache
 		$this->m_oTime = new Time();
 		$this->m_oCache = new CacheEmpty();
-		$this->m_oOutput = new OutputControl();
 		$this->m_oContext = new Context();
 		$this->m_oMapping = Mapping::LoadFromRequest();
 		
@@ -117,7 +115,7 @@ class Watena extends Object {
 		}
 		
 		// Check cache validation if we have a model
-		if(null === $this->m_oModel || !$this->m_oOutput->validateCache($this->m_oModel)) {
+		if(null === $this->m_oModel || !Output::validateCache($this->m_oModel)) {
 			if($this->m_oView instanceof View) {
 				$sRequiredModelType = $this->m_oView->requiredModelType();
 				if(!empty($sRequiredModelType) && !($this->m_oModel instanceof $sRequiredModelType)) {
@@ -134,7 +132,10 @@ class Watena extends Object {
 			ob_end_flush();
 			
 			// Try output compression
-			$this->m_oOutput->validateCompression($this->m_oModel);
+			Output::validateCompression($this->m_oModel);
+			
+			if(null !== $this->m_oModel)
+				$this->m_oModel->prepare();
 
 			// Final rendering
 			if($this->m_oView instanceof View && !$bCached)
@@ -159,15 +160,6 @@ class Watena extends Object {
 	 */
 	public final function getContext() {
 		return $this->m_oContext;
-	}
-	
-	/**
-	 * Retrieve the current output-control.
-	 * 
-	 * @return OutputControl
-	 */
-	public final function getOutputControl() {
-		return $this->m_oOutput;
 	}
 	
 	/**

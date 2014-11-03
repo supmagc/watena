@@ -160,13 +160,14 @@ class Logger {
 	
 	/**
 	 * Used for logging an exception as critical when not being correctly catched.
-	 * This will terminate your code as expected from an uncatched exception.
-	 * You should mostly onlu use this with ugly external libraries,
-	 * or when you're to lasy to write an approriate try-catch.
+	 * This might terminate your code when not logged from within a try-catch.
+	 * You should mostly only use this with ugly external libraries,
+	 * or when you're to lasy to write an approriate try-catch/log output.
 	 * 
 	 * @param Exception $oException
+	 * @param int $nLevel The type of log that will be generated form the exception (default: EXCEPTION)
 	 */
-	public final function exception(Exception $oException) {
+	public final function exception(Exception $oException, $nLevel = self::EXCEPTION) {
 		if(method_exists($oException, 'getInnerException') && $oException->getInnerException() instanceof Exception)
 			$this->exception($oException->getInnerException());
 		
@@ -174,7 +175,7 @@ class Logger {
 		if(method_exists($oException, 'getData') && is_array($oException->getData()))
 			$aData = $oException->getData();
 		
-		$this->logFull(self::EXCEPTION, $oException->getFile(), $oException->getLine(), $oException->getMessage(), $aData, $oException->getTrace());
+		$this->logFull($nLevel, $oException->getFile(), $oException->getLine(), $oException->getMessage(), $aData, $oException->getTrace());
 	}
 	
 	/**
