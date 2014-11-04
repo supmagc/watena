@@ -22,8 +22,8 @@ class HtmlModel extends Model {
 	private $m_sTitle = null;
 	private $m_sDescription = null;
 	private $m_sKeywords = null;
-	private $m_aJavascriptLinks = array();
-	private $m_aCssLinks = array();
+	private $m_aJavascript = array();
+	private $m_aCss = array();
 	
 	public function getRoot() {
 		return Request::root();
@@ -78,34 +78,35 @@ class HtmlModel extends Model {
 	}
 	
 	public function addJavascriptLink($sLink, $bAbsolute = false) {
-		$this->m_aJavascriptLinks []= array(
+		$this->m_aJavascript []= array(
 			'link' => $sLink,
 			'absolute' => $bAbsolute
 		);
 	}
 	
 	public function addJavascriptCode($sCode) {
-		$this->m_aJavascriptCode [] = array(
+		$this->m_aJavascript [] = array(
 			'code' => $sCode
 		);
 	}
 	
 	public function addCssLink($sLink, $sMedia = 'all', $bAbsolute = false) {
-		$this->m_aCssLinks []= array(
+		$this->m_aCss []= array(
 			'link' => $sLink,
 			'media' => $sMedia,
 			'absolute' => $bAbsolute
 		);
 	}
 	
-	public function addCssCode($sCode) {
-		$this->m_aCssCode []= array(
-			'code' => $sCode
+	public function addCssCode($sCode, $sMedia = 'all') {
+		$this->m_aCss []= array(
+			'code' => $sCode,
+			'media' => $sMedia
 		);
 	}
 	
 	public function getJavascriptLoader($sNotify) {
-		$sLinks = json_encode($this->m_aJavascriptLinks);
+		/*$sLinks = json_encode($this->m_aJavascriptLinks);
 		return <<<EOD
 <script language="javascript 1.8" type="text/javascript"><!--
 new (function(l, n) {
@@ -128,7 +129,8 @@ new (function(l, n) {
 	this.jsLoader.load(this.jsLoader);
 })($sLinks, '$sNotify');
 --></script>
-EOD;
+EOD;*/
+		return '';
 	}
 	
 	public function url($sUrl) {
@@ -147,10 +149,51 @@ EOD;
 		$aReturn []= "<meta http-equiv=\"Description\" content=\"{$this->getDescription()}\" />";
 		$aReturn []= "<meta http-equiv=\"Keywords\" content=\"{$this->getKeywords()}\" />";
 		
-		foreach($this->m_aCssLinks as $aCssLink) {
-			$sLink = $aCssLink['link'];
-			if(!$aCssLink['absolute']) $sLink = $this->getRoot() . '/minifie/' . $sLink;
-			$aReturn []= "<link href=\"$sLink\" rel=\"stylesheet\" type=\"text/css\" media=\"$aCssLink[media]\" />";
+		foreach($this->m_aCss as $aCss) {
+			if(isset($aCss['link'])) {
+				$sLink = $aCss['link'];
+				if(!$aCss['absolute']) $sLink = $this->getRoot() . '/' . $sLink;
+				$aReturn []= "<link href=\"$sLink\" rel=\"stylesheet\" type=\"text/css\" media=\"$aCss[media]\" />";
+			}
+			if(isset($aCss['code'])) {
+				$aReturn = "<style type=\"text/css\" media=\"$aCss[media]\">\r\n$aCss[code]\r\n</style>";
+			}
+		}
+
+		$aJsData = array();
+		foreach($this->m_aJavascript as $aJavascript) {
+			if(isset($aJavascript['link'])) {
+				$sLink = $aJavascript['link'];
+				if(!$aJavascript['absolute']) $sLink = $this->getRoot() . '/minifie/' . $sLink;
+				$aJsData []= array('link' => $sLink);
+			}
+			if(isset($aJavascript['code'])) {
+				$aJsData []= array('code' => rawurlencode($aJavascript['code']));
+			}
+		}
+		if(count($aJsData) > 0) {
+			$sJsData = json_encode($aJsData);
+			$aReturn []= <<<EOD
+<script language="javascript 1.8" type="text/javascript"><!--
+new (function(d, n) {
+	this.data = d;
+	this.notify = n;
+	this.callback = function() {
+		if(this.obj.data.length > 0) this.obj.load(this.obj); 
+		else if(window[this.obj.notify]) window[this.obj.notify].call(window);
+	};
+	this.load = function(o) {
+		t = o.data.shift(); 
+		e = document.createElement('script'); e.obj = o; 
+		if(t.link) {e.async = 1; e.src = t.link; e.addEventListener('load', o.callback, false);}
+		if(t.code) {e.innerHTML = decodeURIComponent(t.code);}
+		document.getElementsByTagName('head')[0].appendChild(e);
+		if(t.code) {this.load(o);}
+	};
+	this.load(this);
+})($sJsData, 'BLABLA');
+--></script>
+EOD;
 		}
 		
 		return implode("\r\n", $aReturn);

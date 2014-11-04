@@ -3,11 +3,8 @@
 <head>
 	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600|Droid+Sans:400,700' rel='stylesheet' type='text/css'>
 	<link href='http://fonts.googleapis.com/css?family=Ubuntu:400,300,500|Exo+2:200,400,200italic,400italic' rel='stylesheet' type='text/css'>
-	{{call addJavascriptLink(url('/theme/admin/js/jquery-1.10.2.min.js'))}}
-	{{call addJavascriptLink(url('/theme/admin/jqueryui/jquery-ui-1.10.4.custom.min.js'))}}
 	{{call addJavascriptLink(url('/theme/default/js/stable.js'))}}
 	{{call addJavascriptLink(url('/theme/default/js/ajax.js'))}}
-	{{call addJavascriptLink(url('/theme/admin/js/watena-admin.js'))}}
 	{[getJavascriptLoader('loaderCallback')]}
 	{[getAjax()]}
 </head>
