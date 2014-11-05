@@ -17,9 +17,8 @@ class Admin extends Plugin {
 		$oModel->addCssLink('theme/admin/css/admin.main.css');
 		$oModel->addCssLink('theme/admin/css/admin.overlay.css');
 		$oModel->addCssLink('theme/admin/jqueryui/jquery-ui-1.10.4.custom.min.css');
-		$oModel->addJavascriptLink('theme/admin/js/jquery-1.10.2.min.js');
+		$oModel->addJavascriptLink('theme/admin/js/jquery-1.10.2.min.js', false, true);
 		$oModel->addJavascriptLink('theme/admin/jqueryui/jquery-ui-1.10.4.custom.min.js');
-		$oModel->addJavascriptCode("alert('YES');");
 		$oModel->addJavascriptLink('theme/admin/js/watena-admin.js');
 	}
 	
