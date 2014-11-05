@@ -24,6 +24,7 @@ class HtmlModel extends Model {
 	private $m_sKeywords = null;
 	private $m_aJavascript = array();
 	private $m_aCss = array();
+	private $m_sJavascriptLoaderCallback = null;
 	
 	public function getRoot() {
 		return Request::root();
@@ -77,10 +78,11 @@ class HtmlModel extends Model {
 		return $this->m_sKeywords ?: $this->getConfig('keywords', '');
 	}
 	
-	public function addJavascriptLink($sLink, $bAbsolute = false) {
+	public function addJavascriptLink($sLink, $bAbsolute = false, $bMinifie = true) {
 		$this->m_aJavascript []= array(
 			'link' => $sLink,
-			'absolute' => $bAbsolute
+			'absolute' => $bAbsolute,
+			'minifie' => $bMinifie
 		);
 	}
 	
@@ -133,6 +135,14 @@ EOD;*/
 		return '';
 	}
 	
+	public function setJavascriptLoaderCallback($sCallback) {
+		$this->m_sJavascriptLoaderCallback = $sCallback;
+	}
+	
+	public function getJavascriptLoaderCallback() {
+		return $this->m_sJavascriptLoaderCallback ?: $this->getConfig('javascriptloadercallback', 'loaderCallback');
+	}
+	
 	public function url($sUrl) {
 		return Request::make($sUrl)->toString();
 	}
@@ -164,7 +174,7 @@ EOD;*/
 		foreach($this->m_aJavascript as $aJavascript) {
 			if(isset($aJavascript['link'])) {
 				$sLink = $aJavascript['link'];
-				if(!$aJavascript['absolute']) $sLink = $this->getRoot() . '/minifie/' . $sLink;
+				if(!$aJavascript['absolute'] && $aJavascript['minifie']) $sLink = $this->getRoot() . '/minifie/' . $sLink;
 				$aJsData []= array('link' => $sLink);
 			}
 			if(isset($aJavascript['code'])) {
@@ -184,14 +194,14 @@ new (function(d, n) {
 	};
 	this.load = function(o) {
 		t = o.data.shift(); 
-		e = document.createElement('script'); e.obj = o; 
-		if(t.link) {e.async = 1; e.src = t.link; e.addEventListener('load', o.callback, false);}
+		e = document.createElement('script'); e.obj = o; e.type = 'application/javascript'; 
+		if(t.link) {e.async = true; e.src = t.link; e.addEventListener('load', o.callback, false);}
 		if(t.code) {e.innerHTML = decodeURIComponent(t.code);}
 		document.getElementsByTagName('head')[0].appendChild(e);
 		if(t.code) {this.load(o);}
 	};
 	this.load(this);
-})($sJsData, 'BLABLA');
+})($sJsData, '{$this->getJavascriptLoaderCallback()}');
 --></script>
 EOD;
 		}

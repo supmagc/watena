@@ -296,6 +296,18 @@ function is_email($var) {
 	return filter_var($var, FILTER_VALIDATE_EMAIL);
 }
 
+function fullurlencode($sData) {
+	$sReturn = '';
+	for ($i=0 ; $i<strlen($sData) ; ++$i) {
+		$sReturn .= '%' . bin2hex($sData[$i]);
+	}
+	return $sReturn;	
+}
+
+function fullurldecode($sData) {
+	return pack("H*" , str_replace('%', '', $sData));
+}
+
 function explode_trim($sSplitter, $sData) {
 	$aData = explode($sSplitter, $sData);
 	$aReturn = array();

@@ -3,9 +3,7 @@
 <head>
 	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600|Droid+Sans:400,700' rel='stylesheet' type='text/css'>
 	<link href='http://fonts.googleapis.com/css?family=Ubuntu:400,300,500|Exo+2:200,400,200italic,400italic' rel='stylesheet' type='text/css'>
-	{{call addJavascriptLink(url('/theme/default/js/stable.js'))}}
-	{{call addJavascriptLink(url('/theme/default/js/ajax.js'))}}
-	{[getJavascriptLoader('loaderCallback')]}
+	{{call addJavascriptLink('theme/default/js/ajax.js')}}
 	{[getAjax()]}
 </head>
 <body>

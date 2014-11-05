@@ -64,14 +64,14 @@ class Output {
 	
 	public final static function _compressGzip($sContent) {
 		$sContent = gzencode($sContent, 5);
-		self::header('Content-Length: ' . Encoding::length($sContent));
+		self::header('Content-Length: ' . strlen($sContent)); // Use strlen since data is binary encoded
 		self::header('Content-Encoding: gzip');
 		return $sContent;
 	}
 	
 	public final static function _compressDeflate($sContent) {
 		$sContent = gzdeflate($sContent, 5);
-		self::header('Content-Length: ' . Encoding::length($sContent));
+		self::header('Content-Length: ' . strlen($sContent)); // Use strlen since data is binary encoded
 		self::header('Content-Encoding: deflate');
 		return $sContent;
 	}
