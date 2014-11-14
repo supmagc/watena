@@ -10,10 +10,10 @@ class Admin extends Plugin {
 		self::$s_oSingleton = $this;
 		$this->m_oLoader = parent::getWatena()->getContext()->getPlugin('AdminModuleLoader');
 		
-		Events::registerEventCallback('prepareHtmlModel', array($this, 'prepareHtmlModel'));
+		Events::registerEventCallback('prepareHtmlModel', array($this, '_onPrepareHtmlModel'));
 	}
 	
-	public function prepareHtmlModel(HtmlModel $oModel) {
+	private function _onPrepareHtmlModel(HtmlModel $oModel) {
 		$oModel->addCssLink('theme/admin/css/admin.main.css');
 		$oModel->addCssLink('theme/admin/css/admin.overlay.css');
 		$oModel->addCssLink('theme/admin/jqueryui/jquery-ui-1.10.4.custom.min.css');
