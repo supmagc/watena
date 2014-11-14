@@ -360,6 +360,15 @@ function addPregSlashes($sString) {
 	return preg_quote($sString, '/');
 }
 
+function toString($mData) {
+	$sReturn = '';
+	if(is_string($mData)) $sReturn = $mData;
+	else if(is_null($mData)) $sReturn = 'NULL';
+	if(true === $mData) $sReturn = 'TRUE';
+	if(false === $mData) $sReturn = 'FALSE';
+	if(is_callable($mData, null, $mData)) return $mData;
+}
+
 /**
  * Parse all external links included in a the given content var
  * WARNING: the first param ($sContent) is used as a call by reference for optimalisation

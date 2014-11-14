@@ -54,6 +54,10 @@ abstract class Cacheable extends Object {
 	 */
 	public static function coarseCacheIdentifier() {}
 	
+	/**
+	 * 
+	 * @var CacheData
+	 */
 	private $m_oData;
 
 	/**
