@@ -360,13 +360,90 @@ function addPregSlashes($sString) {
 	return preg_quote($sString, '/');
 }
 
-function toString($mData) {
+function toString($mData, $bSingleLine = true) {
+	static $sListPrefix = '';
+	static $nRecursion = 0;
+	
+	$cbGnerateList = function(array $a, $sName, $bSingleLine, &$sListPrefix, &$nRecursion) {
+		if($nRecursion < 10) {
+			$s = $sName;
+			if(count($a) > 25) {
+				$a = array_slice($a, 0, 10);
+				array_push($a, '...');
+			}
+			
+			++$nRecursion;
+			$sOldListPrefix = $sListPrefix;
+			if(!$bSingleLine) $sListPrefix .= "\t";
+			$a = array_map('toString', $a, array_fill(0, count($a), $bSingleLine));
+			$sListPrefix = $sOldListPrefix;
+			--$nRecursion;
+			
+			$s .= '(';
+				
+			if(!$bSingleLine && count($a) > 0) $s .= "\n";
+			$s .= implode($bSingleLine ? ", " : ",\n", $a);
+			if(!$bSingleLine && count($a) > 0) $s .= "\n";
+				
+			$s .= $sListPrefix . ')';
+			return $s;
+		}
+		else {
+			return 'Recursion Limit';
+		}
+	};
+	
 	$sReturn = '';
-	if(is_string($mData)) $sReturn = $mData;
-	else if(is_null($mData)) $sReturn = 'NULL';
-	if(true === $mData) $sReturn = 'TRUE';
-	if(false === $mData) $sReturn = 'FALSE';
-	if(is_callable($mData, null, $mData)) return $mData;
+	
+	// Callacble functions
+	if(is_callable($mData, null, $sReturn)) {
+		$sReturn = $sListPrefix . $sReturn;
+	}
+	
+	// Strings (chopped when too long)
+	else if(is_string($mData)) {
+		$mData = Encoding::length($mData) > 50 ? (Encoding::substring($mData, 0, 50).'...') : $mData;
+		$sReturn = $sListPrefix . addcslashes($mData, "'");
+	}
+	
+	// Numbers
+	else if(is_numeric($mData)) {
+		$sReturn = $sListPrefix . $mData;
+	}
+	
+	// NULL value
+	else if(is_null($mData)) {
+		$sReturn = $sListPrefix . 'Null';
+	}
+	
+	// RESOURCE value
+	else if(is_resource($mData)) {
+		$sReturn = $sListPrefix . 'Resource';
+	}
+	
+	// TRUE value
+	else if(true === $mData) {
+		$sReturn = $sListPrefix . 'True';
+	}
+	
+	// FALSE value
+	else if(false === $mData) {
+		$sReturn = $sListPrefix . 'False';
+	}
+	
+	// Array listing
+	else if(is_array($mData)) {
+		$sReturn = $sListPrefix . $cbGnerateList($mData, 'Array', $bSingleLine, $sListPrefix, $nRecursion);
+	}
+	
+	// Object listing
+	else if(is_object($mData)) {
+		$tClass = new ReflectionClass($mData);
+		$aProperties = $tClass->getProperties();
+		$sReturn = $sListPrefix . $cbGnerateList($aProperties, 'Object[' . $mData->__toString() . ']', $bSingleLine, $sListPrefix, $nRecursion);
+	}
+	
+	return $sReturn;
 }
 
 /**
