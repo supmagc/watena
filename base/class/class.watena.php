@@ -132,7 +132,7 @@ class Watena extends Object {
 			ob_end_flush();
 			
 			// Try output compression
-			Output::validateCompression($this->m_oModel);
+			//Output::validateCompression($this->m_oModel);
 			
 			if(null !== $this->m_oModel)
 				$this->m_oModel->prepare();
@@ -286,6 +286,10 @@ class Watena extends Object {
 			if($bZlibIni && Encoding::toLower($bZlibIni) !== "off") {
 				$this->getLogger()->warning("Global compression can not be enabled when 'zlib.output_compression' is true.");
 			}
+		}
+		
+		if(version_compare(PHP_VERSION, '5.3.0') < 0) {
+			$this->getLogger()->warning("PHP's version should be at least 5.3.0.");
 		}
 	}
 }
