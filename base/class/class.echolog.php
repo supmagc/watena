@@ -5,14 +5,10 @@ class EchoLog implements ILogProcessor {
 	private static $s_nFieldCount;
 	
 	public function loggerProcess($sIdentifier, $nLevel, $sFile, $nLine, $sMessage, array $aData, array $aTrace) {
-		$a = array();
-		$a[0] = &$a;
-		dump(toString($a, false));
-		
-		$sMessage = htmlentities(str_replace(array_map(create_function('$s', 'return "{".$s."}";'), array_keys($aData)), array_map('toString', array_values($aData)), $sMessage));
+		$sMessage = htmlentities(str_replace(array_map(create_function('$s', 'return "{".$s."}";'), array_keys($aData)), array_map('toStringSingleLine', array_values($aData)), $sMessage));
 		$sLevel = ucfirst(Logger::getLevelName($nLevel));
 		$nFieldID = ++self::$s_nFieldCount;
-		$sData = $this->getOpenableBox('<pre>' . htmlentities(toString($aData, false)) . '</pre>');
+		$sData = $this->getOpenableBox('<pre>' . htmlentities(toStringIntended($aData)) . '</pre>');
 		$sTrace = $this->getOpenableBox($this->getTrace($aTrace));
 		echo <<<EOT
 <fieldset style="font: 14px arial; letter-spacing: 1; margin: 10px; color: #000; background: #FFF;">
