@@ -41,7 +41,7 @@ class AdminCallbackController extends CallbackController {
 				$this->getModel()->displayModuleContent($oRequest);
 			}
 			else {
-				$this->getModel()->displayError("The given mapping could not be matched to an existing module.", "Module 404", AdminJSFunctions::makeRequestLoadingContent('/'));
+				$this->getModel()->displayError("The given mapping could not be matched to an existing module.", "Module 404", AdminJSFunctions::makeRequestLoadingContent(false, '/'));
 			}
 		}
 	}
