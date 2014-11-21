@@ -92,11 +92,12 @@ class HtmlModel extends Model {
 		);
 	}
 	
-	public function addCssLink($sLink, $sMedia = 'all', $bAbsolute = false) {
+	public function addCssLink($sLink, $sMedia = 'all', $bAbsolute = false, $bMinifie = true) {
 		$this->m_aCss []= array(
 			'link' => $sLink,
 			'media' => $sMedia,
-			'absolute' => $bAbsolute
+			'absolute' => $bAbsolute,
+			'minifie' => $bMinifie
 		);
 	}
 	
@@ -162,7 +163,10 @@ EOD;*/
 		foreach($this->m_aCss as $aCss) {
 			if(isset($aCss['link'])) {
 				$sLink = $aCss['link'];
-				if(!$aCss['absolute']) $sLink = $this->getRoot() . '/' . $sLink;
+				if(!$aCss['absolute']) {
+					if($aCss['minifie']) $sLink = $sLink;
+					$sLink = $this->getRoot() . '/' . $sLink;
+				}
 				$aReturn []= "<link href=\"$sLink\" rel=\"stylesheet\" type=\"text/css\" media=\"$aCss[media]\" />";
 			}
 			if(isset($aCss['code'])) {
@@ -174,7 +178,10 @@ EOD;*/
 		foreach($this->m_aJavascript as $aJavascript) {
 			if(isset($aJavascript['link'])) {
 				$sLink = $aJavascript['link'];
-				if(!$aJavascript['absolute'] && $aJavascript['minifie']) $sLink = $this->getRoot() . '/minifie/' . $sLink;
+				if(!$aJavascript['absolute']) {
+					if($aJavascript['minifie']) $sLink = 'minifie/' . $sLink;
+					$sLink = $this->getRoot() . '/' . $sLink;
+				}
 				$aJsData []= array('link' => $sLink);
 			}
 			if(isset($aJavascript['code'])) {

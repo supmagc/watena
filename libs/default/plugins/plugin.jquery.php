@@ -2,9 +2,9 @@
 
 class JQuery extends Plugin {
 	
-	private $m_sLinkJQueryJs;
-	private $m_sLinkJQueryUiJs;
-	private $m_sLinkJQueryUiCss;
+	private static $s_sLinkJQueryJs;
+	private static $s_sLinkJQueryUiJs;
+	private static $s_sLinkJQueryUiCss;
 	
 	public function make(array $aMembers) {
 		$sJqueryVersion = array_value($aMembers, array('jquery-version'), '1.11.1');
@@ -16,7 +16,17 @@ class JQuery extends Plugin {
 		Events::registerEventCallback('prepareHtmlModel', array($this, 'onPrepareHtmlModel'));
 	}
 	
-	private function _onPrepareHtmlModel(HtmlModel $oModel) {
+	private function onPrepareHtmlModel(HtmlModel $oModel) {
+		if(self::$s_sLinkJQueryJs) $oModel->addJavascriptLink(self::$s_sLinkJQueryJs, true);
+		if(self::$s_sLinkJQueryUiJs) $oModel->addJavascriptLink(self::$s_sLinkJQueryUiJs, true);
+		if(self::$s_sLinkJQueryUiCss) $oModel->addCssLink(self::$s_sLinkJQueryUiCss, true, true);
+	}
+	
+	public static function requireJQuery($sVersion) {
+		
+	}
+	
+	public static function requireJQueryUI($sVersion, $sTheme) {
 		
 	}
 }
