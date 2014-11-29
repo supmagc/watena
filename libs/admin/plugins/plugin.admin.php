@@ -1,5 +1,6 @@
 <?php
 require_plugin('AdminModuleLoader');
+require_plugin('JQuery');
 
 class Admin extends Plugin {
 	
@@ -11,14 +12,14 @@ class Admin extends Plugin {
 		$this->m_oLoader = parent::getWatena()->getContext()->getPlugin('AdminModuleLoader');
 		
 		Events::registerEventCallback('prepareHtmlModel', array($this, 'onPrepareHtmlModel'));
+		
+		JQuery::requireJQuery();
+		JQuery::requireJQueryUI();
 	}
 	
 	public function onPrepareHtmlModel(HtmlModel $oModel) {
 		$oModel->addCssLink('theme/admin/css/admin.main.css');
 		$oModel->addCssLink('theme/admin/css/admin.overlay.css');
-		$oModel->addCssLink('theme/admin/jqueryui/jquery-ui-1.10.4.custom.min.css');
-		$oModel->addJavascriptLink('theme/admin/js/jquery-1.10.2.min.js', false, true);
-		$oModel->addJavascriptLink('theme/admin/jqueryui/jquery-ui-1.10.4.custom.min.js');
 		$oModel->addJavascriptLink('theme/admin/js/watena-admin.js');
 	}
 	
