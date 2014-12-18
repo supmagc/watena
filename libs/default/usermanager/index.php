@@ -5,7 +5,7 @@ require_once 'um_group.php';
 require_once 'um_grouppermission.php';
 require_once 'um_user.php';
 require_once 'um_useremail.php';
-require_once 'um_userlogin.php';
+require_once 'um_usersession.php';
 require_once 'um_userpermission.php';
 require_once 'um_userconnection.php';
 require_once 'um_userconnectionprovider.php';

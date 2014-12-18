@@ -4,4 +4,3 @@ class Group extends DbObject {
 	
 }
 
-?>
