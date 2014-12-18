@@ -99,6 +99,15 @@ class UserManager extends Plugin {
 		$oStatement = self::getDatabaseConnection()->select('user_email', $sEmail, 'email');
 		return $oStatement->rowCount() > 0 ? $oStatement->fetchObject()->userId : false;
 	}
+
+	/**
+	 * @param string $sToken
+	 * @return int|false
+	 */
+	public static function getUserIdByToken($sToken) {
+		$oStatement = self::getDatabaseConnection()->select('user_session', $sToken, 'token');
+		return $oStatement->rowCount() > 0 ? $oStatement->fetchObject()->userId : false;
+	}
 	
 	/**
 	 * @param UserConnectionProvider $oConnectionProvider
@@ -127,6 +136,10 @@ class UserManager extends Plugin {
 	
 	public static function isValidPermission($nPermission) {
 		return $nPermission >= 0 && $nPermission <= 2;
+	}
+	
+	public static function isValidToken($sSessionToken) {
+		return true;
 	}
 	
 	/**
@@ -189,6 +202,14 @@ class UserManager extends Plugin {
 		
 		// Try to log the user in with the provided password
 		return self::Login($oUser, $sPassword);
+	}
+	
+	public static function loginByToken($sToken) {
+		// Check the validity of the token
+		if(!UserManager::isValidToken($sToken))
+			throw new UserTokenInvalidException($sToken);
+		
+		$oUser = User::load(self::getUserIdByToken($sToken));
 	}
 	
 	/**

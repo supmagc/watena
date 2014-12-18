@@ -53,6 +53,20 @@ class UserInvalidPasswordException extends UserException {
 	}
 }
 
+class UserInvalidTokenException extends UserException {
+
+	private $m_sToken;
+
+	public function __construct($sToken) {
+		parent::__construct('Invalid token: {token}', array('token' => $sToken));
+		$this->m_sToken = $sToken;
+	}
+
+	public function getToken() {
+		return $this->m_sToken;
+	}
+}
+
 class UserDuplicateEmailException extends UserException {
 	
 	private $m_sEmail;
@@ -177,4 +191,4 @@ class UserUnverifiedUserException extends UserException {
 		return $this->m_oUser;
 	}
 }
-?>
+
