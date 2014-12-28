@@ -114,8 +114,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ae7113cceb70aca732f04eb561ca46234"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a72684fdf8f0b376067092d448c627b41"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_logger.html#a72684fdf8f0b376067092d448c627b41">error</a> ($sMessage, $aData=array())</td></tr>
 <tr class="separator:a72684fdf8f0b376067092d448c627b41"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a902fc7ccc16f872126f96c5f1c459193"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_logger.html#a902fc7ccc16f872126f96c5f1c459193">exception</a> (Exception $oException)</td></tr>
-<tr class="separator:a902fc7ccc16f872126f96c5f1c459193"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a85d8fbfdc80c0dfb4217bd465902e579"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_logger.html#a85d8fbfdc80c0dfb4217bd465902e579">exception</a> (Exception $oException, $nLevel=self::EXCEPTION)</td></tr>
+<tr class="separator:a85d8fbfdc80c0dfb4217bd465902e579"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad2c4a0987a107ccdfe2676d5c7daa0c6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_logger.html#ad2c4a0987a107ccdfe2676d5c7daa0c6">terminate</a> ($sMessage, $aData=array())</td></tr>
 <tr class="separator:ad2c4a0987a107ccdfe2676d5c7daa0c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -263,7 +263,7 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a902fc7ccc16f872126f96c5f1c459193"></a>
+<a class="anchor" id="a85d8fbfdc80c0dfb4217bd465902e579"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -274,8 +274,18 @@ Static Public Member Functions</h2></td></tr>
           <td class="memname">Logger::exception </td>
           <td>(</td>
           <td class="paramtype">Exception&#160;</td>
-          <td class="paramname"><em>$oException</em>)</td><td></td>
+          <td class="paramname"><em>$oException</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>$nLevel</em> = <code>self::EXCEPTION</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -284,10 +294,11 @@ Static Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Used for logging an exception as critical when not being correctly catched. This will terminate your code as expected from an uncatched exception. You should mostly onlu use this with ugly external libraries, or when you're to lasy to write an approriate try-catch.</p>
+<p>Used for logging an exception as critical when not being correctly catched. This might terminate your code when not logged from within a try-catch. You should mostly only use this with ugly external libraries, or when you're to lasy to write an approriate try-catch/log output.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramtype">Exception</td><td class="paramname">$oException</td><td></td></tr>
+    <tr><td class="paramtype">int</td><td class="paramname">$nLevel</td><td>The type of log that will be generated form the exception (default: EXCEPTION) </td></tr>
   </table>
   </dd>
 </dl>
@@ -906,7 +917,7 @@ Static Public Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Oct 25 2014 23:13:26 for Watena by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Dec 27 2014 18:55:26 for Watena by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.4
 </small></address>

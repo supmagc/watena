@@ -36,6 +36,10 @@ static \hyperlink{class_request_a4d6813e2943a1ced4ae7159e3a382695}{method} ()
 \item 
 static \hyperlink{class_request_a12099938e1500f4559b32b833de2088e}{useragent} ()
 \item 
+static \hyperlink{class_request_abe8f53d7d11ac4eaa65928a1f8adee77}{compressions} ()
+\item 
+static \hyperlink{class_request_a8cbc39d7e3f77bd7ed2000e59f2859f7}{compression\-Support} (\$s\-Compression)
+\item 
 static \hyperlink{class_request_aced74b3005542537ca7f3b4592545cbb}{last\-Modified} ()
 \item 
 static \hyperlink{class_request_ac55d4834ecde0026dfacef5d9545a29c}{e\-Tag} ()
@@ -88,6 +92,38 @@ Request\-::protocol()
 \end{DoxySeeAlso}
 \begin{DoxyReturn}{Returns}
 string http\mbox{[}s\mbox{]}\-://\mbox{[}user\mbox{[}\-:password\mbox{]}@\mbox{]}example.\-com\mbox{[}\-:80\mbox{]} 
+\end{DoxyReturn}
+\hypertarget{class_request_abe8f53d7d11ac4eaa65928a1f8adee77}{\index{Request@{Request}!compressions@{compressions}}
+\index{compressions@{compressions}!Request@{Request}}
+\subsubsection[{compressions}]{\setlength{\rightskip}{0pt plus 5cm}static Request\-::compressions (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [final]}}}\label{class_request_abe8f53d7d11ac4eaa65928a1f8adee77}
+Retrieve an array with lowercase allowed compression techniques of teh request. The content of the array is parsed from the Accept-\/\-Encoding header, and split by comma.
+
+\begin{DoxyReturn}{Returns}
+array 
+\end{DoxyReturn}
+\hypertarget{class_request_a8cbc39d7e3f77bd7ed2000e59f2859f7}{\index{Request@{Request}!compression\-Support@{compression\-Support}}
+\index{compression\-Support@{compression\-Support}!Request@{Request}}
+\subsubsection[{compression\-Support}]{\setlength{\rightskip}{0pt plus 5cm}static Request\-::compression\-Support (
+\begin{DoxyParamCaption}
+\item[{}]{\$s\-Compression}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [final]}}}\label{class_request_a8cbc39d7e3f77bd7ed2000e59f2859f7}
+Check if the given compression is supported for the current request.
+
+\begin{DoxySeeAlso}{See Also}
+Request\-::compression() 
+\end{DoxySeeAlso}
+
+\begin{DoxyParams}[1]{Parameters}
+string & {\em \$s\-Compression} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+boolean 
 \end{DoxyReturn}
 \hypertarget{class_request_ad6b7fe8e73dd7eed912086488002ddd0}{\index{Request@{Request}!cookie@{cookie}}
 \index{cookie@{cookie}!Request@{Request}}

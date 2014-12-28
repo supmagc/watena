@@ -43,7 +43,7 @@ class DbObject extends Object {
 		return (bool)$this->m_bDeleted;
 	}
 	
-	public static final function loadObject($sClass, DbTable $oTable, $mData) {
+	public static final function loadObject($sClass, DbTable $oTable, $mData, $) {
 		if($sClass == get_class() || !class_exists($sClass) || !is_subclass_of($sClass, get_class()))
 			return false;
 		if(!isset(self::$s_aObjectInstances[$sClass]))

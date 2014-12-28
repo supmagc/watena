@@ -24,7 +24,7 @@
 \item 
 \hyperlink{class_logger_a72684fdf8f0b376067092d448c627b41}{error} (\$s\-Message, \$a\-Data=array())
 \item 
-\hyperlink{class_logger_a902fc7ccc16f872126f96c5f1c459193}{exception} (Exception \$o\-Exception)
+\hyperlink{class_logger_a85d8fbfdc80c0dfb4217bd465902e579}{exception} (Exception \$o\-Exception, \$n\-Level=self\-::\-E\-X\-C\-E\-P\-T\-I\-O\-N)
 \item 
 \hyperlink{class_logger_ad2c4a0987a107ccdfe2676d5c7daa0c6}{terminate} (\$s\-Message, \$a\-Data=array())
 \end{DoxyCompactItemize}
@@ -116,18 +116,21 @@ string & {\em \$s\-Message} & \\
 array & {\em \$a\-Data} & \\
 \hline
 \end{DoxyParams}
-\hypertarget{class_logger_a902fc7ccc16f872126f96c5f1c459193}{\index{Logger@{Logger}!exception@{exception}}
+\hypertarget{class_logger_a85d8fbfdc80c0dfb4217bd465902e579}{\index{Logger@{Logger}!exception@{exception}}
 \index{exception@{exception}!Logger@{Logger}}
 \subsubsection[{exception}]{\setlength{\rightskip}{0pt plus 5cm}Logger\-::exception (
 \begin{DoxyParamCaption}
-\item[{Exception}]{\$o\-Exception}
+\item[{Exception}]{\$o\-Exception, }
+\item[{}]{\$n\-Level = {\ttfamily self\-:\-:EXCEPTION}}
 \end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [final]}}}\label{class_logger_a902fc7ccc16f872126f96c5f1c459193}
-Used for logging an exception as critical when not being correctly catched. This will terminate your code as expected from an uncatched exception. You should mostly onlu use this with ugly external libraries, or when you're to lasy to write an approriate try-\/catch.
+)\hspace{0.3cm}{\ttfamily [final]}}}\label{class_logger_a85d8fbfdc80c0dfb4217bd465902e579}
+Used for logging an exception as critical when not being correctly catched. This might terminate your code when not logged from within a try-\/catch. You should mostly only use this with ugly external libraries, or when you're to lasy to write an approriate try-\/catch/log output.
 
 
 \begin{DoxyParams}[1]{Parameters}
 Exception & {\em \$o\-Exception} & \\
+\hline
+int & {\em \$n\-Level} & The type of log that will be generated form the exception (default\-: E\-X\-C\-E\-P\-T\-I\-O\-N) \\
 \hline
 \end{DoxyParams}
 \hypertarget{class_logger_a3af4a199ee9ff77080b287d445fd7258}{\index{Logger@{Logger}!get\-Default\-Filter\-Level@{get\-Default\-Filter\-Level}}

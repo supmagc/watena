@@ -1,20 +1,28 @@
 <?php
-
-class DbTable {
+/**
+ * Serializable database table representation.
+ * Each row is identifiable by a single column.
+ * 
+ * @author Jelle Voet
+ * @version 0.2.1
+ *
+ */
+class DbTable extends Object {
 
 	private $m_sConnection;
 	private $m_oConnection;
 	private $m_sTable;
-	private $m_mIdField;
+	private $m_sIdField;
 	
-	public function __construct(DbConnection $oConnection, $sTable, $mIdField) {
+	public function __construct(DbConnection $oConnection, $sTable, $sIdField) {
+		$this->m_sConnection = $oConnection->getIdentifier();
 		$this->m_oConnection = $oConnection;
-		$this->m_sTable = $sTable;
-		$this->m_mIdField = $mIdField;
+		$this->m_sTable = '' . $sTable;
+		$this->m_sIdField = '' . $sIdField;
 	}
 
 	public function __sleep() {
-		return array('m_sConnection', 'm_sTable', 'm_mIdField');
+		return array('m_sConnection', 'm_sTable', 'm_sIdField');
 	}
 	
 	public function __wakeup() {
@@ -31,7 +39,7 @@ class DbTable {
 	}
 
 	/**
-	 * Retrieve the internal table-name
+	 * Retrieve the internal table-name.
 	 * 
 	 * @return string
 	 */
@@ -40,30 +48,66 @@ class DbTable {
 	}
 
 	/**
-	 * Retrieve the internal idField-name
+	 * Retrieve the internal idField-name.
 	 * 
-	 * @return string|array
+	 * @return string
 	 */
 	public function getIdField() {
-		return $this->m_mIdField;
+		return $this->m_sIdField;
 	}
 
-	public function select($mId = null) {
-		return $this->getConnection()->select($this->getTable(), $mId, $this->getIdField());
+	/**
+	 * Execute a select statement on this table.
+	 * If no id-field-overwrite is given, the default one for this table is used.
+	 * 
+	 * @see DbConnection::select()
+	 * @param mixed $mId
+	 * @param string $sIdFieldOverwrite If not null, use this as IdField.
+	 * @return PDOStatement
+	 */
+	public function select($mId, $sIdFieldOverwrite = null) {
+		return $this->m_oConnection->select($this->m_sTable, $mId, $sIdFieldOverwrite ? ''.$sIdFieldOverwrite : $this->m_sIdField);
 	}
 	
-	public function insert(array $aValues) {
-		$nReturn = $this->getConnection()->insert($this->getTable(), $aValues);
-		return isset($aValues[$this->getIdField()]) ? $aValues[$this->getIdField()] : $nReturn;
+	/**
+	 * Insert a given set of values in this table.
+	 * If no id-field-overwrite is given, the default one for this table is used.
+	 * 
+	 * @see DbConnection::insert()
+	 * @param array $aValues
+	 * @param string $sIdFieldOverwrite If not null, use this as IdField.
+	 * @return mixed|int The value of the IdField (if it was given as an insert value), or the last-insert-id.
+	 */
+	public function insert(array $aValues, $sIdFieldOverwrite = null) {
+		$sIdField = $sIdFieldOverwrite ? ''.$sIdFieldOverwrite : $this->m_sIdField;
+		$nReturn = $this->m_oConnection->insert($this->m_sTable, $aValues);
+		return isset($aValues[$sIdField]) ? $aValues[$sIdField] : $nReturn;
 	}
 	
-	public function update(array $aValues, $mId) {
-		return $this->getConnection()->update($this->getTable(), $aValues, $mId, $this->getIdField());
+	/**
+	 * Update a given set of values for a identifieable row.
+	 * If no id-field-overwrite is given, the default one for this table is used.
+	 * 
+	 * @see DbConnection::update()
+	 * @param array $aValues
+	 * @param mixed $mId
+	 * @param string $sIdFieldOverwrite If not null, use this as IdField.
+	 * @return boolean
+	 */
+	public function update(array $aValues, $mId, $sIdFieldOverwrite = null) {
+		return $this->m_oConnection->update($this->m_sTable, $aValues, $mId, $sIdFieldOverwrite ? ''.$sIdFieldOverwrite : $this->m_sIdField);
 	}
 	
-	public function delete($mId) {
-		return $this->getConnection()->delete($this->getTable(), $mId, $this->getIdField());
+	/**
+	 * Delete a identifieable row from the table.
+	 * If no id-field-overwrite is given, the default one for this table is used.
+	 * 
+	 * @see DbConnection::delete()
+	 * @param mixed $mId
+	 * @param string $sIdFieldOverwrite If not null, use this as IdField.
+	 * @return boolean
+	 */
+	public function delete($mId, $sIdFieldOverwrite = null) {
+		return $this->m_oConnection->delete($this->m_sTable, $mId, $sIdFieldOverwrite ? ''.$sIdFieldOverwrite : $this->m_sIdField);
 	}
 }
-
-?>

@@ -1,22 +1,28 @@
 <?php
-
+/**
+ * Serializable database table representation.
+ * Each row is identifiable by a set of multiple columns
+ * 
+ * @author Jelle Voet
+ * @version 0.2.1
+ *
+ */
 class DbMultiTable {
 
 	private $m_sConnection;
 	private $m_oConnection;
 	private $m_sTable;
 	private $m_aIdFields;
-	private $m_sConcatenation;
 	
-	public function __construct(DbConnection $oConnection, $sTable, array $aIdFields, $sConcatenation) {
+	public function __construct(DbConnection $oConnection, $sTable, array $aIdFields) {
+		$this->m_sConnection = $oConnection->getIdentifier();
 		$this->m_oConnection = $oConnection;
-		$this->m_sTable = $sTable;
+		$this->m_sTable = ''.$sTable;
 		$this->m_aIdFields = $aIdFields;
- 		$this->m_sConcatenation = $sConcatenation;
 	}
 
 	public function __sleep() {
-		return array('m_sConnection', 'm_sTable', 'm_aIdFields', 'm_sConcatenation');
+		return array('m_sConnection', 'm_sTable', 'm_aIdFields');
 	}
 	
 	public function __wakeup() {
@@ -33,7 +39,7 @@ class DbMultiTable {
 	}
 
 	/**
-	 * Retrieve the internal table-name
+	 * Retrieve the internal table-name.
 	 * 
 	 * @return string
 	 */
@@ -51,43 +57,60 @@ class DbMultiTable {
 	}
 	
 	/**
-	 * Retrieve the internal concatenation-string
+	 * Execute a select statement on this table.
+	 * If no id-fields-overwrite are given, the default ones for this table are used.
 	 * 
-	 * @return string
+	 * @see DbConnection::select()
+	 * @param array $aIds Should be of equal size as IdFields.
+	 * @param array $aIdFieldsOverwrite If of equal size as $aIds, use these as IdFields.
+	 * @return PDOStatement
 	 */
-	public function getConcatenation() {
-		return $this->m_sConcatenation;
-	}
-
-	/**
-	 * Check if the given id is valid for this table's id-field
-	 * 
-	 * @param mixed $mId
-	 * @return bool
-	 */
-	public function isValidId(array $aIds) {
-		return count($this->getIdFields()) == count($aIds);
-	}
-
-	public function select(array $aIds = array()) {
-		return $this->getConnection()->select($this->getTable(), $aIds, $this->getIdFields(), $this->getConcatenation());
+	public function select(array $aIds = array(), array $aIdFieldsOverwrite = array()) {
+		return $this->m_oConnection->select($this->m_sTable, $aIds, count($aIds) == count($aIdFieldsOverwrite) ? $aIdFieldsOverwrite : $this->m_aIdFields);
 	}
 	
-	public function insert(array $aValues) {
+	/**
+	 * Insert a given set of values in this table.
+	 * If no id-fields-overwrite are given, the default ones for this table are used.
+	 * 
+	 * @see DbConnection::insert()
+	 * @param array $aValues
+	 * @param array $aIdFieldsOverwrite If of equal size as $aIds, use these as IdFields.
+	 * @return array|int The values of IdFields (if they where given as insert values), or the last-insert-id.
+	 */
+	public function insert(array $aValues, array $aIdFieldsOverwrite = array()) {
 		$aReturn = array();
-		$this->getConnection()->insert($this->getTable(), $aValues);
-		foreach($this->getIdFields() as $sField)
+		$aIdFields = count($aIds) == count($aIdFieldsOverwrite) ? $aIdFieldsOverwrite : $this->m_aIdFields;
+		$this->m_oConnection()->insert($this->m_sTable, $aValues);
+		foreach($aIdFields as $sField)
 			$aReturn []= isset($aValues[$sField]) ? $aValues[$sField] : null;
 		return $aReturn;
 	}
 	
-	public function update(array $aValues, array $aIds) {
-		return $this->getConnection()->update($this->getTable(), $aValues, $aIds, $this->getIdFields(), $this->getConcatenation());
+	/**
+	 * Update a given set of values for a identifiable row.
+	 * If no id-fields-overwrite are given, the default ones for this table are used.
+	 * 
+	 * @see DbConnection::update()
+	 * @param array $aValues
+	 * @param array $aIds Should be of equal size as IdFields.
+	 * @param array $aIdFieldsOverwrite If of equal size as $aIds, use these as IdFields.
+	 * @return boolean
+	 */
+	public function update(array $aValues, array $aIds, array $aIdFieldsOverwrite = array()) {
+		return $this->m_oConnection->update($this->m_sTable, $aValues, $aIds, count($aIds) == count($aIdFieldsOverwrite) ? $aIdFieldsOverwrite : $this->m_aIdFields);
 	}
 	
-	public function delete(array $aIds) {
-		return $this->getConnection()->delete($this->getTable(), $aIds, $this->getIdFields(), $this->getConcatenation());
+	/**
+	 * Delete a identifiable row from the table.
+	 * If no id-fields-overwrite are given, the default ones for this table are used.
+	 * 
+	 * @see DbConnection::delete()
+	 * @param array $aIds Should be of equal size as IdFields.
+	 * @param array $aIdFieldsOverwrite If of equal size as $aIds, use these as IdFields.
+	 * @return boolean
+	 */
+	public function delete(array $aIds, array $aIdFieldsOverwrite = array()) {
+		return $this->m_oConnection()->delete($this->m_sTable, $aIds, count($aIds) == count($aIdFieldsOverwrite) ? $aIdFieldsOverwrite : $this->m_aIdFields);
 	}
 }
-
-?>

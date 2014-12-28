@@ -10,7 +10,7 @@ class DatabaseManager extends Plugin {
 		$aConnections = explode_trim(',', parent::getConfig('CONNECTIONS', ''));
 		foreach($aConnections as $sConnection) {
 			$sConnection = strtoupper($sConnection);
-			$oConnection = new DbConnection(parent::getConfig($sConnection.'_DSN', null), parent::getConfig($sConnection.'_USER', null), parent::getConfig($sConnection.'_PASS', null));
+			$oConnection = new DbConnection($sConnection, parent::getConfig($sConnection.'_DSN', null), parent::getConfig($sConnection.'_USER', null), parent::getConfig($sConnection.'_PASS', null));
 			$this->m_aConnections[strtoupper($sConnection)] = $oConnection;
 		}
 		
