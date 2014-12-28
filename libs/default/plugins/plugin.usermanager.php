@@ -210,6 +210,8 @@ class UserManager extends Plugin {
 			throw new UserTokenInvalidException($sToken);
 		
 		$oUser = User::load(self::getUserIdByToken($sToken));
+		
+		return self::login($oUser, $sPassword)
 	}
 	
 	/**

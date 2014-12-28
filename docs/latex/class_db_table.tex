@@ -4,36 +4,57 @@
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\hypertarget{class_db_table_a94371456c4534ead51db2407a795bb1a}{{\bfseries \-\_\-\-\_\-construct} (\hyperlink{class_db_connection}{Db\-Connection} \$o\-Connection, \$s\-Table, \$m\-Id\-Field)}\label{class_db_table_a94371456c4534ead51db2407a795bb1a}
-
-\item 
-\hypertarget{class_db_table_a706c99e14a289130642f704fa5547c7b}{{\bfseries \-\_\-\-\_\-sleep} ()}\label{class_db_table_a706c99e14a289130642f704fa5547c7b}
-
-\item 
-\hypertarget{class_db_table_a936df05d6902ba7acf350403b694f127}{{\bfseries \-\_\-\-\_\-wakeup} ()}\label{class_db_table_a936df05d6902ba7acf350403b694f127}
-
-\item 
 \hyperlink{class_db_table_a5fbb264a4424d8450832fedc9b862bbc}{get\-Connection} ()
 \item 
 \hyperlink{class_db_table_a0fc18d6ecd6b2189d5ed239f19e08129}{get\-Table} ()
 \item 
 \hyperlink{class_db_table_ab1c8088aa73836eb9e5780ad734934fb}{get\-Id\-Field} ()
 \item 
-\hypertarget{class_db_table_a666358814afddcbcb066f1ab68c3aa21}{{\bfseries select} (\$m\-Id=null)}\label{class_db_table_a666358814afddcbcb066f1ab68c3aa21}
-
+\hyperlink{class_db_table_a334c5f7b00fa6f0f0de832c086af4932}{select} (\$m\-Id, \$s\-Id\-Field\-Overwrite=null)
 \item 
-\hypertarget{class_db_table_a1eed96d0b9b1a798ab66eac6ec3576ba}{{\bfseries insert} (array \$a\-Values)}\label{class_db_table_a1eed96d0b9b1a798ab66eac6ec3576ba}
-
+\hyperlink{class_db_table_a502d0b717d38a4ed5a6f0160ad412f3e}{insert} (array \$a\-Values, \$s\-Id\-Field\-Overwrite=null)
 \item 
-\hypertarget{class_db_table_a21f44661231cd5775cb27496bbffb76f}{{\bfseries update} (array \$a\-Values, \$m\-Id)}\label{class_db_table_a21f44661231cd5775cb27496bbffb76f}
-
+\hyperlink{class_db_table_af8d3df2720582fd6394f2eaf955030a6}{update} (array \$a\-Values, \$m\-Id, \$s\-Id\-Field\-Overwrite=null)
 \item 
-\hypertarget{class_db_table_ab1bf8c90e6289e18d065f041f7e6c4c7}{{\bfseries delete} (\$m\-Id)}\label{class_db_table_ab1bf8c90e6289e18d065f041f7e6c4c7}
-
+\hyperlink{class_db_table_af99ee163b2d017473d9cf9597fecb402}{delete} (\$m\-Id, \$s\-Id\-Field\-Overwrite=null)
 \end{DoxyCompactItemize}
 
 
+\subsection{Detailed Description}
+Serializable database table representation.
+
+\begin{DoxyAuthor}{Author}
+Jelle Voet 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+0.\-2.\-1 
+\end{DoxyVersion}
+
+
 \subsection{Member Function Documentation}
+\hypertarget{class_db_table_af99ee163b2d017473d9cf9597fecb402}{\index{Db\-Table@{Db\-Table}!delete@{delete}}
+\index{delete@{delete}!DbTable@{Db\-Table}}
+\subsubsection[{delete}]{\setlength{\rightskip}{0pt plus 5cm}Db\-Table\-::delete (
+\begin{DoxyParamCaption}
+\item[{}]{\$m\-Id, }
+\item[{}]{\$s\-Id\-Field\-Overwrite = {\ttfamily null}}
+\end{DoxyParamCaption}
+)}}\label{class_db_table_af99ee163b2d017473d9cf9597fecb402}
+Delete a identifieable row from the table. If no id-\/field-\/overwrite is given, the default one for this table is used.
+
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{class_db_connection_a2da0f32a8ea737be8043a6ec0fe4635e}{Db\-Connection\-::delete()} 
+\end{DoxySeeAlso}
+
+\begin{DoxyParams}[1]{Parameters}
+mixed & {\em \$m\-Id} & \\
+\hline
+string & {\em \$s\-Id\-Field\-Overwrite} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+int 
+\end{DoxyReturn}
 \hypertarget{class_db_table_a5fbb264a4424d8450832fedc9b862bbc}{\index{Db\-Table@{Db\-Table}!get\-Connection@{get\-Connection}}
 \index{get\-Connection@{get\-Connection}!DbTable@{Db\-Table}}
 \subsubsection[{get\-Connection}]{\setlength{\rightskip}{0pt plus 5cm}Db\-Table\-::get\-Connection (
@@ -56,7 +77,7 @@ Retrieve the internal \hyperlink{class_db_connection}{Db\-Connection}.
 Retrieve the internal id\-Field-\/name
 
 \begin{DoxyReturn}{Returns}
-string$|$array 
+string 
 \end{DoxyReturn}
 \hypertarget{class_db_table_a0fc18d6ecd6b2189d5ed239f19e08129}{\index{Db\-Table@{Db\-Table}!get\-Table@{get\-Table}}
 \index{get\-Table@{get\-Table}!DbTable@{Db\-Table}}
@@ -70,8 +91,80 @@ Retrieve the internal table-\/name
 \begin{DoxyReturn}{Returns}
 string 
 \end{DoxyReturn}
+\hypertarget{class_db_table_a502d0b717d38a4ed5a6f0160ad412f3e}{\index{Db\-Table@{Db\-Table}!insert@{insert}}
+\index{insert@{insert}!DbTable@{Db\-Table}}
+\subsubsection[{insert}]{\setlength{\rightskip}{0pt plus 5cm}Db\-Table\-::insert (
+\begin{DoxyParamCaption}
+\item[{array}]{\$a\-Values, }
+\item[{}]{\$s\-Id\-Field\-Overwrite = {\ttfamily null}}
+\end{DoxyParamCaption}
+)}}\label{class_db_table_a502d0b717d38a4ed5a6f0160ad412f3e}
+Insert a given set of values in this table. If no id-\/field-\/overwrite is given, the default one for this table is used.
+
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{class_db_connection_ab9c7b4ab2255582a534f59f8af9af629}{Db\-Connection\-::insert()} 
+\end{DoxySeeAlso}
+
+\begin{DoxyParams}[1]{Parameters}
+array & {\em \$a\-Values} & \\
+\hline
+string & {\em \$s\-Id\-Field\-Overwrite} & If not null, use this as Id\-Field. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+mixed The value of the Id\-Field (if it was given as an insert value), or the last-\/insert-\/id. 
+\end{DoxyReturn}
+\hypertarget{class_db_table_a334c5f7b00fa6f0f0de832c086af4932}{\index{Db\-Table@{Db\-Table}!select@{select}}
+\index{select@{select}!DbTable@{Db\-Table}}
+\subsubsection[{select}]{\setlength{\rightskip}{0pt plus 5cm}Db\-Table\-::select (
+\begin{DoxyParamCaption}
+\item[{}]{\$m\-Id, }
+\item[{}]{\$s\-Id\-Field\-Overwrite = {\ttfamily null}}
+\end{DoxyParamCaption}
+)}}\label{class_db_table_a334c5f7b00fa6f0f0de832c086af4932}
+Execute a select statement on this table. If no id-\/field-\/overwrite is given, the default one for this table is used.
+
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{class_db_connection_ac0fd349a2a6521372a9b68eeb48e4fab}{Db\-Connection\-::select()} 
+\end{DoxySeeAlso}
+
+\begin{DoxyParams}[1]{Parameters}
+mixed & {\em \$m\-Id} & \\
+\hline
+string & {\em \$s\-Id\-Field\-Overwrite} & If not null, use this as Id\-Field. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+P\-D\-O\-Statement 
+\end{DoxyReturn}
+\hypertarget{class_db_table_af8d3df2720582fd6394f2eaf955030a6}{\index{Db\-Table@{Db\-Table}!update@{update}}
+\index{update@{update}!DbTable@{Db\-Table}}
+\subsubsection[{update}]{\setlength{\rightskip}{0pt plus 5cm}Db\-Table\-::update (
+\begin{DoxyParamCaption}
+\item[{array}]{\$a\-Values, }
+\item[{}]{\$m\-Id, }
+\item[{}]{\$s\-Id\-Field\-Overwrite = {\ttfamily null}}
+\end{DoxyParamCaption}
+)}}\label{class_db_table_af8d3df2720582fd6394f2eaf955030a6}
+Update a given set of values for a identifieable row. If no id-\/field-\/overwrite is given, the default one for this table is used.
+
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{class_db_connection_afe5a8ecd5852cd3a8a713d1775372676}{Db\-Connection\-::update()} 
+\end{DoxySeeAlso}
+
+\begin{DoxyParams}[1]{Parameters}
+array & {\em \$a\-Values} & \\
+\hline
+mixed & {\em \$m\-Id} & \\
+\hline
+string & {\em \$s\-Id\-Field\-Overwrite} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+boolean 
+\end{DoxyReturn}
 
 
 The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
 \item 
-D\-:/www/watena/libs/default/dbman/dbtable.\-php\end{DoxyCompactItemize}
+dbtable.\-php\end{DoxyCompactItemize}

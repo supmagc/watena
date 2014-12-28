@@ -125,6 +125,10 @@ Static Public Member Functions</h2></td></tr>
 <tr class="separator:a4d6813e2943a1ced4ae7159e3a382695"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a12099938e1500f4559b32b833de2088e"><td class="memItemLeft" align="right" valign="top">static&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_request.html#a12099938e1500f4559b32b833de2088e">useragent</a> ()</td></tr>
 <tr class="separator:a12099938e1500f4559b32b833de2088e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abe8f53d7d11ac4eaa65928a1f8adee77"><td class="memItemLeft" align="right" valign="top">static&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_request.html#abe8f53d7d11ac4eaa65928a1f8adee77">compressions</a> ()</td></tr>
+<tr class="separator:abe8f53d7d11ac4eaa65928a1f8adee77"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8cbc39d7e3f77bd7ed2000e59f2859f7"><td class="memItemLeft" align="right" valign="top">static&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_request.html#a8cbc39d7e3f77bd7ed2000e59f2859f7">compressionSupport</a> ($sCompression)</td></tr>
+<tr class="separator:a8cbc39d7e3f77bd7ed2000e59f2859f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aced74b3005542537ca7f3b4592545cbb"><td class="memItemLeft" align="right" valign="top">static&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_request.html#aced74b3005542537ca7f3b4592545cbb">lastModified</a> ()</td></tr>
 <tr class="separator:aced74b3005542537ca7f3b4592545cbb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac55d4834ecde0026dfacef5d9545a29c"><td class="memItemLeft" align="right" valign="top">static&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_request.html#ac55d4834ecde0026dfacef5d9545a29c">eTag</a> ()</td></tr>
@@ -178,6 +182,64 @@ Static Public Member Functions</h2></td></tr>
 <dd>
 <a class="el" href="class_request.html#a495e06b9d24638c678259b6f3aefbcd6">Request::port()</a> </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>string http[s]://[user[:password]@]example.com[:80] </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="abe8f53d7d11ac4eaa65928a1f8adee77"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static Request::compressions </td>
+          <td>(</td>
+          <td class="paramname">)</td><td></td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">final</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Retrieve an array with lowercase allowed compression techniques of teh request. The content of the array is parsed from the Accept-Encoding header, and split by comma.</p>
+<dl class="section return"><dt>Returns</dt><dd>array </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a8cbc39d7e3f77bd7ed2000e59f2859f7"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static Request::compressionSupport </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>$sCompression</em>)</td><td></td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">final</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Check if the given compression is supported for the current request.</p>
+<dl class="section see"><dt>See Also</dt><dd>Request::compression() </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramtype">string</td><td class="paramname">$sCompression</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>boolean </dd></dl>
 
 </div>
 </div>
@@ -899,7 +961,7 @@ Static Public Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Oct 25 2014 23:13:26 for Watena by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Dec 27 2014 18:55:26 for Watena by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.4
 </small></address>

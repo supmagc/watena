@@ -9,7 +9,12 @@ Inherits Model.
 
 
 \subsection{Detailed Description}
-This model extracts a filename form the \hyperlink{class_request_ae1725b521b1833602f3f554566142c51}{Request\-::path()} data to serve a
+This model extracts a filename form the \hyperlink{class_request_ae1725b521b1833602f3f554566142c51}{Request\-::path()} data to serve the specified file using a custom view.
+
+Configuration\-:
+\begin{DoxyItemize}
+\item cacheduration\-: the duration the file may be cached by the browser. (default\-: 3600)
+\end{DoxyItemize}
 
 \begin{DoxyAuthor}{Author}
 Jelle 

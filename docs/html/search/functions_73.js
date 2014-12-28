@@ -1,6 +1,7 @@
 var searchData=
 [
   ['scheme',['scheme',['../class_request.html#a23d8c8dfb64e8f03ba857e83887a3f93',1,'Request']]],
+  ['select',['select',['../class_db_connection.html#ac0fd349a2a6521372a9b68eeb48e4fab',1,'DbConnection\select()'],['../class_db_table.html#a334c5f7b00fa6f0f0de832c086af4932',1,'DbTable\select()']]],
   ['send',['send',['../class_web_request.html#a6e57fabfb9dfe3c8032d61c24174492b',1,'WebRequest']]],
   ['session',['session',['../class_request.html#af0d98675f85be7ee4fca80e18942693b',1,'Request']]],
   ['set_5fallowed_5ftags',['set_allowed_tags',['../classhtml2text.html#a426f32b8fc504be6eb0e2af96d9e11f6',1,'html2text']]],

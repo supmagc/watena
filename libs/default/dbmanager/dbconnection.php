@@ -1,10 +1,18 @@
 <?php
-
+/**
+ * Serializable instance of a database connection.
+ * This class encapsulates a PDO object.
+ * 
+ * @author Jelle Voet
+ * @version 0.2.1
+ *
+ */
 class DbConnection {
 	
 	private $m_sDsn;
 	private $m_sUser;
 	private $m_sPass;
+	private $m_sIdentifier;
 	
 	private $m_oConnection;
 	
@@ -12,14 +20,17 @@ class DbConnection {
 	 * Create a new database-connection.
 	 * This internally creates a PDO instance
 	 * 
-	 * @param string $sDsn as required for a PDO connection
-	 * @param string $sUser
-	 * @param string $sPass
+	 * @param string $sIdentifier The connection identifier.
+	 * @param string $sDsn DSN as required for a PDO connection
+	 * @param string $sUser Connection username.
+	 * @param string $sPass Connection password.
 	 */
-	public function __construct($sDsn, $sUser, $sPass) {
+	public function __construct($sIdentifier, $sDsn, $sUser, $sPass) {
+		$this->m_sIdentifier = $sIdentifier;
 		$this->m_sDsn = $sDsn;
 		$this->m_sUser = $sUser;
 		$this->m_sPass = $sPass;
+		
 		$this->connect();
 	}
 	
@@ -78,8 +89,23 @@ class DbConnection {
 	}
 	
 	/**
+	 * Retrieve the connection identifier.
+	 * This should match the identifier by which the connection is saved in the DbManager class.
+	 * 
+	 * @return string
+	 */
+	public function getIdentifier() {
+		return $this->m_sIdentifier;
+	}
+	
+	/**
 	 * Make the actual connection.
-	 * This will initialize the PDO instance.
+	 * This will initialize the PDO instance:
+	 * - Not a persistent connection, as this failed on subsequent requests
+	 * - Error mode switched to exception
+	 * - Connection will take the system encoding from Encoding::charset()
+	 * - Connection sill take the system timezone
+	 * - Connection will have a timeout of 120
 	 * 
 	 * @see getPdo()
 	 */
@@ -271,7 +297,7 @@ class DbConnection {
 	 * @param mixed $mId
 	 * @param mixed $mIdField
 	 * @param string $sConcatenation
-	 * @return list(string, array)
+	 * @return list(string, array) The where string | The replacement values
 	 */
 	public function buildWhere($mId, $mIdField, $sConcatenation = 'AND') {
 		if(!is_array($mId)) $mId = array($mId);
