@@ -12,10 +12,13 @@ class WebRequestTest extends Test {
 		$oUrl200 = new Url('http://www.google.com');
 		$oUrl404 = new Url('http://www.google.com/unknown');
 		$oUrlQuery = new Url('http://www.google.com/search');
-		$oUrlQuery->addParameter('q', 'Hello World');
 		$this->m_oRequest200 = new WebRequest($oUrl200);
 		$this->m_oRequest404 = new WebRequest($oUrl404);
 		$this->m_oRequestQuery = new WebRequest($oUrlQuery);
+		
+		$this->m_oRequestQuery->addField('ie', 'UTF-8');
+		$this->m_oRequestQuery->addField('oe', 'UTF-8');
+		$this->m_oRequestQuery->addField('q', 'Hello World');
 	}
 	
 	public function testSend() {
@@ -31,8 +34,8 @@ class WebRequestTest extends Test {
 	}
 	
 	public function testResponse() {
-		echo $this->m_oResponseQuery->getCharset();
-		$this->assertEquals('UTF8', $this->m_oResponseQuery->getCharset());
+		$this->assertEquals('UTF-8', $this->m_oResponseQuery->getCharset());
+		$this->assertEquals('text/html', $this->m_oResponseQuery->getContentType());
 	}
 	
 	public function teardown() {

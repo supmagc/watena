@@ -33,10 +33,10 @@ class WebResponse extends Object {
 		$aMatches = array();
 		$aPositions = array();
 		$sContentType = curl_getinfo($oCurl, CURLINFO_CONTENT_TYPE);
-		if(Encoding::regFind('([-a-zA-Z0-9]+/[-a-zA-Z0-9]+)', $sContentType, $aMatches, $aPositions)) {
+		if(Encoding::regFind('^([-a-zA-Z0-9]+/[-a-zA-Z0-9]+)', $sContentType, $aMatches, $aPositions)) {
 			$this->m_sContentType = $aMatches[1];
 		}
-		if(Encoding::regFind(';charset=([-a-zA-Z0-9]+)', $sContentType, $aMatches, $aPositions)) {
+		if(Encoding::regFind(';\\s*charset=([-a-zA-Z0-9]+)$', $sContentType, $aMatches, $aPositions)) {
 			$this->m_sCharset = $aMatches[1];
 		}
 

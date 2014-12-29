@@ -2,10 +2,10 @@
 
 $name = 'default';
 if(!isset($_SERVER['HTTP_HOST']) || $_SERVER['HTTP_HOST'] == 'localhost') {
-	$name = 'testing';
+	$name = defined('TEST') ? 'testing' : 'local';
 }
 else {
-	$name = 'product';
+	$name = 'deploy';
 }
 
 #
@@ -97,6 +97,7 @@ $conf['default']['webroot'] = 'watena';
 
 $conf['default']['debugdefault'] = false;
 $conf['testing']['debugdefault'] = true;
+$conf['local']['debugdefault'] = true;
 
 $conf['default']['debugdefine'] = false;
 

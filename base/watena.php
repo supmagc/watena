@@ -109,18 +109,20 @@ class WatenaLoader {
 		// Get configuration object
 		$oConf = self::getConfig();
 		
-		if(!defined('NSESSION')) {
+		if(!defined('NSESSION') && !defined('SESSION')) {
 			define('SESSION', true);
-			session_start();
+			if(session_id() == '') {
+				session_start();
+			}
 		}
 		
-		if(!defined('NLOGGER')) {
+		if(!defined('NLOGGER') && !defined('LOGGER')) {
 			define('LOGGER', true);
 			Logger::registerProcessor(new EchoLog());
 			Logger::init(Logger::WARNING);
 		}
 		
-		if(!defined('NWATENA')) {
+		if(!defined('NWATENA') && !defined('WATENA')) {
 			define('WATENA', true);
 			function watena() {return Watena::getWatena();}
 			return new Watena($oConf);
