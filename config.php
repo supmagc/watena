@@ -1,8 +1,11 @@
 <?php
 
 $name = 'default';
-if(!isset($_SERVER['HTTP_HOST']) || $_SERVER['HTTP_HOST'] == 'localhost') {
-	$name = defined('TEST') ? 'testing' : 'local';
+if(defined('CONFIG')) {
+	$name = CONFIG;
+}
+else if(!isset($_SERVER['HTTP_HOST']) || $_SERVER['HTTP_HOST'] == 'localhost') {
+	$name = 'local';
 }
 else {
 	$name = 'deploy';

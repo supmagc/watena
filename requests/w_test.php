@@ -42,8 +42,8 @@ class Test {
 		return $mActual === $mExpected || $this->error('EQUALS', "$mActual === $mExpected", $sDescription);
 	}
 	
-	protected function assertNotEquals($mExpected, $mActual, $sDescription = null) {
-		return $mActual !== $mExpected || $this->error('NOTEQUALS', "$mActual !== $mExpected", $sDescription);
+	protected function assertNotEquals($mNotExpected, $mActual, $sDescription = null) {
+		return $mActual !== $mNotExpected || $this->error('NOTEQUALS', "$mActual !== $mNotExpected", $sDescription);
 	}
 	
 	protected function assertTrue($mActual, $sDescription = null) {
@@ -52,6 +52,28 @@ class Test {
 	
 	protected function assertFalse($mActual, $sDescription = null) {
 		return $mActual == false || $this->error('FALSE', "$mActual", $sDescription);
+	}
+	
+	protected function assertNull($mActual, $sDescription = null) {
+		return $mActual === null || $this->error('NULL', "$mActual", $sDescription);
+	}
+
+	protected function assertNotNull($mActual, $sDescription = null) {
+		return $mActual !== null || $this->error('NOT NULL', "$mActual", $sDescription);
+	}
+
+	protected function assertType($mType, $mActual, $sDescription = null) {
+		$sType = is_object($mType) ? get_class($mType) : $mType;
+		
+		if(!class_exists($sType)) {
+			return $this->error('TYPE', "type $sType exists", $sDescription);
+		}
+		
+		if(!is_object($mActual)) {
+			return $this->error('TYPE', gettype($mActual) . " is class", $sDescription);
+		}
+		
+		return ($mActual instanceof $sType) || $this->error('TYPE', get_class($mActual) . " instanceof $sType", $sDescription);
 	}
 	
 	private function error($sAssert, $sCondition, $sDescription) {
