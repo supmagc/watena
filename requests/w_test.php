@@ -62,6 +62,14 @@ class Test {
 		return $mActual !== null || $this->error('NOT NULL', "$mActual", $sDescription);
 	}
 
+	protected function assertNumeric($mActual, $sDescription = null) {
+		return is_numeric($mActual) || $this->error('NUMERIC', "$mActual", $sDescription);
+	}
+	
+	protected function assertNotNumeric($mActual, $sDescription = null) {
+		return !is_numeric($mActual) || $this->error('NOT NUMERIC', "$mActual", $sDescription);
+	}
+	
 	protected function assertType($mType, $mActual, $sDescription = null) {
 		$sType = is_object($mType) ? get_class($mType) : $mType;
 		
@@ -84,7 +92,7 @@ class Test {
 	}
 }
 
-function test_scandir($sBase = TEST_DIR) {
+function scanTests($sBase = TEST_DIR) {
 	$aReturn = array();
 	$aFiles = scandir($sBase);
 	foreach($aFiles as $sFile) {
@@ -97,7 +105,7 @@ function test_scandir($sBase = TEST_DIR) {
 			$aReturn []= $sPathShort;
 		}
 		else if(is_dir($sPathLong)) {
-			$aReturn = array_merge($aReturn, test_scandir($sPathLong));
+			$aReturn = array_merge($aReturn, scanTests($sPathLong));
 		}
 	}
 	return $aReturn;
@@ -114,7 +122,7 @@ function getTestName($sPath) {
 }
 
 function generateTests() {
-	$aTests = test_scandir();
+	$aTests = scanTests();
 	$_SESSION['tests'] = $aTests;
 	foreach($aTests as $nIndex => $sTest) {
 		$sClass = $nIndex % 2 == 0 ? 'rowEven' : 'rowOdd';
@@ -130,7 +138,7 @@ function generateTests() {
 }
 
 function generateTestsAll() {
-	$aTests = test_scandir();
+	$aTests = scanTests();
 	$_SESSION['tests'] = $aTests;
 	foreach($aTests as $nIndex => $sTest) {
 		$nTimeout = $nIndex * 1000 + 1;

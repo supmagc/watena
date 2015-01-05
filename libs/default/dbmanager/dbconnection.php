@@ -7,7 +7,7 @@
  * @version 0.2.1
  *
  */
-class DbConnection {
+class DbConnection extends Object {
 	
 	private $m_sDsn;
 	private $m_sUser;
@@ -40,7 +40,7 @@ class DbConnection {
 	 * @return array
 	 */
 	public function __sleep() {
-		return array('m_sDsn', 'm_sUser', 'm_sPass');
+		return array('m_sDsn', 'm_sUser', 'm_sPass', 'm_sIdentifier');
 	}
 	
 	/**
@@ -122,11 +122,21 @@ class DbConnection {
 	}
 	
 	/**
-	 * Terminate the PDO sonnection.
+	 * Terminate the PDO connection.
 	 */
 	public function disconnect() {
 		if($this->m_oConnection !== null)
 			$this->m_oConnection = null;
+	}
+	
+	/**
+	 * Check if we are connected.
+	 * This does not check the validity of the PDO connection, but merely if the PDO instance exists.
+	 * 
+	 * @return boolean
+	 */
+	public function isConnected() {
+		return null !== $this->m_oConnection;
 	}
 	
 	/**
