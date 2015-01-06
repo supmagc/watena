@@ -33,6 +33,13 @@ class DbConnection extends Object {
 		
 		$this->connect();
 	}
+
+	/**
+	 * Don't disconnect when destructed since after deserialization, multiple
+	 * DbConnection instances may refer to the same PDO instance.
+	 */
+	public function __destruct() {
+	}
 	
 	/**
 	 * Don't save the actual PDO instance to the session storage.
@@ -45,13 +52,21 @@ class DbConnection extends Object {
 	
 	/**
 	 * Restore the PDO connection when retrieving this instance from session storage.
+	 * 
 	 */
 	public function __wakeup() {
 		$this->connect();
 	}
+	
+	/**
+	 * Duplicate the PDO connection when the object is cloned.
+	 */
+	public function __clone() {
+		$this->connect();
+	}
 
 	/**
-	 * Get the data-source-name as used to create tthe PDO instance.
+	 * Get the data-source-name as used to create the PDO instance.
 	 * 
 	 * @return string
 	 */
@@ -110,6 +125,9 @@ class DbConnection extends Object {
 	 * @see getPdo()
 	 */
 	public function connect() {
+		if(DatabaseManager::hasConnection($this->m_sIdentifier))
+			$this->m_oConnection = &DatabaseManager::getConnection($this->m_sIdentifier)->m_oConnection;
+		
 		if($this->m_oConnection === null) {
 			$this->m_oConnection = new PDO($this->getDsn(), $this->getUser(), $this->getPass(), array(
 				PDO::ATTR_PERSISTENT => false, 
