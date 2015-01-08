@@ -9,4 +9,7 @@ $b += 10;
 echo "$a - $b<br />";
 $a += 10;
 echo "$a - $b<br />";
+$a = null;
+echo "$a - $b<br />";
+
 ?>
