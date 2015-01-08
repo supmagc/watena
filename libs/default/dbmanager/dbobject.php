@@ -1,5 +1,14 @@
 <?php
-
+/**
+ * This class is meant to represent a table row.
+ * If required you can inherit and add additional logic to handle the internal data.
+ * 
+ * This class locks down the default serialization handles, but supports
+ * optional virtual functions to extentd on it's behaviour.
+ * 
+ * @author Jelle
+ * @version 0.2.0
+ */
 class DbObject extends Object {
 
 	private $m_aData;
@@ -21,6 +30,18 @@ class DbObject extends Object {
 		self::$s_aObjectInstances[get_class($this)][$this->getId()] = $this;
 	}
 	
+	public final function __sleep() {
+		return array('m_aData', 'm_oTable', 'm_bDeleted');
+	}
+	
+	public final function __wakeup() {
+		// Restore logic
+	}
+	
+	public final function __clone() {
+		// Restore magic
+	}
+	
 	/**
 	 * Get the value for a specific column, or the default value if none is set.
 	 * 
@@ -28,7 +49,7 @@ class DbObject extends Object {
 	 * @param mixed $mDefault Default value when no column is found. (not null, since null is a valid sql-value)
 	 * @return mixed|false Returns $mDefault is when column is not found.
 	 */
-	protected function getDataValue($sColumn, $mDefault = false) {
+	protected final function getDataValue($sColumn, $mDefault = false) {
 		return (!$this->m_aData && isset($this->m_aData[$sColumn])) ? $this->m_aData[$sColumn] : $mDefault;
 	}
 
@@ -41,7 +62,7 @@ class DbObject extends Object {
 	 * @param mixed $mValue
 	 * @return boolean
 	 */
-	protected function setDataValue($sColumn, $mValue) {
+	protected final function setDataValue($sColumn, $mValue) {
 		if(!$this->m_bDeleted && $this->getTable()->update(array($sColumn => $mValue), $this->getId())) {
 			$this->m_aData[$sColumn] = $mValue;
 			return true;

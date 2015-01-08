@@ -36,6 +36,14 @@ class DatabaseManagerTest extends Test {
 		$this->assertFalse($this->m_oConnection->isConnected());
 		$this->m_oConnection->connect();
 		$this->assertTrue($this->m_oConnection->isConnected());
+		$oConnectionClone = clone $this->m_oConnection;
+		$this->assertTrue($oConnectionClone->isConnected());
+		$oConnectionClone->disconnect();
+		$this->assertFalse($this->m_oConnection->isConnected());
+		$this->assertfalse($oConnectionClone->isConnected());
+		$oConnectionClone->connect();
+		$this->assertTrue($this->m_oConnection->isConnected());
+		$this->assertTrue($oConnectionClone->isConnected());
 	}
 	
 	public function testTableSingle() {

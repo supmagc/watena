@@ -7,26 +7,16 @@
  * @version 0.2.1
  *
  */
-class DbTable extends Object {
+final class DbTable extends Object {
 
-	private $m_sConnection;
 	private $m_oConnection;
 	private $m_sTable;
 	private $m_sIdField;
 	
 	public function __construct(DbConnection $oConnection, $sTable, $sIdField) {
-		$this->m_sConnection = $oConnection->getIdentifier();
 		$this->m_oConnection = $oConnection;
 		$this->m_sTable = '' . $sTable;
 		$this->m_sIdField = '' . $sIdField;
-	}
-
-	public function __sleep() {
-		return array('m_sConnection', 'm_sTable', 'm_sIdField');
-	}
-	
-	public function __wakeup() {
-		$this->m_oConnection = DatabaseManager::getConnection($this->m_sConnection);
 	}
 	
 	/**

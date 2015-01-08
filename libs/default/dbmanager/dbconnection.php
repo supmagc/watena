@@ -3,18 +3,28 @@
  * Serializable instance of a database connection.
  * This class encapsulates a PDO object.
  * 
+ * If you have multiple instances with identical connection parameters,
+ * They will internally share a PDO instance. This ensures unserialized
+ * or cloned object won't start multiple identical connections.
+ * 
+ * If you call disconnect on any of the DbConnection instances sharing
+ * their internal PDO instance, all equal DbConnections will be
+ * disconnected as well.
+ * 
  * @author Jelle Voet
  * @version 0.2.1
- *
  */
-class DbConnection extends Object {
+final class DbConnection extends Object {
 	
 	private $m_sDsn;
 	private $m_sUser;
 	private $m_sPass;
 	private $m_sIdentifier;
+	private $m_sIdentifierFull;
 	
 	private $m_oConnection;
+	
+	private static $s_oConnections = array();
 	
 	/**
 	 * Create a new database-connection.
@@ -26,19 +36,13 @@ class DbConnection extends Object {
 	 * @param string $sPass Connection password.
 	 */
 	public function __construct($sIdentifier, $sDsn, $sUser, $sPass) {
+		$this->m_sIdentifierFull = Encoding::toUpper($sIdentifier . $sDsn . $sUser . $sPass);
 		$this->m_sIdentifier = $sIdentifier;
 		$this->m_sDsn = $sDsn;
 		$this->m_sUser = $sUser;
 		$this->m_sPass = $sPass;
 		
 		$this->connect();
-	}
-
-	/**
-	 * Don't disconnect when destructed since after deserialization, multiple
-	 * DbConnection instances may refer to the same PDO instance.
-	 */
-	public function __destruct() {
 	}
 	
 	/**
@@ -47,19 +51,18 @@ class DbConnection extends Object {
 	 * @return array
 	 */
 	public function __sleep() {
-		return array('m_sDsn', 'm_sUser', 'm_sPass', 'm_sIdentifier');
+		return array('m_sDsn', 'm_sUser', 'm_sPass', 'm_sIdentifier', 'm_sIdentifierFull');
 	}
 	
 	/**
 	 * Restore the PDO connection when retrieving this instance from session storage.
-	 * 
 	 */
 	public function __wakeup() {
 		$this->connect();
 	}
 	
 	/**
-	 * Duplicate the PDO connection when the object is cloned.
+	 * Assure we have a valid PDO connection reference after cloning.
 	 */
 	public function __clone() {
 		$this->connect();
@@ -115,7 +118,9 @@ class DbConnection extends Object {
 	
 	/**
 	 * Make the actual connection.
-	 * This will initialize the PDO instance:
+	 * If a connection with an equal identifier, dsn, user and password allready 
+	 * exists, this will return an existing PDO instance.
+	 * If no open connection is found,  This will initialize a new PDO instance:
 	 * - Not a persistent connection, as this failed on subsequent requests
 	 * - Error mode switched to exception
 	 * - Connection will take the system encoding from Encoding::charset()
@@ -125,10 +130,10 @@ class DbConnection extends Object {
 	 * @see getPdo()
 	 */
 	public function connect() {
-		if(DatabaseManager::hasConnection($this->m_sIdentifier))
-			$this->m_oConnection = &DatabaseManager::getConnection($this->m_sIdentifier)->m_oConnection;
-		
-		if($this->m_oConnection === null) {
+		if(isset(self::$s_oConnections[$this->m_sIdentifierFull])) {
+			$this->m_oConnection = &self::$s_oConnections[$this->m_sIdentifierFull];
+		}
+		else {
 			$this->m_oConnection = new PDO($this->getDsn(), $this->getUser(), $this->getPass(), array(
 				PDO::ATTR_PERSISTENT => false, 
 				PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
@@ -136,6 +141,8 @@ class DbConnection extends Object {
 			$this->m_oConnection->query('SET names '.Encoding::replace('-', '', Encoding::charset()).';'); // Set to UTC
 			$this->m_oConnection->query('SET time_zone = \''.date('P').'\';'); // Set to UTC
 			$this->m_oConnection->query('SET wait_timeout = 120;');
+			
+			self::$s_oConnections[$this->m_sIdentifierFull] = &$this->m_oConnection;
 		}
 	}
 	
@@ -346,5 +353,3 @@ class DbConnection extends Object {
 		return array(implode(" $sConcatenation ", $aWheres), array_combine($aIdFieldCount, $mId));
 	}
 }
-
-?>
