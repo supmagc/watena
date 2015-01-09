@@ -23,10 +23,15 @@ class DbObject extends Object {
 	 * @param DbTable $oTable Table object contraining table name and default ID column.
 	 * @param array $aData An array with the row data.
 	 */
-	protected final function __construct(DbTable $oTable, array $aData) {
+	private final function __construct(DbTable $oTable, array $aData) {
 		parent::__construct();
 		$this->m_oTable = $oTable;
 		$this->m_aData = $aData;
+		$this->dataInit(false);
+	}
+
+	private final function dataInit($bVerify) {
+		
 		self::$s_aObjectInstances[get_class($this)][$this->getId()] = $this;
 	}
 	
@@ -35,11 +40,11 @@ class DbObject extends Object {
 	}
 	
 	public final function __wakeup() {
-		// Restore logic
+		$this->dataInit(true);
 	}
 	
 	public final function __clone() {
-		// Restore magic
+		$this->dataInit(false);
 	}
 	
 	/**
@@ -68,6 +73,7 @@ class DbObject extends Object {
 			return true;
 		}
 		else {
+			$this->delete();
 			return false;
 		}
 	}
