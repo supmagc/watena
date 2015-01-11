@@ -1,14 +1,13 @@
 <?php
 /**
- * Serializable database table representation.
+ * None-serializable database table representation.
  * Each row is identifiable by a single column.
  * 
  * @author Jelle Voet
  * @version 0.2.1
- *
  */
-final class DbTable extends Object {
-
+final class DbTable extends ObjectUnique {
+	
 	private $m_oConnection;
 	private $m_sTable;
 	private $m_sIdField;
@@ -99,5 +98,19 @@ final class DbTable extends Object {
 	 */
 	public function delete($mId, $sIdFieldOverwrite = null) {
 		return $this->m_oConnection->delete($this->m_sTable, $mId, $sIdFieldOverwrite ? ''.$sIdFieldOverwrite : $this->m_sIdField);
+	}
+	
+	/**
+	 * Assure the existance of a single unique DbTable instance.
+	 * 
+	 * @see DbTable::__construct()
+	 * @see ObjectUnisue::assureUniqueInstance()
+	 * @param DbConnection $oConnection
+	 * @param string $sTable
+	 * @param string $sIdField
+	 * @return DbTable
+	 */
+	public static final function assureUniqueDbTable(DbConnection $oConnection, $sTable, $sIdField = 'ID') {
+		return self::assureUniqueInstance($oConnection->getIdentifier() . $sTable . $sIdField, array($oConnection, $sTable, $sIdField));
 	}
 }

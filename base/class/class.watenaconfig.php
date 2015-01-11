@@ -92,7 +92,7 @@ class WatenaConfig {
 		return $this->m_aConfig['debugsession'];
 	}
 	
-	public function debugCookie() {
+	public function debugRequest() {
 		return $this->m_aConfig['debugrequest'];
 	}
 	

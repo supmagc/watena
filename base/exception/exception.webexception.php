@@ -20,5 +20,3 @@ class WebException extends WatCeption {
 		return $this->m_oRequest;
 	}
 }
-
-?>

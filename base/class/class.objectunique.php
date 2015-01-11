@@ -1,0 +1,64 @@
+<?php
+
+abstract class ObjectUnique extends Object implements Serializable {
+
+	private $m_mGroup;
+	private $m_mId;
+	
+	private static $s_aInstances = array();
+	
+	public final function __sleep() {
+		throw new ObjectUniquenessException(get_class($this), 'You can\'t serialize an instance of ObjectUnique.');
+	}
+	
+	public final function __wakeup() {
+		throw new ObjectUniquenessException(get_class($this), 'You can\'t unserialize an instance of ObjectUnique.');
+	}
+	
+	public final function __clone() {
+		throw new ObjectUniquenessException(get_class($this), 'You can\'t clone an instance of ObjectUnique.');
+	}
+
+	public final function serialize() {
+		throw new ObjectUniquenessException(get_class($this), 'You can\'t serialize an instance of ObjectUnique.');
+	}
+	
+	public final function unserialize($sSerialized) {
+		throw new ObjectUniquenessException(get_class($this), 'You can\'t unserialize an instance of ObjectUnique.');
+	}
+	
+	public final static function setUniqueInstance($mId, ObjectUnique $oInstance) {
+		array_assure(self::$s_aInstances, array(get_called_class(), $mId), $oInstance);
+	}
+	
+	public final static function getUniqueInstance($mId) {
+		return array_value(self::$s_aInstances, array(get_called_class(), $mId));
+	}
+	
+	public final static function listUniqueInstances() {
+		return array_value(self::$s_aInstances, array(get_called_class()), array());
+	}
+	
+	public final static function assureUniqueInstance($mId, array $aParameters) {
+		$sClass = get_called_class();
+		$oInstance = self::getUniqueInstance($mId);
+		
+		if($oInstance) {
+			return $oInstance;
+		}
+
+		$oClass = new ReflectionClass($sClass);
+		if(!$oClass->isSubclassOf('ObjectUnique')) {
+			throw new ObjectUniquenessException($sClass, 'Requested class does not inherit from ObjectUnique.');
+		}
+				
+		try {
+			$oInstance = $oClass->newInstanceArgs($aParameters);
+			self::setUniqueInstance($mId, $oInstance);
+			return $oInstance;
+		}
+		catch(ReflectionException $e) {
+			throw new ObjectUniquenessException($sClass, 'Unable to instantiate the desired ObjectUnique-instance.', $e);
+		}
+	}
+}

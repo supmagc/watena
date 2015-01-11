@@ -6,5 +6,3 @@ class AssureException extends WatCeption {
 		parent::__construct($sMessage, array(), $oContext, $oInnerException);
 	}
 }
-
-?>

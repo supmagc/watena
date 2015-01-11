@@ -12,4 +12,5 @@ echo "$a - $b<br />";
 $a = null;
 echo "$a - $b<br />";
 
+new ReflectionClass('BlaBla');
 ?>
