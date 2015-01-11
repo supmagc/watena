@@ -26,10 +26,15 @@ class Watena extends Object {
 		if($oConfig->debugSession() && isset($_SESSION['DEBUG'])) {
 			$this->m_bDebug |= (bool)$_SESSION['DEBUG'];
 		}
-		if($oConfig->debugDefine() && isset($_REQUEST['DEBUG'])) {
+		if($oConfig->debugRequest() && isset($_REQUEST['DEBUG'])) {
 			$this->m_bDebug |= (bool)$_REQUEST['DEBUG'];
 		}
-		function isDebug() {return watena()->isDebug();}
+		if($this->m_bDebug) {
+			function isDebug() {return true;}
+		}
+		else {
+			function isDebug() {return false;}
+		}
 		
 		// Init some static classes
 		Encoding::init($this->getConfig()->charset());

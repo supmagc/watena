@@ -24,26 +24,12 @@ class DatabaseManagerTest extends Test {
 		$this->assertEquals('testing', Encoding::toLower($this->m_oConnection->getIdentifier()));
 	}
 
-	public function testConnectionSerializable() {
-		$sSerialized = serialize($this->m_oConnection);
-		$this->m_oConnection = unserialize($sSerialized);
-		$this->assertType('DbConnection', $this->m_oConnection);
-	}
-
 	public function testConnectionConnect() {
 		$this->assertTrue($this->m_oConnection->isConnected());
 		$this->m_oConnection->disconnect();
 		$this->assertFalse($this->m_oConnection->isConnected());
 		$this->m_oConnection->connect();
 		$this->assertTrue($this->m_oConnection->isConnected());
-		$oConnectionClone = clone $this->m_oConnection;
-		$this->assertTrue($oConnectionClone->isConnected());
-		$oConnectionClone->disconnect();
-		$this->assertFalse($this->m_oConnection->isConnected());
-		$this->assertfalse($oConnectionClone->isConnected());
-		$oConnectionClone->connect();
-		$this->assertTrue($this->m_oConnection->isConnected());
-		$this->assertTrue($oConnectionClone->isConnected());
 	}
 	
 	public function testTableSingle() {
@@ -51,13 +37,6 @@ class DatabaseManagerTest extends Test {
 		$this->assertEquals($this->m_oConnection->getIdentifier(), $this->m_oTableSingle->getConnection()->getIdentifier());
 		$this->assertEquals('table_single', $this->m_oTableSingle->getTable());
 		$this->assertEquals('ID', $this->m_oTableSingle->getIdField());
-	}
-	
-	public function testTableSingleSerializable() {
-		$sSerialized = serialize($this->m_oTableSingle);
-		$this->m_oTableSingle = unserialize($sSerialized);
-		$this->assertType('DbTable', $this->m_oTableSingle);
-		$this->assertEquals($this->m_oConnection->getIdentifier(), $this->m_oTableSingle->getConnection()->getIdentifier());
 	}
 	
 	public function testTableSingleOperations() {

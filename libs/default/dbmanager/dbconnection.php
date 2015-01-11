@@ -1,30 +1,18 @@
 <?php
 /**
- * Serializable instance of a database connection.
+ * None-serializable instance of a database connection.
  * This class encapsulates a PDO object.
- * 
- * If you have multiple instances with identical connection parameters,
- * They will internally share a PDO instance. This ensures unserialized
- * or cloned object won't start multiple identical connections.
- * 
- * If you call disconnect on any of the DbConnection instances sharing
- * their internal PDO instance, all equal DbConnections will be
- * disconnected as well.
  * 
  * @author Jelle Voet
  * @version 0.2.1
  */
-final class DbConnection extends Object {
+final class DbConnection extends ObjectUnique {
 	
 	private $m_sDsn;
 	private $m_sUser;
 	private $m_sPass;
 	private $m_sIdentifier;
-	private $m_sIdentifierFull;
-	
 	private $m_oConnection;
-	
-	private static $s_oConnections = array();
 	
 	/**
 	 * Create a new database-connection.
@@ -36,35 +24,11 @@ final class DbConnection extends Object {
 	 * @param string $sPass Connection password.
 	 */
 	public function __construct($sIdentifier, $sDsn, $sUser, $sPass) {
-		$this->m_sIdentifierFull = Encoding::toUpper($sIdentifier . $sDsn . $sUser . $sPass);
 		$this->m_sIdentifier = $sIdentifier;
 		$this->m_sDsn = $sDsn;
 		$this->m_sUser = $sUser;
 		$this->m_sPass = $sPass;
 		
-		$this->connect();
-	}
-	
-	/**
-	 * Don't save the actual PDO instance to the session storage.
-	 * 
-	 * @return array
-	 */
-	public function __sleep() {
-		return array('m_sDsn', 'm_sUser', 'm_sPass', 'm_sIdentifier', 'm_sIdentifierFull');
-	}
-	
-	/**
-	 * Restore the PDO connection when retrieving this instance from session storage.
-	 */
-	public function __wakeup() {
-		$this->connect();
-	}
-	
-	/**
-	 * Assure we have a valid PDO connection reference after cloning.
-	 */
-	public function __clone() {
 		$this->connect();
 	}
 
@@ -130,20 +94,13 @@ final class DbConnection extends Object {
 	 * @see getPdo()
 	 */
 	public function connect() {
-		if(isset(self::$s_oConnections[$this->m_sIdentifierFull])) {
-			$this->m_oConnection = &self::$s_oConnections[$this->m_sIdentifierFull];
-		}
-		else {
-			$this->m_oConnection = new PDO($this->getDsn(), $this->getUser(), $this->getPass(), array(
-				PDO::ATTR_PERSISTENT => false, 
-				PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
-			));
-			$this->m_oConnection->query('SET names '.Encoding::replace('-', '', Encoding::charset()).';'); // Set to UTC
-			$this->m_oConnection->query('SET time_zone = \''.date('P').'\';'); // Set to UTC
-			$this->m_oConnection->query('SET wait_timeout = 120;');
-			
-			self::$s_oConnections[$this->m_sIdentifierFull] = &$this->m_oConnection;
-		}
+		$this->m_oConnection = new PDO($this->getDsn(), $this->getUser(), $this->getPass(), array(
+			PDO::ATTR_PERSISTENT => false, 
+			PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+		));
+		$this->m_oConnection->query('SET names '.Encoding::replace('-', '', Encoding::charset()).';'); // Set to UTC
+		$this->m_oConnection->query('SET time_zone = \''.date('P').'\';'); // Set to UTC
+		$this->m_oConnection->query('SET wait_timeout = 120;');
 	}
 	
 	/**
@@ -172,7 +129,7 @@ final class DbConnection extends Object {
 	 * @return DbTable
 	 */
 	public function getTable($sTable, $mIdField = 'ID') {
-		return new DbTable($this, $sTable, $mIdField);
+		return DbTable::assureUniqueDbTable($this, $sTable, $mIdField);
 	}
 	
 	/**
@@ -351,5 +308,20 @@ final class DbConnection extends Object {
 			$aWheres []=  "`$sField` " . $sCompare . " :var$i";
 		}
 		return array(implode(" $sConcatenation ", $aWheres), array_combine($aIdFieldCount, $mId));
+	}
+	
+	/**
+	 * Assure the existance of a single unique DbConnection instance.
+	 * 
+	 * @see DbConnection::__construct()
+	 * @see ObjectUnisue::assureUniqueInstance()
+	 * @param string $sIdentifier
+	 * @param string $sDsn
+	 * @param string $sUser
+	 * @param string $sPass
+	 * @return DbConnection
+	 */
+	public final static function assureUniqueDbConnection($sIdentifier, $sDsn, $sUser, $sPass) {
+		return self::assureUniqueInstance($sIdentifier, array($sIdentifier, $sDsn, $sUser, $sPass));
 	}
 }
