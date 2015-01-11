@@ -13,7 +13,7 @@ class DatabaseManagerTest extends Test {
 	
 	public function setup() {
 		$this->m_oConnection = DatabaseManager::getConnection('testing');
-		$this->m_oTableSingle = new DbTable($this->m_oConnection, 'table_single', 'ID');
+		$this->m_oTableSingle = $this->m_oConnection->getTable('table_single', 'ID');
 		$this->m_sRandomName = md5(time());
 	}
 	
@@ -37,6 +37,7 @@ class DatabaseManagerTest extends Test {
 		$this->assertEquals($this->m_oConnection->getIdentifier(), $this->m_oTableSingle->getConnection()->getIdentifier());
 		$this->assertEquals('table_single', $this->m_oTableSingle->getTable());
 		$this->assertEquals('ID', $this->m_oTableSingle->getIdField());
+		$this->assertEquals($this->m_oTableSingle, $this->m_oConnection->getTable('table_single', 'ID'));
 	}
 	
 	public function testTableSingleOperations() {
