@@ -7,6 +7,11 @@ abstract class ObjectUnique extends Object implements Serializable {
 	
 	private static $s_aInstances = array();
 	
+	protected final function __construct($mId, array $aParameters) {
+		call_user_func_array(array($this, 'init'), $aParameters);
+		self::setUniqueInstance($mId, $this);
+	}
+	
 	public final function __sleep() {
 		throw new ObjectUniquenessException(get_class($this), 'You can\'t serialize an instance of ObjectUnique.');
 	}
@@ -52,13 +57,6 @@ abstract class ObjectUnique extends Object implements Serializable {
 			throw new ObjectUniquenessException($sClass, 'Requested class does not inherit from ObjectUnique.');
 		}
 				
-		try {
-			$oInstance = $oClass->newInstanceArgs($aParameters);
-			self::setUniqueInstance($mId, $oInstance);
-			return $oInstance;
-		}
-		catch(ReflectionException $e) {
-			throw new ObjectUniquenessException($sClass, 'Unable to instantiate the desired ObjectUnique-instance.', $e);
-		}
+		return new static($mId, $aParameters);
 	}
 }

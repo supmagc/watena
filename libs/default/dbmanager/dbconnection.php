@@ -23,7 +23,7 @@ final class DbConnection extends ObjectUnique {
 	 * @param string $sUser Connection username.
 	 * @param string $sPass Connection password.
 	 */
-	public function __construct($sIdentifier, $sDsn, $sUser, $sPass) {
+	public function init($sIdentifier, $sDsn, $sUser, $sPass) {
 		$this->m_sIdentifier = $sIdentifier;
 		$this->m_sDsn = $sDsn;
 		$this->m_sUser = $sUser;
