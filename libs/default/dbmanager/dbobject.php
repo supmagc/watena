@@ -3,21 +3,12 @@
  * This class is meant to represent a table row.
  * If required you can inherit and add additional logic to handle the internal data.
  * 
- * This class locks down the default serialization handles, but supports
- * an optional virtual function to extentd on it's behaviour.
- * @see DbObject::dataRecover()
- * 
- * Multiple instances may exists, but they will be linked to the same row-data
- * when their DbTable and Id matches.
- * If inheriting this class you must respect this by only having relationships to other DbObject data.
- * 
  * @author Jelle
- * @version 0.2.0
+ * @version 0.2.2
  */
-class DbObject extends Object {
+class DbObject extends ObjectUnique {
 
 	private $m_mId;
-	private $m_sGroup;
 	private $m_aData;
 	private $m_oTable;
 	private $m_bDeleted;
@@ -27,75 +18,18 @@ class DbObject extends Object {
 	/**
 	 * Internal constructor for an object representing a table row, identifiablme by a single column.
 	 * 
-	 * This method must be protected or weaker, since Object's constructor is protected
-	 * 
 	 * @param DbTable $oTable Table object contraining table name and default ID column.
 	 * @param array $aData An array with the row data.
 	 */
-	protected final function __construct(DbTable $oTable, array $aData) {
-		parent::__construct();
+	public final function init(DbTable $oTable, array $aData) {
 		$this->m_oTable = $oTable;
 		$this->m_aData = $aData;
-		$this->dataInit(false);
-	}
-
-	private final function dataInit($bVerify) {
-		// Make sure an ID can be found
+		$this->m_mId = $this->m_aData[$this->m_oTable->getIdField()];
+		
+			// Make sure an ID can be found
 		if(!isset($this->m_aData[$this->m_oTable->getIdField()])) {
 			throw new DbInvalidDbObjectId($this->m_oTable, null);
 		}
-
-		// Get initialy required data
-		$this->m_mId = $this->m_aData[$this->m_oTable->getIdField()];
-		$this->m_sGroup = $this->m_oTable->getConnection()->getIdentifier() . $this->m_oTable->getTable();
-
-		// Make sure a subarray for the data of this connection-table exists
-		if(!isset(self::$s_aData[$this->m_sGroup])) {
-			self::$s_aData[$this->m_sGroup] = array();
-		}
-		
-		// Check if data is allready loaded and load or save it to the data array
-		if(!isset(self::$s_aData[$this->m_sGroup][$this->m_mId])) { // not yet loaded => save to array
-			if($bVerify && !$this->m_bDeleted) { // Only verify when needed, and when not yet deleted
-				$oStatement = $this->m_oTable->select($this->m_mId);
-				$this->m_bDeleted = $oStatement->rowCount() == 0;
-			}
-			self::$s_aData[$this->m_sGroup][$this->m_mId] = array();
-			self::$s_aData[$this->m_sGroup][$this->m_mId]['deleted'] = &$this->m_bDeleted;
-			self::$s_aData[$this->m_sGroup][$this->m_mId]['data'] = &$this->m_aData;
-		}
-		else { // data found => load from array
-			$this->m_bDeleted = &self::$s_aData[$this->m_sGroup][$this->m_mId]['deleted'];
-			$this->m_aData = &self::$s_aData[$this->m_sGroup][$this->m_mId]['data'];
-		}
-		
-		$this->dataRecover();
-	}
-	
-	public function dataRecover() {
-	}
-	
-	/**
-	 * Only save part of the data when serializing
-	 * 
-	 * @return array
-	 */
-	public final function __sleep() {
-		return array('m_aData', 'm_oTable', 'm_bDeleted');
-	}
-	
-	/**
-	 * Re-init the data structure opun unserialize
-	 */
-	public final function __wakeup() {
-		$this->dataInit(true);
-	}
-
-	/**
-	 * Verify the data structure on clone
-	 */
-	public final function __clone() {
-		$this->dataInit(false);
 	}
 	
 	/**
@@ -172,43 +106,51 @@ class DbObject extends Object {
 	
 	/**
 	 * Load an object for the given Id.
-	 * If an equivalent object allready exists, a new instance is created which is linked to the
-	 * earlier data by reference.
-	 * Thus you can only compare these objects base don their Id's
+	 * If an equivalent object allready exists, the same instance will be returned
 	 * 
-	 * @param string $sClass
+	 * !! This class no longer supports is_array($mData) since it allowed to easily for
+	 * objects with incomplete row-data (such as default values).
+	 * 
 	 * @param DbTable $oTable
-	 * @param mixed|array $mData
-	 * @return Object|false Will return false when unable to load designated object.
+	 * @param mixed $mData
+	 * @param string $sIdFieldOverwrite
+	 * @return Object|null Will return null when unable to load designated object.
 	 */
-	public static final function loadObject($sClass, DbTable $oTable, $mData) {
-		if($sClass == get_class() || !class_exists($sClass) || !is_subclass_of($sClass, get_class()))
-			return false;
-
-		if(!isset(self::$s_aObjectInstances[$sClass]))
-			self::$s_aObjectInstances[$sClass] = array();
-		if(is_array($mData) && isset($mData[$oTable->getIdField()])) {
-			$sKey = $mData[$oTable->getIdField()];
-			return isset(self::$s_aObjectInstances[$sClass][$sKey]) ? self::$s_aObjectInstances[$sClass][$sKey] : new $sClass($oTable, $mData);
-		}
-		else if(!is_array($mData)) {
-			if(isset(self::$s_aObjectInstances[$sClass][$mData])) {
-				return self::$s_aObjectInstances[$sClass][$mData];
+	public static final function loadObject(DbTable $oTable, $mData, $sIdFieldOverwrite = null) {
+		$sKey = $oTable->getConnection()->getIdentifier() . $oTable->getTable() . $oTable->getIdField();
+		
+		if(!is_array($mData)) {
+			$sKey .= $mData;
+			$oInstance = static::getUniqueInstance($sKey);
+			if($oInstance) {
+				return $oInstance;
 			}
 			else {
-				$oStatement = $oTable->select($mData);
-				return $oStatement->rowCount() > 0 ? new $sClass($oTable, $oStatement->fetch(PDO::FETCH_ASSOC)) : false;
+				$oStatement = $oTable->select($mData, $sIdFieldOverwrite);
+				if($oStatement->rowCount() > 0) {
+					return static::assureUniqueInstance($sKey, array($oTable, $oStatement->fetch(PDO::FETCH_ASSOC)));
+				}
 			}
 		}
-		else {
-			return false;
-		}
+		
+		return null;
 	}
 	
-	public static final function createObject($sClass, DbTable $oTable, array $aData) {
+	/**
+	 * Create a new object by first inserting the given data, and by calling loadObject next.
+	 * 
+	 * @see loadObject()
+	 * @param DbTable $oTable
+	 * @param array $aData
+	 * @return Object|null
+	 */
+	public static final function createObject(DbTable $oTable, array $aData) {
 		$nId = $oTable->insert($aData);
-		return self::loadObject($sClass, $oTable, $nId);
+		if(isset($aData[$oTable->getIdField()])) {
+			return static::loadObject($oTable, $aData[$oTable->getIdField()]);
+		}
+		else {
+			return static::loadObject($oTable, $nId);
+		}
 	}
 }
-
-?>

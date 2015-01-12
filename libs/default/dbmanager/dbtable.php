@@ -12,7 +12,7 @@ final class DbTable extends ObjectUnique {
 	private $m_sTable;
 	private $m_sIdField;
 	
-	public function __construct(DbConnection $oConnection, $sTable, $sIdField) {
+	public function init(DbConnection $oConnection, $sTable, $sIdField) {
 		$this->m_oConnection = $oConnection;
 		$this->m_sTable = '' . $sTable;
 		$this->m_sIdField = '' . $sIdField;

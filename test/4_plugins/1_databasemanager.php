@@ -71,6 +71,15 @@ class DatabaseManagerTest extends Test {
 		$this->assertTrue($this->m_oTableSingle->delete($sInsert, 'name_notnull'));
 	}
 	
+	public function testDbObjectTest() {
+		$oInstance = DbObjectTest::createObject($this->m_oTableSingle, array(
+			'name_notnull' => 'db'.$this->m_sRandomName,
+			'name_null' => null
+		));
+		
+		$oInstance->delete();
+	}
+	
 	public function teardown() {
 		$this->m_oConnection = null;
 		$this->m_oTableSingle = null;
