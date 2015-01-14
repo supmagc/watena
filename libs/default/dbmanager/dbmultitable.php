@@ -7,26 +7,16 @@
  * @version 0.2.1
  *
  */
-class DbMultiTable {
+class DbMultiTable extends ObjectUnique {
 
-	private $m_sConnection;
 	private $m_oConnection;
 	private $m_sTable;
 	private $m_aIdFields;
 	
-	public function __construct(DbConnection $oConnection, $sTable, array $aIdFields) {
-		$this->m_sConnection = $oConnection->getIdentifier();
+	protected function init(DbConnection $oConnection, $sTable, array $aIdFields) {
 		$this->m_oConnection = $oConnection;
 		$this->m_sTable = ''.$sTable;
 		$this->m_aIdFields = $aIdFields;
-	}
-
-	public function __sleep() {
-		return array('m_sConnection', 'm_sTable', 'm_aIdFields');
-	}
-	
-	public function __wakeup() {
-		$this->m_oConnection = DatabaseManager::getConnection($this->m_sConnection);
 	}
 	
 	/**
@@ -81,10 +71,10 @@ class DbMultiTable {
 	public function insert(array $aValues, array $aIdFieldsOverwrite = array()) {
 		$aReturn = array();
 		$aIdFields = count($aIds) == count($aIdFieldsOverwrite) ? $aIdFieldsOverwrite : $this->m_aIdFields;
-		$this->m_oConnection()->insert($this->m_sTable, $aValues);
+		$nReturn = $this->m_oConnection->insert($this->m_sTable, $aValues);
 		foreach($aIdFields as $sField)
 			$aReturn []= isset($aValues[$sField]) ? $aValues[$sField] : null;
-		return $aReturn;
+		return count($aReturn) == count($aIdFields) ? $aReturn : $nReturn;
 	}
 	
 	/**
@@ -112,5 +102,19 @@ class DbMultiTable {
 	 */
 	public function delete(array $aIds, array $aIdFieldsOverwrite = array()) {
 		return $this->m_oConnection()->delete($this->m_sTable, $aIds, count($aIds) == count($aIdFieldsOverwrite) ? $aIdFieldsOverwrite : $this->m_aIdFields);
+	}
+	
+	/**
+	 * Assure the existance of a single unique DbTable instance.
+	 * 
+	 * @see DbMultiTable::init()
+	 * @see ObjectUnisue::assureUniqueInstance()
+	 * @param DbConnection $oConnection
+	 * @param string $sTable
+	 * @param array $aIdFields
+	 * @return DbMultiTable
+	 */
+	public static final function assureUniqueDbMultiTable(DbConnection $oConnection, $sTable, array $aIdFields) {
+		return self::assureUniqueInstance($oConnection->getIdentifier() . $sTable . implode('-', $aIdFields), array($oConnection, $sTable, $aIdFields));
 	}
 }

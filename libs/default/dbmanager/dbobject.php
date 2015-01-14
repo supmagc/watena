@@ -36,11 +36,11 @@ class DbObject extends ObjectUnique {
 	 * Get the value for a specific column, or the default value if none is set.
 	 * 
 	 * @param string $sColumn Column name.
-	 * @param mixed $mDefault Default value when no column is found. (not null, since null is a valid sql-value)
-	 * @return mixed|false Returns $mDefault is when column is not found.
+	 * @param mixed $mDefault Default value when no column is found. (default: false, not null, since null is a valid sql-value)
+	 * @return mixed|$mDefault Returns $mDefault is when column is not found.
 	 */
 	protected final function getDataValue($sColumn, $mDefault = false) {
-		return (!$this->m_bDeleted && isset($this->m_aData[$sColumn])) ? $this->m_aData[$sColumn] : $mDefault;
+		return (!$this->m_bDeleted && (isset($this->m_aData[$sColumn]) || array_key_exists($sColumn, $this->m_aData))) ? $this->m_aData[$sColumn] : $mDefault;
 	}
 
 	/**
@@ -138,6 +138,8 @@ class DbObject extends ObjectUnique {
 	
 	/**
 	 * Create a new object by first inserting the given data, and by calling loadObject next.
+	 * loadObject will be called with the Id given in the data, or if none found, the insert-id
+	 * returned from the insert statement.
 	 * 
 	 * @see loadObject()
 	 * @param DbTable $oTable

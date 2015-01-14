@@ -1,6 +1,6 @@
 <?php
 
-class DbMultiObject extends Object {
+class DbMultiObject extends ObjectUnique {
 
 	private $m_aData;
 	private $m_oTable;
