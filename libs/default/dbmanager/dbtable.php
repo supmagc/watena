@@ -12,7 +12,7 @@ final class DbTable extends ObjectUnique {
 	private $m_sTable;
 	private $m_sIdField;
 	
-	public function init(DbConnection $oConnection, $sTable, $sIdField) {
+	protected function init(DbConnection $oConnection, $sTable, $sIdField) {
 		$this->m_oConnection = $oConnection;
 		$this->m_sTable = '' . $sTable;
 		$this->m_sIdField = '' . $sIdField;
@@ -103,7 +103,7 @@ final class DbTable extends ObjectUnique {
 	/**
 	 * Assure the existance of a single unique DbTable instance.
 	 * 
-	 * @see DbTable::__construct()
+	 * @see DbTable::init()
 	 * @see ObjectUnisue::assureUniqueInstance()
 	 * @param DbConnection $oConnection
 	 * @param string $sTable
