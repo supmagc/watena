@@ -1,16 +1,24 @@
 <?php
 
-class DbInvalidDbObjectData extends Exception {
-	
-	public function __construct(DbTable $oTable, $mId) {
-		parent::__construct('Unable to create a data-object for ' . $oTable->getIdField() . ' == ' . $mId . ' from table `' . $oTable->getTable() . '`.');
+class DbInvalidDbObjectId extends WatCeption {
+
+	public function __construct(DbTable $oTable, $mId = null) {
+		parent::__construct('Unable to find a valid ID \'{ID}\' for table `{table}`.`{field}`.', array(
+			'ID' => $mId,
+			'table' => $oTable->getTable(),
+			'field' => $oTable->getIdField()
+		));
 	}
 }
 
-class DbInvalidDbObjectId extends Exception {
+class DbInvalidDbMultiObjectId extends Exception {
 
-	public function __construct(DbTable $oTable, $mId) {
-		parent::__construct('Unable to find a valid ID ' . $mId . ' for table `' . $oTable->getTable() . '`.');
+	public function __construct(DbMultiTable $oTable, $sIdField, $mId = null) {
+		parent::__construct('Unable to find a valid ID \'{ID}\' for table `{table}`.`{field}`.', array(
+			'ID' => $mId,
+			'table' => $oTable->getTable(),
+			'field' => $sIdField
+		));
 	}
 }
 
