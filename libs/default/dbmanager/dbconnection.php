@@ -137,11 +137,10 @@ final class DbConnection extends ObjectUnique {
 	 * 
 	 * @param string $sTable
 	 * @param array $aIdFields
-	 * @param string $sConcatenation
 	 * @return DbMultiTable
 	 */
-	public function getMultiTable($sTable, array $aIdFields = array('ID'), $sConcatenation = 'AND') {
-		return new DbMultiTable($this, $sTable, $aIdFields, $sConcatenation);
+	public function getMultiTable($sTable, array $aIdFields = array('ID')) {
+		return DbMultiTable::assureUniqueDbMultiTable($this, $sTable, $aIdFields);
 	}
 	
 	/**
@@ -149,12 +148,14 @@ final class DbConnection extends ObjectUnique {
 	 * 
 	 * @param string $sQuery
 	 * @param array $aParams
-	 * @return PDOStatement
+	 * @return false|PDOStatement False when unable to execute the query, or the PDOStatement on succes.
 	 */
 	public function query($sQuery, array $aParams = array()) {
 		$oStatement = $this->m_oConnection->prepare($sQuery);
-		$oStatement->execute($aParams);
-		return $oStatement;
+		if($oStatement->execute($aParams))
+			return $oStatement;
+		else
+			return false;
 	}
 	
 	/**
@@ -243,14 +244,17 @@ final class DbConnection extends ObjectUnique {
 	 * @param mixed $mId
 	 * @param mixed $mIdField
 	 * @param string $sConcatenation
-	 * @return boolean
+	 * @return false|int False when unable to execute the query, or the number of changed rows.
 	 */
 	public function update($sTable, array $aData, $mId, $mIdField = 'ID', $sConcatenation = 'AND') {
 		list($sWhere, $aWheres) = $this->buildWhere($mId, $mIdField, $sConcatenation);
 		$sUpdates = implode(', ', array_map(create_function('$a', 'return "`$a` = :$a";'), array_keys($aData)));
 		$sQuery = "UPDATE `$sTable` SET ".$sUpdates." WHERE $sWhere";
 		$oStatement = $this->m_oConnection->prepare($sQuery);
-		return $oStatement->execute(array_merge($aData, $aWheres));
+		if($oStatement->execute(array_merge($aData, $aWheres)))
+			return $oStatement->rowCount();
+		else
+			return false; 
 	}
 	
 	/**
@@ -262,13 +266,16 @@ final class DbConnection extends ObjectUnique {
 	 * @param mixed $mId
 	 * @param mixed $mIdField
 	 * @param string $sConcatenation
-	 * @return boolean
+	 * @return false|int False when unable to execute the query, or the number of changed rows.
 	 */
 	public function delete($sTable, $mId, $mIdField = 'ID', $sConcatenation = 'AND') {
 		list($sWhere, $aWheres) = $this->buildWhere($mId, $mIdField, $sConcatenation);
 		$sQuery = "DELETE FROM `$sTable` WHERE $sWhere";
 		$oStatement = $this->m_oConnection->prepare($sQuery);
-		return $oStatement->execute($aWheres);
+		if($oStatement->execute($aWheres))
+			return $oStatement->rowCount();
+		else
+			return false;
 	}
 
 	/**

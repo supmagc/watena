@@ -66,11 +66,11 @@ class DbMultiTable extends ObjectUnique {
 	 * @see DbConnection::insert()
 	 * @param array $aValues
 	 * @param array $aIdFieldsOverwrite If of equal size as $aIds, use these as IdFields.
-	 * @return array|int The values of IdFields (if they where given as insert values), or the last-insert-id.
+	 * @return false|array|int False if the query failed, the values of IdFields (if they where given as insert values), or the last-insert-id.
 	 */
 	public function insert(array $aValues, array $aIdFieldsOverwrite = array()) {
 		$aReturn = array();
-		$aIdFields = count($aIds) == count($aIdFieldsOverwrite) ? $aIdFieldsOverwrite : $this->m_aIdFields;
+		$aIdFields = count($aIdFieldsOverwrite) > 0 ? $aIdFieldsOverwrite : $this->m_aIdFields;
 		$nReturn = $this->m_oConnection->insert($this->m_sTable, $aValues);
 		foreach($aIdFields as $sField)
 			$aReturn []= isset($aValues[$sField]) ? $aValues[$sField] : null;
@@ -85,7 +85,7 @@ class DbMultiTable extends ObjectUnique {
 	 * @param array $aValues
 	 * @param array $aIds Should be of equal size as IdFields.
 	 * @param array $aIdFieldsOverwrite If of equal size as $aIds, use these as IdFields.
-	 * @return boolean
+	 * @return false|int False if the query failed, or the number of affected rows.
 	 */
 	public function update(array $aValues, array $aIds, array $aIdFieldsOverwrite = array()) {
 		return $this->m_oConnection->update($this->m_sTable, $aValues, $aIds, count($aIds) == count($aIdFieldsOverwrite) ? $aIdFieldsOverwrite : $this->m_aIdFields);
@@ -98,10 +98,10 @@ class DbMultiTable extends ObjectUnique {
 	 * @see DbConnection::delete()
 	 * @param array $aIds Should be of equal size as IdFields.
 	 * @param array $aIdFieldsOverwrite If of equal size as $aIds, use these as IdFields.
-	 * @return boolean
+	 * @return false|int False if the query failed, or the number of affected rows.
 	 */
 	public function delete(array $aIds, array $aIdFieldsOverwrite = array()) {
-		return $this->m_oConnection()->delete($this->m_sTable, $aIds, count($aIds) == count($aIdFieldsOverwrite) ? $aIdFieldsOverwrite : $this->m_aIdFields);
+		return $this->m_oConnection->delete($this->m_sTable, $aIds, count($aIds) == count($aIdFieldsOverwrite) ? $aIdFieldsOverwrite : $this->m_aIdFields);
 	}
 	
 	/**

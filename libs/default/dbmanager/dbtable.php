@@ -52,7 +52,7 @@ final class DbTable extends ObjectUnique {
 	 * @see DbConnection::select()
 	 * @param mixed $mId
 	 * @param string $sIdFieldOverwrite If not null, use this as IdField.
-	 * @return PDOStatement
+	 * @return false|PDOStatement
 	 */
 	public function select($mId, $sIdFieldOverwrite = null) {
 		return $this->m_oConnection->select($this->m_sTable, $mId, $sIdFieldOverwrite ? ''.$sIdFieldOverwrite : $this->m_sIdField);
@@ -65,7 +65,7 @@ final class DbTable extends ObjectUnique {
 	 * @see DbConnection::insert()
 	 * @param array $aValues
 	 * @param string $sIdFieldOverwrite If not null, use this as IdField.
-	 * @return mixed|int The value of the IdField (if it was given as an insert value), or the last-insert-id.
+	 * @return false|mixed|int False if the query failed, the value of the IdField (if it was given as an insert value), or the last-insert-id.
 	 */
 	public function insert(array $aValues, $sIdFieldOverwrite = null) {
 		$sIdField = $sIdFieldOverwrite ? ''.$sIdFieldOverwrite : $this->m_sIdField;
@@ -81,7 +81,7 @@ final class DbTable extends ObjectUnique {
 	 * @param array $aValues
 	 * @param mixed $mId
 	 * @param string $sIdFieldOverwrite If not null, use this as IdField.
-	 * @return boolean
+	 * @return false|int False if the query failed, or the number of affected rows.
 	 */
 	public function update(array $aValues, $mId, $sIdFieldOverwrite = null) {
 		return $this->m_oConnection->update($this->m_sTable, $aValues, $mId, $sIdFieldOverwrite ? ''.$sIdFieldOverwrite : $this->m_sIdField);
@@ -94,7 +94,7 @@ final class DbTable extends ObjectUnique {
 	 * @see DbConnection::delete()
 	 * @param mixed $mId
 	 * @param string $sIdFieldOverwrite If not null, use this as IdField.
-	 * @return boolean
+	 * @return false|int False if the query failed, or the number of affected rows.
 	 */
 	public function delete($mId, $sIdFieldOverwrite = null) {
 		return $this->m_oConnection->delete($this->m_sTable, $mId, $sIdFieldOverwrite ? ''.$sIdFieldOverwrite : $this->m_sIdField);

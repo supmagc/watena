@@ -1,6 +1,7 @@
 <?php
 /**
  * This class is meant to represent a table row.
+ * Each row should be uniquely identifiable by the unique value within a single column.
  * If required you can inherit and add additional logic to handle the internal data.
  * 
  * @author Jelle
@@ -13,11 +14,10 @@ class DbObject extends ObjectUnique {
 	private $m_oTable;
 	private $m_bDeleted;
 	
-	private static $s_aObjectInstances = array();
-	
 	/**
 	 * Internal constructor for an object representing a table row, identifiablme by a single column.
 	 * 
+	 * @throws DbInvalidDbObjectId When the required ID is not found within $aData.
 	 * @param DbTable $oTable Table object contraining table name and default ID column.
 	 * @param array $aData An array with the row data.
 	 */
@@ -26,26 +26,28 @@ class DbObject extends ObjectUnique {
 		$this->m_aData = $aData;
 		$this->m_mId = $this->m_aData[$this->m_oTable->getIdField()];
 		
-			// Make sure an ID can be found
+		// Make sure an ID can be found
 		if(!isset($this->m_aData[$this->m_oTable->getIdField()])) {
-			throw new DbInvalidDbObjectId($this->m_oTable, null);
+			throw new DbInvalidDbObjectId($this->m_oTable);
 		}
 	}
 	
 	/**
-	 * Get the value for a specific column, or the default value if none is set.
+	 * Get the value for a specific column, or $mDefault if none is set.
+	 * Even when deleted, this might still return the old values.
 	 * 
 	 * @param string $sColumn Column name.
 	 * @param mixed $mDefault Default value when no column is found. (default: false, not null, since null is a valid sql-value)
 	 * @return mixed|$mDefault Returns $mDefault is when column is not found.
 	 */
 	protected final function getDataValue($sColumn, $mDefault = false) {
-		return (!$this->m_bDeleted && (isset($this->m_aData[$sColumn]) || array_key_exists($sColumn, $this->m_aData))) ? $this->m_aData[$sColumn] : $mDefault;
+		return (isset($this->m_aData[$sColumn]) || array_key_exists($sColumn, $this->m_aData)) ? $this->m_aData[$sColumn] : $mDefault;
 	}
 
 	/**
 	 * Try to update the given value in this instance, and
 	 * reflect that change on the database-table.
+	 * This won't change anything of the instance/row is considered deleted.
 	 * 
 	 * @see DbTable::update()
 	 * @param string $sColumn
@@ -67,7 +69,7 @@ class DbObject extends ObjectUnique {
 	}
 	
 	/**
-	 * Get the DbTable instance.
+	 * Get the associated DbTable instance.
 	 * 
 	 * @return DbTable
 	 */
@@ -96,7 +98,7 @@ class DbObject extends ObjectUnique {
 	}
 	
 	/**
-	 * Check if this instance is supposed to be deleted.
+	 * Check if the data of this instance/row is supposed to be deleted.
 	 * 
 	 * @return boolean
 	 */
