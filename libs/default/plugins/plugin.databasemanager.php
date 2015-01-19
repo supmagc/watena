@@ -57,9 +57,9 @@ class DatabaseManager extends Plugin {
 	public function getVersion() {
 		return array(
 			'major' => 0,
-			'minor' => 1,
-			'build' => 1,
-			'state' => 'dev'
+			'minor' => 3,
+			'build' => 0,
+			'state' => 'beta'
 		);
 	}
 }

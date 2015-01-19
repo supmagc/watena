@@ -5,7 +5,7 @@
  * If required you can inherit and add additional logic to handle the internal data.
  *
  * @author Jelle
- * @version 0.2.2
+ * @version 0.3.0
  */
 class DbMultiObject extends ObjectUnique {
 
@@ -59,9 +59,12 @@ class DbMultiObject extends ObjectUnique {
 	 * @return boolean
 	 */
 	protected function setDataValue($sColumn, $mValue) {
-		if(!$this->m_bDeleted && $this->getTable()->update(array($sColumn => $mValue), $this->m_aIds)) {
+		if(!$this->m_bDeleted && $this->getTable()->update(array($sColumn => $mValue), array_values($this->m_aIds))) {
 			if(in_array($sColumn, $this->m_oTable->getIdFields())) {
+				$sIdOld = self::generateUniqueKey($this->m_oTable, $this->m_aIds);
 				$this->m_aIds[$sColumn] = $mValue;
+				$sIdNew = self::generateUniqueKey($this->m_oTable, $this->m_aIds);
+				self::updateUniqueInstance($sIdOld, $sIdNew);
 			}
 			$this->m_aData[$sColumn] = $mValue;
 			return true;
@@ -98,7 +101,7 @@ class DbMultiObject extends ObjectUnique {
 			return;
 		
 		$this->m_bDeleted = true;
-		$this->getTable()->delete($this->m_aIds);
+		$this->getTable()->delete(array_values($this->m_aIds));
 	}
 	
 	/**
@@ -110,43 +113,62 @@ class DbMultiObject extends ObjectUnique {
 		return $this->m_bDeleted;
 	}
 	
-	public static final function loadObject($sClass, DbMultiTable $oTable, array $mData) {
-		$nId = 0;
-		if($sClass == get_class() || !class_exists($sClass) || !is_subclass_of($sClass, get_class()))
-			return false;
-		if(!isset(self::$s_aObjectInstances[$sClass]))
-			self::$s_aObjectInstances[$sClass] = array();
-		if(is_assoc($mData)) {
-			$aKeys = array();
-			foreach($oTable->getIdFields() as $sField) {
-				if(!isset($mData[$sField])) return false;
-				$aKeys []= $sField . '=' . $mData[$sField];
+	/**
+	 * Load an object for the given Id.
+	 * If an equivalent object allready exists, the function will check if it is deleted.
+	 * 
+	 * 
+	 * !! This class no longer supports is_array($mData) since it allowed to easily for
+	 * objects with incomplete row-data (such as default values).
+	 * 
+	 * @param DbMultiTable $oTable
+	 * @param array $aIds
+	 * @param array $aIdFieldsOverwrite
+	 * @return ObjectUnique|null Will return null when unable to load designated object.
+	 */
+	public static final function loadObject(DbMultiTable $oTable, array $aIds, array $aIdFieldsOverwrite = array()) {
+		$sKey = $oTable->getConnection()->getIdentifier() .'.'. $oTable->getTable() .'.'. implode('.', $oTable->getIdFields());
+		
+		$sKey .= '.'.implode('.', $aIds);
+		$oInstance = static::getUniqueInstance($sKey);
+		if(!$oInstance || $oInstance->m_bDeleted) {
+			$oStatement = $oTable->select($aIds, $aIdFieldsOverwrite);
+			if($oStatement->rowCount() > 0) {
+				$oInstance = $oInstance ?: static::assureUniqueInstance($sKey, array($oTable, $oStatement->fetch(PDO::FETCH_ASSOC)));
+				$oInstance->m_bDeleted = false;
 			}
-			$sKey = implode('|', $aKeys);
-			return isset(self::$s_aObjectInstances[$sClass][$sKey]) ? self::$s_aObjectInstances[$sClass][$sKey] : new $sClass($oTable, $mData);
 		}
-		else if($oTable->isValidId($mData)) {			
-			$aKeys = array();
-			$aFields = $oTable->getIdFields();
-			for($i=0 ; $i<count($aFields) ; ++$i) {
-				$aKeys []= $aFields[$i] . '=' . $aIds[$i];
-			}
-			$sKey = implode('|', $aKeys);
-			if(isset(self::$s_aObjectInstances[$sClass][$sKey])) {
-				return self::$s_aObjectInstances[$sClass][$sKey];
-			}
-			else {
-				$oStatement = $oTable->select($mData);
-				return $oStatement->rowCount() > 0 ? new $sClass($oTable, $oStatement->fetch(PDO::FETCH_ASSOC)) : false;
-			}
+		
+		return $oInstance;
+	}
+	
+	/**
+	 * Create a new object by first inserting the given data, and by calling loadObject next.
+	 * loadObject will be called with the Ids returned form the insert query.
+	 * 
+	 * @see loadObject()
+	 * @param DbMultiTable $oTable
+	 * @param array $aData
+	 * @return ObjectUnique|null
+	 */
+	public static final function createObject(DbMultiTable $oTable, array $aData) {
+		$aIds = $oTable->insert($aData);
+		if(is_array($aIds) && count($aIds) == count($oTable->getIdFields())) {
+			return static::loadObject($oTable, $aIds);
 		}
 		else {
-			return false;
+			return null;
 		}
 	}
 	
-	public static final function createObject($sClass, DbTable $oTable, array $aData) {
-		$aIds = $oTable->insert($aData);
-		return self::loadObject($sClass, $oTable, $aIds);
+	/**
+	 * Generate the unique key for the given parameters.
+	 * 
+	 * @param DbTable $oTable
+	 * @param array $aIds
+	 * @return string
+	 */
+	public static final function generateUniqueKey(DbMultiTable $oTable, array $aIds) {
+		return $oTable->getConnection()->getIdentifier() .'.'. $oTable->getTable() .'.'. implode('.', $oTable->getIdFields()) .'.'. implode('.', $aIds);
 	}
 }

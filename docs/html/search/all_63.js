@@ -13,6 +13,7 @@ var searchData=
   ['compressionsupport',['compressionSupport',['../class_request.html#a8cbc39d7e3f77bd7ed2000e59f2859f7',1,'Request']]],
   ['connect',['connect',['../class_db_connection.html#a42741e1c5c39cb28b3ec47d7ac69a315',1,'DbConnection']]],
   ['cookie',['cookie',['../class_request.html#ad6b7fe8e73dd7eed912086488002ddd0',1,'Request']]],
+  ['createobject',['createObject',['../class_db_multi_object.html#a88e81f6230f993e77565ba8971975876',1,'DbMultiObject\createObject()'],['../class_db_object.html#a48c2d33c43e6f0b68b4e7dcde9cd8c12',1,'DbObject\createObject()']]],
   ['createtemplateclass',['createTemplateClass',['../class_template_file.html#ad6ded534b21256f5c40f02d19504bcaf',1,'TemplateFile']]],
   ['createtemplatefile',['createTemplateFile',['../class_template_file.html#ad40fa812d27ae5ee64c2ae49dc98f10d',1,'TemplateFile']]]
 ];

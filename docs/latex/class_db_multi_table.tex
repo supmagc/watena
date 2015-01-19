@@ -1,17 +1,12 @@
 \hypertarget{class_db_multi_table}{\section{Db\-Multi\-Table Class Reference}
 \label{class_db_multi_table}\index{Db\-Multi\-Table@{Db\-Multi\-Table}}
 }
+
+
+Inherits Object\-Unique.
+
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
-\item 
-\hypertarget{class_db_multi_table_a4167f1c8c738bad8d47362ae16cae653}{{\bfseries \-\_\-\-\_\-construct} (\hyperlink{class_db_connection}{Db\-Connection} \$o\-Connection, \$s\-Table, array \$a\-Id\-Fields, \$s\-Concatenation)}\label{class_db_multi_table_a4167f1c8c738bad8d47362ae16cae653}
-
-\item 
-\hypertarget{class_db_multi_table_a29fef477cc57c09cc6590e7990bf2413}{{\bfseries \-\_\-\-\_\-sleep} ()}\label{class_db_multi_table_a29fef477cc57c09cc6590e7990bf2413}
-
-\item 
-\hypertarget{class_db_multi_table_a087ba5bc48843b12f16fb61fb2e02c07}{{\bfseries \-\_\-\-\_\-wakeup} ()}\label{class_db_multi_table_a087ba5bc48843b12f16fb61fb2e02c07}
-
 \item 
 \hyperlink{class_db_multi_table_a03eb573ad50f1efe1605fb6d38ea8c5f}{get\-Connection} ()
 \item 
@@ -19,36 +14,83 @@
 \item 
 \hyperlink{class_db_multi_table_af84a3c49cb55982e2009e4b88bdc8d60}{get\-Id\-Fields} ()
 \item 
-\hyperlink{class_db_multi_table_a50091e38487d82c2b79bb45150cbc877}{get\-Concatenation} ()
+\hyperlink{class_db_multi_table_ac39230ed0f7118105b0fc0bbc1104d99}{select} (array \$a\-Ids=array(), array \$a\-Id\-Fields\-Overwrite=array())
 \item 
-\hyperlink{class_db_multi_table_a6b22f33590dd9ffd5e71b2420067a44c}{is\-Valid\-Id} (array \$a\-Ids)
+\hyperlink{class_db_multi_table_ab9d8600e6f8f189e5d7e729881e8dc60}{insert} (array \$a\-Values, array \$a\-Id\-Fields\-Overwrite=array())
 \item 
-\hypertarget{class_db_multi_table_a4f5cbfecfc11b9a87d0850994e42f356}{{\bfseries select} (array \$a\-Ids=array())}\label{class_db_multi_table_a4f5cbfecfc11b9a87d0850994e42f356}
-
+\hyperlink{class_db_multi_table_aa800394ffdf5930bc022c5c8f5e88d24}{update} (array \$a\-Values, array \$a\-Ids, array \$a\-Id\-Fields\-Overwrite=array())
 \item 
-\hypertarget{class_db_multi_table_a51183054b9b8ab246bbdc653bd415aee}{{\bfseries insert} (array \$a\-Values)}\label{class_db_multi_table_a51183054b9b8ab246bbdc653bd415aee}
-
+\hyperlink{class_db_multi_table_a0da134659049af2a3b7192bbfeace9ba}{delete} (array \$a\-Ids, array \$a\-Id\-Fields\-Overwrite=array())
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
 \item 
-\hypertarget{class_db_multi_table_a47796e7910bbdd8a19c5eb76309344cf}{{\bfseries update} (array \$a\-Values, array \$a\-Ids)}\label{class_db_multi_table_a47796e7910bbdd8a19c5eb76309344cf}
-
-\item 
-\hypertarget{class_db_multi_table_ad61946bc4775e6093c5a12d7e065f1ff}{{\bfseries delete} (array \$a\-Ids)}\label{class_db_multi_table_ad61946bc4775e6093c5a12d7e065f1ff}
-
+static \hyperlink{class_db_multi_table_ae3484d6d58a49e38148c1456fe195657}{assure\-Unique\-Db\-Multi\-Table} (\hyperlink{class_db_connection}{Db\-Connection} \$o\-Connection, \$s\-Table, array \$a\-Id\-Fields)
 \end{DoxyCompactItemize}
 
 
-\subsection{Member Function Documentation}
-\hypertarget{class_db_multi_table_a50091e38487d82c2b79bb45150cbc877}{\index{Db\-Multi\-Table@{Db\-Multi\-Table}!get\-Concatenation@{get\-Concatenation}}
-\index{get\-Concatenation@{get\-Concatenation}!DbMultiTable@{Db\-Multi\-Table}}
-\subsubsection[{get\-Concatenation}]{\setlength{\rightskip}{0pt plus 5cm}Db\-Multi\-Table\-::get\-Concatenation (
-\begin{DoxyParamCaption}
-{}
-\end{DoxyParamCaption}
-)}}\label{class_db_multi_table_a50091e38487d82c2b79bb45150cbc877}
-Retrieve the internal concatenation-\/string
+\subsection{Detailed Description}
+Serializable database table representation. Each row is identifiable by a set of multiple columns
 
+\begin{DoxyAuthor}{Author}
+Jelle Voet 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+0.\-3.\-0 
+\end{DoxyVersion}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_db_multi_table_ae3484d6d58a49e38148c1456fe195657}{\index{Db\-Multi\-Table@{Db\-Multi\-Table}!assure\-Unique\-Db\-Multi\-Table@{assure\-Unique\-Db\-Multi\-Table}}
+\index{assure\-Unique\-Db\-Multi\-Table@{assure\-Unique\-Db\-Multi\-Table}!DbMultiTable@{Db\-Multi\-Table}}
+\subsubsection[{assure\-Unique\-Db\-Multi\-Table}]{\setlength{\rightskip}{0pt plus 5cm}static Db\-Multi\-Table\-::assure\-Unique\-Db\-Multi\-Table (
+\begin{DoxyParamCaption}
+\item[{{\bf Db\-Connection}}]{\$o\-Connection, }
+\item[{}]{\$s\-Table, }
+\item[{array}]{\$a\-Id\-Fields}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [final]}}}\label{class_db_multi_table_ae3484d6d58a49e38148c1456fe195657}
+Assure the existance of a single unique \hyperlink{class_db_table}{Db\-Table} instance.
+
+\begin{DoxySeeAlso}{See Also}
+Db\-Multi\-Table\-::init() 
+
+Object\-Unisue\-::assure\-Unique\-Instance() 
+\end{DoxySeeAlso}
+
+\begin{DoxyParams}[1]{Parameters}
+\hyperlink{class_db_connection}{Db\-Connection} & {\em \$o\-Connection} & \\
+\hline
+string & {\em \$s\-Table} & \\
+\hline
+array & {\em \$a\-Id\-Fields} & \\
+\hline
+\end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-string 
+\hyperlink{class_db_multi_table}{Db\-Multi\-Table} 
+\end{DoxyReturn}
+\hypertarget{class_db_multi_table_a0da134659049af2a3b7192bbfeace9ba}{\index{Db\-Multi\-Table@{Db\-Multi\-Table}!delete@{delete}}
+\index{delete@{delete}!DbMultiTable@{Db\-Multi\-Table}}
+\subsubsection[{delete}]{\setlength{\rightskip}{0pt plus 5cm}Db\-Multi\-Table\-::delete (
+\begin{DoxyParamCaption}
+\item[{array}]{\$a\-Ids, }
+\item[{array}]{\$a\-Id\-Fields\-Overwrite = {\ttfamily array()}}
+\end{DoxyParamCaption}
+)}}\label{class_db_multi_table_a0da134659049af2a3b7192bbfeace9ba}
+Delete a identifiable row from the table. If no id-\/fields-\/overwrite are given, the default ones for this table are used.
+
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{class_db_connection_a2da0f32a8ea737be8043a6ec0fe4635e}{Db\-Connection\-::delete()} 
+\end{DoxySeeAlso}
+
+\begin{DoxyParams}[1]{Parameters}
+array & {\em \$a\-Ids} & Should be of equal size as Id\-Fields. \\
+\hline
+array & {\em \$a\-Id\-Fields\-Overwrite} & If of equal size as \$a\-Ids, use these as Id\-Fields. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+false$|$int False if the query failed, or the number of affected rows. 
 \end{DoxyReturn}
 \hypertarget{class_db_multi_table_a03eb573ad50f1efe1605fb6d38ea8c5f}{\index{Db\-Multi\-Table@{Db\-Multi\-Table}!get\-Connection@{get\-Connection}}
 \index{get\-Connection@{get\-Connection}!DbMultiTable@{Db\-Multi\-Table}}
@@ -81,30 +123,85 @@ array
 {}
 \end{DoxyParamCaption}
 )}}\label{class_db_multi_table_ab2315d078fcfbc53238517f49754e919}
-Retrieve the internal table-\/name
+Retrieve the internal table-\/name.
 
 \begin{DoxyReturn}{Returns}
 string 
 \end{DoxyReturn}
-\hypertarget{class_db_multi_table_a6b22f33590dd9ffd5e71b2420067a44c}{\index{Db\-Multi\-Table@{Db\-Multi\-Table}!is\-Valid\-Id@{is\-Valid\-Id}}
-\index{is\-Valid\-Id@{is\-Valid\-Id}!DbMultiTable@{Db\-Multi\-Table}}
-\subsubsection[{is\-Valid\-Id}]{\setlength{\rightskip}{0pt plus 5cm}Db\-Multi\-Table\-::is\-Valid\-Id (
+\hypertarget{class_db_multi_table_ab9d8600e6f8f189e5d7e729881e8dc60}{\index{Db\-Multi\-Table@{Db\-Multi\-Table}!insert@{insert}}
+\index{insert@{insert}!DbMultiTable@{Db\-Multi\-Table}}
+\subsubsection[{insert}]{\setlength{\rightskip}{0pt plus 5cm}Db\-Multi\-Table\-::insert (
 \begin{DoxyParamCaption}
-\item[{array}]{\$a\-Ids}
+\item[{array}]{\$a\-Values, }
+\item[{array}]{\$a\-Id\-Fields\-Overwrite = {\ttfamily array()}}
 \end{DoxyParamCaption}
-)}}\label{class_db_multi_table_a6b22f33590dd9ffd5e71b2420067a44c}
-Check if the given id is valid for this table's id-\/field
+)}}\label{class_db_multi_table_ab9d8600e6f8f189e5d7e729881e8dc60}
+Insert a given set of values in this table. If no id-\/fields-\/overwrite are given, the default ones for this table are used.
 
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{class_db_connection_ab9c7b4ab2255582a534f59f8af9af629}{Db\-Connection\-::insert()} 
+\end{DoxySeeAlso}
 
 \begin{DoxyParams}[1]{Parameters}
-mixed & {\em \$m\-Id} & \\
+array & {\em \$a\-Values} & \\
+\hline
+array & {\em \$a\-Id\-Fields\-Overwrite} & If of equal size as \$a\-Ids, use these as Id\-Fields. \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-bool 
+false$|$array$|$int False if the query failed, the values of Id\-Fields (if they where given as insert values), or the last-\/insert-\/id. 
+\end{DoxyReturn}
+\hypertarget{class_db_multi_table_ac39230ed0f7118105b0fc0bbc1104d99}{\index{Db\-Multi\-Table@{Db\-Multi\-Table}!select@{select}}
+\index{select@{select}!DbMultiTable@{Db\-Multi\-Table}}
+\subsubsection[{select}]{\setlength{\rightskip}{0pt plus 5cm}Db\-Multi\-Table\-::select (
+\begin{DoxyParamCaption}
+\item[{array}]{\$a\-Ids = {\ttfamily array()}, }
+\item[{array}]{\$a\-Id\-Fields\-Overwrite = {\ttfamily array()}}
+\end{DoxyParamCaption}
+)}}\label{class_db_multi_table_ac39230ed0f7118105b0fc0bbc1104d99}
+Execute a select statement on this table. If no id-\/fields-\/overwrite are given, the default ones for this table are used.
+
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{class_db_connection_ac0fd349a2a6521372a9b68eeb48e4fab}{Db\-Connection\-::select()} 
+\end{DoxySeeAlso}
+
+\begin{DoxyParams}[1]{Parameters}
+array & {\em \$a\-Ids} & Should be of equal size as Id\-Fields. \\
+\hline
+array & {\em \$a\-Id\-Fields\-Overwrite} & If of equal size as \$a\-Ids, use these as Id\-Fields. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+P\-D\-O\-Statement 
+\end{DoxyReturn}
+\hypertarget{class_db_multi_table_aa800394ffdf5930bc022c5c8f5e88d24}{\index{Db\-Multi\-Table@{Db\-Multi\-Table}!update@{update}}
+\index{update@{update}!DbMultiTable@{Db\-Multi\-Table}}
+\subsubsection[{update}]{\setlength{\rightskip}{0pt plus 5cm}Db\-Multi\-Table\-::update (
+\begin{DoxyParamCaption}
+\item[{array}]{\$a\-Values, }
+\item[{array}]{\$a\-Ids, }
+\item[{array}]{\$a\-Id\-Fields\-Overwrite = {\ttfamily array()}}
+\end{DoxyParamCaption}
+)}}\label{class_db_multi_table_aa800394ffdf5930bc022c5c8f5e88d24}
+Update a given set of values for a identifiable row. If no id-\/fields-\/overwrite are given, the default ones for this table are used.
+
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{class_db_connection_afe5a8ecd5852cd3a8a713d1775372676}{Db\-Connection\-::update()} 
+\end{DoxySeeAlso}
+
+\begin{DoxyParams}[1]{Parameters}
+array & {\em \$a\-Values} & \\
+\hline
+array & {\em \$a\-Ids} & Should be of equal size as Id\-Fields. \\
+\hline
+array & {\em \$a\-Id\-Fields\-Overwrite} & If of equal size as \$a\-Ids, use these as Id\-Fields. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+false$|$int False if the query failed, or the number of affected rows. 
 \end{DoxyReturn}
 
 
 The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
 \item 
-D\-:/www/watena/libs/default/dbman/dbmultitable.\-php\end{DoxyCompactItemize}
+dbmultitable.\-php\end{DoxyCompactItemize}

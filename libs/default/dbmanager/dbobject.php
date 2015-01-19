@@ -5,7 +5,7 @@
  * If required you can inherit and add additional logic to handle the internal data.
  * 
  * @author Jelle
- * @version 0.2.2
+ * @version 0.3.0
  */
 class DbObject extends ObjectUnique {
 
@@ -57,7 +57,10 @@ class DbObject extends ObjectUnique {
 	protected final function setDataValue($sColumn, $mValue) {
 		if(!$this->m_bDeleted && $this->getTable()->update(array($sColumn => $mValue), $this->m_mId)) {
 			if($sColumn == $this->m_oTable->getIdField()) {
+				$sIdOld = self::generateUniqueKey($this->m_oTable, $this->m_mId);
 				$this->m_mId = $mValue;
+				$sIdNew = self::generateUniqueKey($this->m_oTable, $this->m_mId);
+				self::updateUniqueInstance($sIdOld, $sIdNew);
 			}
 			$this->m_aData[$sColumn] = $mValue;
 			return true;
@@ -108,34 +111,30 @@ class DbObject extends ObjectUnique {
 	
 	/**
 	 * Load an object for the given Id.
-	 * If an equivalent object allready exists, the same instance will be returned
+	 * If an equivalent object allready exists, the function will check if it is deleted.
 	 * 
 	 * !! This class no longer supports is_array($mData) since it allowed to easily for
 	 * objects with incomplete row-data (such as default values).
 	 * 
 	 * @param DbTable $oTable
-	 * @param mixed $mData
+	 * @param mixed $mId
 	 * @param string $sIdFieldOverwrite
-	 * @return Object|null Will return null when unable to load designated object.
+	 * @return ObjectUnique|null Will return null when unable to load designated object.
 	 */
-	public static final function loadObject(DbTable $oTable, $mData, $sIdFieldOverwrite = null) {
-		$sKey = $oTable->getConnection()->getIdentifier() . $oTable->getTable() . $oTable->getIdField();
+	public static final function loadObject(DbTable $oTable, $mId, $sIdFieldOverwrite = null) {
+		$sKey = $oTable->getConnection()->getIdentifier() .'.'. $oTable->getTable() .'.'. $oTable->getIdField();
 		
-		if(!is_array($mData)) {
-			$sKey .= $mData;
-			$oInstance = static::getUniqueInstance($sKey);
-			if($oInstance) {
-				return $oInstance;
-			}
-			else {
-				$oStatement = $oTable->select($mData, $sIdFieldOverwrite);
-				if($oStatement->rowCount() > 0) {
-					return static::assureUniqueInstance($sKey, array($oTable, $oStatement->fetch(PDO::FETCH_ASSOC)));
-				}
+		$sKey .= '.'.$mId;
+		$oInstance = static::getUniqueInstance($sKey);
+		if(!$oInstance || $oInstance->m_bDeleted) {
+			$oStatement = $oTable->select($mId, $sIdFieldOverwrite);
+			if($oStatement->rowCount() > 0) {
+				$oInstance = $oInstance ?: static::assureUniqueInstance($sKey, array($oTable, $oStatement->fetch(PDO::FETCH_ASSOC)));
+				$oInstance->m_bDeleted = false;
 			}
 		}
 		
-		return null;
+		return $oInstance;
 	}
 	
 	/**
@@ -146,7 +145,7 @@ class DbObject extends ObjectUnique {
 	 * @see loadObject()
 	 * @param DbTable $oTable
 	 * @param array $aData
-	 * @return Object|null
+	 * @return ObjectUnique|null
 	 */
 	public static final function createObject(DbTable $oTable, array $aData) {
 		$nId = $oTable->insert($aData);
@@ -156,5 +155,16 @@ class DbObject extends ObjectUnique {
 		else {
 			return static::loadObject($oTable, $nId);
 		}
+	}
+	
+	/**
+	 * Generate the unique key for the given parameters.
+	 * 
+	 * @param DbTable $oTable
+	 * @param mixed $mId
+	 * @return string
+	 */
+	public static final function generateUniqueKey(DbTable $oTable, $mId) {
+		return $oTable->getConnection()->getIdentifier() .'.'. $oTable->getTable() .'.'. $oTable->getIdField() .'.' .$mId;
 	}
 }

@@ -1,7 +1,7 @@
 var searchData=
 [
   ['scheme',['scheme',['../class_request.html#a23d8c8dfb64e8f03ba857e83887a3f93',1,'Request']]],
-  ['select',['select',['../class_db_connection.html#ac0fd349a2a6521372a9b68eeb48e4fab',1,'DbConnection\select()'],['../class_db_table.html#a334c5f7b00fa6f0f0de832c086af4932',1,'DbTable\select()']]],
+  ['select',['select',['../class_db_connection.html#ac0fd349a2a6521372a9b68eeb48e4fab',1,'DbConnection\select()'],['../class_db_multi_table.html#ac39230ed0f7118105b0fc0bbc1104d99',1,'DbMultiTable\select()'],['../class_db_table.html#a334c5f7b00fa6f0f0de832c086af4932',1,'DbTable\select()']]],
   ['send',['send',['../class_web_request.html#a6e57fabfb9dfe3c8032d61c24174492b',1,'WebRequest']]],
   ['session',['session',['../class_request.html#af0d98675f85be7ee4fca80e18942693b',1,'Request']]],
   ['sessionguard',['SessionGuard',['../class_session_guard.html',1,'']]],
@@ -12,6 +12,7 @@ var searchData=
   ['setapisecret',['setApiSecret',['../class_base_facebook.html#afafa43cb0a481b084ae523a04e816016',1,'BaseFacebook']]],
   ['setappid',['setAppId',['../class_base_facebook.html#a4691675e86f0fdba08118a0a50d16999',1,'BaseFacebook']]],
   ['setappsecret',['setAppSecret',['../class_base_facebook.html#ac25a51d73a78e3d3308523fc03c93a05',1,'BaseFacebook']]],
+  ['setdatavalue',['setDataValue',['../class_db_multi_object.html#a3d1024edc48e66f484095d9a9ad77ff5',1,'DbMultiObject\setDataValue()'],['../class_db_object.html#a1cf703960ff6db11c765991c7a510bee',1,'DbObject\setDataValue()']]],
   ['setdefaultfilterlevel',['setDefaultFilterLevel',['../class_logger.html#a7af0235d7605c027e8fc05014c5e8a02',1,'Logger']]],
   ['setfileuploadsupport',['setFileUploadSupport',['../class_base_facebook.html#a9cd44296e92bd602f54c26d613decefc',1,'BaseFacebook']]],
   ['setfilter',['setFilter',['../class_logger.html#a54e5e4ead59460c6345d38ed4385e3fc',1,'Logger']]],
