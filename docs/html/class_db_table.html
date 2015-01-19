@@ -85,11 +85,14 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="class_db_table-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">DbTable Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Inherits ObjectUnique.</p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -107,12 +110,70 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:af8d3df2720582fd6394f2eaf955030a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af99ee163b2d017473d9cf9597fecb402"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_db_table.html#af99ee163b2d017473d9cf9597fecb402">delete</a> ($mId, $sIdFieldOverwrite=null)</td></tr>
 <tr class="separator:af99ee163b2d017473d9cf9597fecb402"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:af6489f03cec45214d6bf71d6b41c921c"><td class="memItemLeft" align="right" valign="top">static&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_db_table.html#af6489f03cec45214d6bf71d6b41c921c">assureUniqueDbTable</a> (<a class="el" href="class_db_connection.html">DbConnection</a> $oConnection, $sTable, $sIdField= 'ID')</td></tr>
+<tr class="separator:af6489f03cec45214d6bf71d6b41c921c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Serializable database table representation.</p>
+<div class="textblock"><p>None-serializable database table representation. Each row is identifiable by a single column.</p>
 <dl class="section author"><dt>Author</dt><dd>Jelle Voet </dd></dl>
-<dl class="section version"><dt>Version</dt><dd>0.2.1 </dd></dl>
+<dl class="section version"><dt>Version</dt><dd>0.3.0 </dd></dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="af6489f03cec45214d6bf71d6b41c921c"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static DbTable::assureUniqueDbTable </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_db_connection.html">DbConnection</a>&#160;</td>
+          <td class="paramname"><em>$oConnection</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>$sTable</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>$sIdField</em> = <code>'ID'</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">final</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Assure the existance of a single unique <a class="el" href="class_db_table.html">DbTable</a> instance.</p>
+<dl class="section see"><dt>See Also</dt><dd>DbTable::init() </dd>
+<dd>
+ObjectUnisue::assureUniqueInstance() </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramtype"><a class="el" href="class_db_connection.html">DbConnection</a></td><td class="paramname">$oConnection</td><td></td></tr>
+    <tr><td class="paramtype">string</td><td class="paramname">$sTable</td><td></td></tr>
+    <tr><td class="paramtype">string</td><td class="paramname">$sIdField</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="class_db_table.html">DbTable</a> </dd></dl>
+
+</div>
+</div>
 <a class="anchor" id="af99ee163b2d017473d9cf9597fecb402"></a>
 <div class="memitem">
 <div class="memproto">
@@ -141,11 +202,11 @@ Public Member Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramtype">mixed</td><td class="paramname">$mId</td><td></td></tr>
-    <tr><td class="paramtype">string</td><td class="paramname">$sIdFieldOverwrite</td><td></td></tr>
+    <tr><td class="paramtype">string</td><td class="paramname">$sIdFieldOverwrite</td><td>If not null, use this as IdField. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>int </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>false|int False if the query failed, or the number of affected rows. </dd></dl>
 
 </div>
 </div>
@@ -178,7 +239,7 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Retrieve the internal idField-name</p>
+<p>Retrieve the internal idField-name.</p>
 <dl class="section return"><dt>Returns</dt><dd>string </dd></dl>
 
 </div>
@@ -195,7 +256,7 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Retrieve the internal table-name</p>
+<p>Retrieve the internal table-name.</p>
 <dl class="section return"><dt>Returns</dt><dd>string </dd></dl>
 
 </div>
@@ -232,7 +293,7 @@ Public Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>mixed The value of the IdField (if it was given as an insert value), or the last-insert-id. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>false|mixed|int False if the query failed, the value of the IdField (if it was given as an insert value), or the last-insert-id. </dd></dl>
 
 </div>
 </div>
@@ -268,7 +329,7 @@ Public Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>PDOStatement </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>false|PDOStatement </dd></dl>
 
 </div>
 </div>
@@ -307,11 +368,11 @@ Public Member Functions</h2></td></tr>
   <table class="params">
     <tr><td class="paramtype">array</td><td class="paramname">$aValues</td><td></td></tr>
     <tr><td class="paramtype">mixed</td><td class="paramname">$mId</td><td></td></tr>
-    <tr><td class="paramtype">string</td><td class="paramname">$sIdFieldOverwrite</td><td></td></tr>
+    <tr><td class="paramtype">string</td><td class="paramname">$sIdFieldOverwrite</td><td>If not null, use this as IdField. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>boolean </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>false|int False if the query failed, or the number of affected rows. </dd></dl>
 
 </div>
 </div>
@@ -321,7 +382,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Dec 27 2014 18:55:26 for Watena by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Jan 19 2015 22:35:07 for Watena by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.4
 </small></address>

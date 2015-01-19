@@ -4,10 +4,10 @@
  * Each row is identifiable by a set of multiple columns
  * 
  * @author Jelle Voet
- * @version 0.2.1
+ * @version 0.3.0
  *
  */
-class DbMultiTable extends ObjectUnique {
+final class DbMultiTable extends ObjectUnique {
 
 	private $m_oConnection;
 	private $m_sTable;

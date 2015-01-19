@@ -4,7 +4,7 @@
  * Each row is identifiable by a single column.
  * 
  * @author Jelle Voet
- * @version 0.2.1
+ * @version 0.3.0
  */
 final class DbTable extends ObjectUnique {
 	

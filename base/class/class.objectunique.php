@@ -32,15 +32,30 @@ abstract class ObjectUnique extends Object implements Serializable {
 		throw new ObjectUniquenessException(get_class($this), 'You can\'t unserialize an instance of ObjectUnique.');
 	}
 	
-	public final static function setUniqueInstance($mId, ObjectUnique $oInstance) {
+	protected final static function updateUniqueInstance($mIdOld, $mIdNew) {
+		$oInstanceOld = self::getUniqueInstance($mIdOld);
+		$oInstanceNew = self::getUniqueInstance($mIdNew);
+		
+		if(!$oInstanceOld) {
+			throw new ObjectUniquenessException(get_called_class(), 'Requested class-id could not be updated since the old id doesn\'t exist.');
+		}
+		if($oInstanceNew) {
+			throw new ObjectUniquenessException(get_called_class(), 'Requested class-id could not be updated since the new id allready exist.');
+		}
+		
+		self::setUniqueInstance($mIdOld, $oInstanceNew);
+		self::setUniqueInstance($mIdNew, $oInstanceOld);
+	}
+	
+	protected final static function setUniqueInstance($mId, ObjectUnique $oInstance = null) {
 		array_assure(self::$s_aInstances, array(get_called_class(), $mId), $oInstance);
 	}
 	
-	public final static function getUniqueInstance($mId) {
+	protected final static function getUniqueInstance($mId) {
 		return array_value(self::$s_aInstances, array(get_called_class(), $mId));
 	}
 	
-	public final static function listUniqueInstances() {
+	protected final static function listUniqueInstances() {
 		return array_value(self::$s_aInstances, array(get_called_class()), array());
 	}
 	

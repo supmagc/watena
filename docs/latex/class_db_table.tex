@@ -1,6 +1,10 @@
 \hypertarget{class_db_table}{\section{Db\-Table Class Reference}
 \label{class_db_table}\index{Db\-Table@{Db\-Table}}
 }
+
+
+Inherits Object\-Unique.
+
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
@@ -18,20 +22,53 @@
 \item 
 \hyperlink{class_db_table_af99ee163b2d017473d9cf9597fecb402}{delete} (\$m\-Id, \$s\-Id\-Field\-Overwrite=null)
 \end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \hyperlink{class_db_table_af6489f03cec45214d6bf71d6b41c921c}{assure\-Unique\-Db\-Table} (\hyperlink{class_db_connection}{Db\-Connection} \$o\-Connection, \$s\-Table, \$s\-Id\-Field= 'I\-D')
+\end{DoxyCompactItemize}
 
 
 \subsection{Detailed Description}
-Serializable database table representation.
+None-\/serializable database table representation. Each row is identifiable by a single column.
 
 \begin{DoxyAuthor}{Author}
 Jelle Voet 
 \end{DoxyAuthor}
 \begin{DoxyVersion}{Version}
-0.\-2.\-1 
+0.\-3.\-0 
 \end{DoxyVersion}
 
 
 \subsection{Member Function Documentation}
+\hypertarget{class_db_table_af6489f03cec45214d6bf71d6b41c921c}{\index{Db\-Table@{Db\-Table}!assure\-Unique\-Db\-Table@{assure\-Unique\-Db\-Table}}
+\index{assure\-Unique\-Db\-Table@{assure\-Unique\-Db\-Table}!DbTable@{Db\-Table}}
+\subsubsection[{assure\-Unique\-Db\-Table}]{\setlength{\rightskip}{0pt plus 5cm}static Db\-Table\-::assure\-Unique\-Db\-Table (
+\begin{DoxyParamCaption}
+\item[{{\bf Db\-Connection}}]{\$o\-Connection, }
+\item[{}]{\$s\-Table, }
+\item[{}]{\$s\-Id\-Field = {\ttfamily 'ID'}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [final]}}}\label{class_db_table_af6489f03cec45214d6bf71d6b41c921c}
+Assure the existance of a single unique \hyperlink{class_db_table}{Db\-Table} instance.
+
+\begin{DoxySeeAlso}{See Also}
+Db\-Table\-::init() 
+
+Object\-Unisue\-::assure\-Unique\-Instance() 
+\end{DoxySeeAlso}
+
+\begin{DoxyParams}[1]{Parameters}
+\hyperlink{class_db_connection}{Db\-Connection} & {\em \$o\-Connection} & \\
+\hline
+string & {\em \$s\-Table} & \\
+\hline
+string & {\em \$s\-Id\-Field} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\hyperlink{class_db_table}{Db\-Table} 
+\end{DoxyReturn}
 \hypertarget{class_db_table_af99ee163b2d017473d9cf9597fecb402}{\index{Db\-Table@{Db\-Table}!delete@{delete}}
 \index{delete@{delete}!DbTable@{Db\-Table}}
 \subsubsection[{delete}]{\setlength{\rightskip}{0pt plus 5cm}Db\-Table\-::delete (
@@ -49,11 +86,11 @@ Delete a identifieable row from the table. If no id-\/field-\/overwrite is given
 \begin{DoxyParams}[1]{Parameters}
 mixed & {\em \$m\-Id} & \\
 \hline
-string & {\em \$s\-Id\-Field\-Overwrite} & \\
+string & {\em \$s\-Id\-Field\-Overwrite} & If not null, use this as Id\-Field. \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-int 
+false$|$int False if the query failed, or the number of affected rows. 
 \end{DoxyReturn}
 \hypertarget{class_db_table_a5fbb264a4424d8450832fedc9b862bbc}{\index{Db\-Table@{Db\-Table}!get\-Connection@{get\-Connection}}
 \index{get\-Connection@{get\-Connection}!DbTable@{Db\-Table}}
@@ -74,7 +111,7 @@ Retrieve the internal \hyperlink{class_db_connection}{Db\-Connection}.
 {}
 \end{DoxyParamCaption}
 )}}\label{class_db_table_ab1c8088aa73836eb9e5780ad734934fb}
-Retrieve the internal id\-Field-\/name
+Retrieve the internal id\-Field-\/name.
 
 \begin{DoxyReturn}{Returns}
 string 
@@ -86,7 +123,7 @@ string
 {}
 \end{DoxyParamCaption}
 )}}\label{class_db_table_a0fc18d6ecd6b2189d5ed239f19e08129}
-Retrieve the internal table-\/name
+Retrieve the internal table-\/name.
 
 \begin{DoxyReturn}{Returns}
 string 
@@ -112,7 +149,7 @@ string & {\em \$s\-Id\-Field\-Overwrite} & If not null, use this as Id\-Field. \
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-mixed The value of the Id\-Field (if it was given as an insert value), or the last-\/insert-\/id. 
+false$|$mixed$|$int False if the query failed, the value of the Id\-Field (if it was given as an insert value), or the last-\/insert-\/id. 
 \end{DoxyReturn}
 \hypertarget{class_db_table_a334c5f7b00fa6f0f0de832c086af4932}{\index{Db\-Table@{Db\-Table}!select@{select}}
 \index{select@{select}!DbTable@{Db\-Table}}
@@ -135,7 +172,7 @@ string & {\em \$s\-Id\-Field\-Overwrite} & If not null, use this as Id\-Field. \
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-P\-D\-O\-Statement 
+false$|$\-P\-D\-O\-Statement 
 \end{DoxyReturn}
 \hypertarget{class_db_table_af8d3df2720582fd6394f2eaf955030a6}{\index{Db\-Table@{Db\-Table}!update@{update}}
 \index{update@{update}!DbTable@{Db\-Table}}
@@ -157,11 +194,11 @@ array & {\em \$a\-Values} & \\
 \hline
 mixed & {\em \$m\-Id} & \\
 \hline
-string & {\em \$s\-Id\-Field\-Overwrite} & \\
+string & {\em \$s\-Id\-Field\-Overwrite} & If not null, use this as Id\-Field. \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-boolean 
+false$|$int False if the query failed, or the number of affected rows. 
 \end{DoxyReturn}
 
 

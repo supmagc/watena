@@ -24,6 +24,41 @@ class DbObjectSingleTest extends DbObject {
 	}
 }
 
+class DbObjectMultiTest extends DbMultiObject {
+
+	public function getNameNull() {
+		return $this->getDataValue('name_null');
+	}
+
+	public function setNameNull($sName) {
+		return $this->setDataValue('name_null', $sName);
+	}
+
+	public function getNameNotNull() {
+		return $this->getDataValue('name_notnull');
+	}
+
+	public function setNameNotNull($sName) {
+		return $this->setDataValue('name_notnull', $sName);
+	}
+	
+	public function getIdA() {
+		return $this->getDataValue('ID_A');
+	}
+
+	public function setIdA($nId) {
+		return $this->setDataValue('ID_A', $nId);
+	}
+	
+	public function getIdB() {
+		return $this->getDataValue('ID_B');
+	}
+	
+	public function setIdB($nId) {
+		return $this->setDataValue('ID_B', $nId);
+	}
+}
+
 class DatabaseManagerTest extends Test {
 	
 	private $m_oConnection;
@@ -108,12 +143,15 @@ class DatabaseManagerTest extends Test {
 		$this->assertEquals('dbnn'.$this->m_sRandomName, $oInstance->getNameNotNull());
 		$this->assertNull($oInstance->getNameNull());
 		
+		$this->assertEquals($oInstance, DbObjectSingleTest::loadObject($this->m_oTableSingle, 99));
+		
 		$oInstance->setId(101);
 		$oInstance->setNameNotNull('cdbnn'.$this->m_sRandomName);
 		$oInstance->setNameNull('cdbn'.$this->m_sRandomName);
 		
 		$oStatement = $this->m_oConnection->select('table_single', $oInstance->getId(), 'ID');
 		$aRow = $oStatement->fetch(PDO::FETCH_ASSOC);
+		$this->assertEquals($oStatement->rowCount(), 1);
 		
 		$this->assertEquals('101', $aRow['ID']);
 		$this->assertEquals(101, $oInstance->getId());
@@ -121,8 +159,6 @@ class DatabaseManagerTest extends Test {
 		$this->assertEquals('cdbn'.$this->m_sRandomName, $oInstance->getNameNull());
 		$this->assertEquals('cdbnn'.$this->m_sRandomName, $aRow['name_notnull']);
 		$this->assertEquals('cdbnn'.$this->m_sRandomName, $oInstance->getNameNotNull());
-		
-		$this->assertEquals($oStatement->rowCount(), 1);
 		
 		$this->assertFalse($oInstance->isDeleted());
 		$oInstance->delete();
@@ -195,11 +231,54 @@ class DatabaseManagerTest extends Test {
 	}
 	
 	public function testObjectMultiOperations() {
+		$oInstance = DbObjectMultiTest::createObject($this->m_oTableMulti, array(
+			'ID_A' => 1,
+			'ID_B' => 1,
+			'name_notnull' => 'dbnn'.$this->m_sRandomName,
+			'name_null' => null
+		));
+
+		$this->assertEquals('1', $oInstance->getIdA());
+		$this->assertEquals('1', $oInstance->getIdB());
+		$this->assertEquals('dbnn'.$this->m_sRandomName, $oInstance->getNameNotNull());
+		$this->assertNull($oInstance->getNameNull());
 		
+		$this->assertEquals($oInstance, DbObjectMultiTest::loadObject($this->m_oTableMulti, array(1, 1)));
+		
+		$oInstance->setIdA(2);
+		$oInstance->setIdB(2);
+		$oInstance->setNameNotNull('cdbnn'.$this->m_sRandomName);
+		$oInstance->setNameNull('cdbn'.$this->m_sRandomName);
+		
+		$oStatement = $this->m_oConnection->select('table_multi', array(2, 2), array('ID_A', 'ID_B'));
+		$aRow = $oStatement->fetch(PDO::FETCH_ASSOC);
+		$this->assertEquals($oStatement->rowCount(), 1);
+		
+		$this->assertEquals('2', $aRow['ID_A']);
+		$this->assertEquals('2', $aRow['ID_B']);
+		$this->assertEquals(2, $oInstance->getIdA());
+		$this->assertEquals(2, $oInstance->getIdB());
+		$this->assertEquals('cdbn'.$this->m_sRandomName, $aRow['name_null']);
+		$this->assertEquals('cdbn'.$this->m_sRandomName, $oInstance->getNameNull());
+		$this->assertEquals('cdbnn'.$this->m_sRandomName, $aRow['name_notnull']);
+		$this->assertEquals('cdbnn'.$this->m_sRandomName, $oInstance->getNameNotNull());
+		
+		$this->assertFalse($oInstance->isDeleted());
+		$oInstance->delete();
+		$this->assertTrue($oInstance->isDeleted());
 	}
 	
 	public function testObjectMultiFailedUpdate() {
-		
+		$oInstance = DbObjectMultiTest::createObject($this->m_oTableMulti, array(
+			'ID_A' => 1,
+			'ID_B' => 1,
+			'name_notnull' => 'dbnn'.$this->m_sRandomName,
+			'name_null' => null
+		));
+		$this->m_oConnection->query('DELETE FROM `table_multi` WHERE `ID_A` = 1 AND `ID_B` = 1');
+		$oInstance->setNameNull('cdbn'.$this->m_sRandomName);
+		$this->assertNull($oInstance->getNameNull());
+		$this->assertTrue($oInstance->isDeleted());
 	}
 	
 	public function teardown() {

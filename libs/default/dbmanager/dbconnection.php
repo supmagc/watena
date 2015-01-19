@@ -4,7 +4,7 @@
  * This class encapsulates a PDO object.
  * 
  * @author Jelle Voet
- * @version 0.2.1
+ * @version 0.3.0
  */
 final class DbConnection extends ObjectUnique {
 	
@@ -180,10 +180,12 @@ final class DbConnection extends ObjectUnique {
 	 * Select a rowfrom a specific table identified by a single or an array of ID field(s).
 	 * The variables $mId and $mIdField can be mixed. For more information see buildWhere()
 	 * 
+	 * If $mId or $mIdField is an array, the both must be (and of equal length). 
+	 * 
 	 * @see buildWhere()
 	 * @param string $sTable
-	 * @param mixed $mId
-	 * @param mixed $mIdField
+	 * @param mixed|array $mId
+	 * @param mixed|array $mIdField
 	 * @param string $sConcatenation
 	 * @return PDOStatement
 	 */
@@ -238,11 +240,13 @@ final class DbConnection extends ObjectUnique {
 	 * Update a row from a specific table identified by a single or an array of ID field(s).
 	 * The variables $mId and $mIdField can be mixed. For more information see buildWhere()
 	 * 
+	 * If $mId or $mIdField is an array, the both must be (and of equal length). 
+	 * 
 	 * @see buildWhere()
 	 * @param string $sTable
 	 * @param array $aData
-	 * @param mixed $mId
-	 * @param mixed $mIdField
+	 * @param mixed|array $mId
+	 * @param mixed|array $mIdField
 	 * @param string $sConcatenation
 	 * @return false|int False when unable to execute the query, or the number of changed rows.
 	 */
@@ -261,10 +265,12 @@ final class DbConnection extends ObjectUnique {
 	 * Update a row from a specific table identified by a single or an array of ID field(s).
 	 * The variables $mId and $mIdField can be mixed. For more information see buildWhere()
 	 * 
+	 * If $mId or $mIdField is an array, the both must be (and of equal length). 
+	 * 
 	 * @see buildWhere()
 	 * @param string $sTable
-	 * @param mixed $mId
-	 * @param mixed $mIdField
+	 * @param mixed|array $mId
+	 * @param mixed|array $mIdField
 	 * @param string $sConcatenation
 	 * @return false|int False when unable to execute the query, or the number of changed rows.
 	 */
@@ -283,7 +289,7 @@ final class DbConnection extends ObjectUnique {
 	 * The building is semi smart for binary comparisons ans 'null statements.
 	 * 
 	 * You can specify a single value for $mId and $mIdField, or you can
-	 * specify array values with equel count.
+	 * specify array values (none associative arrays) with equal count.
 	 * 
 	 * If the value in Id is null the comparison will become 'IS' or 'IS NOT'
 	 * 
@@ -293,8 +299,8 @@ final class DbConnection extends ObjectUnique {
 	 * >: Becomes > in the query
 	 * =: Becomes = in the query
 	 * 
-	 * @param mixed $mId
-	 * @param mixed $mIdField
+	 * @param mixed|array $mId
+	 * @param mixed|array $mIdField
 	 * @param string $sConcatenation
 	 * @return list(string, array) The where string | The replacement values
 	 */
