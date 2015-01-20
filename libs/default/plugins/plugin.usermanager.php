@@ -1,7 +1,7 @@
 <?php
 require_plugin('Socializer');
 require_plugin('DatabaseManager');
-require_includeonce(dirname(__FILE__) . '/../usermanager/index.php');
+require_includeonce(dirname(__FILE__) . '/../usermanager/usermanager.php');
 
 class UserManager extends Plugin {
 

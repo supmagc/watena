@@ -1,5 +1,5 @@
 <?php
-require_includeonce(dirname(__FILE__) . '/../oauth/index.php');
+require_includeonce(dirname(__FILE__) . '/../oauth/oauth.php');
 
 class OAuth extends Plugin {
 	
