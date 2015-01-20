@@ -211,7 +211,7 @@ class UserManager extends Plugin {
 		
 		$oUser = User::load(self::getUserIdByToken($sToken));
 		
-		return self::login($oUser, $sPassword)
+		return self::login($oUser, $sPassword);
 	}
 	
 	/**

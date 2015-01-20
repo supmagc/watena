@@ -2,15 +2,21 @@
 
 class UserSession extends DbMultiObject {
 	
-	public function load($mData) {
+	public static function getDbTable() {
+		return UserManager::getDatabaseConnection()->getMultiTable('user_session', array('userId', 'token'));
+	}
+	
+	public static function loadBySessionKey($mData) {
 		$oTable = UserManager::getDatabaseConnection()->getMultiTable('user_session', array('ID', 'token'), 'OR');
 		return DbObject::loadObject($sClass, $oTable, $mData)
 	}
 	
-	public function create(User $oUser) {
-		return DbMultiObject::createObject('UserSession', UserManager::getDatabaseConnection()->getMultiTable('user_session', array('userId', 'timestamp')), array(
+	public static function create(User $oUser) {
+		return self::createObject(self::getDbTable(), array(
 			'userId' => $oUser->getId(),
-			'timestamp' => Time::getSystemTimestamp()
+			'token' => $sToken,
+			'ip' => Request::ip(),
+			'useragent' => Request::useragent()
 		));
 	}
 }
