@@ -30,7 +30,8 @@ class Request {
 		'lastmodified' => null,
 		'etag' => null,
 		'detail' => '[GET] http://localhost/? (watena)',
-		'compression' => array()
+		'compression' => array(),
+		'ip' => '127.0.0.1'
 	);
 	
 	/**
@@ -111,6 +112,10 @@ class Request {
 		
 		if(!empty($_SERVER['REQUEST_METHOD'])) {
 			self::$s_aData['method'] = Encoding::toUpper($_SERVER['REQUEST_METHOD']);
+		}
+
+		if(!empty($_SERVER['REMOTE_ADDR'])) {
+			self::$s_aData['ip'] = $_SERVER['REMOTE_ADDR'];
 		}
 		
 		$sBuilder = self::$s_aData['scheme'] . '://' . self::$s_aData['host_http'];
@@ -339,6 +344,15 @@ class Request {
 	 */
 	public final static function compressionSupport($sCompression) {
 		return in_array(Encoding::toLower($sCompression), self::$s_aData['compression']);
+	}
+	
+	/**
+	 * Retrieve the remote ip adress for the current request.
+	 * 
+	 * @return string
+	 */
+	public final static function ip() {
+		return self::$s_aData['ip'];
 	}
 	
 	/**
