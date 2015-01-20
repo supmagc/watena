@@ -6,9 +6,8 @@ class UserSession extends DbMultiObject {
 		return UserManager::getDatabaseConnection()->getMultiTable('user_session', array('userId', 'token'));
 	}
 	
-	public static function loadBySessionKey($mData) {
-		$oTable = UserManager::getDatabaseConnection()->getMultiTable('user_session', array('ID', 'token'), 'OR');
-		return DbObject::loadObject($sClass, $oTable, $mData)
+	public static function load(User $oUser, $sToken) {
+		return self::loadObject(self::getTable(), array($oUser->getId(), $sToken));
 	}
 	
 	public static function create(User $oUser) {
