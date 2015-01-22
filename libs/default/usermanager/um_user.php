@@ -3,6 +3,7 @@
 class User extends UserManagerVerifiable {
 	
 	private $m_aConnections = null;
+	private $m_aSessions = null;
 	private $m_aEmails = null;
 	
 	public function hasPassword() {
@@ -180,13 +181,45 @@ class User extends UserManagerVerifiable {
 		}
 	}
 	
+	public function getSessions() {
+		if($this->m_aSessions === null) {
+			$this->m_aSessions = array();
+			$oStatement = UserManager::getDatabaseConnection()->select('user_session', $this->getId(), 'userId');
+			foreach($oStatement as $aData) {
+				$oSession = UserSession::load($this, $aData);
+				$this->m_aSessions[$oSession->getToken()] = $oSession;
+			}
+		}
+		return $this->m_aSessions;
+	}
+	
+	public function getSession($sToken) {
+		$this->getSessions();
+		$sToken = Encoding::toLower($sToken);
+		return isset($this->m_aSessions[$sToken]) ? $this->m_aSessions[$sToken] : false;
+	}
+	
+	public function createSession($sIp, $sUserAgent) {
+		$oSession = UserSession::create($this, $sIp, $sUserAgent);
+		$this->getSessions();
+		$this->m_aSessions[$oSession->getToken()] = $oSession;
+	}
+	
+	public function removeSession(UserSession $oSession) {
+		// TODO
+	}
+	
+	public function removeSessions() {
+		// TODO
+	}
+	
 	public function encodePassword($mValue) {
 		$sHash = Encoding::substring($this->getHash(), ($this->getId() / 3) % 16, ($this->getId() / 2) % 16);
 		$sData = sprintf('%s.%s.%s', $this->getId(), $mValue, $sHash);
 		return md5($sData);
 	}
 	
-	public static function load($mData) {
+	public static function load($nId) {
 		return DbObject::loadObject('User', UserManager::getDatabaseConnection()->getTable('user'), $mData);
 	}
 	
