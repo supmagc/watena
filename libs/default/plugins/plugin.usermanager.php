@@ -73,16 +73,6 @@ class UserManager extends Plugin {
 	}
 	
 	/**
-	 * @return User|null
-	 */
-	public static function getLoggedInUser() {
-		if(self::$s_oLoggedInUser === false && isset($_SESSION['USERID']) && $_SESSION['USERID']) {
-			self::$s_oLoggedInUser = User::load($_SESSION['USERID']);
-		}
-		return self::$s_oLoggedInUser;
-	}
-	
-	/**
 	 * @param string $sName
 	 * @return int|false
 	 */	
@@ -138,8 +128,8 @@ class UserManager extends Plugin {
 		return $nPermission >= 0 && $nPermission <= 2;
 	}
 	
-	public static function isValidToken($sSessionToken) {
-		return true;
+	public static function isValidToken($sToken) {
+		return Encoding::regMatch('^[a-z0-9]{16}$', $sToken);
 	}
 	
 	/**
@@ -204,7 +194,13 @@ class UserManager extends Plugin {
 		return self::Login($oUser, $sPassword);
 	}
 	
+	public static function loginBySession($sSession) {
+		
+	}
+	
 	public static function loginByToken($sToken) {
+		
+		$nUserId = self::getUserIdByToken($sToken);
 		// Check the validity of the token
 		if(!UserManager::isValidToken($sToken))
 			throw new UserTokenInvalidException($sToken);
@@ -239,7 +235,10 @@ class UserManager extends Plugin {
 		if(!UserManager::isValidPassword($sPassword) || !$oUser->verifyPassword($sPassword))
 			throw new UserInvalidPasswordException($sPassword);
 
-		self::setLoggedInUser($oUser);
+		// Create a valid session
+		self::setLoggedInUser($oSession);
+		
+		// Retrieve the user
 		return $oUser;
 	}
 
@@ -287,11 +286,34 @@ class UserManager extends Plugin {
 	 * 
 	 * @param User $oUser
 	 */
-	public static function setLoggedInUser(User $oUser = null) {
-		if(self::$s_oLoggedInUser != $oUser) {
+	public static function setLoggedInUser(User $oUser = null, $bRemember = false) {
+		if($oUser) {
+			$oSession = $oUser->createSession(Request::ip(), Request::useragent());
+	
+			$sSessionKey = $oUser->getId() . '.' . $oSession->getToken();
+			$sSessionKeyHash = md5($sSessionKey . '.' . $oUser->getHash());
+			$sSessionKey .= '.' . $sSessionKeyHash;
+			
 			self::$s_oLoggedInUser = $oUser;
+			$_SESSION['USER'] = $sSessionKey;
+			if($bRemember) {
+				
+			}
 		}
-		$_SESSION['USERID'] = $oUser ? $oUser->getId() : 0;
+		else {
+			self::$s_oLoggedInUser = null;
+			unset($_SESSION['USER']);
+		}
+	}
+
+	/**
+	 * @return User|null
+	 */
+	public static function getLoggedInUser() {
+		if(self::$s_oLoggedInUser === false && isset($_SESSION['USERID']) && $_SESSION['USERID']) {
+			self::$s_oLoggedInUser = User::load($_SESSION['USERID']);
+		}
+		return self::$s_oLoggedInUser;
 	}
 	
 	/**
