@@ -63,6 +63,10 @@ class WatenaConfig {
 	public function webRoot() {
 		return $this->m_aConfig['webroot'];
 	}
+
+	public function domain() {
+		return $this->m_aConfig['domain'];
+	}
 	
 	public function cacheEngine() {
 		return $this->m_aConfig['cachengine'];		

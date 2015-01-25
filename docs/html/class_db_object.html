@@ -114,6 +114,8 @@ Public Member Functions</h2></td></tr>
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a34b933c020ec318e268ba64ed65f5b9f"><td class="memItemLeft" align="right" valign="top">static&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_db_object.html#a34b933c020ec318e268ba64ed65f5b9f">loadObject</a> (<a class="el" href="class_db_table.html">DbTable</a> $oTable, $mId, $sIdFieldOverwrite=null)</td></tr>
 <tr class="separator:a34b933c020ec318e268ba64ed65f5b9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a75eacf385371fb1d558ab6e3361d9b3d"><td class="memItemLeft" align="right" valign="top">static&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_db_object.html#a75eacf385371fb1d558ab6e3361d9b3d">loadObjectList</a> (<a class="el" href="class_db_table.html">DbTable</a> $oTable, PDOStatement $oStatement)</td></tr>
+<tr class="separator:a75eacf385371fb1d558ab6e3361d9b3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a48c2d33c43e6f0b68b4e7dcde9cd8c12"><td class="memItemLeft" align="right" valign="top">static&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_db_object.html#a48c2d33c43e6f0b68b4e7dcde9cd8c12">createObject</a> (<a class="el" href="class_db_table.html">DbTable</a> $oTable, array $aData)</td></tr>
 <tr class="separator:a48c2d33c43e6f0b68b4e7dcde9cd8c12"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8b9c9c2300e93e1e84b08c90a20d651d"><td class="memItemLeft" align="right" valign="top">static&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_db_object.html#a8b9c9c2300e93e1e84b08c90a20d651d">generateUniqueKey</a> (<a class="el" href="class_db_table.html">DbTable</a> $oTable, $mId)</td></tr>
@@ -427,6 +429,55 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a75eacf385371fb1d558ab6e3361d9b3d"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static DbObject::loadObjectList </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_db_table.html">DbTable</a>&#160;</td>
+          <td class="paramname"><em>$oTable</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">PDOStatement&#160;</td>
+          <td class="paramname"><em>$oStatement</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">final</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Scan for valid records through the given PDOStatement. You need to make sure teh rows are full representations of the table data, and have a valid Id matching $oTable-&gt;getIdField().</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramtype"><a class="el" href="class_db_table.html">DbTable</a></td><td class="paramname">$oTable</td><td></td></tr>
+    <tr><td class="paramtype">PDOStatement</td><td class="paramname">$oStatement</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">DbInvalidDbObjectId</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>array&lt;DbObject&gt; </dd></dl>
+
+</div>
+</div>
 <a class="anchor" id="a1cf703960ff6db11c765991c7a510bee"></a>
 <div class="memitem">
 <div class="memproto">
@@ -477,7 +528,7 @@ Protected Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Jan 19 2015 22:35:06 for Watena by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Jan 25 2015 21:31:40 for Watena by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.4
 </small></address>

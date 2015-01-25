@@ -38,7 +38,8 @@ class Watena extends Object {
 		
 		// Init some static classes
 		Encoding::init($this->getConfig()->charset());
-		Request::init();
+		Cookies::init($this->getConfig()->domain(), $this->getConfig()->webRoot());
+		Request::init($this->getConfig()->domain(), $this->getConfig()->webRoot());
 		Time::init($this->getConfig()->timeZone(), $this->getConfig()->timeFormat());
 				
 		// Create a default context and default cache
@@ -282,7 +283,7 @@ class Watena extends Object {
 	public final function validate() {
 		// Check data folder
 		if(!is_writable(PATH_DATA)) {
-			$this->getLogger()->warning("The data folder '".PATH_DATA."' should be writable.");
+			$this->getLogger()->warning("The data folder should be writable.", array('path' => PATH_DATA));
 		}
 		
 		// Check compression and zlib settings
@@ -293,8 +294,19 @@ class Watena extends Object {
 			}
 		}
 		
+		// Check php version
 		if(version_compare(PHP_VERSION, '5.3.0') < 0) {
 			$this->getLogger()->warning("PHP's version should be at least 5.3.0.");
+		}
+		
+		// Check config domain
+		if(!Encoding::endsWith(Request::host(), $this->getConfig()->domain())) {
+			$this->getLogger()->warning("Config domain values does not match request host.", array('domain' => $this->getConfig()->domain(), 'host' => Request::host()));
+		}
+		
+		// Check config offset/webroot
+		if(Request::offset() != $this->getConfig()->webRoot()) {
+			$this->getLogger()->warning("Config webroot values does not match request offset.", array('webroot' => $this->getConfig()->webRoot(), 'offset' => Request::offset()));
 		}
 	}
 }

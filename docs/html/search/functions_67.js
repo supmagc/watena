@@ -68,7 +68,7 @@ var searchData=
   ['getsignedrequest',['getSignedRequest',['../class_base_facebook.html#adf3c753e09842db169309daf8713d17a',1,'BaseFacebook']]],
   ['getsignedrequestcookiename',['getSignedRequestCookieName',['../class_base_facebook.html#a67b1b4b1b2337a342ed03aa0a8f91ec5',1,'BaseFacebook']]],
   ['getsslcertificate',['getSslCertificate',['../class_web_request.html#afd9c2126ba8a100b62593aa2401b9398',1,'WebRequest']]],
-  ['gettable',['getTable',['../class_db_connection.html#a9d5cbd5705cb5474feee805cc5df642c',1,'DbConnection\getTable()'],['../class_db_multi_object.html#a3180cf2d5df3802306fb32c80e6b2ae2',1,'DbMultiObject\getTable()'],['../class_db_multi_table.html#ab2315d078fcfbc53238517f49754e919',1,'DbMultiTable\getTable()'],['../class_db_object.html#ab927f1a5cac1905a0be1452d0ef76aac',1,'DbObject\getTable()'],['../class_db_table.html#a0fc18d6ecd6b2189d5ed239f19e08129',1,'DbTable\getTable()']]],
+  ['gettable',['getTable',['../class_db_connection.html#a3f2b3ebb47cfb2291f02eb8d48fc4d07',1,'DbConnection\getTable()'],['../class_db_multi_object.html#a3180cf2d5df3802306fb32c80e6b2ae2',1,'DbMultiObject\getTable()'],['../class_db_multi_table.html#ab2315d078fcfbc53238517f49754e919',1,'DbMultiTable\getTable()'],['../class_db_object.html#ab927f1a5cac1905a0be1452d0ef76aac',1,'DbObject\getTable()'],['../class_db_table.html#a0fc18d6ecd6b2189d5ed239f19e08129',1,'DbTable\getTable()']]],
   ['gettemplateclassforfilepath',['getTemplateClassForFilePath',['../class_template_file.html#a1d9196fa579b962fb725833326d4fa28',1,'TemplateFile']]],
   ['gettemplateclassname',['getTemplateClassName',['../class_i_p_c_o.html#ae0e86b06b253b50ff01d37f9c190f046',1,'IPCO']]],
   ['gettext',['getText',['../classhtml2text.html#a160a9753434e61b3ff460860ca820c6d',1,'html2text']]],

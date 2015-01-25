@@ -37,7 +37,7 @@ class Request {
 	/**
 	 * Initialize and cache the correct values for the current request.
 	 */
-	public final static function init() {
+	public final static function init($sDomain, $sWebRoot) {
 		if(!empty($_SERVER['HTTP_USER_AGENT'])) {
 			if(empty($_SESSION['HTTP_USER_AGENT'])) {
 				self::$s_aData['useragent'] = $_SERVER['HTTP_USER_AGENT'];
@@ -62,27 +62,23 @@ class Request {
 		}
 		
 		if(!empty($_SERVER['PHP_AUTH_PW'])) {
-			self::$s_aData['user'] = $_SERVER['PHP_AUTH_PW'];
+			self::$s_aData['password'] = $_SERVER['PHP_AUTH_PW'];
 		}
 		
 		if(!empty($_SERVER['HTTP_HOST'])) {
 			self::$s_aData['host_http'] = $_SERVER['HTTP_HOST'];
 			if(empty( $_SERVER['SERVER_NAME']))
-				self::$s_aData['host_server'] = $_SERVER['HTTP_HOST'];
+				self::$s_aData['host_http'] = $_SERVER['HTTP_HOST'];
 		}
 		
 		if(!empty($_SERVER['SERVER_NAME'])) {
 			self::$s_aData['host_server'] = $_SERVER['SERVER_NAME'];
-			if(empty( $_SERVER['HTTP_HOST']))
+			if(empty($_SERVER['HTTP_HOST']))
 				self::$s_aData['host_server'] = $_SERVER['SERVER_NAME'];
 		}
 		
 		if(!empty($_SERVER['SERVER_PORT'])) {
 			self::$s_aData['port'] = $_SERVER['SERVER_PORT'];
-		}
-		
-		if(!empty($_SERVER['DOCUMENT_ROOT'])) {
-			self::$s_aData['offset'] = Encoding::replace('\\', '/', Encoding::substring(PATH_ROOT, Encoding::length($_SERVER['DOCUMENT_ROOT'])));
 		}
 		
 		if(!empty($_SERVER['HTTP_IF_MODIFIED_SINCE'])) {
@@ -107,7 +103,9 @@ class Request {
 		else if(isset($_SERVER['PHP_SELF'])) {
 			$sPath = $_SERVER['PHP_SELF'];
 		}
-		self::$s_aData['path'] = Encoding::substring($sPath, Encoding::length(self::offset()));
+			
+		self::$s_aData['offset'] = Encoding::substring($sPath, 0, Encoding::length($sWebRoot));
+		self::$s_aData['path'] = Encoding::substring($sPath, Encoding::length($sWebRoot));
 		self::$s_aData['mapping'] = explode_trim('/', self::$s_aData['path']);
 		
 		if(!empty($_SERVER['REQUEST_METHOD'])) {

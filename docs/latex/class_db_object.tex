@@ -27,6 +27,8 @@ Inherited by File, Group, Group\-Permission, Permission, User\-Connection, User\
 \item 
 static \hyperlink{class_db_object_a34b933c020ec318e268ba64ed65f5b9f}{load\-Object} (\hyperlink{class_db_table}{Db\-Table} \$o\-Table, \$m\-Id, \$s\-Id\-Field\-Overwrite=null)
 \item 
+static \hyperlink{class_db_object_a75eacf385371fb1d558ab6e3361d9b3d}{load\-Object\-List} (\hyperlink{class_db_table}{Db\-Table} \$o\-Table, P\-D\-O\-Statement \$o\-Statement)
+\item 
 static \hyperlink{class_db_object_a48c2d33c43e6f0b68b4e7dcde9cd8c12}{create\-Object} (\hyperlink{class_db_table}{Db\-Table} \$o\-Table, array \$a\-Data)
 \item 
 static \hyperlink{class_db_object_a8b9c9c2300e93e1e84b08c90a20d651d}{generate\-Unique\-Key} (\hyperlink{class_db_table}{Db\-Table} \$o\-Table, \$m\-Id)
@@ -204,6 +206,31 @@ string & {\em \$s\-Id\-Field\-Overwrite} & \\
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
 Object\-Unique$|$null Will return null when unable to load designated object. 
+\end{DoxyReturn}
+\hypertarget{class_db_object_a75eacf385371fb1d558ab6e3361d9b3d}{\index{Db\-Object@{Db\-Object}!load\-Object\-List@{load\-Object\-List}}
+\index{load\-Object\-List@{load\-Object\-List}!DbObject@{Db\-Object}}
+\subsubsection[{load\-Object\-List}]{\setlength{\rightskip}{0pt plus 5cm}static Db\-Object\-::load\-Object\-List (
+\begin{DoxyParamCaption}
+\item[{{\bf Db\-Table}}]{\$o\-Table, }
+\item[{P\-D\-O\-Statement}]{\$o\-Statement}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [final]}}}\label{class_db_object_a75eacf385371fb1d558ab6e3361d9b3d}
+Scan for valid records through the given P\-D\-O\-Statement. You need to make sure teh rows are full representations of the table data, and have a valid Id matching \$o\-Table-\/$>$get\-Id\-Field().
+
+
+\begin{DoxyParams}[1]{Parameters}
+\hyperlink{class_db_table}{Db\-Table} & {\em \$o\-Table} & \\
+\hline
+P\-D\-O\-Statement & {\em \$o\-Statement} & \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em Db\-Invalid\-Db\-Object\-Id} & \\
+\hline
+\end{DoxyExceptions}
+\begin{DoxyReturn}{Returns}
+array$<$\-Db\-Object$>$ 
 \end{DoxyReturn}
 \hypertarget{class_db_object_a1cf703960ff6db11c765991c7a510bee}{\index{Db\-Object@{Db\-Object}!set\-Data\-Value@{set\-Data\-Value}}
 \index{set\-Data\-Value@{set\-Data\-Value}!DbObject@{Db\-Object}}

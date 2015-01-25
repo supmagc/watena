@@ -42,12 +42,12 @@ class UserSession extends DbMultiObject {
 		$this->setDataValue('ip', $sIp);
 	}
 
-	public function getUserAgentp() {
+	public function getUseragent() {
 		return $this->getDataValue('useragent');
 	}
 	
-	public function setUserAgen($sUserAgent) {
-		$this->setDataValue('useragent', $sUserAgent);
+	public function setUseragent($sUseragent) {
+		$this->setDataValue('useragent', $sUseragent);
 	}
 	
 	public static function getDbTable() {
