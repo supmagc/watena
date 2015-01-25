@@ -220,11 +220,11 @@ class User extends UserManagerVerifiable {
 	}
 	
 	public static function load($nId) {
-		return DbObject::loadObject('User', UserManager::getDatabaseConnection()->getTable('user'), $mData);
+		return self::loadObject(UserManager::getDatabaseConnection()->getTable('user'), $nId);
 	}
 	
 	public static function create($sName, $bVerified = false) {
-		return DbObject::createObject('User', UserManager::getDatabaseConnection()->getTable('user'), array(
+		return self::createObject(UserManager::getDatabaseConnection()->getTable('user'), array(
 			'name' => $sName,
 			'hash' => md5(mt_rand() . $sName . microtime()),
 			'verified' => $bVerified ? 1 : 0

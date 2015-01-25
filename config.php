@@ -25,7 +25,8 @@ $conf = array();
 #
 $conf['default'] = array();
 $conf['testing'] = array();
-$conf['product'] = array();
+$conf['deploy'] = array();
+$conf['local'] = array();
 
 #
 # The libraries that will be loaded and used.
@@ -95,19 +96,47 @@ $conf['default']['logprocessors'] = array();
 
 #
 # The webroot offset of the watena install.
+# Minimum values should be '/'
 #
-$conf['default']['webroot'] = 'watena';
+$conf['default']['webroot'] = '/watena';
 
+#
+# The default host/domain for this installation.
+#
+$conf['default']['domain'] = 'localhost';
+
+#
+# Enable the debugging features by default when no other flags are found.
+#
 $conf['default']['debugdefault'] = false;
 $conf['testing']['debugdefault'] = true;
 $conf['local']['debugdefault'] = true;
 
+#
+# Enable the debugging features when a constant 'DEBUG' can be found.
+# ex: define('DEBUG', 1);
+#
 $conf['default']['debugdefine'] = false;
 
+#
+# Enable the debugging features when a session variable 'DEBUG' can be found
+# ex: $_SESSION['DEBUG'] = 1;
+#
 $conf['default']['debugsession'] = false;
 
+#
+# Enable the debugging features when a request variable 'DEBUG' can be found.
+# This can be POST, GET, or COOKIE data.
+# ex: $_REQUEST['DEBUG'] = 1;
+# ex: $_COOKIE['DEBUG'] = 1;
+# ex: $_POST['DEBUG'] = 1;
+# ex: $_GET['DEBUG'] = 1;
+#
 $conf['default']['debugrequest'] = false;
 
+#
+# Try to use output compression when supported by the client.
+#
 $conf['default']['compression'] = true;
 
 #

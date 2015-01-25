@@ -4,7 +4,7 @@
 \subsection*{Static Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-static \hyperlink{class_request_a0552dcea819c77f239bb6db060e17b47}{init} ()
+static \hyperlink{class_request_ad2df001b0d7ea719c0ca7eba41584c76}{init} (\$s\-Domain, \$s\-Web\-Root)
 \item 
 static \hyperlink{class_request_a8d58147bb9572424021c44b0ebb3f85a}{is\-Http} ()
 \item 
@@ -40,6 +40,8 @@ static \hyperlink{class_request_abe8f53d7d11ac4eaa65928a1f8adee77}{compressions}
 \item 
 static \hyperlink{class_request_a8cbc39d7e3f77bd7ed2000e59f2859f7}{compression\-Support} (\$s\-Compression)
 \item 
+static \hyperlink{class_request_a33ed2fbae1b50885c916a3b0041ed9e6}{ip} ()
+\item 
 static \hyperlink{class_request_aced74b3005542537ca7f3b4592545cbb}{last\-Modified} ()
 \item 
 static \hyperlink{class_request_ac55d4834ecde0026dfacef5d9545a29c}{e\-Tag} ()
@@ -59,7 +61,7 @@ static \hyperlink{class_request_a865d084fee04c82e9704b1144e5b4c84}{make} (\$s\-P
 
 
 \subsection{Detailed Description}
-This class hold the request data for the current request. Before using it, you should make sure to call \hyperlink{class_request_a0552dcea819c77f239bb6db060e17b47}{Request\-::init()}. If this class is used as part of Watena, this will be done for you.
+This class hold the request data for the current request. Before using it, you should make sure to call \hyperlink{class_request_ad2df001b0d7ea719c0ca7eba41584c76}{Request\-::init()}. If this class is used as part of Watena, this will be done for you.
 
 \begin{DoxyAuthor}{Author}
 Jelle Voet 
@@ -221,14 +223,27 @@ boolean & {\em \$b\-Server} & Set to true if you want the internal server-\/name
 \begin{DoxyReturn}{Returns}
 string Returns lowercase \$\-\_\-\-S\-E\-R\-V\-E\-R\mbox{[}'H\-T\-T\-P\-\_\-\-H\-O\-S\-T'\mbox{]} or \$\-\_\-\-S\-E\-R\-V\-E\-R\mbox{[}'S\-E\-R\-V\-E\-R\-\_\-\-N\-A\-M\-E'\mbox{]}. (default\-: localhost) 
 \end{DoxyReturn}
-\hypertarget{class_request_a0552dcea819c77f239bb6db060e17b47}{\index{Request@{Request}!init@{init}}
+\hypertarget{class_request_ad2df001b0d7ea719c0ca7eba41584c76}{\index{Request@{Request}!init@{init}}
 \index{init@{init}!Request@{Request}}
 \subsubsection[{init}]{\setlength{\rightskip}{0pt plus 5cm}static Request\-::init (
 \begin{DoxyParamCaption}
+\item[{}]{\$s\-Domain, }
+\item[{}]{\$s\-Web\-Root}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [final]}}}\label{class_request_ad2df001b0d7ea719c0ca7eba41584c76}
+Initialize and cache the correct values for the current request. \hypertarget{class_request_a33ed2fbae1b50885c916a3b0041ed9e6}{\index{Request@{Request}!ip@{ip}}
+\index{ip@{ip}!Request@{Request}}
+\subsubsection[{ip}]{\setlength{\rightskip}{0pt plus 5cm}static Request\-::ip (
+\begin{DoxyParamCaption}
 {}
 \end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [final]}}}\label{class_request_a0552dcea819c77f239bb6db060e17b47}
-Initialize and cache the correct values for the current request. \hypertarget{class_request_a8d58147bb9572424021c44b0ebb3f85a}{\index{Request@{Request}!is\-Http@{is\-Http}}
+)\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [final]}}}\label{class_request_a33ed2fbae1b50885c916a3b0041ed9e6}
+Retrieve the remote ip adress for the current request.
+
+\begin{DoxyReturn}{Returns}
+string 
+\end{DoxyReturn}
+\hypertarget{class_request_a8d58147bb9572424021c44b0ebb3f85a}{\index{Request@{Request}!is\-Http@{is\-Http}}
 \index{is\-Http@{is\-Http}!Request@{Request}}
 \subsubsection[{is\-Http}]{\setlength{\rightskip}{0pt plus 5cm}static Request\-::is\-Http (
 \begin{DoxyParamCaption}

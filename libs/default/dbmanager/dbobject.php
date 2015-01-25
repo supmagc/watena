@@ -122,9 +122,7 @@ class DbObject extends ObjectUnique {
 	 * @return ObjectUnique|null Will return null when unable to load designated object.
 	 */
 	public static final function loadObject(DbTable $oTable, $mId, $sIdFieldOverwrite = null) {
-		$sKey = $oTable->getConnection()->getIdentifier() .'.'. $oTable->getTable() .'.'. $oTable->getIdField();
-		
-		$sKey .= '.'.$mId;
+		$sKey = self::generateUniqueKey($oTable, $mId);
 		$oInstance = static::getUniqueInstance($sKey);
 		if(!$oInstance || $oInstance->m_bDeleted) {
 			$oStatement = $oTable->select($mId, $sIdFieldOverwrite);
@@ -136,6 +134,29 @@ class DbObject extends ObjectUnique {
 		
 		return $oInstance;
 	}
+	
+	/**
+	 * Scan for valid records through the given PDOStatement.
+	 * You need to make sure teh rows are full representations of the table data, and have
+	 * a valid Id matching $oTable->getIdField().
+	 * 
+	 * @param DbTable $oTable
+	 * @param PDOStatement $oStatement
+	 * @throws DbInvalidDbObjectId
+	 * @return array<DbObject>
+	 */
+	public static final function loadObjectList(DbTable $oTable, PDOStatement $oStatement) {
+		$aReturn = array();
+		foreach($oStatement as $aRow) {
+			if(!isset($aRow[$oTable->getIdField()]))
+				throw new DbInvalidDbObjectId($oTable);
+			
+			$mId = $aRow[$oTable->getIdField()];
+			$sKey = self::generateUniqueKey($oTable, $mId);
+			$aReturn[$mId] = static::assureUniqueInstance($sKey, array($oTable, $aRow));
+		}
+		return $aReturn;
+	} 
 	
 	/**
 	 * Create a new object by first inserting the given data, and by calling loadObject next.

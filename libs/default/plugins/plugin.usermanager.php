@@ -11,7 +11,7 @@ class UserManager extends Plugin {
 	
 	private $m_aConnectionProviders = null;
 	private $m_oDatabaseConnection = null;
-	private static $s_oLoggedInUser = false;
+	private static $s_oActiveSession = false;
 	private static $s_oSingleton;
 	
 	public function make(array $aMembers) {
@@ -236,7 +236,7 @@ class UserManager extends Plugin {
 			throw new UserInvalidPasswordException($sPassword);
 
 		// Create a valid session
-		self::setLoggedInUser($oSession);
+		self::setLoggedInUser($oUser);
 		
 		// Retrieve the user
 		return $oUser;
@@ -294,26 +294,68 @@ class UserManager extends Plugin {
 			$sSessionKeyHash = md5($sSessionKey . '.' . $oUser->getHash());
 			$sSessionKey .= '.' . $sSessionKeyHash;
 			
-			self::$s_oLoggedInUser = $oUser;
+			self::$s_oActiveSession = $oSession;
 			$_SESSION['USER'] = $sSessionKey;
 			if($bRemember) {
-				
+				Cookies::save('USER', $sSessionKey);
 			}
 		}
 		else {
-			self::$s_oLoggedInUser = null;
+			self::$s_oActiveSession = null;
 			unset($_SESSION['USER']);
+			Cookies::reset('USER');
 		}
+	}
+	
+	/**
+	 * Return the currently active user-session.
+	 * The first time, this function will look for a valid user-session-key
+	 * within $_SESSION and $_COOKIE (in that order).
+	 * 
+	 * @return UserSession|null
+	 */
+	public static function getActiveSession() {
+		if(self::$s_oActiveSession === false) {
+			$sSessionKey = '';
+			if(isset($_SESSION['USER'])) {
+				$sSessionKey = $_SESSION['USER'];
+			}
+			else if(isset($_COOKIE['USER'])) {
+				$sSessionKey = $_COOKIE['USER'];
+			}
+				
+			self::$s_oActiveSession = null;
+			if($sSessionKey) {
+				$aSessionParts = explode('.', $sSessionKey);
+				$nUserId = $aSessionParts[0];
+				$sToken = $aSessionParts[1];
+				$sHash = $aSessionParts[2];
+		
+				$oUser = User::load($nUserId);
+				if($oUser && md5($nUserId . '.' . $sToken . '.' . $oUser->getHash()) == $sHash) {
+					$oSession = UserSession::load($oUser, $sToken);
+					if($oSession) {
+						$oSession->setIp(Request::ip());
+						$oSession->setUseragent(Request::useragent());
+						$oSession->setActivity(Time::getUtcTime());
+						self::$s_oActiveSession = $oSession;
+					}
+				}
+			}
+		}
+		return self::$s_oActiveSession;
+		
 	}
 
 	/**
+	 * Return the user linked to the currently active session.
+	 * 
+	 * @see getActiveSession()
 	 * @return User|null
 	 */
 	public static function getLoggedInUser() {
-		if(self::$s_oLoggedInUser === false && isset($_SESSION['USERID']) && $_SESSION['USERID']) {
-			self::$s_oLoggedInUser = User::load($_SESSION['USERID']);
-		}
-		return self::$s_oLoggedInUser;
+		$oSession = self::getActiveSession();
+		return $oSession ? $oSession->getUser() : null;
 	}
 	
 	/**

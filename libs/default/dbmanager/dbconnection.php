@@ -125,11 +125,11 @@ final class DbConnection extends ObjectUnique {
 	 * Get a table instance for which every row is identified by a single deterministic ID field.
 	 * 
 	 * @param string $sTable
-	 * @param string $mIdField
+	 * @param string $sIdField
 	 * @return DbTable
 	 */
-	public function getTable($sTable, $mIdField = 'ID') {
-		return DbTable::assureUniqueDbTable($this, $sTable, $mIdField);
+	public function getTable($sTable, $sIdField = 'ID') {
+		return DbTable::assureUniqueDbTable($this, $sTable, $sIdField);
 	}
 	
 	/**

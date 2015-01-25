@@ -93,8 +93,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a0552dcea819c77f239bb6db060e17b47"><td class="memItemLeft" align="right" valign="top">static&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_request.html#a0552dcea819c77f239bb6db060e17b47">init</a> ()</td></tr>
-<tr class="separator:a0552dcea819c77f239bb6db060e17b47"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad2df001b0d7ea719c0ca7eba41584c76"><td class="memItemLeft" align="right" valign="top">static&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_request.html#ad2df001b0d7ea719c0ca7eba41584c76">init</a> ($sDomain, $sWebRoot)</td></tr>
+<tr class="separator:ad2df001b0d7ea719c0ca7eba41584c76"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8d58147bb9572424021c44b0ebb3f85a"><td class="memItemLeft" align="right" valign="top">static&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_request.html#a8d58147bb9572424021c44b0ebb3f85a">isHttp</a> ()</td></tr>
 <tr class="separator:a8d58147bb9572424021c44b0ebb3f85a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afab6f7cb93efa72b28f3e8b2eba901dd"><td class="memItemLeft" align="right" valign="top">static&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_request.html#afab6f7cb93efa72b28f3e8b2eba901dd">isHttps</a> ()</td></tr>
@@ -129,6 +129,8 @@ Static Public Member Functions</h2></td></tr>
 <tr class="separator:abe8f53d7d11ac4eaa65928a1f8adee77"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8cbc39d7e3f77bd7ed2000e59f2859f7"><td class="memItemLeft" align="right" valign="top">static&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_request.html#a8cbc39d7e3f77bd7ed2000e59f2859f7">compressionSupport</a> ($sCompression)</td></tr>
 <tr class="separator:a8cbc39d7e3f77bd7ed2000e59f2859f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a33ed2fbae1b50885c916a3b0041ed9e6"><td class="memItemLeft" align="right" valign="top">static&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_request.html#a33ed2fbae1b50885c916a3b0041ed9e6">ip</a> ()</td></tr>
+<tr class="separator:a33ed2fbae1b50885c916a3b0041ed9e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aced74b3005542537ca7f3b4592545cbb"><td class="memItemLeft" align="right" valign="top">static&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_request.html#aced74b3005542537ca7f3b4592545cbb">lastModified</a> ()</td></tr>
 <tr class="separator:aced74b3005542537ca7f3b4592545cbb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac55d4834ecde0026dfacef5d9545a29c"><td class="memItemLeft" align="right" valign="top">static&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_request.html#ac55d4834ecde0026dfacef5d9545a29c">eTag</a> ()</td></tr>
@@ -147,7 +149,7 @@ Static Public Member Functions</h2></td></tr>
 <tr class="separator:a865d084fee04c82e9704b1144e5b4c84"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>This class hold the request data for the current request. Before using it, you should make sure to call <a class="el" href="class_request.html#a0552dcea819c77f239bb6db060e17b47">Request::init()</a>. If this class is used as part of Watena, this will be done for you.</p>
+<div class="textblock"><p>This class hold the request data for the current request. Before using it, you should make sure to call <a class="el" href="class_request.html#ad2df001b0d7ea719c0ca7eba41584c76">Request::init()</a>. If this class is used as part of Watena, this will be done for you.</p>
 <dl class="section author"><dt>Author</dt><dd>Jelle Voet </dd></dl>
 <dl class="section version"><dt>Version</dt><dd>0.1.0 </dd></dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
@@ -420,7 +422,7 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a0552dcea819c77f239bb6db060e17b47"></a>
+<a class="anchor" id="ad2df001b0d7ea719c0ca7eba41584c76"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -429,6 +431,41 @@ Static Public Member Functions</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">static Request::init </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>$sDomain</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>$sWebRoot</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">final</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Initialize and cache the correct values for the current request. </p>
+
+</div>
+</div>
+<a class="anchor" id="a33ed2fbae1b50885c916a3b0041ed9e6"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static Request::ip </td>
           <td>(</td>
           <td class="paramname">)</td><td></td>
           <td></td>
@@ -440,7 +477,8 @@ Static Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Initialize and cache the correct values for the current request. </p>
+<p>Retrieve the remote ip adress for the current request.</p>
+<dl class="section return"><dt>Returns</dt><dd>string </dd></dl>
 
 </div>
 </div>
@@ -961,7 +999,7 @@ Static Public Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Jan 19 2015 22:35:07 for Watena by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Jan 25 2015 21:31:40 for Watena by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.4
 </small></address>
