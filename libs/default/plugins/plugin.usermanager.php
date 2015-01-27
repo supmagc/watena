@@ -132,6 +132,10 @@ class UserManager extends Plugin {
 		return Encoding::regMatch('^[a-z0-9]{16}$', $sToken);
 	}
 	
+	public static function getTableUser() {
+		return self::$s_oSingleton->m_oDatabaseConnection->getTable('user');
+	}
+	
 	/**
 	 * Try to login a user by the given name (and password)
 	 * This returns the user when login.

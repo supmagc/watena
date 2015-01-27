@@ -13,7 +13,7 @@ class UserManagerVerifiable extends DbObject {
 	}
 	
 	public function verify($sVerifier) {
-		if($sVerifier !== null && $sVerifier === $this->getDataValue('verifier', false)) {
+		if($sVerifier && $sVerifier === $this->getDataValue('verifier', false)) {
 			$this->setDataValue('verifier', null);
 			$this->setDataValue('verified', 1);
 			return true;
@@ -21,10 +21,8 @@ class UserManagerVerifiable extends DbObject {
 		return false;
 	}
 	
-	public function reset() {
+	public function resetVerifier() {
 		$this->setDataValue('verifier', null);
 		$this->setDataValue('verified', 0);
 	}
 }
-
-?>
