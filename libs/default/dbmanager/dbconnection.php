@@ -96,7 +96,8 @@ final class DbConnection extends ObjectUnique {
 	public function connect() {
 		$this->m_oConnection = new PDO($this->getDsn(), $this->getUser(), $this->getPass(), array(
 			PDO::ATTR_PERSISTENT => false, 
-			PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+			PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+			PDO::ATTR_EMULATE_PREPARES => false
 		));
 		$this->m_oConnection->query('SET names '.Encoding::replace('-', '', Encoding::charset()).';'); // Set to UTC
 		$this->m_oConnection->query('SET time_zone = \''.date('P').'\';'); // Set to UTC
@@ -255,6 +256,7 @@ final class DbConnection extends ObjectUnique {
 		$sUpdates = implode(', ', array_map(create_function('$a', 'return "`$a` = :$a";'), array_keys($aData)));
 		$sQuery = "UPDATE `$sTable` SET ".$sUpdates." WHERE $sWhere";
 		$oStatement = $this->m_oConnection->prepare($sQuery);
+		dump(array_merge($aData, $aWheres));
 		if($oStatement->execute(array_merge($aData, $aWheres)))
 			return $oStatement->rowCount();
 		else
