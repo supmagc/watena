@@ -26,13 +26,39 @@ class UserManagerTest extends Test {
 	}
 	
 	public function testUserVerifier() {
+		$this->assertTrue($this->m_oUserVerified->isVerified());
 		$this->m_oUserVerified->resetVerifier();
-		/*$this->assertFalse($this->m_oUserVerified->isVerified());
+		$this->assertFalse($this->m_oUserVerified->isVerified());
 		$sVerifier = $this->m_oUserVerified->makeVerifier();
 		$this->assertTrue($this->m_oUserVerified->verify($sVerifier));
-		$this->assertTrue($this->m_oUserVerified->isVerified());*/
+		$this->assertTrue($this->m_oUserVerified->isVerified());
 	}
 	
+	public function testUserDataSimple() {
+		/*
+		$this->m_oUserVerified->setFirstName();
+		$this->m_oUserVerified->setFirstName();
+		$this->m_oUserVerified->setFirstName();
+		$this->m_oUserVerified->setFirstName();
+		*/
+	}
+	
+	public function testUserGender() {
+		
+	}
+
+	public function testUserName() {
+	
+	}
+
+	public function testUserBirthday() {
+	
+	}
+
+	public function testUserPassword() {
+	
+	}
+			
 	public function teardown() {
 		$this->m_oUserVerified = null;
 		$this->m_oUserUnverified = null;

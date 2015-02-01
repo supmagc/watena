@@ -103,17 +103,17 @@ class DatabaseManagerTest extends Test {
 	
 	public function testTableSingleOperations() {
 		$nInsert = $this->m_oTableSingle->insert(array(
-			'name_notnull' => 'osnn'.$this->m_sRandomName,
-			'name_null' => null));
-		$sInsert = $this->m_oTableSingle->insert(array(
 			'name_notnull' => 'onnn'.$this->m_sRandomName,
+			'name_null' => 'onn'.$this->m_sRandomName));
+		$sInsert = $this->m_oTableSingle->insert(array(
+			'name_notnull' => 'osnn'.$this->m_sRandomName,
 			'name_null' => null), "name_notnull");
 		
 		$this->assertNumeric($nInsert);
-		$this->assertEquals('onnn'.$this->m_sRandomName, $sInsert);
+		$this->assertEquals('osnn'.$this->m_sRandomName, $sInsert);
 		
 		$this->assertTrue($this->m_oTableSingle->update(array(
-			'name_notnull' => 'connn'.$this->m_sRandomName
+			'name_null' => null
 		), $nInsert));
 		$this->assertTrue($this->m_oTableSingle->update(array(
 			'name_null' => 'cosn'.$this->m_sRandomName
@@ -124,7 +124,6 @@ class DatabaseManagerTest extends Test {
 		
 		$this->assertEquals($nInsert, $aRow1['ID']);
 		$this->assertEquals($sInsert, $aRow2['name_notnull']);
-		$this->assertEquals('connn'.$this->m_sRandomName, $aRow1['name_notnull']);
 		$this->assertEquals('cosn'.$this->m_sRandomName, $aRow2['name_null']);
 		$this->assertNull($aRow1['name_null']);
 		
@@ -139,7 +138,7 @@ class DatabaseManagerTest extends Test {
 			'name_null' => null
 		));
 
-		$this->assertEquals('99', $oInstance->getId());
+		$this->assertEquals(99, $oInstance->getId());
 		$this->assertEquals('dbnn'.$this->m_sRandomName, $oInstance->getNameNotNull());
 		$this->assertNull($oInstance->getNameNull());
 		
@@ -153,7 +152,7 @@ class DatabaseManagerTest extends Test {
 		$aRow = $oStatement->fetch(PDO::FETCH_ASSOC);
 		$this->assertEquals($oStatement->rowCount(), 1);
 		
-		$this->assertEquals('101', $aRow['ID']);
+		$this->assertEquals(101, $aRow['ID']);
 		$this->assertEquals(101, $oInstance->getId());
 		$this->assertEquals('cdbn'.$this->m_sRandomName, $aRow['name_null']);
 		$this->assertEquals('cdbn'.$this->m_sRandomName, $oInstance->getNameNull());
@@ -171,9 +170,9 @@ class DatabaseManagerTest extends Test {
 			'name_null' => null
 		));
 		$this->m_oConnection->query('DELETE FROM `table_single` WHERE `ID` = :id', array('id' => $oInstance->getId()));
+		$this->assertNull($oInstance->getNameNull());
 		$oInstance->setNameNull('cdbn'.$this->m_sRandomName);
 		$this->assertNull($oInstance->getNameNull());
-		$this->assertTrue($oInstance->isDeleted());
 	}
 
 	public function testTableMulti() {
@@ -219,7 +218,7 @@ class DatabaseManagerTest extends Test {
 		$aRow2 = $this->m_oTableMulti->select($aInsert2)->fetch(PDO::FETCH_ASSOC);
 		$aRow3 = $this->m_oTableMulti->select(array(2, 'co3n'.$this->m_sRandomName), array('ID_A', 'name_null'))->fetch(PDO::FETCH_ASSOC);
 	
-		$this->assertEquals('3', $aRow1['ID_B']);
+		$this->assertEquals(3, $aRow1['ID_B']);
 		$this->assertEquals('co2nn'.$this->m_sRandomName, $aRow2['name_notnull']);
 		$this->assertEquals('co3n'.$this->m_sRandomName, $aRow3['name_null']);
 		$this->assertNull($aRow1['name_null']);
@@ -238,8 +237,8 @@ class DatabaseManagerTest extends Test {
 			'name_null' => null
 		));
 
-		$this->assertEquals('1', $oInstance->getIdA());
-		$this->assertEquals('1', $oInstance->getIdB());
+		$this->assertEquals(1, $oInstance->getIdA());
+		$this->assertEquals(1, $oInstance->getIdB());
 		$this->assertEquals('dbnn'.$this->m_sRandomName, $oInstance->getNameNotNull());
 		$this->assertNull($oInstance->getNameNull());
 		
@@ -254,8 +253,8 @@ class DatabaseManagerTest extends Test {
 		$aRow = $oStatement->fetch(PDO::FETCH_ASSOC);
 		$this->assertEquals($oStatement->rowCount(), 1);
 		
-		$this->assertEquals('2', $aRow['ID_A']);
-		$this->assertEquals('2', $aRow['ID_B']);
+		$this->assertEquals(2, $aRow['ID_A']);
+		$this->assertEquals(2, $aRow['ID_B']);
 		$this->assertEquals(2, $oInstance->getIdA());
 		$this->assertEquals(2, $oInstance->getIdB());
 		$this->assertEquals('cdbn'.$this->m_sRandomName, $aRow['name_null']);

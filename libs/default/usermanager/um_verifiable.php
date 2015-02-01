@@ -8,8 +8,10 @@ class UserManagerVerifiable extends DbObject {
 	
 	public function makeVerifier() {
 		$sVerifier = md5(mt_rand() . $this->getId() . microtime());
-		$this->setDataValue('verifier', $sVerifier);
-		return $sVerifier;
+		if($this->setDataValue('verifier', $sVerifier))
+			return $sVerifier;
+		else
+			return false;
 	}
 	
 	public function verify($sVerifier) {
@@ -22,7 +24,7 @@ class UserManagerVerifiable extends DbObject {
 	}
 	
 	public function resetVerifier() {
-		$this->setDataValue('verifier', null);
 		$this->setDataValue('verified', 0);
+		$this->setDataValue('verifier', null);
 	}
 }

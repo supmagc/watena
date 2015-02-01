@@ -5,7 +5,7 @@
  * If required you can inherit and add additional logic to handle the internal data.
  *
  * @author Jelle
- * @version 0.3.0
+ * @version 0.3.1
  */
 class DbMultiObject extends ObjectUnique {
 
@@ -59,20 +59,37 @@ class DbMultiObject extends ObjectUnique {
 	 * @return boolean
 	 */
 	protected function setDataValue($sColumn, $mValue) {
-		if(!$this->m_bDeleted && $this->getTable()->update(array($sColumn => $mValue), array_values($this->m_aIds))) {
-			if(in_array($sColumn, $this->m_oTable->getIdFields())) {
-				$sIdOld = self::generateUniqueKey($this->m_oTable, $this->m_aIds);
-				$this->m_aIds[$sColumn] = $mValue;
-				$sIdNew = self::generateUniqueKey($this->m_oTable, $this->m_aIds);
-				self::updateUniqueInstance($sIdOld, $sIdNew);
-			}
-			$this->m_aData[$sColumn] = $mValue;
-			return true;
-		}
-		else {
-			$this->delete();
+		// Don't to anything if considered deleted
+		if($this->m_bDeleted) {
 			return false;
 		}
+		
+		// Make sure the field exists in the data and can be compared
+		if(!isset($this->m_aData[$sColumn]) && !array_key_exists($sColumn, $this->m_aData)) {
+			$this->m_bDeleted = true;
+			return false;
+		}
+			
+		// Only update if suspected database value is different
+		if($this->m_aData[$sColumn] == $mValue) {
+			return true;
+		}
+			
+		// If the update fails, flag as deleted
+		if(!$this->getTable()->update(array($sColumn => $mValue), array_values($this->m_aIds))) {
+			$this->m_bDeleted = true;
+			return false;
+		}
+
+		// Update cached values if changed in database
+		if(in_array($sColumn, $this->m_oTable->getIdFields())) {
+			$sIdOld = self::generateUniqueKey($this->m_oTable, $this->m_aIds);
+			$this->m_aIds[$sColumn] = $mValue;
+			$sIdNew = self::generateUniqueKey($this->m_oTable, $this->m_aIds);
+			self::updateUniqueInstance($sIdOld, $sIdNew);
+		}
+		$this->m_aData[$sColumn] = $mValue;
+		return true;
 	}
 	
 	/**
