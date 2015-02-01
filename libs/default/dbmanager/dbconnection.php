@@ -97,7 +97,8 @@ final class DbConnection extends ObjectUnique {
 		$this->m_oConnection = new PDO($this->getDsn(), $this->getUser(), $this->getPass(), array(
 			PDO::ATTR_PERSISTENT => false, 
 			PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-			PDO::ATTR_EMULATE_PREPARES => false
+			PDO::ATTR_EMULATE_PREPARES => false,
+			PDO::ATTR_STRINGIFY_FETCHES => false
 		));
 		$this->m_oConnection->query('SET names '.Encoding::replace('-', '', Encoding::charset()).';'); // Set to UTC
 		$this->m_oConnection->query('SET time_zone = \''.date('P').'\';'); // Set to UTC
@@ -227,7 +228,7 @@ final class DbConnection extends ObjectUnique {
 		try {
 			$oStatement = $this->m_oConnection->prepare($sQuery);
 			$oStatement->execute($aData);
-			$mId = $this->getPdo()->lastInsertId();
+			$mId = (int)$this->getPdo()->lastInsertId();
 		}
 		catch(PDOException $e) {
 			if($bTransaction) $this->m_oConnection->rollBack();
@@ -256,11 +257,14 @@ final class DbConnection extends ObjectUnique {
 		$sUpdates = implode(', ', array_map(create_function('$a', 'return "`$a` = :$a";'), array_keys($aData)));
 		$sQuery = "UPDATE `$sTable` SET ".$sUpdates." WHERE $sWhere";
 		$oStatement = $this->m_oConnection->prepare($sQuery);
-		dump(array_merge($aData, $aWheres));
-		if($oStatement->execute(array_merge($aData, $aWheres)))
+		if($this->executeBinding($oStatement, array_merge($aData, $aWheres))) {// $oStatement->execute(array_merge($aData, $aWheres)))
 			return $oStatement->rowCount();
-		else
+		}
+		else {
+			dump($sQuery);
+			dump(array_merge($aData, $aWheres));
 			return false; 
+		}
 	}
 	
 	/**
@@ -323,6 +327,17 @@ final class DbConnection extends ObjectUnique {
 			$aWheres []=  "`$sField` " . $sCompare . " :var$i";
 		}
 		return array(implode(" $sConcatenation ", $aWheres), array_combine($aIdFieldCount, $mId));
+	}
+	
+	public function executeBinding(PDOStatement $oStatement, array $aBindings) {
+		foreach($aBindings as $sName => $mValue) {
+			$nType = PDO::PARAM_STR;
+			if(is_null($mValue)) {
+				$nType = PDO::PARAM_NULL;
+			}
+			$oStatement->bindValue($sName, $mValue, $nType);
+		}
+		return $oStatement->execute();
 	}
 	
 	/**

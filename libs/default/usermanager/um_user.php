@@ -6,42 +6,105 @@ class User extends UserManagerVerifiable {
 	private $m_aSessions = null;
 	private $m_aEmails = null;
 	
+	/**
+	 * Check if a password is set for this user.
+	 * 
+	 * @return boolean
+	 */
 	public function hasPassword() {
 		return (bool)$this->getDataValue('password');
 	}
 
+	/**
+	 * Get the gender of the user.
+	 * This value is optionel.
+	 * Possible values: male, female
+	 * 
+	 * @return null|string
+	 */
 	public function getGender() {
 		return $this->getDataValue('gender');
 	}
-	
+
+	/**
+	 * Get the (user-)name of the user.
+	 * This value will always be set, and needs to be unique for all users.
+	 * 
+	 * @return string
+	 */
 	public function getName() {
 		return $this->getDataValue('name');
 	}
 	
+	/**
+	 * Get the birthday of the user.
+	 * This value is optional.
+	 * The value will be SQL formatted (MySQL: yyyy-mm-dd)
+	 * 
+	 * @return null|string
+	 */
 	public function getBirthday() {
 		return $this->getDataValue('birthday');
 	}
-	
+
+	/**
+	 * Get the firstname of the user.
+	 * This value is optional.
+	 * 
+	 * @return null|string (maxlength: 64)
+	 */
 	public function getFirstname() {
 		return $this->getDataValue('firstname');
 	}
-	
+
+	/**
+	 * Get the lastname of the user.
+	 * This value is optional.
+	 * 
+	 * @return null|string (maxlength: 64)
+	 */
 	public function getLastname() {
 		return $this->getDataValue('lastname');		
 	}
 	
+	/**
+	 * Get the timezone of the user.
+	 * This value is optional.
+	 * The value should be a valid php timezone, of which you can create a Time-object.
+	 * 
+	 * @return null|string
+	 */
 	public function getTimezone() {
 		return $this->getDataValue('timezone');
 	}
 	
+	/**
+	 * Get the locale of the user.
+	 * This value is optional.
+	 * ex: En, EN, En_Uk
+	 * 
+	 * @return null|string
+	 */
 	public function getLocale() {
 		return $this->getDataValue('locale');
 	}
 	
+	/**
+	 * Get the hash of the user.
+	 * This key should be be kept private, and used to encrypt any user-data publicly exposed.
+	 * 
+	 * @return string (length: 32)
+	 */
 	public function getHash() {
 		return $this->getDataValue('hash');
 	}
 	
+	/**
+	 * Check if the user is considered top-level-admin.
+	 * This is a flag that should be used to overwrite any other permissions.
+	 * 
+	 * @return boolean
+	 */
 	public function isTla() {
 		return (bool)$this->getDataValue('tla', false);
 	}
@@ -67,7 +130,7 @@ class User extends UserManagerVerifiable {
 	}
 	
 	public function setBirthday($mValue) {
-		if(Encoding::regMatch('[0-9]{1,2}/[0-9]{1,2}/[0-9]{4}', '' . $mValue)) {
+		if(Encoding::regMatch('[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}', '' . $mValue)) {
 			$this->setDataValue('birthday', $mValue);
 			return true;
 		}
@@ -75,11 +138,17 @@ class User extends UserManagerVerifiable {
 	}
 	
 	public function setFirstname($mValue) {
+		if(Encoding::length($mValue) > 64) {
+			$mValue = Encoding::substring($mValue, 0, 64);
+		}
 		$this->setDataValue('firstname', $mValue);
 		return true;
 	}
 		
 	public function setLastname($mValue) {
+		if(Encoding::length($mValue) > 64) {
+			$mValue = Encoding::substring($mValue, 0, 64);
+		}
 		$this->setDataValue('lastname', $mValue);
 		return true;
 	}
@@ -90,8 +159,11 @@ class User extends UserManagerVerifiable {
 	}
 	
 	public function setLocale($mValue) {
-		$this->setDataValue('locale', $mValue);
-		return true;
+		if(Encoding::regMatch('[a-z]{2}(_[a-z]{2})?', '' . $mValue)) {
+			$this->setDataValue('locale', $mValue);
+			return true;
+		}
+		return false;
 	}
 
 	public function setPassword($mValue) {
@@ -219,10 +291,24 @@ class User extends UserManagerVerifiable {
 		return md5($sData);
 	}
 	
+	/**
+	 * Try to load an existing user by it's ID.
+	 * 
+	 * @param int $nId
+	 * @return null|User
+	 */
 	public static function load($nId) {
 		return self::loadObject(UserManager::getTableUser(), $nId);
 	}
 	
+	/**
+	 * Create a new user.
+	 * 
+	 * @see UserManager::isValidName()
+	 * @param string $sName The (user-)name should be unique and match UserManager::isValidName().
+	 * @param boolean $bVerified Is this user cerified upon creation (default: false).
+	 * @return null|User
+	 */
 	public static function create($sName, $bVerified = false) {
 		if(!UserManager::isValidName($sName))
 			return null;
