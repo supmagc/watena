@@ -109,48 +109,89 @@ class User extends UserManagerVerifiable {
 		return (bool)$this->getDataValue('tla', false);
 	}
 	
+	/**
+	 * Set the gender for the user.
+	 * Valid values are m, f, male, female, null
+	 * 
+	 * @param mixed $mValue
+	 * @return boolean
+	 */
 	public function setGender($mValue) {
 		$mValue = Encoding::toLower($mValue);
+		if(empty($mValue)) $mValue = null;
 		if($mValue === 'm') $mValue = 'male';
 		if($mValue === 'f') $mValue = 'female';
-		if(in_array($mValue, array('male', 'female'))) {
-			$this->setDataValue('gender', $mValue);
-			return true;
+		if(in_array($mValue, array('male', 'female', null))) {
+			return $this->setDataValue('gender', $mValue);
 		}
 		return false;
 	}
 	
-	public function setName($mValue) {
-		$nUserId = UserManager::getUserIdByName($mValue);
-		if(UserManager::isValidName($mValue) && (!$nUserId || $nUserId == $this->getId())) {
-			$this->setDataValue('name', $mValue);
-			return true;
+	/**
+	 * Set the (user-)name for the user.
+	 * The name shoumd be unique, and conform according to UserManager::isValidName().
+	 * 
+	 * @see UserManager::isValidName()
+	 * @param string $sValue
+	 * @return boolean
+	 */
+	public function setName($sValue) {
+		$nUserId = UserManager::getUserIdByName($sValue);
+		if(UserManager::isValidName($sValue) && (!$nUserId || $nUserId == $this->getId())) {
+			return $this->setDataValue('name', $sValue);
 		}
 		return false;
 	}
 	
+	/**
+	 * Set the birthday for the user.
+	 * Valid values are yyyy-mm-dd, dd-mm-yyyy, yyyy/mm/dd, dd/mm/yyyy, null  
+	 * 
+	 * @param mixed $mValue
+	 * @return boolean
+	 */
 	public function setBirthday($mValue) {
-		if(Encoding::regMatch('[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}', '' . $mValue)) {
-			$this->setDataValue('birthday', $mValue);
-			return true;
+		$aMatches = array();
+		if(empty($mValue)) {
+			return $this->setDataValue('birthday', null);
+		}
+		if(Encoding::regFind('^([0-9]{4})[-/]([0-9]{1,2})[-/]([0-9]{1,2})$', '' . $mValue, $aMatches) && checkdate($aMatches[2], $aMatches[3], $aMatches[1])) {
+			return $this->setDataValue('birthday', "$aMatches[1]-$aMatches[2]-$aMatches[3]");
+		}
+		if(Encoding::regFind('^([0-9]{1,2})[-/]([0-9]{1,2})[-/]([0-9]{4})$', '' . $mValue, $aMatches) && checkdate($aMatches[2], $aMatches[1], $aMatches[3])) {
+			return $this->setDataValue('birthday', "$aMatches[3]-$aMatches[2]-$aMatches[1]");
 		}
 		return false;
 	}
 	
+	/**
+	 * Set the firstname of the user.
+	 * The value will be trimmed, and capped at 64 characters.
+	 * 
+	 * @param string $mValue
+	 * @return boolean
+	 */
 	public function setFirstname($mValue) {
-		if(Encoding::length($mValue) > 64) {
-			$mValue = Encoding::substring($mValue, 0, 64);
-		}
-		$this->setDataValue('firstname', $mValue);
-		return true;
+		$mValue = Encoding::trim($mValue);
+		$mValue = Encoding::substring($mValue, 0, 64);
+		$mValue = Encoding::trim($mValue);
+		if(empty($mValue)) $mValue = null;
+		return $this->setDataValue('firstname', $mValue);
 	}
 		
+	/**
+	 * Set the lastname of the user.
+	 * The value will be trimmed, and capped at 64 characters.
+	 * 
+	 * @param string $mValue
+	 * @return boolean
+	 */
 	public function setLastname($mValue) {
-		if(Encoding::length($mValue) > 64) {
-			$mValue = Encoding::substring($mValue, 0, 64);
-		}
-		$this->setDataValue('lastname', $mValue);
-		return true;
+		$mValue = Encoding::trim($mValue);
+		$mValue = Encoding::substring($mValue, 0, 64);
+		$mValue = Encoding::trim($mValue);
+		if(empty($mValue)) $mValue = null;
+		return $this->setDataValue('lastname', $mValue);
 	}
 		
 	public function setTimezone($mValue) {

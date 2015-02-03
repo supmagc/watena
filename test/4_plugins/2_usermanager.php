@@ -34,23 +34,52 @@ class UserManagerTest extends Test {
 		$this->assertTrue($this->m_oUserVerified->isVerified());
 	}
 	
-	public function testUserDataSimple() {
-		/*
-		$this->m_oUserVerified->setFirstName();
-		$this->m_oUserVerified->setFirstName();
-		$this->m_oUserVerified->setFirstName();
-		$this->m_oUserVerified->setFirstName();
-		*/
+	public function testUserFisrtLastName() {
+		$this->assertTrue($this->m_oUserVerified->setFirstName(' Jelle'));
+		$this->assertTrue($this->m_oUserVerified->setLastName('Van Der Voet En Der Voet En Der Voet En Der Voet En Der Voet En Der Voet '));
+		$this->assertEquals('Jelle', $this->m_oUserVerified->getFirstname());
+		$this->assertEquals('Van Der Voet En Der Voet En Der Voet En Der Voet En Der Voet En', $this->m_oUserVerified->getLastname());
 	}
 	
 	public function testUserGender() {
-		
+		$this->assertTrue($this->m_oUserVerified->setGender('m'));
+		$this->assertEquals('male', $this->m_oUserVerified->getGender());
+		$this->assertTrue($this->m_oUserVerified->setGender('M'));
+		$this->assertEquals('male', $this->m_oUserVerified->getGender());
+		$this->assertTrue($this->m_oUserVerified->setGender('f'));
+		$this->assertEquals('female', $this->m_oUserVerified->getGender());
+		$this->assertTrue($this->m_oUserVerified->setGender('F'));
+		$this->assertEquals('female', $this->m_oUserVerified->getGender());
+		$this->assertTrue($this->m_oUserVerified->setGender('male'));
+		$this->assertEquals('male', $this->m_oUserVerified->getGender());
+		$this->assertTrue($this->m_oUserVerified->setGender('female'));
+		$this->assertEquals('female', $this->m_oUserVerified->getGender());
+		$this->assertFalse($this->m_oUserVerified->setGender('random'));
+		$this->assertEquals('female', $this->m_oUserVerified->getGender());
+		$this->assertTrue($this->m_oUserVerified->setGender(null));
+		$this->assertNull($this->m_oUserVerified->getGender());
 	}
 
 	public function testUserName() {
+		$this->assertTrue($this->m_oUserVerified->setName('Jelle'));
+		$this->assertFalse($this->m_oUserVerified->setName(null));
+		$this->assertFalse($this->m_oUserUnverified->setName('Jelle'));
+		$this->assertFalse($this->m_oUserUnverified->setName('jelle'));
+		$this->assertFalse($this->m_oUserUnverified->setName(' jelle 123 $^µù'));
+		$this->assertFalse($this->m_oUserUnverified->setName('mj'));
+		$this->assertTrue($this->m_oUserUnverified->setName('Melissa'));
+		$this->assertEquals('Jelle', $this->m_oUserVerified->getName());
+		$this->assertEquals('Melissa', $this->m_oUserUnverified->getName());
+	}
+
+	public function testUserLocale() {
 	
 	}
 
+	public function testUserTimezone() {
+	
+	}
+	
 	public function testUserBirthday() {
 	
 	}

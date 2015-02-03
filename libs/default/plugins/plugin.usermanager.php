@@ -113,7 +113,7 @@ class UserManager extends Plugin {
 	}
 	
 	public static function isValidName($sName) {
-		return Encoding::regMatch('^[-a-zA-z0-9.@_ ]{3,64}$', $sName);
+		return Encoding::regMatch('^[-a-zA-z0-9.@_ ]{3,64}$', ''.$sName);
 	}
 	
 	public static function isValidEmail($sEmail) {
