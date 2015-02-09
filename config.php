@@ -96,7 +96,7 @@ $conf['default']['logprocessors'] = array();
 
 #
 # The webroot offset of the watena install.
-# Minimum values should be '/'
+# This value shoud never end on '/' and if no webroot is given, just be ''.
 #
 $conf['default']['webroot'] = '/watena';
 

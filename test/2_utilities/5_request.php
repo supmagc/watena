@@ -18,7 +18,7 @@ class RequestTest extends Test {
 			$this->m_nProtocolPort = 443;
 		}
 		
-		Request::init();
+		Request::init($_SERVER['HTTP_HOST'], '/watena');
 	}
 
 	public function testIsHttp() {
