@@ -121,7 +121,7 @@ class UserManager extends Plugin {
 	}
 	
 	public static function isValidPassword($sPassword) {
-		return Encoding::regMatch(self::getPasswordFormat(), $sPassword);
+		return Encoding::regMatch(self::getPasswordFormat(), ''.$sPassword);
 	}
 	
 	public static function isValidPermission($nPermission) {
@@ -129,11 +129,15 @@ class UserManager extends Plugin {
 	}
 	
 	public static function isValidToken($sToken) {
-		return Encoding::regMatch('^[a-z0-9]{16}$', $sToken);
+		return Encoding::regMatch('^[a-z0-9]{16}$', ''.$sToken);
 	}
 	
 	public static function getTableUser() {
 		return self::$s_oSingleton->m_oDatabaseConnection->getTable('user');
+	}
+
+	public static function getTableUserEmail() {
+		return self::$s_oSingleton->m_oDatabaseConnection->getTable('user_email');
 	}
 	
 	/**

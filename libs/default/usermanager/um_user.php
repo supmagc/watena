@@ -1,5 +1,10 @@
 <?php
-
+/**
+ * Class reepresenting a database User.
+ * 
+ * @author Jelle Voet
+ * @version 0.2.0
+ */
 class User extends UserManagerVerifiable {
 	
 	private $m_aConnections = null;
@@ -70,8 +75,9 @@ class User extends UserManagerVerifiable {
 	/**
 	 * Get the timezone of the user.
 	 * This value is optional.
-	 * The value should be a valid php timezone, of which you can create a Time-object.
+	 * The value is supposed to be a valid php timezone, of which you can create a Time-object.
 	 * 
+	 * @return Time::isValidTimezone()
 	 * @return null|string
 	 */
 	public function getTimezone() {
@@ -167,8 +173,9 @@ class User extends UserManagerVerifiable {
 	/**
 	 * Set the firstname of the user.
 	 * The value will be trimmed, and capped at 64 characters.
+	 * This value is optional.
 	 * 
-	 * @param string $mValue
+	 * @param string|null $mValue
 	 * @return boolean
 	 */
 	public function setFirstname($mValue) {
@@ -182,8 +189,9 @@ class User extends UserManagerVerifiable {
 	/**
 	 * Set the lastname of the user.
 	 * The value will be trimmed, and capped at 64 characters.
+	 * This value is optional.
 	 * 
-	 * @param string $mValue
+	 * @param string|null $mValue
 	 * @return boolean
 	 */
 	public function setLastname($mValue) {
@@ -193,30 +201,70 @@ class User extends UserManagerVerifiable {
 		if(empty($mValue)) $mValue = null;
 		return $this->setDataValue('lastname', $mValue);
 	}
-		
+	
+	/**
+	 * Set the timezone for the user.
+	 * The input wille be formatted by Time::formatTimezone() and verified by Time::isValidTimezone().
+	 * This value is optional
+	 * 
+	 * @see Time::formatTimezone()
+	 * @see Time::isValidTimezone()
+	 * @param string|null $mValue
+	 * @return boolean
+	 */
 	public function setTimezone($mValue) {
-		$this->setDataValue('timezone', Time::formatTimezone($mValue));
-		return true;
+		$mValue = empty($mValue) ? null : Time::formatTimezone($mValue);
+		if(!$mValue || Time::isValidTimezone($mValue)) {
+			return $this->setDataValue('timezone', $mValue);
+		}
+		return false;
 	}
 	
+	/**
+	 * The the locale for the user.
+	 * Short and long locales are supported (nl, be_nl).
+	 * This value is optional
+	 * 
+	 * @param string|null $mValue
+	 * @return boolean
+	 */
 	public function setLocale($mValue) {
-		if(Encoding::regMatch('[a-z]{2}(_[a-z]{2})?', '' . $mValue)) {
-			$this->setDataValue('locale', $mValue);
-			return true;
+		if(empty($mValue)) $mValue = null;
+		if(!$mValue || Encoding::regMatch('^[a-z]{2}(_[a-z]{2})?$', '' . $mValue, 'i')) {
+			return $this->setDataValue('locale', $mValue);
 		}
 		return false;
 	}
 
+	/**
+	 * Set the password for the user.
+	 * The input will be validated by UserManager::isValidPassword().
+	 * If valid, the password will be encoded before being saved.
+	 * This value is optional.
+	 * 
+	 * @see User::encodePassword()
+	 * @see UserManager::isValidPassword()
+	 * @param string|null $mValue
+	 * @return boolean
+	 */
 	public function setPassword($mValue) {
-		if(UserManager::isValidPassword($mValue)) {
-			$this->setDataValue('password', $this->encodePassword($mValue));
-			return true;
+		if(empty($mValue)) $mValue == null;
+		if(!$mValue || UserManager::isValidPassword($mValue)) {
+			return $this->setDataValue('password', $this->encodePassword($mValue));
 		}
 		return false;
 	}
 	
+	/**
+	 * Verify if the given password matches the one registered for the user.
+	 * If no password is set, this will always return false.
+	 * 
+	 * @see User::encodePassword()
+	 * @param string $mValue
+	 * @return boolean
+	 */
 	public function verifyPassword($mValue) {
-		return $this->getDataValue('password') === $this->encodePassword($mValue);
+		return !empty($mValue) && $this->getDataValue('password') === $this->encodePassword($mValue);
 	}
 	
 	public function getConnections() {
@@ -260,25 +308,63 @@ class User extends UserManagerVerifiable {
 		}
 	}
 	
+	/**
+	 * Get a list with all currently associated email adress for this user.
+	 * 
+	 * @return array<UserEmail>
+	 */
 	public function getEmails() {
-		if($this->m_aEmails === null) {
+		if($this->m_aEmails === false) {
 			$this->m_aEmails = array();
 			$oStatement = UserManager::getDatabaseConnection()->select('user_email', $this->getId(), 'userId');
-			foreach($oStatement as $aData) {
-				$oEmail = UserEmail::load($aData);
-				$this->m_aEmails[$oEmail->getEmail()] = $oEmail;
+			$aData = UserEmail::loadObjectList(UserManager::getTableUserEmail(), $oStatement);
+			foreach($aData as $oEmail) {
+				$this->m_aEmails[Encoding::toLower($oEmail->getEmail())] = $oEmail;
 			}
 		}
 		return $this->m_aEmails;
 	}
 	
-	public function addEmail($sEmail, $bVerified = false) {
-		if($oEmail = UserEmail::create($this, $sEmail, $bVerified)) {
-			$this->m_aEmails[Encoding::toLower($sEmail)] = $oEmail;
-		}
-		return $this->getEmail($sEmail);
+	/**
+	 * Create a new email object for this user.
+	 * 
+	 * @see UserEmail::create()
+	 * @param string $sEmail
+	 * @param boolean $bVerified
+	 * @return UserEmail|NULL
+	 */
+	public function createEmail($sEmail, $bVerified = false) {
+		return UserEmail::create($this, $sEmail, $bVerified);
 	}
 	
+	/**
+	 * Add an user-email to this user.
+	 * If the userId of the user-email does nat match the id of this user,
+	 * this function will return false.
+	 * 
+	 * @param UserEmail $oEmail
+	 * @return boolean
+	 */
+	public function addEmail(UserEmail $oEmail) {
+		// Return false if userId does not match
+		if($oEmail->getUserId() != $this->getId())
+			return false;
+
+		// Only add mail when not yet in list
+		$this->getEmails();
+		$sKey = Encoding::toLower($oEmail->getEmail());
+		if(!isset($this->m_aEmails[$sKey]))
+			$this->m_aEmails[$sKey] = $oEmail;
+		
+		return true;
+	}
+	
+	/**
+	 * Get an user-email based on a given email-adress if any, or the first email adress for this user.
+	 * 
+	 * @param string $sEmail
+	 * @return UserEmail|null
+	 */
 	public function getEmail($sEmail = null) {
 		$aEmails = $this->getEmails();
 		if($sEmail)
@@ -287,11 +373,20 @@ class User extends UserManagerVerifiable {
 			return count($aEmails) > 0 ? array_first($aEmails) : false;
 	}
 	
+	/**
+	 * Remove the given user-email for this user.
+	 * 
+	 * @see UserEmail::delete()
+	 * @param UserEmail $oEmail
+	 */
 	public function removeEmail(UserEmail $oEmail) {
-		if(isset($this->m_aEmails[$oEmail->getEmail()])) {
-			$oEmail->delete();
-			unset($this->m_aEmails[$oEmail->getEmail()]);
-		}
+		// Delete instance
+		$oEmail->delete();
+		
+		// Remove from list
+		$sKey = Encoding::toLower($oEmail->getEmail());
+		if(isset($this->m_aEmails[$sKey]))
+			unset($this->m_aEmails[$sKey]);
 	}
 	
 	public function getSessions() {
@@ -326,6 +421,12 @@ class User extends UserManagerVerifiable {
 		// TODO
 	}
 	
+	/**
+	 * Encode the given password with the user's hash and an ID based randomizer.
+	 * 
+	 * @param string $mValue
+	 * @return string (length: 32)
+	 */
 	public function encodePassword($mValue) {
 		$sHash = Encoding::substring($this->getHash(), ($this->getId() / 3) % 16, ($this->getId() / 2) % 16);
 		$sData = sprintf('%s.%s.%s', $this->getId(), $mValue, $sHash);
@@ -336,19 +437,19 @@ class User extends UserManagerVerifiable {
 	 * Try to load an existing user by it's ID.
 	 * 
 	 * @param int $nId
-	 * @return null|User
+	 * @return User|null
 	 */
 	public static function load($nId) {
 		return self::loadObject(UserManager::getTableUser(), $nId);
 	}
 	
 	/**
-	 * Create a new user.
+	 * Try to create a new user.
 	 * 
 	 * @see UserManager::isValidName()
 	 * @param string $sName The (user-)name should be unique and match UserManager::isValidName().
 	 * @param boolean $bVerified Is this user cerified upon creation (default: false).
-	 * @return null|User
+	 * @return User|null
 	 */
 	public static function create($sName, $bVerified = false) {
 		if(!UserManager::isValidName($sName))

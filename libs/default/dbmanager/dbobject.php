@@ -13,6 +13,18 @@ class DbObject extends ObjectUnique {
 	private $m_aData;
 	private $m_oTable;
 	private $m_bDeleted;
+
+	/**
+	 * Internal callback upon instance creation.
+	 * Overwrite this method in child classes to add behaviour.
+	 */
+	protected function onInit() {}
+	
+	/**
+	 * Internal callback upon deletion.
+	 * Overwrite this method in child classes to add behaviour.
+	 */
+	protected function onDelete() {}
 	
 	/**
 	 * Internal constructor for an object representing a table row, identifiablme by a single column.
@@ -30,6 +42,9 @@ class DbObject extends ObjectUnique {
 		if(!isset($this->m_aData[$this->m_oTable->getIdField()])) {
 			throw new DbInvalidDbObjectId($this->m_oTable);
 		}
+		
+		// Call callback
+		$this->onInit();
 	}
 	
 	/**
@@ -93,7 +108,7 @@ class DbObject extends ObjectUnique {
 	 * 
 	 * @return DbTable
 	 */
-	public function getTable() {
+	public final function getTable() {
 		return $this->m_oTable;
 	}
 	
@@ -102,19 +117,23 @@ class DbObject extends ObjectUnique {
 	 * 
 	 * @return mixed
 	 */
-	public function getId() {
+	public final function getId() {
 		return $this->m_mId;
 	}
 	
 	/**
 	 * Delete this row from the database, and flag this instance as deleted.
 	 */
-	public function delete() {
+	public final function delete() {
 		if($this->m_bDeleted) 
 			return;
 		
 		$this->m_bDeleted = true;
 		$this->getTable()->delete($this->m_mId);
+		self::setUniqueInstance(self::generateUniqueKey($this->m_oTable, $this->m_mId), null);
+		
+		// Call callback
+		$this->onDelete();
 	}
 	
 	/**
@@ -122,7 +141,7 @@ class DbObject extends ObjectUnique {
 	 * 
 	 * @return boolean
 	 */
-	public function isDeleted() {
+	public final function isDeleted() {
 		return $this->m_bDeleted;
 	}
 	

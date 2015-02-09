@@ -97,7 +97,7 @@ class DbMultiObject extends ObjectUnique {
 	 * 
 	 * @return DbMultiTable
 	 */
-	public function getTable() {
+	public final function getTable() {
 		return $this->m_oTable;
 	}
 	
@@ -106,19 +106,20 @@ class DbMultiObject extends ObjectUnique {
 	 * 
 	 * @return array
 	 */
-	public function getIds() {
+	public final function getIds() {
 		return $this->m_aIds;
 	}
 	
 	/**
 	 * Delete this row from the database, and flag this instance as deleted.
 	 */
-	public function delete() {
+	public final function delete() {
 		if($this->m_bDeleted)
 			return;
 		
 		$this->m_bDeleted = true;
 		$this->getTable()->delete(array_values($this->m_aIds));
+		self::setUniqueInstance(self::generateUniqueKey($this->m_oTable, $this->m_aIds), null);
 	}
 	
 	/**
@@ -126,7 +127,7 @@ class DbMultiObject extends ObjectUnique {
 	 * 
 	 * @return boolean
 	 */
-	public function isDeleted() {
+	public final function isDeleted() {
 		return $this->m_bDeleted;
 	}
 	

@@ -180,14 +180,16 @@ class Time extends Object {
 					return $sZone;
 			}
 		}
-		else {
-			return $mTimezone;
-		}
+		return $mTimezone;
 	}
 	
 	public static function formatTimestamp($mTimestamp) {
 		if(is_numeric($mTimestamp)) return '@'.$mTimestamp;
 		else return $mTimestamp;
+	}
+	
+	public static function isValidTimezone($mTimezone) {
+		return in_array($mTimezone, DateTimeZone::listIdentifiers()) || Encoding::regMatch('^Etc/GMT[-+][0-9]*$', $mTimezone, 'i');
 	}
 }
 
