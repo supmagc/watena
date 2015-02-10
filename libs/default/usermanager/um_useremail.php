@@ -11,9 +11,10 @@ class UserEmail extends UserManagerVerifiable {
 	private $m_oTime = false;
 	
 	/**
-	 * Internal callback to remove the email linkage from the user-object.
+	 * Internal callback to remove the email linkage from the User.
 	 * 
 	 * @see DbObject::onDelete()
+	 * @see User::removeEmail()
 	 */
 	protected function onDelete() {
 		$oUser = $this->getUser();
@@ -35,7 +36,7 @@ class UserEmail extends UserManagerVerifiable {
 	 * @return User|null
 	 */
 	public function getUser() {
-		if($this->m_oUser === false) {
+		if(false === $this->m_oUser) {
 			$this->m_oUser = User::load($this->getDataValue('userId'));
 		}
 		return $this->m_oUser;
