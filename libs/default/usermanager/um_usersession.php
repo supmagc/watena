@@ -2,16 +2,27 @@
 
 class UserSession extends DbMultiObject {
 	
-	private $m_oUser = null;
-	private $m_oCreated = null;
-	private $m_oActivity = null;
+	private $m_oUser = false;
+	private $m_oTime = false;
+	private $m_oActivity = false;
+	
+	/**
+	 * Internal callback to remove the session linkage from the User.
+	 * 
+	 * @see DbObject::onDelete()
+	 * @see User::removeSession()
+	 */
+	protected function onDelete() {
+		$oUser = $this->getUser();
+		if($oUser) $oUser->removeSession($this);
+	}
 	
 	public function getUserId() {
 		return $this->getDataValue('userId');
 	}
 	
 	public function getUser() {
-		if(!$this->m_oUser) {
+		if(false === $this->m_oUser) {
 			$this->m_oUuser = User::load($this->getUserId());
 		}
 		return $this->m_oUser;
@@ -20,9 +31,16 @@ class UserSession extends DbMultiObject {
 	public function getToken() {
 		return $this->getDataValue('token');
 	}
+
+	public function getTime() {
+		if(false === $this->m_oTime) {
+			$this->m_oTime = new Time($this->getDataValue('timestamp'));
+		}
+		return $this->m_oTime;
+	}
 	
 	public function getActivity() {
-		if(!$this->m_oActivity) {
+		if(false === $this->m_oActivity) {
 			$this->m_oActivity = new Time($this->getDataValue('activity'));
 		}
 		return $this->m_oActivity;
@@ -69,4 +87,3 @@ class UserSession extends DbMultiObject {
 		));
 	}
 }
-

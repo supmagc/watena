@@ -139,6 +139,10 @@ class UserManager extends Plugin {
 	public static function getTableUserEmail() {
 		return self::$s_oSingleton->m_oDatabaseConnection->getTable('user_email');
 	}
+
+	public static function getTableUserSession() {
+		return self::$s_oSingleton->m_oDatabaseConnection->getTable('user_session');
+	}
 	
 	/**
 	 * Try to login a user by the given name (and password)

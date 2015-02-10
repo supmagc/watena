@@ -141,10 +141,19 @@ class UserManagerTest extends Test {
 		$oEmailVerified = $this->m_oUserVerified->createEmail('jelle_verified@test.com', true);
 		$this->assertNull($this->m_oUserVerified->createEmail('jelle_verified@test.com'));
 		$oEmailUnverified = $this->m_oUserVerified->createEmail('jelle_unverified@test.com', false);
+		$oEmailOtherUser = $this->m_oUserUnverified->createEmail('melissa_verified@test.com', true);
 		$this->assertType('UserEmail', $oEmailVerified);
 		$this->assertType('UserEmail', $oEmailUnverified);
+		$this->assertType('UserEmail', $oEmailOtherUser);
 		$this->assertTrue($oEmailVerified->getTime()->getTimestamp() - time() <= 1);
 		$this->assertTrue($oEmailUnverified->getTime()->getTimestamp() - time() <= 1);
+		$this->assertTrue($oEmailOtherUser->getTime()->getTimestamp() - time() <= 1);
+		
+		$this->assertFalse($this->m_oUserVerified->addEmail($oEmailOtherUser));
+		$this->assertFalse($this->m_oUserVerified->removeEmail($oEmailOtherUser));
+		
+		$this->assertEquals($oEmailVerified->getUserId(), UserManager::getUserIdByEmail($oEmailVerified->getEmail()));
+		$this->assertEquals($oEmailUnverified->getUserId(), UserManager::getUserIdByEmail($oEmailUnverified->getEmail()));
 		
 		$this->assertFalse($oEmailUnverified->isVerified());
 		$this->assertTrue($oEmailVerified->isVerified());
@@ -173,6 +182,9 @@ class UserManagerTest extends Test {
 	}
 	
 	// Test sessions
+	public function testUserSession() {
+		
+	}
 	
 	// Test connections
 	

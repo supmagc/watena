@@ -7,9 +7,9 @@
  */
 class User extends UserManagerVerifiable {
 	
-	private $m_aConnections = null;
-	private $m_aSessions = null;
-	private $m_aEmails = null;
+	private $m_aConnections = false;
+	private $m_aSessions = false;
+	private $m_aEmails = false;
 	
 	/**
 	 * Check if a password is set for this user.
@@ -326,7 +326,7 @@ class User extends UserManagerVerifiable {
 	}
 	
 	/**
-	 * Create a new email object for this user.
+	 * Create a new UserEmail object for this user.
 	 * 
 	 * @see UserEmail::create()
 	 * @param string $sEmail
@@ -338,8 +338,8 @@ class User extends UserManagerVerifiable {
 	}
 	
 	/**
-	 * Add an user-email to this user.
-	 * If the userId of the user-email does nat match the id of this user,
+	 * Add an UserEmail to this user.
+	 * If the userId of the UserEmail does nat match the id of this user,
 	 * this function will return false.
 	 * 
 	 * @param UserEmail $oEmail
@@ -360,7 +360,7 @@ class User extends UserManagerVerifiable {
 	}
 	
 	/**
-	 * Get an user-email based on a given email-adress if any, or the first email adress for this user.
+	 * Get an UuserEmail based on a given email-adress if any, or the first email adress for this user.
 	 * 
 	 * @param string $sEmail
 	 * @return UserEmail|null
@@ -368,18 +368,25 @@ class User extends UserManagerVerifiable {
 	public function getEmail($sEmail = null) {
 		$aEmails = $this->getEmails();
 		if($sEmail)
-			return isset($aEmails[Encoding::toLower($sEmail)]) ? $aEmails[Encoding::toLower($sEmail)] : false;
+			return isset($aEmails[Encoding::toLower($sEmail)]) ? $aEmails[Encoding::toLower($sEmail)] : null;
 		else 
-			return count($aEmails) > 0 ? array_first($aEmails) : false;
+			return count($aEmails) > 0 ? array_first($aEmails) : null;
 	}
 	
 	/**
-	 * Remove the given user-email for this user.
+	 * Remove the given UserEmail for this user.
+	 * If the userId of the UserEmail does nat match the id of this user,
+	 * this function will return false.
 	 * 
 	 * @see UserEmail::delete()
 	 * @param UserEmail $oEmail
+	 * @return boolean
 	 */
 	public function removeEmail(UserEmail $oEmail) {
+		// Return if userId does not match
+		if($oEmail->getUserId() != $this->getId())
+			return false;
+		
 		// Delete instance
 		$oEmail->delete();
 		
@@ -387,38 +394,100 @@ class User extends UserManagerVerifiable {
 		$sKey = Encoding::toLower($oEmail->getEmail());
 		if(isset($this->m_aEmails[$sKey]))
 			unset($this->m_aEmails[$sKey]);
+		
+		return true;
 	}
-	
+
+	/**
+	 * Get a list with all UserSession-objects associated for the user.
+	 * 
+	 * @return array<UserSession>
+	 */
 	public function getSessions() {
-		if($this->m_aSessions === null) {
+		if($this->m_aSessions === false) {
 			$this->m_aSessions = array();
 			$oStatement = UserManager::getDatabaseConnection()->select('user_session', $this->getId(), 'userId');
-			foreach($oStatement as $aData) {
-				$oSession = UserSession::load($this, $aData);
+			$aData = UserEmail::loadObjectList(UserManager::getTableUserSession(), $oStatement);
+			foreach($aData as $oSession) {
 				$this->m_aSessions[$oSession->getToken()] = $oSession;
 			}
 		}
 		return $this->m_aSessions;
 	}
 	
-	public function getSession($sToken) {
-		$this->getSessions();
-		$sToken = Encoding::toLower($sToken);
-		return isset($this->m_aSessions[$sToken]) ? $this->m_aSessions[$sToken] : false;
-	}
-	
+	/**
+	 * Create a new UserSession object for the user.
+	 * 
+	 * @param string $sIp
+	 * @param string $sUserAgent
+	 * @return UserSession|null
+	 */
 	public function createSession($sIp, $sUserAgent) {
-		$oSession = UserSession::create($this, $sIp, $sUserAgent);
+		return UserSession::create($this, $sIp, $sUserAgent);
+	}
+	
+	/**
+	 * Add the UserSession to the user.
+	 * If the userId of the UserSession does nat match the id of this user,
+	 * this function will return false.
+	 * 
+	 * @param UserSession $oSession
+	 * @return boolean
+	 */
+	public function addSession(UserSession $oSession) {
+		if($oSession->getUserId() != $this->getId())
+			return false;
+		
 		$this->getSessions();
-		$this->m_aSessions[$oSession->getToken()] = $oSession;
+		if(!isset($this->m_aSessions[$oSession->getToken()]))
+			$this->m_aSessions[$oSession->getToken()] = $oSession;
+		
+		return true;
 	}
 	
+	/**
+	 * Get a UserSession by it's token.
+	 * If no tolen is given, return the first element of te list.
+	 * 
+	 * @param string $sToken
+	 * @return UserSession|null
+	 */
+	public function getSession($sToken = null) {
+		$aSession = $this->getSessions();
+		if($sToken)
+			return isset($aSessions[$sToken]) ? $aSessions[$sToken] : null;
+		else 
+			return count($aSession) > 0 ? array_first($aSession) : null;
+	}
+	
+	/**
+	 * Remove a given UserSession for the user.
+	 * If the userId of the UserSession does nat match the id of this user,
+	 * this function will return false.
+	 * 
+	 * @param UserSession $oSession
+	 * @return boolean
+	 */
 	public function removeSession(UserSession $oSession) {
-		// TODO
+		if($oSession->getUserId() != $this->getId())
+			return false;
+		
+		// Delete instance
+		$oSession->delete();
+		
+		// Remove from list
+		if(isset($this->m_aSessions[$oSession->getToken()]))
+			unset($this->m_aSessions[$oSession->getToken()]);
+		
+		return true;
 	}
 	
-	public function removeSessions() {
-		// TODO
+	public function clearSessions() {
+		$this->getSessions();
+		foreach($this->m_aSessions as $oSession) {
+			$oSession->delete();
+		}
+		$this->m_aSessions = array();
 	}
 	
 	/**

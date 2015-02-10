@@ -155,7 +155,7 @@ class DbObject extends ObjectUnique {
 	 * @param DbTable $oTable
 	 * @param mixed $mId
 	 * @param string $sIdFieldOverwrite
-	 * @return ObjectUnique|null Will return null when unable to load designated object.
+	 * @return DbObject|null Will return null when unable to load designated object.
 	 */
 	public static final function loadObject(DbTable $oTable, $mId, $sIdFieldOverwrite = null) {
 		$sKey = self::generateUniqueKey($oTable, $mId);
@@ -202,7 +202,7 @@ class DbObject extends ObjectUnique {
 	 * @see loadObject()
 	 * @param DbTable $oTable
 	 * @param array $aData
-	 * @return ObjectUnique|null
+	 * @return DbObject|null
 	 */
 	public static final function createObject(DbTable $oTable, array $aData) {
 		$nId = $oTable->insert($aData);
