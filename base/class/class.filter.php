@@ -95,5 +95,3 @@ class Filter extends CacheableFile {
 		return $oReturn;
 	}
 }
-
-?>

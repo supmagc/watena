@@ -1,6 +1,6 @@
 <?php
 
-abstract class ObjectUnique extends Object implements Serializable {
+abstract class ObjectUnique extends Object implements \Serializable {
 
 	private $m_mGroup;
 	private $m_mId;

@@ -66,5 +66,3 @@ class FilterRule extends Object {
 		return false;
 	}
 }
-
-?>

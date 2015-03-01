@@ -369,5 +369,3 @@ class Mail extends Object {
 // 		$this->fullBody .= implode($sep, $ata);
 // 	}
 }
-
-?>

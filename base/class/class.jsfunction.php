@@ -125,5 +125,3 @@ class JSFunction extends Object {
 		return Encoding::regMatch('^[a-z_][a-z0-9_]*$', $sFunction, 'i');
 	}
 }
-
-?>

@@ -123,5 +123,3 @@ class CacheLoader extends Object {
 		return $oInstance;
 	}
 }
-
-?>

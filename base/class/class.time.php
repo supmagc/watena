@@ -192,5 +192,3 @@ class Time extends Object {
 		return in_array($mTimezone, DateTimeZone::listIdentifiers()) || Encoding::regMatch('^Etc/GMT[-+][0-9]*$', $mTimezone, 'i');
 	}
 }
-
-?>

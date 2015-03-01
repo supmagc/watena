@@ -74,5 +74,3 @@ class ZipFile extends Object {
 		return $this->m_oZipper->comment;
 	}
 }
-
-?>

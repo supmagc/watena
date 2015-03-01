@@ -42,5 +42,3 @@ class Interval extends Object {
 		return $this->m_nSeconds;
 	}
 }
-
-?>

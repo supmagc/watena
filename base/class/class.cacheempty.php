@@ -22,5 +22,3 @@ class CacheEmpty extends Object implements ICache {
 		return true;
 	}
 }
-
-?>

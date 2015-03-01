@@ -148,5 +148,3 @@ class Callback extends Object {
 		}
 	}
 }
-
-?>

@@ -73,7 +73,7 @@ class UserSession extends DbMultiObject {
 	}
 	
 	public static function load(User $oUser, $sToken) {
-		return self::loadObject(self::getTable(), array($oUser->getId(), $sToken));
+		return self::loadObject(self::getDbTable(), array($oUser->getId(), $sToken));
 	}
 	
 	public static function create(User $oUser, $sIp, $sUserAgent) {

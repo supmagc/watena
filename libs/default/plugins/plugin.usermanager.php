@@ -192,7 +192,7 @@ class UserManager extends Plugin {
 		
 		// Get and check the matching UserId
 		$oUser = User::Load(self::getUserIdByEmail($sEmail));
-		if($oUser === false) 
+		if($oUser === null) 
 			throw new UserUnknownEmailException($sEmail);
 		
 		// Get the user and the email-object

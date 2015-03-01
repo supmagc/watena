@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Handles the response after a webrequest.
  * On creation this class extracts the needed data from a given url-resource.
@@ -106,4 +107,3 @@ class WebResponse extends Object {
 		return isset($this->m_aHeaders[$sKey]) ? $this->m_aHeaders[$sKey] : false;
 	}
 }
-?>

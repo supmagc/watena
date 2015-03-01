@@ -486,4 +486,3 @@ function get_called_class($bt = false,$l = 1) {
     }
 }
 }
-?>

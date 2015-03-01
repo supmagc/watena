@@ -351,5 +351,3 @@ class Context extends Object {
 		return $this->m_aDataFiles[$sPath];
 	}
 }
-
-?>

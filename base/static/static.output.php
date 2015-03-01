@@ -89,5 +89,3 @@ class Output {
 		return false;
 	}
 }
-
-?>

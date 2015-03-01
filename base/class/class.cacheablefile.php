@@ -34,5 +34,3 @@ class CacheableFile extends Cacheable {
 		return $oLoader->get($aConfig);
 	}
 }
-
-?>

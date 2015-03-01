@@ -1,5 +1,6 @@
 <?php
 
+/*
 class ComponentLoader extends CacheableFile {
 	
 	private $m_sClass;
@@ -44,5 +45,4 @@ class ComponentLoader extends CacheableFile {
 		return CacheableFile::create($sPath, array('m_sClass' => $sClass));
 	}
 }
-
-?>
+*/

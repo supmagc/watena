@@ -104,5 +104,3 @@ class WatenaConfig {
 		return $this->m_aConfig['compression'];
 	}
 }
-
-?>

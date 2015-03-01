@@ -12,5 +12,3 @@ abstract class Model extends CacheableData {
 	
 	public function prepare() {}
 }
-
-?>

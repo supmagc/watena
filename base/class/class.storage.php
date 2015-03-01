@@ -3,5 +3,3 @@
 class Storage extends Object {
 	
 }
-
-?>

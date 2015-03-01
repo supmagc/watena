@@ -234,5 +234,3 @@ class RequirementBuffer extends Object {
 		return $oRB;
 	}
 }
-
-?>

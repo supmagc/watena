@@ -187,5 +187,3 @@ class Encoding {
 		return self::regReplace("([$sList])", "\\\\1", $sData, 'msr', $sEncoding);
 	}
 }
-
-?>

@@ -18,5 +18,3 @@ class CacheLoaderDirectory extends CacheLoader {
 		}
 	}
 }
-
-?>
