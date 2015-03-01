@@ -20,5 +20,3 @@ class CacheableData extends Cacheable {
 		return $oLoader->get($aConfig);
 	}
 }
-
-?>

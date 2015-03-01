@@ -112,5 +112,3 @@ class IniParser extends CacheableData {
 		return $oLoader->get(array('content' => $sContent));
 	}
 }
-
-?>

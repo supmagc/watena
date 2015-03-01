@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Create a request to another server.
  * Internally all settings are translated to CURL options.
@@ -390,4 +391,3 @@ class WebRequest extends Object {
 		return new WebResponse($this->m_oCurl, $mData);
 	}
 }
-?>

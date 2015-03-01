@@ -26,5 +26,3 @@ class FilterGroup extends CacheableDirectory {
 		return $this->m_aFilters;
 	}
 }
-
-?>

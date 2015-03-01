@@ -8,5 +8,3 @@ interface ICache {
 	public function get($sKey, $mDefault);
 	public function set($sKey, $mData);
 }
-
-?>

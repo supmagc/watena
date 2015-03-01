@@ -69,5 +69,3 @@ class ComponentFactory extends Object {
 		return $aReturn;
 	}
 }
-
-?>

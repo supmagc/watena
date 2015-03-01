@@ -105,5 +105,3 @@ abstract class Cacheable extends Object {
 		return $this->getCacheData()->update($this);
 	}
 }
-
-?>

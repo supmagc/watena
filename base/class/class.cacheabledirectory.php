@@ -53,5 +53,3 @@ class CacheableDirectory extends Cacheable {
 		return $oLoader->get($aConfig);
 	}
 }
-
-?>

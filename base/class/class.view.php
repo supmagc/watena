@@ -33,5 +33,3 @@ abstract class View extends CacheableData {
 		return Output::header(sprintf('Content-Type: %s;charset=%s', $this->getContentType(), $this->getCharset()));
 	}
 }
-
-?>

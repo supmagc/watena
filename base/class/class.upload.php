@@ -99,5 +99,3 @@ class Upload extends Object {
 		return false;
 	}
 }
-
-?>

@@ -21,5 +21,3 @@ class FilterData extends Object {
 		return $this->m_aParams;
 	}
 }
-
-?>

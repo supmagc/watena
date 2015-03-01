@@ -39,5 +39,3 @@ class Mapping extends Object {
 		));
 	}
 }
-
-?>

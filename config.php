@@ -44,7 +44,7 @@ $conf['default']['libraries'] = array('default', 'admin');
 # Charset used throughout the system.
 # This is used for output-generation ,database-access, input processing, ...
 #
-$conf['default']['charset'] = 'UTF-8';
+$conf['default']['charset'] = 'UTF8';
 
 #
 # Default time-zone for date functions.

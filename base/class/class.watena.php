@@ -310,5 +310,3 @@ class Watena extends Object {
 		}
 	}
 }
-
-?>

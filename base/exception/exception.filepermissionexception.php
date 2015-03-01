@@ -13,5 +13,3 @@ class FilePermissionException extends WatCeption {
 		return $this->m_sFilepath;
 	}
 }
-
-?>

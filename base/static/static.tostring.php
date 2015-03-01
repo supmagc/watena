@@ -103,7 +103,7 @@ class ToString {
 	
 	private function parseResource($hData) {
 		if(is_resource($hData)) {
-			$this->m_sName = 'Resource';
+			$this->m_sName = get_resource_type($hData);
 			return true;
 		}
 	}

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This class protects our session
  * 
@@ -97,5 +98,3 @@ class SessionGuard {
 		return md5($sData);
 	}
 }
-
-?>

@@ -1,4 +1,5 @@
 <?php
+
 define('REQERROR_EXTENSIONNOTFOUND', 1);
 define('REQERROR_EXTENSIONUNLOADABLE', 2);
 define('REQERROR_PLUGINUNLOADABLE', 3);
@@ -148,5 +149,3 @@ function require_controller($mName) {
 		else return require_error(REQERROR_CONTROLLERNOTFOUND, $mName);
 	}
 }
-
-?>

@@ -6,4 +6,3 @@ class EventCallbackException extends WatCeption {
 		parent::__construct('Callback {callback} for event {event} triggered an exception.', array('event' => $sEvent, 'callback' => $cbEvent), null, $oInnerException);
 	}
 }
-?>

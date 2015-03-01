@@ -7,5 +7,3 @@ interface IResult {
 	public function setException(Exception $oException);
 	public function getException();
 }
-
-?>

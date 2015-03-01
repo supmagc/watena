@@ -12,5 +12,3 @@ abstract class Plugin extends Cacheable {
 	 */
 	public abstract function getVersion();
 }
-
-?>

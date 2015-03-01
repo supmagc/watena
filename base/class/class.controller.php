@@ -74,5 +74,3 @@ abstract class Controller extends CacheableData {
 			$this->display(vprintf($sMessage, $aArgs));
 	}
 }
-
-?>

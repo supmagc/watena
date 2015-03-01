@@ -72,5 +72,3 @@ class DataFile extends Object {
 		return Encoding::regReplace('[^-a-zA-Z0-9_.]', '_', $sFileName);
 	}
 }
-
-?>

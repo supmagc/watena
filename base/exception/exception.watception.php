@@ -1,6 +1,6 @@
 <?php
 
-class WatCeption extends Exception {
+class WatCeption extends \Exception {
 	
 	private $m_aData;
 	private $m_oContext;
@@ -25,5 +25,3 @@ class WatCeption extends Exception {
 		return $this->m_oInnerException;
 	} 
 }
-
-?>

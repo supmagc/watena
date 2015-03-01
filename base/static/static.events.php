@@ -1,4 +1,5 @@
 <?php 
+
 /**
  * Static class that manages the cross library/plugins/models/... callbacks.
  * Any object can register itselfs for some specific event(s).
@@ -81,4 +82,3 @@ class Events {
 		return isset(self::$s_aEventsCallbacks[$sEventLower]) ? self::$s_aEventsCallbacks[$sEventLower] : array();
 	}
 }
-?>

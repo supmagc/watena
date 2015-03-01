@@ -1,4 +1,6 @@
 <?php
+use Watena;
+
 Encoding::init('UTF8');
 
 class EncodingTest extends Test {

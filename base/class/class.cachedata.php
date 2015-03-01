@@ -41,5 +41,3 @@ class CacheData extends Object {
 		$this->m_aConfig = $aConfig;
 	}
 }
-
-?>

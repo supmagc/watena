@@ -43,5 +43,3 @@ class Object {
 		return $this->toString();
 	}
 }
-
-?>

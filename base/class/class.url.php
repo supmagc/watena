@@ -136,5 +136,3 @@ class Url extends Object {
 		return $sReturn;
 	}
 }
-
-?>

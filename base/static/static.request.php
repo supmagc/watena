@@ -461,5 +461,3 @@ class Request {
 		return $oUrl;
 	}
 }
-
-?>
