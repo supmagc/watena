@@ -9,6 +9,7 @@ var searchData=
   ['isdeleted',['isDeleted',['../class_db_multi_object.html#a9876147e88c9ef1f3ef5cc478943df58',1,'DbMultiObject\isDeleted()'],['../class_db_object.html#a3e1d2098bd1491048f134dc8fcde055c',1,'DbObject\isDeleted()']]],
   ['ishttp',['isHttp',['../class_request.html#a8d58147bb9572424021c44b0ebb3f85a',1,'Request']]],
   ['ishttps',['isHttps',['../class_request.html#afab6f7cb93efa72b28f3e8b2eba901dd',1,'Request']]],
+  ['istla',['isTla',['../class_user.html#aa9d450d2bfba79d4ef3e838ed4becc0d',1,'User']]],
   ['isvalidfunction',['isValidFunction',['../class_j_s_function.html#ae4c32fc6bd754da66c4cbe0290065257',1,'JSFunction']]],
   ['isvalidmethod',['isValidMethod',['../class_callback.html#a0525569a85e6e7183a1a4b0d201d3c2d',1,'Callback']]],
   ['isvideopost',['isVideoPost',['../class_base_facebook.html#a59ec8025b618af99293ac5efc9d88a59',1,'BaseFacebook']]]

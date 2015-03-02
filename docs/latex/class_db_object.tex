@@ -36,6 +36,10 @@ static \hyperlink{class_db_object_a8b9c9c2300e93e1e84b08c90a20d651d}{generate\-U
 \subsection*{Protected Member Functions}
 \begin{DoxyCompactItemize}
 \item 
+\hyperlink{class_db_object_ae7ab59e88db8907f503c640bdb5536e1}{on\-Init} ()
+\item 
+\hyperlink{class_db_object_a8dd38909f87b43580b63b6b866a7a1e1}{on\-Delete} ()
+\item 
 \hyperlink{class_db_object_a449264f07a4601bdd23572b8162557c1}{get\-Data\-Value} (\$s\-Column, \$m\-Default=false)
 \item 
 \hyperlink{class_db_object_a1cf703960ff6db11c765991c7a510bee}{set\-Data\-Value} (\$s\-Column, \$m\-Value)
@@ -49,7 +53,7 @@ This class is meant to represent a table row. Each row should be uniquely identi
 Jelle 
 \end{DoxyAuthor}
 \begin{DoxyVersion}{Version}
-0.\-3.\-0 
+0.\-3.\-1 
 \end{DoxyVersion}
 
 
@@ -75,7 +79,7 @@ array & {\em \$a\-Data} & \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-Object\-Unique$|$null 
+Db\-Object$|$null 
 \end{DoxyReturn}
 \hypertarget{class_db_object_afba4ed3fd0560178f3dde75ca5f71b8d}{\index{Db\-Object@{Db\-Object}!delete@{delete}}
 \index{delete@{delete}!DbObject@{Db\-Object}}
@@ -83,7 +87,7 @@ Object\-Unique$|$null
 \begin{DoxyParamCaption}
 {}
 \end{DoxyParamCaption}
-)}}\label{class_db_object_afba4ed3fd0560178f3dde75ca5f71b8d}
+)\hspace{0.3cm}{\ttfamily [final]}}}\label{class_db_object_afba4ed3fd0560178f3dde75ca5f71b8d}
 Delete this row from the database, and flag this instance as deleted. \hypertarget{class_db_object_a8b9c9c2300e93e1e84b08c90a20d651d}{\index{Db\-Object@{Db\-Object}!generate\-Unique\-Key@{generate\-Unique\-Key}}
 \index{generate\-Unique\-Key@{generate\-Unique\-Key}!DbObject@{Db\-Object}}
 \subsubsection[{generate\-Unique\-Key}]{\setlength{\rightskip}{0pt plus 5cm}static Db\-Object\-::generate\-Unique\-Key (
@@ -130,7 +134,7 @@ mixed$|$\$m\-Default Returns \$m\-Default is when column is not found.
 \begin{DoxyParamCaption}
 {}
 \end{DoxyParamCaption}
-)}}\label{class_db_object_a38e5ae3d5bf25b14cbaf70abe7e8159c}
+)\hspace{0.3cm}{\ttfamily [final]}}}\label{class_db_object_a38e5ae3d5bf25b14cbaf70abe7e8159c}
 Get the row I\-D.
 
 \begin{DoxyReturn}{Returns}
@@ -142,7 +146,7 @@ mixed
 \begin{DoxyParamCaption}
 {}
 \end{DoxyParamCaption}
-)}}\label{class_db_object_ab927f1a5cac1905a0be1452d0ef76aac}
+)\hspace{0.3cm}{\ttfamily [final]}}}\label{class_db_object_ab927f1a5cac1905a0be1452d0ef76aac}
 Get the associated \hyperlink{class_db_table}{Db\-Table} instance.
 
 \begin{DoxyReturn}{Returns}
@@ -176,7 +180,7 @@ array & {\em \$a\-Data} & An array with the row data. \\
 \begin{DoxyParamCaption}
 {}
 \end{DoxyParamCaption}
-)}}\label{class_db_object_a3e1d2098bd1491048f134dc8fcde055c}
+)\hspace{0.3cm}{\ttfamily [final]}}}\label{class_db_object_a3e1d2098bd1491048f134dc8fcde055c}
 Check if the data of this instance/row is supposed to be deleted.
 
 \begin{DoxyReturn}{Returns}
@@ -205,7 +209,7 @@ string & {\em \$s\-Id\-Field\-Overwrite} & \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-Object\-Unique$|$null Will return null when unable to load designated object. 
+Db\-Object$|$null Will return null when unable to load designated object. 
 \end{DoxyReturn}
 \hypertarget{class_db_object_a75eacf385371fb1d558ab6e3361d9b3d}{\index{Db\-Object@{Db\-Object}!load\-Object\-List@{load\-Object\-List}}
 \index{load\-Object\-List@{load\-Object\-List}!DbObject@{Db\-Object}}
@@ -232,7 +236,21 @@ P\-D\-O\-Statement & {\em \$o\-Statement} & \\
 \begin{DoxyReturn}{Returns}
 array$<$\-Db\-Object$>$ 
 \end{DoxyReturn}
-\hypertarget{class_db_object_a1cf703960ff6db11c765991c7a510bee}{\index{Db\-Object@{Db\-Object}!set\-Data\-Value@{set\-Data\-Value}}
+\hypertarget{class_db_object_a8dd38909f87b43580b63b6b866a7a1e1}{\index{Db\-Object@{Db\-Object}!on\-Delete@{on\-Delete}}
+\index{on\-Delete@{on\-Delete}!DbObject@{Db\-Object}}
+\subsubsection[{on\-Delete}]{\setlength{\rightskip}{0pt plus 5cm}Db\-Object\-::on\-Delete (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_db_object_a8dd38909f87b43580b63b6b866a7a1e1}
+Internal callback upon deletion. Overwrite this method in child classes to add behaviour. \hypertarget{class_db_object_ae7ab59e88db8907f503c640bdb5536e1}{\index{Db\-Object@{Db\-Object}!on\-Init@{on\-Init}}
+\index{on\-Init@{on\-Init}!DbObject@{Db\-Object}}
+\subsubsection[{on\-Init}]{\setlength{\rightskip}{0pt plus 5cm}Db\-Object\-::on\-Init (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_db_object_ae7ab59e88db8907f503c640bdb5536e1}
+Internal callback upon instance creation. Overwrite this method in child classes to add behaviour. \hypertarget{class_db_object_a1cf703960ff6db11c765991c7a510bee}{\index{Db\-Object@{Db\-Object}!set\-Data\-Value@{set\-Data\-Value}}
 \index{set\-Data\-Value@{set\-Data\-Value}!DbObject@{Db\-Object}}
 \subsubsection[{set\-Data\-Value}]{\setlength{\rightskip}{0pt plus 5cm}Db\-Object\-::set\-Data\-Value (
 \begin{DoxyParamCaption}
