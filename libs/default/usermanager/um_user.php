@@ -11,6 +11,21 @@ class User extends UserManagerVerifiable {
 	private $m_aSessions = false;
 	private $m_aEmails = false;
 	
+	private $m_oContainerMails;
+	
+	public function getContainerMails() {
+		if(!$this->m_oContainerMails) {
+			$this->m_oContainerMails = new Container();
+			$oStatement = UserManager::getDatabaseConnection()->select('user_email', $this->getId(), 'userId');
+			$aData = UserEmail::loadObjectList(UserManager::getTableUserEmail(), $oStatement);
+			foreach($aData as $oEmail) {
+				$this->m_oContainerMails->addItem($oEmail);
+			}
+		}
+		
+		return $this->m_oContainerMails;
+	}
+	
 	/**
 	 * Check if a password is set for this user.
 	 * 
