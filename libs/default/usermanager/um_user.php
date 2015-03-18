@@ -323,22 +323,22 @@ class User extends UserManagerVerifiable {
 		}
 	}
 	
-	/**
-	 * Get a list with all currently associated email adress for this user.
-	 * 
-	 * @return array<UserEmail>
-	 */
-	public function getEmails() {
-		if($this->m_aEmails === false) {
-			$this->m_aEmails = array();
-			$oStatement = UserManager::getDatabaseConnection()->select('user_email', $this->getId(), 'userId');
-			$aData = UserEmail::loadObjectList(UserManager::getTableUserEmail(), $oStatement);
-			foreach($aData as $oEmail) {
-				$this->m_aEmails[Encoding::toLower($oEmail->getEmail())] = $oEmail;
-			}
-		}
-		return $this->m_aEmails;
-	}
+// 	/**
+// 	 * Get a list with all currently associated email adress for this user.
+// 	 * 
+// 	 * @return array<UserEmail>
+// 	 */
+// 	public function getEmails() {
+// 		if($this->m_aEmails === false) {
+// 			$this->m_aEmails = array();
+// 			$oStatement = UserManager::getDatabaseConnection()->select('user_email', $this->getId(), 'userId');
+// 			$aData = UserEmail::loadObjectList(UserManager::getTableUserEmail(), $oStatement);
+// 			foreach($aData as $oEmail) {
+// 				$this->m_aEmails[Encoding::toLower($oEmail->getEmail())] = $oEmail;
+// 			}
+// 		}
+// 		return $this->m_aEmails;
+// 	}
 	
 	/**
 	 * Create a new UserEmail object for this user.
@@ -352,66 +352,66 @@ class User extends UserManagerVerifiable {
 		return UserEmail::create($this, $sEmail, $bVerified);
 	}
 	
-	/**
-	 * Add an UserEmail to this user.
-	 * If the userId of the UserEmail does nat match the id of this user,
-	 * this function will return false.
-	 * 
-	 * @param UserEmail $oEmail
-	 * @return boolean
-	 */
-	public function addEmail(UserEmail $oEmail) {
-		// Return false if userId does not match
-		if($oEmail->getUserId() != $this->getId())
-			return false;
+// 	/**
+// 	 * Add an UserEmail to this user.
+// 	 * If the userId of the UserEmail does nat match the id of this user,
+// 	 * this function will return false.
+// 	 * 
+// 	 * @param UserEmail $oEmail
+// 	 * @return boolean
+// 	 */
+// 	public function addEmail(UserEmail $oEmail) {
+// 		// Return false if userId does not match
+// 		if($oEmail->getUserId() != $this->getId())
+// 			return false;
 
-		// Only add mail when not yet in list
-		$this->getEmails();
-		$sKey = Encoding::toLower($oEmail->getEmail());
-		if(!isset($this->m_aEmails[$sKey]))
-			$this->m_aEmails[$sKey] = $oEmail;
+// 		// Only add mail when not yet in list
+// 		$this->getEmails();
+// 		$sKey = Encoding::toLower($oEmail->getEmail());
+// 		if(!isset($this->m_aEmails[$sKey]))
+// 			$this->m_aEmails[$sKey] = $oEmail;
 		
-		return true;
-	}
+// 		return true;
+// 	}
 	
-	/**
-	 * Get an UuserEmail based on a given email-adress if any, or the first email adress for this user.
-	 * 
-	 * @param string $sEmail
-	 * @return UserEmail|null
-	 */
-	public function getEmail($sEmail = null) {
-		$aEmails = $this->getEmails();
-		if($sEmail)
-			return isset($aEmails[Encoding::toLower($sEmail)]) ? $aEmails[Encoding::toLower($sEmail)] : null;
-		else 
-			return count($aEmails) > 0 ? array_first($aEmails) : null;
-	}
+// 	/**
+// 	 * Get an UuserEmail based on a given email-adress if any, or the first email adress for this user.
+// 	 * 
+// 	 * @param string $sEmail
+// 	 * @return UserEmail|null
+// 	 */
+// 	public function getEmail($sEmail = null) {
+// 		$aEmails = $this->getEmails();
+// 		if($sEmail)
+// 			return isset($aEmails[Encoding::toLower($sEmail)]) ? $aEmails[Encoding::toLower($sEmail)] : null;
+// 		else 
+// 			return count($aEmails) > 0 ? array_first($aEmails) : null;
+// 	}
 	
-	/**
-	 * Remove the given UserEmail for this user.
-	 * If the userId of the UserEmail does nat match the id of this user,
-	 * this function will return false.
-	 * 
-	 * @see UserEmail::delete()
-	 * @param UserEmail $oEmail
-	 * @return boolean
-	 */
-	public function removeEmail(UserEmail $oEmail) {
-		// Return if userId does not match
-		if($oEmail->getUserId() != $this->getId())
-			return false;
+// 	/**
+// 	 * Remove the given UserEmail for this user.
+// 	 * If the userId of the UserEmail does nat match the id of this user,
+// 	 * this function will return false.
+// 	 * 
+// 	 * @see UserEmail::delete()
+// 	 * @param UserEmail $oEmail
+// 	 * @return boolean
+// 	 */
+// 	public function removeEmail(UserEmail $oEmail) {
+// 		// Return if userId does not match
+// 		if($oEmail->getUserId() != $this->getId())
+// 			return false;
 		
-		// Delete instance
-		$oEmail->delete();
+// 		// Delete instance
+// 		$oEmail->delete();
 		
-		// Remove from list
-		$sKey = Encoding::toLower($oEmail->getEmail());
-		if(isset($this->m_aEmails[$sKey]))
-			unset($this->m_aEmails[$sKey]);
+// 		// Remove from list
+// 		$sKey = Encoding::toLower($oEmail->getEmail());
+// 		if(isset($this->m_aEmails[$sKey]))
+// 			unset($this->m_aEmails[$sKey]);
 		
-		return true;
-	}
+// 		return true;
+// 	}
 
 	/**
 	 * Get a list with all UserSession-objects associated for the user.

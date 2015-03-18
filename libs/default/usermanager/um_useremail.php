@@ -9,18 +9,11 @@ class UserEmail extends UserManagerVerifiable {
 	
 	private $m_oUser = false;
 	private $m_oTime = false;
-	
-	/**
-	 * Internal callback to remove the email linkage from the User.
-	 * 
-	 * @see DbObject::onDelete()
-	 * @see User::removeEmail()
-	 */
-	protected function onDelete() {
-		$oUser = $this->getUser();
-		if($oUser) $oUser->removeEmail($this);
+
+	public function getKeyForContainer(Container $oContainer) {
+		return Encoding::toLower($this->getDataValue('email'));
 	}
-	
+		
 	/**
 	 * Get the userId for this email.
 	 * 
@@ -94,7 +87,8 @@ class UserEmail extends UserManagerVerifiable {
 			'verified' => $bVerified ? 1 : 0
 		));
 		
-		$oUser->addEmail($oInstance);
+		$oUser->getContainerMails()->addItem($oInstance);
+// 		$oUser->addEmail($oInstance);
 		return $oInstance;
 	}
 }

@@ -43,13 +43,16 @@ class WatenaLoader {
 		require_once PATH_BASE . '/interface/interface.ilogfilter.php';
 		require_once PATH_BASE . '/interface/interface.icache.php';
 		require_once PATH_BASE . '/interface/interface.iresult.php';
+		require_once PATH_BASE . '/interface/interface.icontaineritem.php';
 		require_once PATH_BASE . '/exception/exception.watception.php';
 		require_once PATH_BASE . '/exception/exception.webexception.php';
 		require_once PATH_BASE . '/exception/exception.assureexception.php';
 		require_once PATH_BASE . '/exception/exception.filepermissionexception.php';
 		require_once PATH_BASE . '/exception/exception.objectuniquenessexception.php';
 		require_once PATH_BASE . '/class/class.object.php';
+		require_once PATH_BASE . '/class/class.objectcontained.php';
 		require_once PATH_BASE . '/class/class.objectunique.php';
+		require_once PATH_BASE . '/class/class.container.php';
 		require_once PATH_BASE . '/class/class.watenaconfig.php';
 		require_once PATH_BASE . '/class/class.echolog.php';
 		require_once PATH_BASE . '/class/class.cacheable.php';

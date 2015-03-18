@@ -149,8 +149,8 @@ class UserManagerTest extends Test {
 		$this->assertTrue($oEmailUnverified->getTime()->getTimestamp() - time() <= 1);
 		$this->assertTrue($oEmailOtherUser->getTime()->getTimestamp() - time() <= 1);
 		
-		$this->assertFalse($this->m_oUserVerified->addEmail($oEmailOtherUser));
-		$this->assertFalse($this->m_oUserVerified->removeEmail($oEmailOtherUser));
+		$this->assertFalse($this->m_oUserVerified->getContainerMails()->addItem($oEmailOtherUser));
+		$this->assertFalse($this->m_oUserVerified->getContainerMails()->addItem($oEmailOtherUser));
 		
 		$this->assertEquals($oEmailVerified->getUserId(), UserManager::getUserIdByEmail($oEmailVerified->getEmail()));
 		$this->assertEquals($oEmailUnverified->getUserId(), UserManager::getUserIdByEmail($oEmailUnverified->getEmail()));
@@ -163,21 +163,21 @@ class UserManagerTest extends Test {
 		$this->assertTrue($oEmailVerified->verify($sVerifier));
 		$this->assertTrue($oEmailVerified->isVerified());
 		
-		$aEmails = $this->m_oUserVerified->getEmails();
+		$aEmails = $this->m_oUserVerified->getContainerMails()->getItems();
 		$this->assertEquals(2, count($aEmails));
 		$this->assertTrue(isset($aEmails[Encoding::toLower($oEmailVerified->getEmail())]));
 		$this->assertTrue(isset($aEmails[Encoding::toLower($oEmailUnverified->getEmail())]));
 		$this->assertEquals($oEmailVerified, $aEmails[Encoding::toLower($oEmailVerified->getEmail())]);
 		$this->assertEquals($oEmailUnverified, $aEmails[Encoding::toLower($oEmailUnverified->getEmail())]);
 		
-		$this->assertEquals($oEmailVerified, $this->m_oUserVerified->getEmail(Encoding::toLower($oEmailVerified->getEmail())));
-		$this->assertEquals($oEmailUnverified, $this->m_oUserVerified->getEmail(Encoding::toLower($oEmailUnverified->getEmail())));
+		$this->assertEquals($oEmailVerified, $this->m_oUserVerified->getContainerMails()->getItem(Encoding::toLower($oEmailVerified->getEmail())));
+		$this->assertEquals($oEmailUnverified, $this->m_oUserVerified->getContainerMails()->getItem(Encoding::toLower($oEmailUnverified->getEmail())));
 				
 		$oEmailUnverified->delete();
-		$this->m_oUserVerified->removeEmail($oEmailVerified);
+		$this->m_oUserVerified->getContainerMails()->removeItem($oEmailVerified);
 		$this->assertTrue($oEmailUnverified->isDeleted());
 		$this->assertTrue($oEmailVerified->isDeleted());
-		$aEmails = $this->m_oUserVerified->getEmails();
+		$aEmails = $this->m_oUserVerified->getContainerMails()->getItems();
 		$this->assertEquals(0, count($aEmails));
 	}
 	

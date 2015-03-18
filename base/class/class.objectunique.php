@@ -1,6 +1,6 @@
 <?php
 
-abstract class ObjectUnique extends Object implements \Serializable {
+abstract class ObjectUnique extends ObjectContained implements Serializable {
 
 	private $m_mGroup;
 	private $m_mId;
@@ -10,6 +10,10 @@ abstract class ObjectUnique extends Object implements \Serializable {
 	protected final function __construct($mId, array $aParameters) {
 		call_user_func_array(array($this, 'init'), $aParameters);
 		self::setUniqueInstance($mId, $this);
+	}
+	
+	public function getKeyForContainer(Container $oContainer) {
+		return $this->m_mId;
 	}
 	
 	public final function __sleep() {
