@@ -1,30 +1,17 @@
 <?php
 
-interface IContainerItem {
-	
-	public function getKeyForContainer(Container $oContainer);
-	public function addedToContainer(Container $oContainer);
-	public function removedFromContainer(Container $oContainer);
-}
-
-trait ContainerItemDefaults {
-	
-	public function getKeyForContainer(Container $oContainer) {
-		
-	}
-	
-	public function addedToContainer(Container $oContainer) {
-		
-	}
-	
-	public function removedFromContainer(Container $oContainer) {
-		
-	}
-}
-
-class Container extends Object implements IteratorAggregate {
+final class Container extends Object implements IteratorAggregate {
 	
 	private $m_aItems = array();
+	private $m_mIdentifier;
+	
+	public function __construct($mIdentifier = null) {
+		$this->m_mIdentifier = $mIdentifier;
+	}
+	
+	public function getIdentifier() {
+		return $this->m_mIdentifier;
+	}
 	
 	/**
 	 * @return ArrayIterator
@@ -48,26 +35,21 @@ class Container extends Object implements IteratorAggregate {
 	
 	public function addItem(IContainerItem $oItem) {
 		$sKey = $oItem->getKeyForContainer($this);
-		if(!isset($this->m_aItems[$sKey])) {
-			$this->m_aItems[$sKey] = $oItem;
-			$oItem->addedToContainer($this);
-		}
+		if(isset($this->m_aItems[$sKey]))
+			return false;
+		
+		$this->m_aItems[$sKey] = $oItem;
+		$oItem->addToContainer($this);
+		return true;
 	}
 	
 	public function removeItem(IContainerItem $oItem) {
 		$sKey = $oItem->getKeyForContainer($this);
-		if(isset($this->m_aItems[$sKey])) {
-			unset($this->m_aItems[$sKey]);
-			$oItem->removedFromContainer($this);
-		}
+		if(!isset($this->m_aItems[$sKey])) 
+			return false;
+		
+		unset($this->m_aItems[$sKey]);
+		$oItem->removeFromContainer($this);
+		return true;
 	}
-}
-
-class MyClass Extends Object {
-	
-}
-
-class MyItem extends Object implements IContainerItem {
-	use ContainerItemDefaults;
-	
 }

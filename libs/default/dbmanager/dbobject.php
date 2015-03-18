@@ -131,6 +131,7 @@ class DbObject extends ObjectUnique {
 		$this->m_bDeleted = true;
 		$this->getTable()->delete($this->m_mId);
 		self::setUniqueInstance(self::generateUniqueKey($this->m_oTable, $this->m_mId), null);
+		self::removeFromAllContainers();
 		
 		// Call callback
 		$this->onDelete();
