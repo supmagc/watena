@@ -13,6 +13,10 @@ class UserEmail extends UserManagerVerifiable {
 	public function getKeyForContainer(Container $oContainer) {
 		return Encoding::toLower($this->getDataValue('email'));
 	}
+	
+	public function onRemovedFromContainer(Container $oContainer) {
+		$this->delete();
+	}
 		
 	/**
 	 * Get the userId for this email.
@@ -64,7 +68,8 @@ class UserEmail extends UserManagerVerifiable {
 	 */
 	public static function load($mId) {
 		$oInstance = self::loadObject(UserManager::getTableUserEmail(), $mId);
-		$oInstance->getUser()->addEmail($oInstance);
+		// Performance ?
+		$oInstance->getUser()->getContainerMails()->addItem($oInstance);
 		return $oInstance;
 	}
 	
@@ -88,7 +93,6 @@ class UserEmail extends UserManagerVerifiable {
 		));
 		
 		$oUser->getContainerMails()->addItem($oInstance);
-// 		$oUser->addEmail($oInstance);
 		return $oInstance;
 	}
 }

@@ -33,15 +33,19 @@ class ContainerTest extends Test {
 		$this->assertFalse($this->m_oContainerA->addItem($oItemA1));
 		$this->assertTrue($this->m_oContainerB->addItem($oItemB));
 		$this->assertTrue($this->m_oContainerB->addItem($oItemA1));
-		
-		$this->assertFalse($oItemA1->addToContainer($this->m_oContainerA));
-		$this->assertFalse($oItemA0->addToContainer($this->m_oContainerA));
-		$this->assertTrue($oItemB->addToContainer($this->m_oContainerA));
+		$this->assertTrue($this->m_oContainerA->addItem($oItemB));
 		
 		$this->assertEquals($oItemA0, $this->m_oContainerA->getItem('a'));
 		$this->assertEquals($oItemB, $this->m_oContainerA->getItem('b'));
 		$this->assertEquals($oItemA1, $this->m_oContainerB->getItem('a'));
 		$this->assertEquals($oItemB, $this->m_oContainerB->getItem('b'));
+
+		$oItemA0->removeFromAllContainers();
+		$oItemA1->removeFromAllContainers();
+		$oItemB->removeFromAllContainers();
+		
+		$this->assertEquals(0, count($this->m_oContainerA->getItems()));
+		$this->assertEquals(0, count($this->m_oContainerB->getItems()));
 	}
 	
 	public function teardown() {

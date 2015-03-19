@@ -15,7 +15,9 @@ class User extends UserManagerVerifiable {
 	
 	public function getContainerMails() {
 		if(!$this->m_oContainerMails) {
-			$this->m_oContainerMails = new Container();
+			$this->m_oContainerMails = new Container('user_email', 
+				function(UserEmail $oUserEmail) {return $oUserEmail->getUserId() == $this->getId();}
+			);
 			$oStatement = UserManager::getDatabaseConnection()->select('user_email', $this->getId(), 'userId');
 			$aData = UserEmail::loadObjectList(UserManager::getTableUserEmail(), $oStatement);
 			foreach($aData as $oEmail) {

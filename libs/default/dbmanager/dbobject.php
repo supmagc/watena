@@ -125,12 +125,20 @@ class DbObject extends ObjectUnique {
 	 * Delete this row from the database, and flag this instance as deleted.
 	 */
 	public final function delete() {
+		// Don't double delete
 		if($this->m_bDeleted) 
 			return;
 		
+		// Flag deleted
 		$this->m_bDeleted = true;
+		
+		// Remove from database
 		$this->getTable()->delete($this->m_mId);
+		
+		// Remove from unique-instances listing
 		self::setUniqueInstance(self::generateUniqueKey($this->m_oTable, $this->m_mId), null);
+		
+		// Remove from containers
 		self::removeFromAllContainers();
 		
 		// Call callback
