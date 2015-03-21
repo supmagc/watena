@@ -160,6 +160,20 @@ class DbMultiObject extends ObjectUnique {
 		return $oInstance;
 	}
 	
+	public static final function loadObjectList(DbMultiTable $oTable, PDOStatement $oStatement) {
+		$aReturn = array();
+		// TODO: THIS WONT WORK (copied from DbObject)
+		foreach($oStatement as $aRow) {
+			if(!isset($aRow[$oTable->getIdField()]))
+				throw new DbInvalidDbMultiObjectId($oTable);
+				
+			$mId = $aRow[$oTable->getIdField()];
+			$sKey = self::generateUniqueKey($oTable, $mId);
+			$aReturn[$mId] = static::assureUniqueInstance($sKey, array($oTable, $aRow));
+		}
+		return $aReturn;
+	}
+	
 	/**
 	 * Create a new object by first inserting the given data, and by calling loadObject next.
 	 * loadObject will be called with the Ids returned form the insert query.

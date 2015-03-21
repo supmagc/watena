@@ -68,8 +68,6 @@ class UserEmail extends UserManagerVerifiable {
 	 */
 	public static function load($mId) {
 		$oInstance = self::loadObject(UserManager::getTableUserEmail(), $mId);
-		// Performance ?
-		$oInstance->getUser()->getContainerMails()->addItem($oInstance);
 		return $oInstance;
 	}
 	

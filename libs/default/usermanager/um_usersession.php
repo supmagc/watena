@@ -5,16 +5,13 @@ class UserSession extends DbMultiObject {
 	private $m_oUser = false;
 	private $m_oTime = false;
 	private $m_oActivity = false;
+
+	public function getKeyForContainer(Container $oContainer) {
+		return $this->getDataValue('token');
+	}
 	
-	/**
-	 * Internal callback to remove the session linkage from the User.
-	 * 
-	 * @see DbObject::onDelete()
-	 * @see User::removeSession()
-	 */
-	protected function onDelete() {
-		$oUser = $this->getUser();
-		if($oUser) $oUser->removeSession($this);
+	public function onRemovedFromContainer(Container $oContainer) {
+		$this->delete();
 	}
 	
 	public function getUserId() {
@@ -79,11 +76,13 @@ class UserSession extends DbMultiObject {
 	public static function create(User $oUser, $sIp, $sUserAgent) {
 		$sToken = md5($oUser->getId() . mt_rand() . microtime());
 		$sToken = substr($sToken, mt_rand(0, 16), 16);
-		return self::createObject(self::getDbTable(), array(
+		$oInstance = self::createObject(self::getDbTable(), array(
 			'userId' => $oUser->getId(),
 			'token' => $sToken,
 			'ip' => $sIp,
 			'useragent' => $sUserAgent
 		));
+		$oUser->getContainerSessions()->addItem($oInstance);
+		return $oInstance;
 	}
 }

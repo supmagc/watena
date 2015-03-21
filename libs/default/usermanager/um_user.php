@@ -12,21 +12,7 @@ class User extends UserManagerVerifiable {
 	private $m_aEmails = false;
 	
 	private $m_oContainerMails;
-	
-	public function getContainerMails() {
-		if(!$this->m_oContainerMails) {
-			$this->m_oContainerMails = new Container('user_email', 
-				function(UserEmail $oUserEmail) {return $oUserEmail->getUserId() == $this->getId();}
-			);
-			$oStatement = UserManager::getDatabaseConnection()->select('user_email', $this->getId(), 'userId');
-			$aData = UserEmail::loadObjectList(UserManager::getTableUserEmail(), $oStatement);
-			foreach($aData as $oEmail) {
-				$this->m_oContainerMails->addItem($oEmail);
-			}
-		}
-		
-		return $this->m_oContainerMails;
-	}
+	private $m_oContainerSessions;
 	
 	/**
 	 * Check if a password is set for this user.
@@ -324,23 +310,26 @@ class User extends UserManagerVerifiable {
 			unset($this->m_aConnections[$oConnection->getProvider()]);
 		}
 	}
+
+	/**
+	 * Retrieve a container with all the UserEmail objects assigned to this user.
+	 * 
+	 * @return Container
+	 */
+	public function getContainerMails() {
+		if(!$this->m_oContainerMails) {
+			$this->m_oContainerMails = new Container('user_email',
+					function(UserEmail $oUserEmail) {return $oUserEmail->getUserId() == $this->getId();}
+			);
+			$oStatement = UserManager::getDatabaseConnection()->select('user_email', $this->getId(), 'userId');
+			$aData = UserEmail::loadObjectList(UserManager::getTableUserEmail(), $oStatement);
+			foreach($aData as $oEmail) {
+				$this->m_oContainerMails->addItem($oEmail);
+			}
+		}
 	
-// 	/**
-// 	 * Get a list with all currently associated email adress for this user.
-// 	 * 
-// 	 * @return array<UserEmail>
-// 	 */
-// 	public function getEmails() {
-// 		if($this->m_aEmails === false) {
-// 			$this->m_aEmails = array();
-// 			$oStatement = UserManager::getDatabaseConnection()->select('user_email', $this->getId(), 'userId');
-// 			$aData = UserEmail::loadObjectList(UserManager::getTableUserEmail(), $oStatement);
-// 			foreach($aData as $oEmail) {
-// 				$this->m_aEmails[Encoding::toLower($oEmail->getEmail())] = $oEmail;
-// 			}
-// 		}
-// 		return $this->m_aEmails;
-// 	}
+		return $this->m_oContainerMails;
+	}
 	
 	/**
 	 * Create a new UserEmail object for this user.
@@ -348,88 +337,30 @@ class User extends UserManagerVerifiable {
 	 * @see UserEmail::create()
 	 * @param string $sEmail
 	 * @param boolean $bVerified
-	 * @return UserEmail|NULL
+	 * @return UserEmail|null
 	 */
 	public function createEmail($sEmail, $bVerified = false) {
 		return UserEmail::create($this, $sEmail, $bVerified);
 	}
 	
-// 	/**
-// 	 * Add an UserEmail to this user.
-// 	 * If the userId of the UserEmail does nat match the id of this user,
-// 	 * this function will return false.
-// 	 * 
-// 	 * @param UserEmail $oEmail
-// 	 * @return boolean
-// 	 */
-// 	public function addEmail(UserEmail $oEmail) {
-// 		// Return false if userId does not match
-// 		if($oEmail->getUserId() != $this->getId())
-// 			return false;
-
-// 		// Only add mail when not yet in list
-// 		$this->getEmails();
-// 		$sKey = Encoding::toLower($oEmail->getEmail());
-// 		if(!isset($this->m_aEmails[$sKey]))
-// 			$this->m_aEmails[$sKey] = $oEmail;
-		
-// 		return true;
-// 	}
-	
-// 	/**
-// 	 * Get an UuserEmail based on a given email-adress if any, or the first email adress for this user.
-// 	 * 
-// 	 * @param string $sEmail
-// 	 * @return UserEmail|null
-// 	 */
-// 	public function getEmail($sEmail = null) {
-// 		$aEmails = $this->getEmails();
-// 		if($sEmail)
-// 			return isset($aEmails[Encoding::toLower($sEmail)]) ? $aEmails[Encoding::toLower($sEmail)] : null;
-// 		else 
-// 			return count($aEmails) > 0 ? array_first($aEmails) : null;
-// 	}
-	
-// 	/**
-// 	 * Remove the given UserEmail for this user.
-// 	 * If the userId of the UserEmail does nat match the id of this user,
-// 	 * this function will return false.
-// 	 * 
-// 	 * @see UserEmail::delete()
-// 	 * @param UserEmail $oEmail
-// 	 * @return boolean
-// 	 */
-// 	public function removeEmail(UserEmail $oEmail) {
-// 		// Return if userId does not match
-// 		if($oEmail->getUserId() != $this->getId())
-// 			return false;
-		
-// 		// Delete instance
-// 		$oEmail->delete();
-		
-// 		// Remove from list
-// 		$sKey = Encoding::toLower($oEmail->getEmail());
-// 		if(isset($this->m_aEmails[$sKey]))
-// 			unset($this->m_aEmails[$sKey]);
-		
-// 		return true;
-// 	}
-
 	/**
-	 * Get a list with all UserSession-objects associated for the user.
+	 * Retrieve a container with all the UserSession objects assigned to this user.
 	 * 
-	 * @return array<UserSession>
+	 * @return Container
 	 */
-	public function getSessions() {
-		if($this->m_aSessions === false) {
-			$this->m_aSessions = array();
+	public function getContainerSessions() {
+		if(!$this->m_oContainerSessions) {
+			$this->m_oContainerSessions = new Container('user_session', 
+				function(UserSession $oUserSession) {return $oUserSession->getUserId() == $this->getId();}
+			);
 			$oStatement = UserManager::getDatabaseConnection()->select('user_session', $this->getId(), 'userId');
-			$aData = UserEmail::loadObjectList(UserManager::getTableUserSession(), $oStatement);
+			$aData = UserSession::loadObjectList(UserManager::getTableUserSession(), $oStatement);
 			foreach($aData as $oSession) {
-				$this->m_aSessions[$oSession->getToken()] = $oSession;
+				$this->m_oContainerSessions->addItem($oSession);
 			}
 		}
-		return $this->m_aSessions;
+		
+		return $this->m_oContainerSessions;
 	}
 	
 	/**
@@ -442,69 +373,12 @@ class User extends UserManagerVerifiable {
 	public function createSession($sIp, $sUserAgent) {
 		return UserSession::create($this, $sIp, $sUserAgent);
 	}
-	
+
 	/**
-	 * Add the UserSession to the user.
-	 * If the userId of the UserSession does nat match the id of this user,
-	 * this function will return false.
-	 * 
-	 * @param UserSession $oSession
-	 * @return boolean
+	 * Clear all sessions for this user.
 	 */
-	public function addSession(UserSession $oSession) {
-		if($oSession->getUserId() != $this->getId())
-			return false;
-		
-		$this->getSessions();
-		if(!isset($this->m_aSessions[$oSession->getToken()]))
-			$this->m_aSessions[$oSession->getToken()] = $oSession;
-		
-		return true;
-	}
-	
-	/**
-	 * Get a UserSession by it's token.
-	 * If no tolen is given, return the first element of te list.
-	 * 
-	 * @param string $sToken
-	 * @return UserSession|null
-	 */
-	public function getSession($sToken = null) {
-		$aSession = $this->getSessions();
-		if($sToken)
-			return isset($aSessions[$sToken]) ? $aSessions[$sToken] : null;
-		else 
-			return count($aSession) > 0 ? array_first($aSession) : null;
-	}
-	
-	/**
-	 * Remove a given UserSession for the user.
-	 * If the userId of the UserSession does nat match the id of this user,
-	 * this function will return false.
-	 * 
-	 * @param UserSession $oSession
-	 * @return boolean
-	 */
-	public function removeSession(UserSession $oSession) {
-		if($oSession->getUserId() != $this->getId())
-			return false;
-		
-		// Delete instance
-		$oSession->delete();
-		
-		// Remove from list
-		if(isset($this->m_aSessions[$oSession->getToken()]))
-			unset($this->m_aSessions[$oSession->getToken()]);
-		
-		return true;
-	}
-	
 	public function clearSessions() {
-		$this->getSessions();
-		foreach($this->m_aSessions as $oSession) {
-			$oSession->delete();
-		}
-		$this->m_aSessions = array();
+		$this->getContainerSessions()->clear();
 	}
 	
 	/**

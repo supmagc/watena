@@ -221,10 +221,11 @@ function array_all($mCallback, array &$aData) {
  * Retrieve the last element of an array.
  * 
  * @param array $arr The array from which you need the last value.
- * @return mixed|false The last value, or false when empty array.
+ * @param mixed $mDefault Default return value when array size is 0.
+ * @return mixed|$mDefault The last value, or $mDefault when empty array.
  */
-function array_first(array &$arr) {
-	if(count($arr) == 0) return false;
+function array_first(array &$arr, $mDefault = null) {
+	if(count($arr) == 0) return $mDefault;
 	$aKeys = array_keys($arr);
 	return $arr[$aKeys[0]];
 }
@@ -233,10 +234,11 @@ function array_first(array &$arr) {
  * Retrieve the last element of an array.
  * 
  * @param array $arr The array from which you need the last value.
- * @return mixed|false The last value, or false when empty array.
+ * @param mixed $mDefault Default return value when array size is 0.
+ * @return mixed|$mDefault The last value, or $mDefault when empty array.
  */
-function array_last(array &$arr) {
-	if(count($arr) == 0) return false;
+function array_last(array &$arr, $mDefault = null) {
+	if(count($arr) == 0) return $mDefault;
 	$aKeys = array_keys($arr);
 	return $arr[$aKeys[count($aKeys) - 1]];
 }

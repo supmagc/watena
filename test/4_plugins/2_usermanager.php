@@ -9,6 +9,7 @@ class UserManagerTest extends Test {
 	public function setup() {
 		UserManager::getDatabaseConnection()->query('DELETE FROM `user`');
 		UserManager::getDatabaseConnection()->query('DELETE FROM `user_email`');
+		UserManager::getDatabaseConnection()->query('DELETE FROM `user_session`');
 	}
 	
 	public function testUserCreation() {
@@ -150,7 +151,7 @@ class UserManagerTest extends Test {
 		$this->assertTrue($oEmailOtherUser->getTime()->getTimestamp() - time() <= 1);
 		
 		$this->assertFalse($this->m_oUserVerified->getContainerMails()->addItem($oEmailOtherUser));
-		$this->assertFalse($this->m_oUserVerified->getContainerMails()->addItem($oEmailOtherUser));
+		$this->assertFalse($this->m_oUserUnverified->getContainerMails()->addItem($oEmailOtherUser));
 		
 		$this->assertEquals($oEmailVerified->getUserId(), UserManager::getUserIdByEmail($oEmailVerified->getEmail()));
 		$this->assertEquals($oEmailUnverified->getUserId(), UserManager::getUserIdByEmail($oEmailUnverified->getEmail()));
@@ -183,7 +184,14 @@ class UserManagerTest extends Test {
 	
 	// Test sessions
 	public function testUserSession() {
+		$oEmptySession = $this->m_oUserVerified->createSession('', '');
+		$oLocalSession = $this->m_oUserVerified->createSession(Request::ip(), Request::useragent());
+		$oSecondEmptySession = $this->m_oUserVerified->createSession('', '');
 		
+		$this->assertEquals(3, $this->m_oUserVerified->getContainerSessions()->getItemCount());
+		$this->assertType('UserSession', $oEmptySession);
+		$this->assertType('UserSession', $oLocalSession);
+		$this->assertType('UserSession', $oSecondEmptySession);
 	}
 	
 	// Test connections
