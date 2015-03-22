@@ -65,18 +65,14 @@ class UserSession extends DbMultiObject {
 		$this->setDataValue('useragent', $sUseragent);
 	}
 	
-	public static function getDbTable() {
-		return UserManager::getDatabaseConnection()->getMultiTable('user_session', array('userId', 'token'));
-	}
-	
 	public static function load(User $oUser, $sToken) {
-		return self::loadObject(self::getDbTable(), array($oUser->getId(), $sToken));
+		return self::loadObject(UserManager::getTableUserSession(), array($oUser->getId(), $sToken));
 	}
 	
 	public static function create(User $oUser, $sIp, $sUserAgent) {
 		$sToken = md5($oUser->getId() . mt_rand() . microtime());
 		$sToken = substr($sToken, mt_rand(0, 16), 16);
-		$oInstance = self::createObject(self::getDbTable(), array(
+		$oInstance = self::createObject(UserManager::getTableUserSession(), array(
 			'userId' => $oUser->getId(),
 			'token' => $sToken,
 			'ip' => $sIp,
