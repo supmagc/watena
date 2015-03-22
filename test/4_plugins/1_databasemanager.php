@@ -175,6 +175,10 @@ class DatabaseManagerTest extends Test {
 		$this->assertNull($oInstance->getNameNull());
 	}
 
+	public function testObjectSingleLoadList() {
+	
+	}
+	
 	public function testTableMulti() {
 		$this->assertType('DbMultiTable', $this->m_oTableMulti);
 		$this->assertEquals($this->m_oConnection->getIdentifier(), $this->m_oTableMulti->getConnection()->getIdentifier());
@@ -278,6 +282,10 @@ class DatabaseManagerTest extends Test {
 		$oInstance->setNameNull('cdbn'.$this->m_sRandomName);
 		$this->assertNull($oInstance->getNameNull());
 		$this->assertTrue($oInstance->isDeleted());
+	}
+
+	public function testObjectMultiLoadList() {
+	
 	}
 	
 	public function teardown() {

@@ -141,7 +141,7 @@ class UserManager extends Plugin {
 	}
 
 	public static function getTableUserSession() {
-		return self::$s_oSingleton->m_oDatabaseConnection->getTable('user_session');
+		return self::$s_oSingleton->m_oDatabaseConnection->getMultiTable('user_session', array('userId', 'token'));
 	}
 	
 	/**

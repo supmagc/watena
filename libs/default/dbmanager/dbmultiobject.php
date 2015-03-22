@@ -160,16 +160,29 @@ class DbMultiObject extends ObjectUnique {
 		return $oInstance;
 	}
 	
+	/**
+	 * Scan for valid records through the given PDOStatement.
+	 * You need to make sure the rows are full representations of the table data, and have
+	 * all valid Ids matching $oTable->getIdFields().
+	 * 
+	 * @param DbMultiTable $oTable
+	 * @param PDOStatement $oStatement
+	 * @throws DbInvalidDbMultiObjectId
+	 * @return array<DbMultiObject>
+	 */
 	public static final function loadObjectList(DbMultiTable $oTable, PDOStatement $oStatement) {
 		$aReturn = array();
-		// TODO: THIS WONT WORK (copied from DbObject)
 		foreach($oStatement as $aRow) {
-			if(!isset($aRow[$oTable->getIdField()]))
-				throw new DbInvalidDbMultiObjectId($oTable);
+			$aIds = array();
+			foreach($oTable->getIdFields() as $sIdField) {
+				if(!isset($aRow[$sIdField]))
+					throw new DbInvalidDbMultiObjectId($oTable);
+				else 
+					$aIds[$sIdField] = $aRow[$sIdField];
+			}
 				
-			$mId = $aRow[$oTable->getIdField()];
-			$sKey = self::generateUniqueKey($oTable, $mId);
-			$aReturn[$mId] = static::assureUniqueInstance($sKey, array($oTable, $aRow));
+			$sKey = self::generateUniqueKey($oTable, $aIds);
+			$aReturn[implode('.', $aIds)] = static::assureUniqueInstance($sKey, array($oTable, $aRow));
 		}
 		return $aReturn;
 	}
