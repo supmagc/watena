@@ -281,32 +281,42 @@ class Watena extends Object {
 	 * Check some install prerequisites
 	 */
 	public final function validate() {
+		$aWarnings = array();
+		
 		// Check data folder
 		if(!is_writable(PATH_DATA)) {
-			$this->getLogger()->warning("The data folder should be writable.", array('path' => PATH_DATA));
+			$aWarnings []= "The data folder should be writable: " . PATH_DATA;
 		}
 		
 		// Check compression and zlib settings
 		if($this->getConfig()->compression()) {
 			$bZlibIni = ini_get('zlib.output_compression');
 			if($bZlibIni && Encoding::toLower($bZlibIni) !== "off") {
-				$this->getLogger()->warning("Global compression can not be enabled when 'zlib.output_compression' is true.");
+				$aWarnings []= "Global compression can not be enabled when 'zlib.output_compression' is true.";
 			}
 		}
 		
 		// Check php version
-		if(version_compare(PHP_VERSION, '5.3.0') < 0) {
-			$this->getLogger()->warning("PHP's version should be at least 5.3.0.");
+		if(version_compare(PHP_VERSION, '5.4.0') < 0) {
+			$aWarnings []= "PHP's version should be at least 5.4.0.";
 		}
 		
 		// Check config domain
 		if(!Encoding::endsWith(Request::host(), $this->getConfig()->domain())) {
-			$this->getLogger()->warning("Config domain values does not match request host.", array('domain' => $this->getConfig()->domain(), 'host' => Request::host()));
+			$aWarnings []= sprintf("Config domain values does not match request host. (%s <> %s)", $this->getConfig()->domain(), Request::host());
 		}
 		
 		// Check config offset/webroot
 		if(Request::offset() != $this->getConfig()->webRoot()) {
-			$this->getLogger()->warning("Config webroot values does not match request offset.", array('webroot' => $this->getConfig()->webRoot(), 'offset' => Request::offset()));
+			$aWarnings = sprintf("Config webroot values does not match request offset. (%s <> %s)", $this->getConfig()->webRoot(), Request::offset());
 		}
+		
+		// Output
+		echo "<pre>\n";
+		if(count($aWarnings) > 0)
+			echo implode("\n", $aWarnings);
+		else
+			echo "All good !";
+		echo "\n</pre>";
 	}
 }
