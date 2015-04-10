@@ -10,8 +10,7 @@ class WatenaLoader {
 		
 		if(!empty($sPath)) include $sPath;
 		if(!isset($conf)) $conf = array();
-		if(!isset($name)) $name = WatenaConfig::CONFIGNAME_DEFAULT;
-		return new WatenaConfig($conf, $name);
+		return new WatenaConfig($conf, defined('CONFIG') ? CONFIG : WatenaConfig::CONFIGNAME_DEFAULT);
 	}
 	
 	/**
