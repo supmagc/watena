@@ -1,14 +1,12 @@
 <?php
 
-$name = 'default';
-if(defined('CONFIG')) {
-	$name = CONFIG;
-}
-else if(!isset($_SERVER['HTTP_HOST']) || $_SERVER['HTTP_HOST'] == 'localhost') {
-	$name = 'local';
-}
-else {
-	$name = 'deploy';
+if(!defined('CONFIG')) {
+	if(!isset($_SERVER['HTTP_HOST']) || $_SERVER['HTTP_HOST'] == 'localhost') {
+		define('CONFIG', 'local');
+	}
+	else {
+		define('CONFIG', 'deploy');
+	}
 }
 
 #
