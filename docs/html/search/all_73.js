@@ -30,5 +30,6 @@ var searchData=
   ['setsslcertificate',['setSslCertificate',['../class_web_request.html#aa22c1b13009bf613f4975bc126d3d730',1,'WebRequest']]],
   ['settimezone',['setTimezone',['../class_user.html#af34ee282a3bd3add95b62bffe2d232c1',1,'User']]],
   ['setuseragent',['setUseragent',['../class_web_request.html#a2bd29dc50643ea7c186e06f9cdd49bc7',1,'WebRequest']]],
-  ['shouldretainparam',['shouldRetainParam',['../class_base_facebook.html#a47e7827a14b19657e2a760afa5324dad',1,'BaseFacebook']]]
+  ['shouldretainparam',['shouldRetainParam',['../class_base_facebook.html#a47e7827a14b19657e2a760afa5324dad',1,'BaseFacebook']]],
+  ['sort',['sort',['../class_container.html#a0fc77e80f0207328c490b05bb84671c6',1,'Container']]]
 ];

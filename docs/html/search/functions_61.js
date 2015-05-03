@@ -2,12 +2,11 @@ var searchData=
 [
   ['addcookie',['addCookie',['../class_web_request.html#a45a1c1112a6cf0cb9538234b58158364',1,'WebRequest']]],
   ['addcookies',['addCookies',['../class_web_request.html#a6097771b7ebc10f5f33db0d494671404',1,'WebRequest']]],
-  ['addemail',['addEmail',['../class_user.html#aa8c6769f95795d2c8b50c547f3902943',1,'User']]],
   ['addfield',['addField',['../class_web_request.html#a01d5e3e68b8b7ce654107bb1dabdcaa7',1,'WebRequest']]],
   ['addfields',['addFields',['../class_web_request.html#a44d394b7e9b9575759bb059cecc9e66c',1,'WebRequest']]],
   ['addheader',['addHeader',['../class_web_request.html#ac87d20c6f1f342b60404dc49b896746c',1,'WebRequest']]],
   ['addheaders',['addHeaders',['../class_web_request.html#a9c9836cf9e28eb36a2f2b9d361b2e560',1,'WebRequest']]],
-  ['addsession',['addSession',['../class_user.html#aae3853473563d89b9bcc571004c037c6',1,'User']]],
+  ['additem',['addItem',['../class_container.html#a12e86467ac354e552da505201eccb031',1,'Container']]],
   ['api',['api',['../class_base_facebook.html#a22d6a4c1b6dec331c3bc3f7af02849f5',1,'BaseFacebook']]],
   ['approvefilterlevel',['approveFilterLevel',['../class_logger.html#abd297d3ef221a659a8d045a32d068959',1,'Logger']]],
   ['assureuniquedbconnection',['assureUniqueDbConnection',['../class_db_connection.html#a5e6943a858fde652efac97a128c2ac79',1,'DbConnection']]],
