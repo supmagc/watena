@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <filter name="Portfolio home" order="1">
 	<model name="PortfolioModel">
+		<param name="title">Jelle Voet - portfolio and resume</param>
 	</model>
 	<view name="HtmlTemplateView">
 		<param name="template">portfolio.tpl</param>
