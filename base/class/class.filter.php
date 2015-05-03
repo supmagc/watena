@@ -1,5 +1,21 @@
 <?php
-
+/**
+ * Holds all filterdata required to match a filter to a mapping,
+ * and knows which model, view, controller to load.
+ * 
+ * Files are discovered by using FilterGroup, and are parsed with the
+ * help of FilterData and FilterRule.
+ * 
+ * A filter file should be located within a 'filters' directory within a library,
+ * and have a name beginning with filter. and ending on .xml
+ * 
+ * @see Mapping
+ * @see FilterData
+ * @see FilterRule
+ * @see FilterGroup
+ * @author Jelle
+ * @version 0.2.0
+ */
 class Filter extends CacheableFile {
 
 	private $m_sName = '';
@@ -8,8 +24,12 @@ class Filter extends CacheableFile {
 	private $m_oView = null;
 	private $m_oController = null;
 	private $m_aRules = array();
-	private $m_aDependencies = array();
 	
+	/**
+	 * Load a filter xml.
+	 * 
+	 * @see Cacheable::make()
+	 */
 	public function make(array $aMembers) {
 		$oXml = new SimpleXMLElement(parent::getFilePath(), 0, true);
 		if(!empty($oXml['name'])) {
@@ -46,34 +66,70 @@ class Filter extends CacheableFile {
 			'controller' => $this->m_oController != null ? $this->m_oController->getName() : 'unknown'));
 	}
 	
+	/**
+	 * Get the name of the filter.
+	 * 
+	 * @return string
+	 */
 	public function getName() {
 		return $this->m_sName;
 	}
-	
+
+	/**
+	 * Get the priority order of the filter.
+	 * 
+	 * @return int
+	 */
 	public function getOrder() {
 		return $this->m_nOrder;
 	}
 	
+	/**
+	 * Get the data for the Model.
+	 * 
+	 * @see FilterData
+	 * @return null|FilterData
+	 */
 	public function GetModelData() {
 		return $this->m_oModel;
 	}
 	
+	/**
+	 * Get the data for the View.
+	 * 
+	 * @see FilterData
+	 * @return null|FilterData
+	 */
 	public function getViewData() {
 		return $this->m_oView;
 	}
 	
+	/**
+	 * Get the data for the Controller.
+	 * 
+	 * @see FilterData
+	 * @return null|FilterData
+	 */
 	public function getControllerData() {
 		return $this->m_oController;
 	}
 	
+	/**
+	 * Get an array containing the filter rues
+	 * 
+	 * @see FilterRule
+	 * @return FilterRule[]
+	 */
 	public function getRules() {
 		return $this->m_aRules;
 	}
-	
-	public function getDependencies() {
-		return $this->m_aDependencies;
-	}
-	
+
+	/**
+	 * Check if this filter matches the given mapping.
+	 * 
+	 * @param Mapping $oMapping
+	 * @return boolean
+	 */
 	public final function matches(Mapping $oMapping) {
 		foreach($this->m_aRules as $oRule) {
 			if(!$oRule->matches($oMapping))
@@ -82,6 +138,12 @@ class Filter extends CacheableFile {
 		return true;
 	}
 	
+	/**
+	 * Helper function to parse model, view, controller data.
+	 * 
+	 * @param SimpleXMLElement $oXml
+	 * @return void|FilterData
+	 */
 	private function parseData(SimpleXMLElement $oXml) {
 		if(empty($oXml['name'])) return;
 		

@@ -28,7 +28,7 @@ class Context extends Object {
 		foreach($aLibraries as $sLibrary) {
 			$sLibrary = trim($sLibrary);
 			$sPath = realpath(PATH_LIBS . "/$sLibrary");
-			if($sPath === null) {
+			if(!$sPath) {
 				$this->getLogger()->warning("One of the specified library-paths could not be mapped, and seems to not exist: {library}", array('library' => $sProject));
 			}
 			else {

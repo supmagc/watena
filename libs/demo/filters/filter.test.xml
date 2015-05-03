@@ -8,6 +8,6 @@
 	<controller last="1" first="1" name="HelloWorldController">
 	</controller>
 	<rules>
-		<rule type="mapping" variable="local">^/test</rule>
+		<rule type="mapping" variable="local">^/demo</rule>
 	</rules>
 </filter>

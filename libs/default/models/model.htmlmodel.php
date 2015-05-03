@@ -1,7 +1,7 @@
 <?php
 /**
  * Default Model for standarized HTML output.
- * The view is however still responsible to catch the data and siaplay it appropriatly.
+ * The view is however still responsible to catch the data and display it appropriatly.
  * 
  * Configuration:
  * - description: meta-description of the page, defaults to ''

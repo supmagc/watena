@@ -168,10 +168,10 @@ class HtmlTemplateView extends View implements IPCO_IContentParser {
 					if($sChar === self::CHAR_ELEMENT_END) {
 						$sEnd = Encoding::toLower(Encoding::trim(Encoding::substring($sContent, $nBegin, $i - $nBegin + 1)));
 						if($sEnd == $this->m_sHeadFilter) {
-							$aParts []= new IPCO_ContentParserPart($nBegin - 1, 0, 'getHeadInjection');
+							$aParts []= new IPCO_ContentParserPart($nBegin, 0, 'getHeadInjection');
 						}
 						if($sEnd == $this->m_sBodyFilter) {
-							$aParts []= new IPCO_ContentParserPart($nBegin - 1, 0, 'getBodyInjection');
+							$aParts []= new IPCO_ContentParserPart($nBegin, 0, 'getBodyInjection');
 						}
 						$nState = self::STATE_NORMAL;
 					}

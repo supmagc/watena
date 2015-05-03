@@ -1,6 +1,4 @@
 <?php
-require_plugin('Admin');
-require_plugin('AdminModuleLoader');
 
 class AdminModuleContentRequest extends Object {
 	

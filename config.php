@@ -36,7 +36,7 @@ $conf['local'] = array();
 # - Loading and initialisation of libraries: first to last
 # - Content retrieval, mapping/filter processing: last to first
 #
-$conf['default']['libraries'] = array('default', 'admin');
+$conf['default']['libraries'] = array('default', 'admin', 'portfolio');
 
 #
 # Charset used throughout the system.
