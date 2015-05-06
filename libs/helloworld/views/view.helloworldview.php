@@ -10,4 +10,3 @@ class HelloWorldView extends View {
 		echo 'Hello World !';
 	}
 }
-?>

@@ -1,5 +1,10 @@
 <?php
-
+/**
+ * Controller providing easy extendable callback services.
+ * 
+ * @author Jelle
+ * @version 0.1.0
+ */
 class CallbackController extends Controller {
 	
 	private $m_oCallback;
@@ -54,5 +59,3 @@ class CallbackController extends Controller {
 		}
 	}
 }
-
-?>

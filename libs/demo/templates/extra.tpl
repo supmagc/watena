@@ -1,1 +1,0 @@
-This is some extra content loaded from an external template

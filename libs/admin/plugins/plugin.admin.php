@@ -1,4 +1,18 @@
 <?php
+define('PATH_ADMIN', realpath(dirname(__FILE__)));
+
+require_includeonce(PATH_ADMIN . '/system/interface.iadmingeneratable.php');
+
+require_includeonce(PATH_ADMIN . '/system/class.adminmodule.php');
+require_includeonce(PATH_ADMIN . '/system/class.adminmoduletab.php');
+require_includeonce(PATH_ADMIN . '/system/class.adminmoduleitem.php');
+require_includeonce(PATH_ADMIN . '/system/class.adminmodulecontent.php');
+require_includeonce(PATH_ADMIN . '/system/class.adminmodulecontentrequest.php');
+require_includeonce(PATH_ADMIN . '/system/class.adminmodulecontentresponse.php');
+require_includeonce(PATH_ADMIN . '/system/class.adminjsfunctions.php');
+require_includeonce(PATH_ADMIN . '/system/class.adminplugin.php');
+
+require_plugin('templateloader');
 require_plugin('AdminModuleLoader');
 require_plugin('JQuery');
 

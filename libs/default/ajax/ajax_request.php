@@ -4,10 +4,13 @@
  * Class that provides the data that are uwed when requesting some ajax-data
  *
  * @author Voet Jelle - ToMo-design
- * @version 2.0.1 beta
+ * @version 2.0.2 beta
  * 
- * VERSION-LOG
- * -----------
+ * CHANGELOG
+ * ---------
+ * 
+ * 6-5-2015: 2.0.1 => 2.0.2
+ * - Documentation update
  * 
  * 1-8-2010: 2.0.0 => 2.0.1
  * - Made the generated javascript-function call a bit smaller
@@ -30,9 +33,7 @@ class AJAX_Request extends Object {
 	 * Create a new request
 	 *
 	 * @param string $sURL the request URI
-	 * @param mixed $PHPCallback the php function to be called on the server to process the request
-	 * @param string $sJSCallback the javascript function that you can call on your html-page
-	 * @param int $nArgCount the number of arguments you can set in your javascript-/php-function
+	 * @param string $sFunction The function of the callback (used as javascript functioname, and php method)
 	 */
 	public function __construct($sPath, $sFunction) {
 		$this->m_sPath = $sPath;
@@ -66,4 +67,3 @@ class AJAX_Request extends Object {
 		return $sRet;
 	}
 }
-?>

@@ -148,4 +148,3 @@ $conf['default']['compression'] = true;
 # Disable the loading of watena
 #
 // define('NWATENA', false);
-?>
