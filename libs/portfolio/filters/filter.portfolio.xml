@@ -6,8 +6,6 @@
 	<view name="HtmlTemplateView">
 		<param name="template">portfolio.tpl</param>
 	</view>
-	<controller name="HelloWorldController">
-	</controller>
 	<rules>
 		<rule variable="path" condition="set"></rule>
 	</rules>

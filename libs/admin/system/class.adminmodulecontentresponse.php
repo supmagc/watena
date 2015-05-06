@@ -1,5 +1,4 @@
 <?php
-require_plugin('TemplateLoader');
 
 class AdminModuleContentResponse extends Object implements IPCO_IContentParser {
 	
@@ -73,5 +72,3 @@ class AdminModuleContentResponse extends Object implements IPCO_IContentParser {
 		return array();
 	}
 } 
-
-?>

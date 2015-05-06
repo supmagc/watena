@@ -32,8 +32,8 @@ class Context extends Object {
 				$this->getLogger()->warning("One of the specified library-paths could not be mapped, and seems to not exist: {library}", array('library' => $sProject));
 			}
 			else {
-				array_unshift($this->m_aLibraries, $sLibrary);
-				array_unshift($this->m_aLibraryPaths, $sPath);
+				array_push($this->m_aLibraries, $sLibrary);
+				array_push($this->m_aLibraryPaths, $sPath);
 		
 				$sInitPath = realpath($sPath . '/init.php');
 				if(false != $sInitPath) {

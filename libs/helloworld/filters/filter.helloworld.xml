@@ -1,12 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <filter name="HelloWorld filter" order="0">
-	<model name="HelloWorldModel">
-	</model>
 	<view name="HelloWorldView">
 		<param name="MyName.MyIndex">MyValue</param>
 	</view>
-	<controller name="HelloWorldController">
-	</controller>
 	<rules>
 		<rule variable="path" condition="set"></rule>
 	</rules>

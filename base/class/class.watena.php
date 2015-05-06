@@ -37,10 +37,10 @@ class Watena extends Object {
 		}
 		
 		// Init some static classes
-		Encoding::init($this->getConfig()->charset());
-		Cookies::init($this->getConfig()->domain(), $this->getConfig()->webRoot());
-		Request::init($this->getConfig()->domain(), $this->getConfig()->webRoot());
-		Time::init($this->getConfig()->timeZone(), $this->getConfig()->timeFormat());
+		Encoding::init($oConfig->charset());
+		Cookies::init($oConfig->domain(), $oConfig->webRoot());
+		Request::init($oConfig->domain(), $oConfig->webRoot());
+		Time::init($oConfig->timeZone(), $oConfig->timeFormat());
 				
 		// Create a default context and default cache
 		$this->m_oTime = new Time();
@@ -49,11 +49,11 @@ class Watena extends Object {
 		$this->m_oMapping = Mapping::LoadFromRequest();
 		
 		// Load the required libraries
-		$this->m_oContext->loadLibraries($this->getConfig()->libraries());
+		$this->m_oContext->loadLibraries($oConfig->libraries());
 		
 		// Load all specified logProcessors
-		Logger::setDefaultFilterLevel($this->getConfig()->loggerLevel());
-		$aLogProcessors = $this->getConfig()->loggerProcessors();
+		Logger::setDefaultFilterLevel($oConfig->loggerLevel());
+		$aLogProcessors = $oConfig->loggerProcessors();
 		foreach($aLogProcessors as $sProcessor) {
 			if($this->m_oContext->loadPlugin($sProcessor)) {
 				$oProcessor = $this->m_oContext->getPlugin($sProcessor, 'ILogProcessor');
@@ -226,7 +226,7 @@ class Watena extends Object {
 	public final function getVersion() {
 		return array(
 			'major' => 0,
-			'minor' => 1,
+			'minor' => 2,
 			'build' => 0,
 			'state' => 'dev'
 		);

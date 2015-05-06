@@ -31,12 +31,9 @@ $conf['local'] = array();
 # Their order can be of some importance if multiple libraries contain
 # identical content, or if some libraries depend on each other.
 # A rule of thumb can be to define more specific libraries as last.
+# (but before the HelloWorld library)
 #
-# Priority is given as follows:
-# - Loading and initialisation of libraries: first to last
-# - Content retrieval, mapping/filter processing: last to first
-#
-$conf['default']['libraries'] = array('default', 'admin', 'portfolio');
+$conf['default']['libraries'] = array('default', 'admin', 'portfolio', 'helloworld');
 
 #
 # Charset used throughout the system.
