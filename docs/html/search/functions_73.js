@@ -26,6 +26,7 @@ var searchData=
   ['setpassword',['setPassword',['../class_user.html#afff180c99c7f9f1dc8500556d56626f7',1,'User']]],
   ['setpersistentdata',['setPersistentData',['../class_base_facebook.html#a26198ff065bea23f358854facbafa7db',1,'BaseFacebook\setPersistentData()'],['../class_facebook.html#a8f094cc1c798c533283018a8100dffdf',1,'Facebook\setPersistentData()']]],
   ['setpostdataappend',['setPostDataAppend',['../class_web_request.html#a00298e5aae2ab0f3c0bf751096a463fe',1,'WebRequest']]],
+  ['setpreferredlibrary',['setPreferredLibrary',['../class_context.html#ae67fdd1e5954233ffd3c435d1ac98df9',1,'Context']]],
   ['setsslcertificate',['setSslCertificate',['../class_web_request.html#aa22c1b13009bf613f4975bc126d3d730',1,'WebRequest']]],
   ['settimezone',['setTimezone',['../class_user.html#af34ee282a3bd3add95b62bffe2d232c1',1,'User']]],
   ['setuseragent',['setUseragent',['../class_web_request.html#a2bd29dc50643ea7c186e06f9cdd49bc7',1,'WebRequest']]],

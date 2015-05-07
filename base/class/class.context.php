@@ -1,5 +1,14 @@
 <?php
-
+/**
+ * Manages the context wherin Watena is run.
+ * As the Watena class is meant to provide access to the core mechanics 
+ * of the system, The context provides context-aware access on demand.
+ * This is the point of entry when you need to handle libraries, plugins, 
+ * models, views, controllers a,d datafiles
+ * 
+ * @author Jelle
+ * @version 0.1.0
+ */
 class Context extends Object {
 	
 	private $m_aPlugins = array();
@@ -10,7 +19,11 @@ class Context extends Object {
 	private $m_sPreferredLibrary = null;
 	private $m_bRequirementWatchdog = false;
 	private $m_oComponentFactory = null;
-	
+
+	/**
+	 * Creates a new context instance.
+	 * This should mainly be called when loading Watena.
+	 */
 	public function __construct() {
 		$this->m_oComponentFactory = new ComponentFactory();
 	}
@@ -35,12 +48,12 @@ class Context extends Object {
 				array_push($this->m_aLibraries, $sLibrary);
 				array_push($this->m_aLibraryPaths, $sPath);
 		
-				$sInitPath = realpath($sPath . '/init.php');
-				if(false != $sInitPath) {
-					$this->setPreferredLibrary($sLibrary);
-					include_safe($sInitPath);
-					$this->setPreferredLibrary(null);
-				}
+// 				$sInitPath = realpath($sPath . '/init.php');
+// 				if(false != $sInitPath) {
+// 					$this->setPreferredLibrary($sLibrary);
+// 					include_safe($sInitPath);
+// 					$this->setPreferredLibrary(null);
+// 				}
 			}
 		}
 	}
@@ -54,8 +67,10 @@ class Context extends Object {
 	}
 
 	/**
+	 * Get a list of all the libraries.
+	 * This will most of the time match the config value.
 	 * 
-	 * @return array
+	 * @return string[]
 	 */
 	public final function getLibraries() {
 		return $this->m_aLibraries;
@@ -64,16 +79,27 @@ class Context extends Object {
 	/**
 	 * Retrieve an array with the full paths of the library folders.
 	 * 
-	 * @return array
+	 * @return string[]
 	 */
 	public final function getLibraryPaths() {
 		return $this->m_aLibraryPaths;
 	}
 	
+	/**
+	 * Set the preferred library.
+	 * The preferred library gets priority when searching for files, models, views, ...
+	 * 
+	 * @param string $sPreferredLibrary
+	 */
 	public final function setPreferredLibrary($sPreferredLibrary) {
 		$this->m_sPreferredLibrary = $sPreferredLibrary;
 	}
 	
+	/**
+	 * Get the current preferred library.
+	 * 
+	 * @return string
+	 */
 	public final function getPreferredLibrary() {
 		return $this->m_sPreferredLibrary;
 	}
