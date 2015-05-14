@@ -4,6 +4,8 @@ var searchData=
   ['_5f_5fdestruct',['__destruct',['../class_web_request.html#ac56e1efa4d21c3cfd455aaee96f21078',1,'WebRequest']]],
   ['_5f_5ftostring',['__toString',['../class_facebook_api_exception.html#a9c262b52fe807aad1c2770a0ad2ee919',1,'FacebookApiException']]],
   ['_5fbuild_5flink_5flist',['_build_link_list',['../classhtml2text.html#a82ac6258106b2d8ad380dce11d9dddef',1,'html2text']]],
+  ['_5fcompressdeflate',['_compressDeflate',['../class_output.html#a537c91f3aa8bf966bf4b469937a5198f',1,'Output']]],
+  ['_5fcompressgzip',['_compressGzip',['../class_output.html#a88bc778ac2a9b5ef4754e0499945dade',1,'Output']]],
   ['_5fconvert',['_convert',['../classhtml2text.html#adfcac63cc53ce5fd4f3ff2d72cf9a5c9',1,'html2text']]],
   ['_5fgraph',['_graph',['../class_base_facebook.html#af0966973d145fbb9c2add330a46c7587',1,'BaseFacebook']]],
   ['_5foauthrequest',['_oauthRequest',['../class_base_facebook.html#a87925b6d625110ec3aab4bad3100d4d3',1,'BaseFacebook']]],
