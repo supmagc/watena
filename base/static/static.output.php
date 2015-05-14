@@ -1,7 +1,27 @@
 <?php
-
+/**
+ * Class helping with output of things
+ * Features: caching, cache validation, compression, headers, ...
+ * 
+ * @author Jelle
+ * @version 0.1.0
+ */
 class Output {
-	
+
+	/**
+	 * Validate the cachedats for the current request against the given model.
+	 * Cache will only be validated and used when not in debugging mode.
+	 * 
+	 * It will check the lastmodified date from the request, or the cachetag.
+	 * If one of these validates, a 'not-modified' header will be returned.
+	 * 
+	 * ELse, the cache is no longer valid.
+	 * If caching is required, the needed headers will be set, 
+	 * otherwise caching will be disabled.
+	 * 
+	 * @param Model $oModel
+	 * @return boolean
+	 */
 	public final static function validateCache(Model $oModel) {
 		$bReturn = false;
 		
@@ -51,6 +71,13 @@ class Output {
 		return $bReturn;
 	}
 	
+	/**
+	 * Validate the allowed compression schemes, and activate the required callback.
+	 * Compression must explicitly be enabled in the global watena config.
+	 * Supported modes: gzip, deflate
+	 * 
+	 * @param Model $oModel
+	 */
 	public final static function validateCompression(Model $oModel) {
 		if(watena()->getConfig()->compression() && $oModel->compressionSupport()) {
 			if(Request::compressionSupport('gzip')) {
@@ -62,6 +89,12 @@ class Output {
 		}
 	}
 	
+	/**
+	 * Gzip compression helper.
+	 * 
+	 * @param string $sContent
+	 * @return string
+	 */
 	public final static function _compressGzip($sContent) {
 		$sContent = gzencode($sContent, 5);
 		self::header('Content-Length: ' . strlen($sContent)); // Use strlen since data is binary encoded
@@ -69,6 +102,12 @@ class Output {
 		return $sContent;
 	}
 	
+	/**
+	 * Deflate compression helper.
+	 * 
+	 * @param string $sContent
+	 * @return string
+	 */
 	public final static function _compressDeflate($sContent) {
 		$sContent = gzdeflate($sContent, 5);
 		self::header('Content-Length: ' . strlen($sContent)); // Use strlen since data is binary encoded
@@ -76,6 +115,14 @@ class Output {
 		return $sContent;
 	}
 	
+	/**
+	 * Set a header for the request response.
+	 * If headers are allready sent, this method returns false, and triggers a logger warning.
+	 * 
+	 * @param string $sLine
+	 * @param string $bOverwrite
+	 * @return boolean
+	 */
 	public final static function header($sLine, $bOverwrite = true) {
 		$sFile = '';
 		$nLine = 0;

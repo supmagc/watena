@@ -1,19 +1,18 @@
 <?php
-require_plugin('templateloader');
-require_plugin('JQuery');
+require_plugin('templateloader'); # Required since it includes a needed interface
 
-define('PATH_ADMIN', realpath(dirname(__FILE__) . '/../'));
+define('PATH_ADMIN', realpath(dirname(__FILE__) . '/../system/'));
 
-require_includeonce(PATH_ADMIN . '/system/interface.iadmingeneratable.php');
+require_includeonce(PATH_ADMIN . '/interface.iadmingeneratable.php');
 
-require_includeonce(PATH_ADMIN . '/system/class.adminmodule.php');
-require_includeonce(PATH_ADMIN . '/system/class.adminmoduletab.php');
-require_includeonce(PATH_ADMIN . '/system/class.adminmoduleitem.php');
-require_includeonce(PATH_ADMIN . '/system/class.adminmodulecontent.php');
-require_includeonce(PATH_ADMIN . '/system/class.adminmodulecontentrequest.php');
-require_includeonce(PATH_ADMIN . '/system/class.adminmodulecontentresponse.php');
-require_includeonce(PATH_ADMIN . '/system/class.adminjsfunctions.php');
-require_includeonce(PATH_ADMIN . '/system/class.adminplugin.php');
+require_includeonce(PATH_ADMIN . '/class.adminmodule.php');
+require_includeonce(PATH_ADMIN . '/class.adminmoduletab.php');
+require_includeonce(PATH_ADMIN . '/class.adminmoduleitem.php');
+require_includeonce(PATH_ADMIN . '/class.adminmodulecontent.php');
+require_includeonce(PATH_ADMIN . '/class.adminmodulecontentrequest.php');
+require_includeonce(PATH_ADMIN . '/class.adminmodulecontentresponse.php');
+require_includeonce(PATH_ADMIN . '/class.adminjsfunctions.php');
+require_includeonce(PATH_ADMIN . '/class.adminplugin.php');
 
 require_plugin('AdminModuleLoader');
 
@@ -25,17 +24,6 @@ class Admin extends Plugin {
 	public function init() {
 		self::$s_oSingleton = $this;
 		$this->m_oLoader = parent::getWatena()->getContext()->getPlugin('AdminModuleLoader');
-		
-		Events::registerEventCallback('prepareHtmlModel', array($this, 'onPrepareHtmlModel'));
-		
-		JQuery::requireJQuery();
-		JQuery::requireJQueryUI();
-	}
-	
-	public function onPrepareHtmlModel(HtmlModel $oModel) {
-		$oModel->addCssLink('theme/admin/css/admin.main.css');
-		$oModel->addCssLink('theme/admin/css/admin.overlay.css');
-		$oModel->addJavascriptLink('theme/admin/js/watena-admin.js');
 	}
 	
 	/**

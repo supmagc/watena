@@ -1,4 +1,6 @@
 <?php
+require_model('HtmlModel');
+
 /**
  * Plugin to manage multiple jquery request from multiple sources.
  * It verifies that nu double include will happen, and checks the
@@ -19,7 +21,7 @@ class JQuery extends Plugin {
 	 * @see Cacheable::init()
 	 */
 	public function init() {
-		Events::registerEventCallback('prepareHtmlModel', array($this, 'onPrepareHtmlModel'));
+		Events::registerEventCallback(HtmlModel::EVENT_PREPAREHTMLMODEL, array($this, 'onPrepareHtmlModel'));
 		self::$s_oSingleton = $this;
 	}
 	
