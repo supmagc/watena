@@ -89,7 +89,7 @@ abstract class Cacheable extends Object {
 	 * 
 	 * @param unknown $sKey
 	 * @param string $mDefault
-	 * @return Ambigous <mixed, multitype:, unknown>
+	 * @return string|number|boolean|array
 	 */
 	public function getConfig($sKey, $mDefault = null) {
 		return $this->getCacheData()->getConfig($sKey, $mDefault);
@@ -102,6 +102,6 @@ abstract class Cacheable extends Object {
 	 * @see CacheData::update()
 	 */
 	public function update() {
-		return $this->getCacheData()->update($this);
+		$this->getCacheData()->update($this);
 	}
 }

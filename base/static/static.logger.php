@@ -231,7 +231,7 @@ class Logger {
 				$bLoggable = $this->getFilter()->loggerFilter($sCpyIdentifier, $nCpyLevel, $sFile, $nLine, $sMessage, $aData, $aTrace);
 				if($bLoggable) {
 					if($sCpyIdentifier != $this->getIdentifier()) {
-						return self::getInstance($sCpyIdentifier)->logFull($nCpyLevel, $sFile, $nLine, $sMessage, $aData, $aTrace);
+						self::getInstance($sCpyIdentifier)->logFull($nCpyLevel, $sFile, $nLine, $sMessage, $aData, $aTrace);
 					}
 					if($nCpyLevel != $nLevel) {
 						$bLoggable = $bLoggable && $this->approveFilterLevel($nCpyLevel);

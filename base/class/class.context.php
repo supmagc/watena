@@ -1,6 +1,6 @@
 <?php
 /**
- * Manages the context wherin Watena is run.
+ * Manages the context wherein Watena is run.
  * As the Watena class is meant to provide access to the core mechanics 
  * of the system, The context provides context-aware access on demand.
  * This is the point of entry when you need to handle libraries, plugins, 
@@ -18,22 +18,20 @@ class Context extends Object {
 	private $m_aFilterGroups = null;
 	private $m_sPreferredLibrary = null;
 	private $m_bRequirementWatchdog = false;
-	private $m_oComponentFactory = null;
 
 	/**
 	 * Creates a new context instance.
 	 * This should mainly be called when loading Watena.
 	 */
 	public function __construct() {
-		$this->m_oComponentFactory = new ComponentFactory();
 	}
 
 	/**
 	 * Load the given libraries.
-	 * This makes all content inside any valid libary available for loading.
+	 * This makes all content inside any valid library available for loading.
 	 * 
-	 * You must call this method seperatly after loading and initializing the Watena object since
-	 * It's possible that some libaries require Watena to be fully loaded on init.
+	 * You must call this method separably after loading and initializing the Watena object since
+	 * It's possible that some libraries require Watena to be fully loaded on init.
 	 * 
 	 * @param array $aLibraries
 	 */
@@ -42,28 +40,13 @@ class Context extends Object {
 			$sLibrary = trim($sLibrary);
 			$sPath = realpath(PATH_LIBS . "/$sLibrary");
 			if(!$sPath) {
-				$this->getLogger()->warning("One of the specified library-paths could not be mapped, and seems to not exist: {library}", array('library' => $sProject));
+				$this->getLogger()->warning("One of the specified library-paths could not be mapped, and seems to not exist: {library}", array('library' => $sLibrary));
 			}
 			else {
 				array_push($this->m_aLibraries, $sLibrary);
 				array_push($this->m_aLibraryPaths, $sPath);
-		
-// 				$sInitPath = realpath($sPath . '/init.php');
-// 				if(false != $sInitPath) {
-// 					$this->setPreferredLibrary($sLibrary);
-// 					include_safe($sInitPath);
-// 					$this->setPreferredLibrary(null);
-// 				}
 			}
 		}
-	}
-
-	/**
-	 * 
-	 * @return ComponentFactory
-	 */
-	public final function getComponentFactory() {
-		return $this->m_oComponentFactory;
 	}
 
 	/**
@@ -105,7 +88,7 @@ class Context extends Object {
 	}
 	
 	/**
-	 * Retrieve a list with all filtergroups found on the system.
+	 * Retrieve a list with all filter-groups found on the system.
 	 * Since the groups are not loaded by default, this function handles the caching.
 	 * 
 	 * return array
@@ -125,14 +108,15 @@ class Context extends Object {
 	
 	/**
 	 * Retrieve the path of the specified file on the system
-	 * Their is an order of presedence:
-	 * 1) Check if file has a library prepending (lib@file)
+	 * Their is an order of precedence:
+	 * 1) Check if path has a library indicator (lib@file)
 	 * 2) If a local preferred library is set, check it
 	 * 3) If a global preferred library is set, check it
 	 * 4) Check all libraries on the system
 	 * 
 	 * @param string $sDirectory
 	 * @param string $sFile
+	 * @param boolean $bAllOfThem
 	 * @param string $sPreferredLibrary
 	 * @param mixed $o_mLibrary
 	 * 
@@ -204,32 +188,32 @@ class Context extends Object {
 		$oPlugin = (isset($this->m_aPlugins[$sKey]) || $this->loadPlugin($sPlugin)) ? $this->m_aPlugins[$sKey] : null;
 		if($oPlugin) {
 			if($sImplements && !in_array($sImplements, class_implements($oPlugin, false)))
-				$this->getLogger()->terminate("The plugin you requested is loaded, but doesn implement the required interface: $sPlugin::$sImplements");
+				$this->getLogger()->terminate("The plugin you requested is loaded, but doesn't implement the required interface: $sPlugin::$sImplements");
 		}
 		return $oPlugin;
 	}
 	
 	/**
-	 * Try to load a whole list of plugins if they're not loaded allready
-	 * 
-	 * @param string $sPlugins
-	 * @param boolean $bTerminate (default = false)
-	 * @return boolean Indicator if the plugins were loaded
+	 * Try to load a whole list of plugins if they're not loaded already
+	 *
+	 * @param string[] $aPlugins
+	 * @param bool $bTerminate
+	 * @return bool
 	 */
 	public final function loadPlugins(array $aPlugins, $bTerminate = true) {
-		$bSucces = true;
+		$bSuccess = true;
 		foreach($aPlugins as $sPlugin) {
 			if(strlen(trim($sPlugin)) > 0)
-				$bSucces = $bSucces && $this->LoadPlugin($sPlugin, $bTerminate);
+				$bSuccess = $bSuccess && $this->LoadPlugin($sPlugin, $bTerminate);
 		}
-		return $bSucces;
+		return $bSuccess;
 	}
 	
 	/**
-	 * Try to load a plugin is it's not loaded allready
+	 * Try to load a plugin is it's not loaded already
 	 * 
 	 * @param string $sPlugin
-	 * @return boolean Indicator if the plugin was loaded
+	 * @return bool Indicator if the plugin was loaded
 	 */
 	public final function loadPlugin($sPlugin) {
 		$sKey = Encoding::toLower($sPlugin);
@@ -294,11 +278,12 @@ class Context extends Object {
 	/**
 	 * Try to load a specified class and retrieve an instance of it
 	 * 
-	 * @param string $sClassName
-	 * @param array $aConfig
+	 * @param string $sObjectName
+	 * @param array $aParams
 	 * @param string $sIncludeFile
 	 * @param string $sExtends
-	 * @param string $sImplements
+	 * @param array $aImplements
+	 * @return Object|false
 	 */
 	public final function loadObjectAndRequirements($sObjectName, array $aParams = array(), $sIncludeFile = null, $sExtends = null, array $aImplements = array()) {
 		$this->m_bRequirementWatchdog = true;
@@ -316,21 +301,16 @@ class Context extends Object {
 		if(!in_array("Object", $aExtendsFound)) $this->getLogger()->terminate('The object top be loaded does not extend \'Object\'.', array('object' => $sObjectName), $this);
 		if($sExtends && !in_array($sExtends, $aExtendsFound)) $this->getLogger()->terminate('The object to be loaded does not extend the required class.', array('object' => $sObjectName, 'class' => $sExtends), $this);
 		foreach($aImplements as $sImplements)
-			if($sImplements && !in_array($sImplements, $aImplements)) $this->getLogger()->terminate('The object to be loaded does not implement the required interface.', array('object' => $sObjectName, 'interface' => $sImplements), $this);
+			if($sImplements && !in_array($sImplements, $aImplementsFound)) $this->getLogger()->terminate('The object to be loaded does not implement the required interface.', array('object' => $sObjectName, 'interface' => $sImplements), $this);
 		
 		$this->m_bRequirementWatchdog = false;
-		if(true) {
-			$oClass = new ReflectionClass($sObjectName);
-			$oTmp = $oClass->newInstanceArgs($aParams);			
-			return $oTmp;
-		}
-		else {
-			$this->getLogger()->terminate('The object you are loading has some requirements that couldn\'t be met.', array('object' => $sObjectName, 'errors' => $oRequirement->getErrors(), 'requirements' => $oRequirement), $this);
-		}
+		$oClass = new ReflectionClass($sObjectName);
+		$oTmp = $oClass->newInstanceArgs($aParams);
+		return $oTmp;
 	}
 	
 	/**
-	 * Get an array with respectibly the MVC components for the given mapping
+	 * Get an array with respectably the MVC components for the given mapping
 	 * 
 	 * @param Mapping $oMapping
 	 * @return array(Model, View, Controller)
@@ -368,7 +348,8 @@ class Context extends Object {
 	/**
 	 * Retrieve a linked datafile-object
 	 * 
-	 * @param DataFile $sPath
+	 * @param string $sPath
+	 * @return DataFile
 	 */
 	public final function getDataFile($sPath) {
 		if(!isset($this->m_aDataFiles[$sPath])) {

@@ -204,9 +204,12 @@ class Mail extends Object {
 	}
 	
 	public function convertHtmlToText() {
-		if(!$this->getContentHtml()) return false;
+		if(!$this->getContentHtml())
+			return false;
+
 		$oHtml2Text = new html2text($this->getContentHtml());
 		$this->setContentText($oHtml2Text->getText());
+		return true;
 	}
 	
 	public function buildMail() {

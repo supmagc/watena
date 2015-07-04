@@ -111,6 +111,8 @@ class ToString {
 				return true;
 			}
 		}
+
+		return false;
 	}
 	
 	/**
@@ -122,18 +124,19 @@ class ToString {
 	 * @return boolean
 	 */
 	private function parseString($sData) {
-		if(is_string($sData)) {
-			if(self::$s_nFlags & self::CHOP_STRING && Encoding::length($sData) > 50) {
-				$sData = Encoding::substring($sData, 0, 50) . '...';
-			}
-			
-			if(self::$s_nFlags & self::QUOTED) {
-				$sData = var_export($sData, true);
-			}
-			
-			$this->m_sName = $sData;
-			return true;
+		if(!is_string($sData))
+			return false;
+
+		if(self::$s_nFlags & self::CHOP_STRING && Encoding::length($sData) > 50) {
+			$sData = Encoding::substring($sData, 0, 50) . '...';
 		}
+
+		if(self::$s_nFlags & self::QUOTED) {
+			$sData = var_export($sData, true);
+		}
+
+		$this->m_sName = $sData;
+		return true;
 	}
 	
 	/**
@@ -145,10 +148,11 @@ class ToString {
 	 * @return boolean
 	 */
 	private function parseNumeric($nData) {
-		if(is_numeric($nData)) {
-			$this->m_sName = strval($nData);
-			return true;
-		}
+		if(!is_numeric($nData))
+			return false;
+
+		$this->m_sName = strval($nData);
+		return true;
 	}
 	
 	/**
@@ -171,6 +175,8 @@ class ToString {
 			$this->m_sName = 'Null';
 			return true;
 		}
+
+		return false;
 	}
 	
 	/**
@@ -182,12 +188,13 @@ class ToString {
 	 * @return boolean
 	 */
 	private function parseResource($hData) {
-		if(is_resource($hData)) {
-			$this->m_sName = get_resource_type($hData);
-			return true;
-		}
+		if(!is_resource($hData))
+			return false;
+
+		$this->m_sName = get_resource_type($hData);
+		return true;
 	}
-	
+
 	/**
 	 * Return true when the given data is a valid array, and the $this->m_sName is set.
 	 * If flag contains CHOP_ARRAY, arrays longer than 25 items will be chopped.
@@ -198,20 +205,21 @@ class ToString {
 	 * @return boolean
 	 */
 	private function parseArray($aData) {
-		if(is_array($aData)) {
-			if(self::$s_nFlags & self::CHOP_ARRAY && count($aData) > 25) {
-				$aData = array_slice($aData, 0, 25);
-				array_push($aData, '...');
-			}
-			
-			$this->m_sName = 'Array';
-			$this->m_aSubData = array();
-			foreach($aData as $mKey => $mValue) {
-				$oSubData = new ToString($mValue, strval($mKey));
-				$this->m_aSubData []= $oSubData;
-			}
-			return true;
+		if(!is_array($aData))
+			return false;
+
+		if(self::$s_nFlags & self::CHOP_ARRAY && count($aData) > 25) {
+			$aData = array_slice($aData, 0, 25);
+			array_push($aData, '...');
 		}
+
+		$this->m_sName = 'Array';
+		$this->m_aSubData = array();
+		foreach($aData as $mKey => $mValue) {
+			$oSubData = new ToString($mValue, strval($mKey));
+			$this->m_aSubData []= $oSubData;
+		}
+		return true;
 	}
 	
 	/**
@@ -223,17 +231,18 @@ class ToString {
 	 * @return boolean
 	 */
 	private function parseObject($oData) {
-		if(is_object($oData)) {
-			$this->m_sName = 'Object['.get_class($o_sData).']';
-			$this->m_aSubData = array();
-			$aProperties = new ReflectionClass($oData);
-			foreach($aProperties as $oProperty) {
-				$oProperty->setAccesible(true);
-				$oSubData = new ToString($oProperty->getValue($oData), $oProperty->getName());
-				$this->m_aSubData []= $oSubData;
-			}
-			return true;
+		if(!is_object($oData))
+			return false;
+
+		$this->m_sName = 'Object['.get_class($o_sData).']';
+		$this->m_aSubData = array();
+		$aProperties = new ReflectionClass($oData);
+		foreach($aProperties as $oProperty) {
+			$oProperty->setAccesible(true);
+			$oSubData = new ToString($oProperty->getValue($oData), $oProperty->getName());
+			$this->m_aSubData []= $oSubData;
 		}
+		return true;
 	}
 	
 	/**

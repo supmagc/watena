@@ -15,8 +15,8 @@ abstract class Controller extends CacheableData {
 		header('location: ' . $sLocation, true);
 	}
 	
-	public final function setRemapping($sMapping) {
-		return $this->m_oRemapping = new Mapping($sMapping);
+	public final function setRemapping(Url $oUrl) {
+		return $this->m_oRemapping = Mapping::LoadFromUrl($oUrl);
 	}
 	
 	public final function clearRemapping() {

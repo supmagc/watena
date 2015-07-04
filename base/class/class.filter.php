@@ -142,10 +142,11 @@ class Filter extends CacheableFile {
 	 * Helper function to parse model, view, controller data.
 	 * 
 	 * @param SimpleXMLElement $oXml
-	 * @return void|FilterData
+	 * @return FilterData|false
 	 */
 	private function parseData(SimpleXMLElement $oXml) {
-		if(empty($oXml['name'])) return;
+		if(empty($oXml['name']))
+			return false;
 		
 		$oReturn = new FilterData('' . $oXml['name']);
 		foreach($oXml->param as $oParam) {

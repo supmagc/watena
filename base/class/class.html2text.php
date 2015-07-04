@@ -479,5 +479,3 @@ class html2text {
     }
 
 }
-
-?>

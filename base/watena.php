@@ -66,7 +66,6 @@ class WatenaLoader {
 		require_once PATH_BASE . '/class/class.callback.php';
 		require_once PATH_BASE . '/class/class.componentloader.php';
 		require_once PATH_BASE . '/class/class.componentfactory.php';
-		require_once PATH_BASE . '/class/class.requirementbuffer.php';
 		require_once PATH_BASE . '/class/class.filter.php';
 		require_once PATH_BASE . '/class/class.filterdata.php';
 		require_once PATH_BASE . '/class/class.filterrule.php';

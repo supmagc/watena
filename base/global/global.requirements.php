@@ -20,7 +20,6 @@ define('REQERROR_CONTROLLERNOTFOUND', 17);
 define('REQERROR_CONTROLLERUNLOADABLE', 18);
 
 function require_error($nCode, $sName) {
-	$oInstance = Logger::getInstance('Requirements');
 	$sMessage = 'Requirement error occured';
 	switch($nCode) {
 		case REQERROR_EXTENSIONNOTFOUND : $sMessage = 'The required extension \'{name}\' was not loaded with you php-build.'; break;
@@ -43,6 +42,7 @@ function require_error($nCode, $sName) {
 		case REQERROR_CONTROLLERUNLOADABLE : $sMessage = 'A file matching the required cntroller \'{name}\' exists, but no class could be loaded.'; break;
 	}
 	require_logger()->error($sMessage, array('code' => $nCode, 'name' => $sName));
+	return false;
 }
 
 function require_logger() {
