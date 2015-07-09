@@ -1,4 +1,4 @@
-<?php
+<?php namespace Watena\Core;
 /**
  * Class to parse any given variable into a string representation.
  * 

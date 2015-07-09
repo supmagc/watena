@@ -1,6 +1,6 @@
-<?php
+<?php namespace Watena\Core;
 
-abstract class ObjectUnique extends ObjectContained implements Serializable {
+abstract class ObjectUnique extends ObjectContained implements \Serializable {
 
 	private $m_mGroup;
 	private $m_mId;

@@ -1,4 +1,4 @@
-<?php
+<?php namespace Watena\Core;
 /**
  * Class helping with output of things
  * Features: caching, cache validation, compression, headers, ...

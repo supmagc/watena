@@ -1,11 +1,11 @@
-<?php
+<?php namespace Watena\Core;
 
 class EchoLog implements ILogProcessor {
 	
 	private static $s_nFieldCount;
 	
 	public function loggerProcess($sIdentifier, $nLevel, $sFile, $nLine, $sMessage, array $aData, array $aTrace) {
-		$sMessage = htmlentities(str_replace(array_map(create_function('$s', 'return "{".$s."}";'), array_keys($aData)), array_map('toStringSingleLine', array_values($aData)), $sMessage));
+		$sMessage = htmlentities(str_replace(array_map(create_function('$s', 'return "{".$s."}";'), array_keys($aData)), array_map(__NAMESPACE__.'\toStringSingleLine', array_values($aData)), $sMessage));
 		$sLevel = ucfirst(Logger::getLevelName($nLevel));
 		$nFieldID = ++self::$s_nFieldCount;
 		$sData = $this->getOpenableBox('<pre>' . htmlentities(toStringIntended($aData)) . '</pre>');

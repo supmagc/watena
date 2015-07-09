@@ -1,4 +1,4 @@
-<?php
+<?php namespace Watena\Core;
 /**
  * Helper class for parsing the content of a filter xml.
  * 

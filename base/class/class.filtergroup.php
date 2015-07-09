@@ -1,4 +1,4 @@
-<?php
+<?php namespace Watena\Core;
 /**
  * Group all fiters within a folder/library together.
  * This class makes the filter directory cacheable.

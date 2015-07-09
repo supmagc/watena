@@ -1,4 +1,4 @@
-<?php
+<?php namespace Watena\Core;
 /**
  * Holds a filter-rule for a filter.
  * This is used to calculate the validity of a filter for a specific mapping.

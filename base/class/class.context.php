@@ -1,4 +1,4 @@
-<?php
+<?php namespace Watena\Core;
 /**
  * Manages the context wherein Watena is run.
  * As the Watena class is meant to provide access to the core mechanics 

@@ -1,4 +1,4 @@
-<?php
+<?php namespace Watena\Core;
 
 /**
  * Stub function when 'not yet implemented'.

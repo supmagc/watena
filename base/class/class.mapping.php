@@ -1,4 +1,4 @@
-<?php
+<?php namespace Watena\Core;
 /**
  * Class containing the data for a mapping as used when checking filters.
  * 

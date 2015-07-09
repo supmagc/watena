@@ -1,4 +1,4 @@
-<?php
+<?php namespace Watena\Core;
 
 class WatCeption extends \Exception {
 	

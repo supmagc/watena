@@ -1,4 +1,4 @@
-<?php
+<?php namespace Watena\Core;
 
 /**
  * This class manages the logging of watena.
@@ -288,7 +288,7 @@ class Logger {
 		else
 			$oLogger = self::getGenericInstance();
 
-		throw new ErrorException($sMessage, 0, $nCode, $sFile, $nLine);
+		throw new \ErrorException($sMessage, 0, $nCode, $sFile, $nLine);
 	}
 
 	/**
@@ -300,7 +300,7 @@ class Logger {
 	 * 
 	 * @param Exception $oException
 	 */
-	public static final function processException(Exception $oException) {
+	public static final function processException(\Exception $oException) {
 		if(method_exists($oException, 'getInnerException') && $oException->getInnerException() instanceof Exception) {
 			self::processException($oException->getInnerException());
 		}
@@ -337,8 +337,8 @@ class Logger {
 	 */
 	public static final function init($nDefaultfilterLevel) {
 		ini_set('error_reporting', E_ALL);
-		set_error_handler('Logger::processError');
-		set_exception_handler('Logger::processException');
+		set_error_handler(array(__CLASS__, 'processError'));
+		set_exception_handler(array(__CLASS__, 'processException'));
 		self::$s_nDefaultFilterLevel = (int)$nDefaultfilterLevel;
 	}
 	

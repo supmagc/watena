@@ -1,4 +1,4 @@
-<?php
+<?php namespace Watena\Core;
 
 define('REQERROR_EXTENSIONNOTFOUND', 1);
 define('REQERROR_EXTENSIONUNLOADABLE', 2);

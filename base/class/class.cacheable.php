@@ -1,5 +1,4 @@
-<?php
-
+<?php namespace Watena\Core;
 /**
  * Base class for caching behaviour.
  * The caching protocol works as follows:

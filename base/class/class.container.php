@@ -1,4 +1,4 @@
-<?php
+<?php namespace Watena\Core;
 /**
  * Helper class to contain and manage a list of specific items.
  * Originally created for UserManager, but ported to Watena main.
@@ -15,7 +15,7 @@
  * @author Jelle
  * @version 0.1.0
  */
-final class Container extends Object implements IteratorAggregate {
+final class Container extends Object implements \IteratorAggregate {
 	
 	private $m_aItems = array();
 	private $m_cbVerifyAdd;

@@ -1,4 +1,4 @@
-<?php
+<?php namespace Watena\Core;
 
 abstract class Controller extends CacheableData {
 	

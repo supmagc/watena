@@ -1,4 +1,4 @@
-<?php 
+<?php namespace Watena\Core;
 
 /**
  * Static class that manages the cross library/plugins/models/... callbacks.

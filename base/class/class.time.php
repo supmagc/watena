@@ -1,4 +1,4 @@
-<?php
+<?php namespace Watena\Core;
 
 class Time extends Object {
 	
@@ -8,7 +8,7 @@ class Time extends Object {
 	private $m_oTimestamp;
 	
 	public function __construct($mTimestamp = 'now', $mTimezone = 'UTC') {
-		$this->m_oTimestamp = new DateTime(self::formatTimestamp($mTimestamp), new DateTimeZone(self::formatTimezone($mTimezone)));
+		$this->m_oTimestamp = new \DateTime(self::formatTimestamp($mTimestamp), new \DateTimeZone(self::formatTimezone($mTimezone)));
 	}
 	
 	public function isTimezoneUtc() {
@@ -48,64 +48,64 @@ class Time extends Object {
 	}
 	
 	public function formatAtom() {
-		return $this->format(DateTime::ATOM); // Y-m-d\TH:i:sP
+		return $this->format(\DateTime::ATOM); // Y-m-d\TH:i:sP
 	}
 	
 	public function formatCookie() {
-		return $this->format(DateTime::COOKIE); // l, d-M-y H:i:s T
+		return $this->format(\DateTime::COOKIE); // l, d-M-y H:i:s T
 	}
 	
 	public function formatIso8601() {
-		return $this->format(DateTime::ISO8601); // Y-m-d\TH:i:sO
+		return $this->format(\DateTime::ISO8601); // Y-m-d\TH:i:sO
 	}
 	
 	public function formatRfc822() {
-		return $this->format(DateTime::RFC822); // D, d M y H:i:s O
+		return $this->format(\DateTime::RFC822); // D, d M y H:i:s O
 	}
 	
 	public function formatRfc850() {
-		return $this->format(DateTime::RFC850); // l, d-M-y H:i:s T
+		return $this->format(\DateTime::RFC850); // l, d-M-y H:i:s T
 	}
 	
 	public function formatRfc1036() {
-		return $this->format(DateTime::RFC1036); // D, d M y H:i:s O
+		return $this->format(\DateTime::RFC1036); // D, d M y H:i:s O
 	}
 	
 	public function formatRfc1123() {
-		return $this->format(DateTime::RFC1123); // D, d M Y H:i:s O
+		return $this->format(\DateTime::RFC1123); // D, d M Y H:i:s O
 	}
 	
 	public function formatRfc2822() {
-		return $this->format(DateTime::RFC2822); // D, d M Y H:i:s O
+		return $this->format(\DateTime::RFC2822); // D, d M Y H:i:s O
 	}
 	
 	public function formatRfc3339() {
-		return $this->format(DateTime::RFC3339); // Y-m-d\TH:i:sP
+		return $this->format(\DateTime::RFC3339); // Y-m-d\TH:i:sP
 	}
 	
 	public function formatRss() {
-		return $this->format(DateTime::RSS); // D, d M Y H:i:s O
+		return $this->format(\DateTime::RSS); // D, d M Y H:i:s O
 	}
 	
 	public function formatW3c() {
-		return $this->format(DateTime::W3C); // Y-m-d\TH:i:sP
+		return $this->format(\DateTime::W3C); // Y-m-d\TH:i:sP
 	}
 	
 	public function convert($sTimezone) {
 		$oTime = new Time($this->formatSimple(), $this->getTimezone());
-		$oTime->m_oTimestamp->setTimezone(new DateTimeZone(self::formatTimezone($sTimezone)));
+		$oTime->m_oTimestamp->setTimezone(new \DateTimeZone(self::formatTimezone($sTimezone)));
 		return $oTime;
 	}
 	
 	public function add(Interval $oInterval) {
 		$oTime = new Time($this->formatSimple(), $this->getTimezone());
-		$oTime->m_oTimestamp->add(new DateInterval(sprintf('P%dY%dM%dDT%dH%dM%dS', $oInterval->getYears(), $oInterval->getMonths(), $oInterval->getDays(), $oInterval->getHours(), $oInterval->getMinutes(), $oInterval->getSeconds())));
+		$oTime->m_oTimestamp->add(new \DateInterval(sprintf('P%dY%dM%dDT%dH%dM%dS', $oInterval->getYears(), $oInterval->getMonths(), $oInterval->getDays(), $oInterval->getHours(), $oInterval->getMinutes(), $oInterval->getSeconds())));
 		return $oTime;
 	}
 	
 	public function subtract(Interval $oInterval) {
 		$oTime = new Time($this->formatSimple(), $this->getTimezone());
-		$oTime->m_oTimestamp->sub(new DateInterval(sprintf('P%dY%dM%dDT%dH%dM%dS', $oInterval->getYears(), $oInterval->getMonths(), $oInterval->getDays(), $oInterval->getHours(), $oInterval->getMinutes(), $oInterval->getSeconds())));
+		$oTime->m_oTimestamp->sub(new \DateInterval(sprintf('P%dY%dM%dDT%dH%dM%dS', $oInterval->getYears(), $oInterval->getMonths(), $oInterval->getDays(), $oInterval->getHours(), $oInterval->getMinutes(), $oInterval->getSeconds())));
 		return $oTime;
 	}
 	
@@ -127,8 +127,8 @@ class Time extends Object {
 	}
 	
 	public static function getSystemOffset() {
-		$oTimezone = new DateTimeZone(self::$s_sTimezoneSystem);
-		$oDateTime = new DateTime('now', $oTimezone);
+		$oTimezone = new \DateTimeZone(self::$s_sTimezoneSystem);
+		$oDateTime = new \DateTime('now', $oTimezone);
 		return $oTimezone->getOffset($oDateTime);
 	}
 	
@@ -174,7 +174,7 @@ class Time extends Object {
 			return "Etc/$mTimezone";
 		}
 		else if(!Encoding::indexOf($mTimezone, '/')) {
-			$aZones = DateTimeZone::listIdentifiers();
+			$aZones = \DateTimeZone::listIdentifiers();
 			foreach($aZones as $sZone) {
 				if(Encoding::indexOf($sZone, "/$mTimezone", 0, true))
 					return $sZone;
@@ -189,6 +189,6 @@ class Time extends Object {
 	}
 	
 	public static function isValidTimezone($mTimezone) {
-		return in_array($mTimezone, DateTimeZone::listIdentifiers()) || Encoding::regMatch('^Etc/GMT[-+][0-9]*$', $mTimezone, 'i');
+		return in_array($mTimezone, \DateTimeZone::listIdentifiers()) || Encoding::regMatch('^Etc/GMT[-+][0-9]*$', $mTimezone, 'i');
 	}
 }

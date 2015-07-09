@@ -1,4 +1,4 @@
-<?php
+<?php namespace Watena\Core;
 
 /**
  * Charset independent string helpers class.
@@ -16,9 +16,9 @@ class Encoding {
 		mb_internal_encoding(self::$s_sEncoding);
 		mb_regex_encoding(self::$s_sEncoding);
 		ini_set('default_charset', $sCharset);
-		$_GET = array_map(array('Encoding', 'convert'), $_GET);
-		$_POST = array_map(array('Encoding', 'convert'), $_POST);
-		$_COOKIE = array_map(array('Encoding', 'convert'), $_COOKIE);
+		$_GET = array_map(array(__CLASS__, 'convert'), $_GET);
+		$_POST = array_map(array(__CLASS__, 'convert'), $_POST);
+		$_COOKIE = array_map(array(__CLASS__, 'convert'), $_COOKIE);
 	}
 	
 	public static function charset() {

@@ -1,4 +1,4 @@
-<?php
+<?php namespace Watena\Core;
 
 class Url extends Object {
 	

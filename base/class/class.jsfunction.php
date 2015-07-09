@@ -1,4 +1,4 @@
-<?php
+<?php namespace Watena\Core;
 
 /**
  * Class encapsulating a call to an onpage JavaScript Function.

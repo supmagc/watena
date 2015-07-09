@@ -1,4 +1,4 @@
-<?php
+<?php namespace Watena\Core;
 /**
  * Holds all filterdata required to match a filter to a mapping,
  * and knows which model, view, controller to load.
