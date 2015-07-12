@@ -44,7 +44,7 @@ class Context extends Object {
 				$this->getLogger()->warning("One of the specified library-paths could not be mapped, and seems to not exist: {library}", array('library' => $sLibrary));
 			}
 			else {
-				new ClassLoader("Watena\Libs\$sLibraryName", $sPath . "\src");
+				new ClassLoader("Watena\\Libs\\$sLibraryName", $sPath . "\src");
 				array_push($this->m_aLibraries, $sLibrary);
 				array_push($this->m_aLibraryPaths, $sPath);
 			}
@@ -93,7 +93,7 @@ class Context extends Object {
 	 * Retrieve a list with all filter-groups found on the system.
 	 * Since the groups are not loaded by default, this function handles the caching.
 	 * 
-	 * return array
+	 * @return FilterGroup[]
 	 */
 	public final function getFilterGroups() {
 		if($this->m_aFilterGroups === null) {
@@ -244,9 +244,7 @@ class Context extends Object {
 	 * @return Model
 	 */
 	public final function loadModel($sName, array $aParams = array()) {
-		$sFileName = 'model.' . Encoding::toLower($sName) . '.php';
-		$sFilePath = parent::getWatena()->getContext()->getLibraryFilePath('models', $sFileName);
-		return Model::includeAndCreate($sFilePath, $sName, $aParams, $aParams);
+		return Model::createClass($sName, $aParams, $aParams);
 	}
 	
 	/**
@@ -258,10 +256,7 @@ class Context extends Object {
 	 * @return View
 	 */
 	public final function loadView($sName, array $aParams = array()) {
-		return View::create()
-		$sFileName = 'view.' . Encoding::toLower($sName) . '.php';
-		$sFilePath = parent::getWatena()->getContext()->getLibraryFilePath('views', $sFileName);
-		return View::includeAndCreate($sFilePath, $sName, $aParams, $aParams);
+		return View::createClass($sName, $aParams, $aParams);
 	}
 	
 	/**
@@ -273,9 +268,7 @@ class Context extends Object {
 	 * @return Controller
 	 */
 	public final function loadController($sName, array $aParams = array()) {
-		$sFileName = 'controller.' . Encoding::toLower($sName) . '.php';
-		$sFilePath = parent::getWatena()->getContext()->getLibraryFilePath('controllers', $sFileName);
-		return Controller::includeAndCreate($sFilePath, $sName, $aParams, $aParams);
+		return Controller::createClass($sName, $aParams, $aParams);
 	}
 	
 	/**
@@ -307,7 +300,7 @@ class Context extends Object {
 			if($sImplements && !in_array($sImplements, $aImplementsFound)) $this->getLogger()->terminate('The object to be loaded does not implement the required interface.', array('object' => $sObjectName, 'interface' => $sImplements), $this);
 		
 		$this->m_bRequirementWatchdog = false;
-		$oClass = new ReflectionClass($sObjectName);
+		$oClass = new \ReflectionClass($sObjectName);
 		$oTmp = $oClass->newInstanceArgs($aParams);
 		return $oTmp;
 	}
@@ -329,15 +322,15 @@ class Context extends Object {
 				if($oFilter->matches($oMapping)) {
 					// Load model
 					if(null != $oFilter->getModelData()) 
-						$oModel = $this->loadModel($oFilter->getModelData()->getName(), $oFilter->getModelData()->getParams());
+						$oModel = $this->loadModel($oFilter->getModelData()->getClass(), $oFilter->getModelData()->getParams());
 						
 					// Load view
 					if(null != $oFilter->getViewData()) 
-						$oView = $this->loadView($oFilter->getViewData()->getName(), $oFilter->getViewData()->getParams());
+						$oView = $this->loadView($oFilter->getViewData()->getClass(), $oFilter->getViewData()->getParams());
 					
 					// Load controller
 					if(null != $oFilter->getControllerData()) 
-						$oController = $this->loadController($oFilter->getControllerData()->getName(), $oFilter->getControllerData()->getParams());
+						$oController = $this->loadController($oFilter->getControllerData()->getClass(), $oFilter->getControllerData()->getParams());
 					
 					// Return data
 					if($oModel || $oView || $oController)

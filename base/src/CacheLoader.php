@@ -10,7 +10,7 @@ class CacheLoader extends Object {
 	
 	public function __construct($sClassName, array $aMembers = array(), $sExtends = null) {
 		$sCacheable =  __NAMESPACE__.'\Cacheable';
-		if(!class_exists($sClassName, false)) {
+		if(!class_exists($sClassName)) {
 			$this->getLogger()->error('CacheLoader cannot load \'{class}\' as the class does not exists.', array('class' => $sClassName));			
 		}
 		else if(!is_subclass_of($sClassName, $sCacheable) || ($sExtends && !is_subclass_of($sClassName, $sExtends))) {

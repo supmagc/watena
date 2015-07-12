@@ -11,20 +11,17 @@
  */
 class FilterData extends Object {
 
-	private $m_sLibrary;
-	private $m_sName;
+	private $m_sClass;
 	private $m_aParams = array();
 
 	/**
 	 * Create a new data group.
 	 * (used for Model, View, Controller data)
 	 *
-	 * @param string|null $sLibrary
-	 * @param string $sName
+	 * @param string $sClass
 	 */
-	public final function __construct($sLibrary, $sName) {
-		$this->m_sLibrary = $sLibrary;
-		$this->m_sName = $sName;
+	public final function __construct($sClass) {
+		$this->m_sClass = $sClass;
 	}
 	
 	/**
@@ -38,23 +35,13 @@ class FilterData extends Object {
 	}
 
 	/**
-	 * Get the library.
-	 * If no valid library is found, use the one thet includes the originating filter.
-	 *
-	 * @return string|null
-	 */
-	public function getLibrary() {
-		return $this->m_sLibrary;
-	}
-
-	/**
 	 * Get the classname.
-	 * This value should be relative to the it's containign library.
+	 * This value should be relative to the it's containing library.
 	 * 
 	 * @return string
 	 */
-	public final function getName() {
-		return $this->m_sName;
+	public final function getClass() {
+		return $this->m_sClass;
 	}
 
 	/**

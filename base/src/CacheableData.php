@@ -3,7 +3,11 @@
 class CacheableData extends Cacheable {
 
 	public static function create(array $aMembers, array $aConfig = array()) {
-		$oLoader = new CacheLoader(get_called_class(), $aMembers);
+		return self::createClass(get_called_class(), $aMembers, $aConfig);
+	}
+
+	public static function createClass($sClassName, array $aMembers, array $aConfig = array()) {
+		$oLoader = new CacheLoader($sClassName, $aMembers);
 		return $oLoader->get($aConfig);
 	}
 	

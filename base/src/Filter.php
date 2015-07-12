@@ -67,9 +67,9 @@ class Filter extends CacheableFile {
 		if(count($this->m_aRules) == 0) throw new WatCeption('You need at least one rule in each filter.', array('filter' => parent::getFilePath()), $this);
 		$this->getLogger()->debug('Succesfully parsed filter: {filter}', array(
 			'filter' => parent::getFilePath(), 
-			'model' => $this->m_oModel != null ? $this->m_oModel->getName() : 'unknown', 
-			'view' => $this->m_oView != null ? $this->m_oView->getName() : 'unknown', 
-			'controller' => $this->m_oController != null ? $this->m_oController->getName() : 'unknown'));
+			'model' => $this->m_oModel != null ? $this->m_oModel->getClass() : 'unknown',
+			'view' => $this->m_oView != null ? $this->m_oView->getClass() : 'unknown',
+			'controller' => $this->m_oController != null ? $this->m_oController->getClass() : 'unknown'));
 	}
 	
 	/**
@@ -94,7 +94,7 @@ class Filter extends CacheableFile {
 	 * Get the data for the Model.
 	 * 
 	 * @see FilterData
-	 * @return null|FilterData
+	 * @return FilterData|null
 	 */
 	public function GetModelData() {
 		return $this->m_oModel;
@@ -104,7 +104,7 @@ class Filter extends CacheableFile {
 	 * Get the data for the View.
 	 * 
 	 * @see FilterData
-	 * @return null|FilterData
+	 * @return FilterData|null
 	 */
 	public function getViewData() {
 		return $this->m_oView;
@@ -114,7 +114,7 @@ class Filter extends CacheableFile {
 	 * Get the data for the Controller.
 	 * 
 	 * @see FilterData
-	 * @return null|FilterData
+	 * @return FilterData|null
 	 */
 	public function getControllerData() {
 		return $this->m_oController;
@@ -151,13 +151,12 @@ class Filter extends CacheableFile {
 	 * @return FilterData|false
 	 */
 	private function parseData(\SimpleXMLElement $oXml) {
-		$sLibrary = empty($oXml['library']) ? null : '' . $oXml['library'];
-		$sName = empty($oXml['name']) ? null : '' . $oXml['name'];
+		$sName = empty($oXml['class']) ? null : '' . $oXml['class'];
 
 		if(!$sName)
 			return false;
 
-		$oReturn = new FilterData($sLibrary, $sName);
+		$oReturn = new FilterData($sName);
 		foreach($oXml->param as $oParam) {
 			if(!empty($oParam['name'])) {
 				$oReturn->addParam('' . $oParam['name'], '' . $oParam);
