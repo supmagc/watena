@@ -33,7 +33,7 @@ $conf['local'] = array();
 # A rule of thumb can be to define more specific libraries as last.
 # (but before the HelloWorld library)
 #
-$conf['default']['libraries'] = array('default', 'admin', 'portfolio', 'helloworld');
+$conf['default']['libraries'] = array('Base', 'Admin', 'Portfolio', 'HelloWorld');
 
 #
 # Charset used throughout the system.

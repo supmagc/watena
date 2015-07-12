@@ -1,7 +1,7 @@
 <?php namespace Watena\Core;
 
 class WatenaLoader {
-	
+
 	private static function getConfig() {
 		if(($sPath = getcwd() . DIRECTORY_SEPARATOR . 'config.php') && is_readable($sPath)) {}
 		else if(($sPath = '/etc/watena/config.php') && is_readable($sPath)) {}
@@ -28,6 +28,13 @@ class WatenaLoader {
 		if(!defined('PATH_LIBS')) define('PATH_LIBS', realpath(dirname(__FILE__) . '/../libs'));
 		if(!defined('PATH_ROOT')) define('PATH_ROOT', realpath(dirname(__FILE__) . '/..'));
 
+		require_once PATH_BASE . '/common.php';
+		require_once PATH_BASE . '/hooks.php';
+		require_once PATH_BASE . '/requirements.php';
+		require_once PATH_BASE . '/classloader.php';
+		new ClassLoader('Watena\Core', PATH_BASE . '\\src');
+
+		/*
 		require_once PATH_BASE . '/global/global.common.php';
 		require_once PATH_BASE . '/global/global.requirements.php';
 		require_once PATH_BASE . '/static/static.encoding.php';
@@ -89,6 +96,7 @@ class WatenaLoader {
 		require_once PATH_BASE . '/class/class.iniparser.php';
 		require_once PATH_BASE . '/class/class.mail.php';
 		require_once PATH_BASE . '/class/class.html2text.php';
+		*/
 	}
 
 	/**

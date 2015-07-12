@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <filter name="Portfolio home" order="1">
-	<model name="PortfolioModel">
+	<model class="\Watena\Libs\Base\Models\PortfolioModel">
 		<param name="title">Jelle Voet - portfolio and resume</param>
 	</model>
-	<view name="HtmlTemplateView">
+	<view class="\Watena\Libs\Base\Views\HtmlTemplateView">
 		<param name="template">portfolio.tpl</param>
 	</view>
 	<rules>

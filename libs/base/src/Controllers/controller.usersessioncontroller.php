@@ -1,0 +1,34 @@
+<?php namespace Watena\Libs\Base\Controllers;
+use Watena\Core\Controller;
+
+require_plugin('UserManager');
+
+abstract class UserSessionController extends Controller {
+
+	public final function setSession($sKey, $mData) {
+		if(!isset($_SESSION['DATA'])) $_SESSION['DATA'] = array();
+		$_SESSION['DATA'][$sKey] = $mData;
+	}
+
+	public final function getSession($sKey, $mDefault) {
+		return $this->hasSession($sKey) ? $_SESSION['DATA'][$sKey] : $mDefault;
+	}
+
+	public final function hasSession($sKey) {
+		return isset($_SESSION['DATA']) && isset($_SESSION['DATA'][$sKey]);
+	}
+
+	public final function getUser() {
+		return UserManager::getLoggedInUser();
+	}
+	
+	public final function login($sName, $sPass) {
+		
+	}
+	
+	public final function logout() {
+		
+	}
+}
+
+?>
