@@ -1,7 +1,10 @@
 <?php namespace Watena\Libs\Portfolio\Models;
 
-\Watena\Core\require_plugin('Portfolio');
+use Watena\Core\Requirements;
+use Watena\Libs\Base\HtmlModel;
 
-class PortfolioModel extends \Watena\Libs\Base\HtmlModel {
+Requirements::pluginLoaded('\Watena\Libs\Portfolio');
+
+class PortfolioModel extends HtmlModel {
 
 }

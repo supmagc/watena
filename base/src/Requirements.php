@@ -2,154 +2,166 @@
 
 class Requirements {
 
-    const REQERROR_EXTENSIONNOTFOUND = 1;
-    const REQERROR_EXTENSIONUNLOADABLE = 2;
-    const REQERROR_PLUGINUNLOADABLE = 3;
-    const REQERROR_PEARUNLOADABLE = 4;
-    const REQERROR_INCLUDENOTFOUND = 5;
-    const REQERROR_INCLUDEONCENOTFOUND = 6;
-    const REQERROR_FILENOTFOUND = 7;
-    const REQERROR_DIRECTORYNOTFOUND = 8;
-    const REQERROR_CONSTANTUNDEFINED = 9;
-    const REQERROR_LIBRARYNOTFOUND = 10;
-    const REQERROR_DATAFILENOTFOUND = 11;
-    const REQERROR_DATADIRECTORYNOTFOUND = 12;
-    const REQERROR_MODELNOTFOUND = 13;
-    const REQERROR_MODELUNLOADABLE = 14;
-    const REQERROR_VIEWNOTFOUND = 15;
-    const REQERROR_VIEWUNLOADABLE = 16;
-    const REQERROR_CONTROLLERNOTFOUND = 17;
-    const REQERROR_CONTROLLERUNLOADABLE = 18;
+    const ERROR_EXTENSIONNOTFOUND = 1;
+    const ERROR_EXTENSIONUNLOADABLE = 2;
+    const ERROR_PLUGINUNLOADABLE = 3;
+    const ERROR_PEARUNLOADABLE = 4;
+    const ERROR_INCLUDENOTFOUND = 5;
+    const ERROR_INCLUDEONCENOTFOUND = 6;
+    const ERROR_FILENOTFOUND = 7;
+    const ERROR_DIRECTORYNOTFOUND = 8;
+    const ERROR_CONSTANTUNDEFINED = 9;
+    const ERROR_LIBRARYNOTFOUND = 10;
+    const ERROR_DATAFILENOTFOUND = 11;
+    const ERROR_DATADIRECTORYNOTFOUND = 12;
+    const ERROR_MODELNOTFOUND = 13;
+    const ERROR_MODELUNLOADABLE = 14;
+    const ERROR_VIEWNOTFOUND = 15;
+    const ERROR_VIEWUNLOADABLE = 16;
+    const ERROR_CONTROLLERNOTFOUND = 17;
+    const ERROR_CONTROLLERUNLOADABLE = 18;
 
-    function require_error($nCode, $sName) {
+    /**
+     * Trigger an error.
+     *
+     * @param int $nCode
+     * @param string $sName
+     * @return bool
+     */
+    private static function setError($nCode, $sName) {
         $sMessage = 'Requirement error occured';
         switch($nCode) {
-            case REQERROR_EXTENSIONNOTFOUND : $sMessage = 'The required extension \'{name}\' was not loaded with you php-build.'; break;
-            case REQERROR_EXTENSIONUNLOADABLE : $sMessage = 'The required extension \'{name}\' could not be dynamically loaded.'; break;
-            case REQERROR_PLUGINUNLOADABLE : $sMessage = 'The required Watena-plugin \'{name}\' could not be loaded.'; break;
-            case REQERROR_PEARUNLOADABLE : $sMessage = 'The required PEAR-plugin \'{name}\' could not be loaded.'; break;
-            case REQERROR_INCLUDENOTFOUND : $sMessage = 'The required include-file \'{name}\' does not exist.'; break;
-            case REQERROR_INCLUDEONCENOTFOUND : $sMessage = 'The required include-once-file \'{name}\' does not exist.'; break;
-            case REQERROR_FILENOTFOUND : $sMessage = 'The required file \'{name}\' does not exist.'; break;
-            case REQERROR_DIRECTORYNOTFOUND : $sMessage = 'The required directory \'{name}\' does not exist.'; break;
-            case REQERROR_CONSTANTUNDEFINED : $sMessage = 'The required constant \'{name}\' was not defined.'; break;
-            case REQERROR_LIBRARYNOTFOUND : $sMessage = 'The required library \'{name}\' does not exists.'; break;
-            case REQERROR_DATAFILENOTFOUND : $sMessage = 'The required data-file \'{name}\' does not exists.'; break;
-            case REQERROR_DATADIRECTORYNOTFOUND : $sMessage = 'The required data-directory \'{name}\' does not exists.'; break;
-            case REQERROR_MODELNOTFOUND : $sMessage = 'The required model \'{name}\' could not be found in any of the libraries.'; break;
-            case REQERROR_MODELUNLOADABLE : $sMessage = 'A file matching the required model \'{name}\' exists, but no class could be loaded.'; break;
-            case REQERROR_VIEWNOTFOUND : $sMessage = 'The required view \'{name}\' could not be found in any of the libraries.'; break;
-            case REQERROR_VIEWUNLOADABLE : $sMessage = 'A file matching the required view \'{name}\' exists, but no class could be loaded.'; break;
-            case REQERROR_CONTROLLERNOTFOUND : $sMessage = 'The required controller \'{name}\' could not be found in any of the libraries.'; break;
-            case REQERROR_CONTROLLERUNLOADABLE : $sMessage = 'A file matching the required cntroller \'{name}\' exists, but no class could be loaded.'; break;
+            case ERROR_EXTENSIONNOTFOUND : $sMessage = 'The required extension \'{name}\' was not loaded with you php-build.'; break;
+            case ERROR_EXTENSIONUNLOADABLE : $sMessage = 'The required extension \'{name}\' could not be dynamically loaded.'; break;
+            case ERROR_PLUGINUNLOADABLE : $sMessage = 'The required Watena-plugin \'{name}\' could not be loaded.'; break;
+            case ERROR_PEARUNLOADABLE : $sMessage = 'The required PEAR-plugin \'{name}\' could not be loaded.'; break;
+            case ERROR_INCLUDENOTFOUND : $sMessage = 'The required include-file \'{name}\' does not exist.'; break;
+            case ERROR_INCLUDEONCENOTFOUND : $sMessage = 'The required include-once-file \'{name}\' does not exist.'; break;
+            case ERROR_FILENOTFOUND : $sMessage = 'The required file \'{name}\' does not exist.'; break;
+            case ERROR_DIRECTORYNOTFOUND : $sMessage = 'The required directory \'{name}\' does not exist.'; break;
+            case ERROR_CONSTANTUNDEFINED : $sMessage = 'The required constant \'{name}\' was not defined.'; break;
+            case ERROR_LIBRARYNOTFOUND : $sMessage = 'The required library \'{name}\' does not exists.'; break;
+            case ERROR_DATAFILENOTFOUND : $sMessage = 'The required data-file \'{name}\' does not exists.'; break;
+            case ERROR_DATADIRECTORYNOTFOUND : $sMessage = 'The required data-directory \'{name}\' does not exists.'; break;
+            case ERROR_MODELNOTFOUND : $sMessage = 'The required model \'{name}\' could not be found in any of the libraries.'; break;
+            case ERROR_MODELUNLOADABLE : $sMessage = 'A file matching the required model \'{name}\' exists, but no class could be loaded.'; break;
+            case ERROR_VIEWNOTFOUND : $sMessage = 'The required view \'{name}\' could not be found in any of the libraries.'; break;
+            case ERROR_VIEWUNLOADABLE : $sMessage = 'A file matching the required view \'{name}\' exists, but no class could be loaded.'; break;
+            case ERROR_CONTROLLERNOTFOUND : $sMessage = 'The required controller \'{name}\' could not be found in any of the libraries.'; break;
+            case ERROR_CONTROLLERUNLOADABLE : $sMessage = 'A file matching the required cntroller \'{name}\' exists, but no class could be loaded.'; break;
         }
-        require_logger()->error($sMessage, array('code' => $nCode, 'name' => $sName));
+        self::getLogger()->error($sMessage, array('code' => $nCode, 'name' => $sName));
         return false;
     }
 
-    function require_logger() {
+    /**
+     * Get the logger for the requirements.
+     *
+     * @return Logger
+     */
+    private static function getLogger() {
         return Logger::getInstance('Requirement');
     }
 
-    function require_extension($mName) {
-        if(is_array($mName)) return array_all('require_extension', $mName);
+    /**
+     * Check if the extension is loaded.
+     * If not, try to auto-load it.
+     *
+     * @param string|string[] $mName
+     * @return bool
+     */
+    public static function extensionLoaded($mName) {
+        if(is_array($mName)) return array_all(array(self, 'extensionLoaded'), $mName);
         else {
             if(!extension_loaded($mName)) {
-                if(function_exists('dl')) if(!@dl($mName)) return require_error(REQERROR_EXTENSIONUNLOADABLE, $mName);
-                else return require_error(REQERROR_EXTENSIONNOTFOUND, $mName);
+                if(function_exists('dl')) if(!@dl($mName)) return self::setError(ERROR_EXTENSIONUNLOADABLE, $mName);
+                else return self::setError(ERROR_EXTENSIONNOTFOUND, $mName);
             }
             return true;
         }
     }
 
-    function require_plugin($mName) {
-        if(is_array($mName)) return array_all('require_plugin', $mName);
-        else return watena()->getContext()->loadPlugin($mName) || require_error(REQERROR_PLUGINUNLOADABLE, $mName);
+    /**
+     * Check if the plugin is loaded.
+     * If not, try to auto-load it.
+     *
+     * @param string|string[] $mName
+     * @return bool
+     */
+    public static function pluginLoaded($mName) {
+        if(is_array($mName)) return array_all(array(self, 'pluginLoaded'), $mName);
+        else return watena()->getContext()->loadPlugin($mName) || self::setError(ERROR_PLUGINUNLOADABLE, $mName);
     }
 
-    function require_pear($mName) {
-        if(is_array($mName)) return array_all('require_pear', $mName);
+    /**
+     * Check if pear and the given extension are included.
+     * If not, try to auto-include them.
+     *
+     * @param string|string[] $mName
+     * @return bool
+     */
+    public static function pearLoaded($mName) {
+        if(is_array($mName)) return array_all(array(self, 'pearLoaded'), $mName);
         else {
             $nOld = error_reporting(E_ERROR);
             $bReturn = @include_once('PEAR.php') && @include_once($mName.'.php');
             error_reporting($nOld);
-            return $bReturn || require_error(REQERROR_PEARUNLOADABLE, $mName);
+            return $bReturn || self::setError(ERROR_PEARUNLOADABLE, $mName);
         }
     }
 
-    function require_include($mName) {
-        if(is_array($mName)) return array_all('require_include', $mName);
-        else return (is_file($mName) && include($mName)) || require_error(REQERROR_INCLUDENOTFOUND, $mName);
+    /**
+     * Check if the file exists.
+     *
+     * @param string|string[] $mName
+     * @return bool
+     */
+    public static function fileExists($mName) {
+        if(is_array($mName)) return array_all(array(self, 'fileExists'), $mName);
+        else return is_file($mName) || self::setError(ERROR_FILENOTFOUND, $mName);
     }
 
-    function require_includeonce($mName) {
-        if(is_array($mName)) return array_all('require_include', $mName);
-        else {
-            return (is_file($mName) && include_once($mName)) || require_error(REQERROR_INCLUDEONCENOTFOUND, $mName);
-        }
+    /**
+     * Check if the file directory.
+     *
+     * @param string|string[] $mName
+     * @return bool
+     */
+    public static function directoryExists($mName) {
+        if(is_array($mName)) return array_all(array(self, 'directoryExists'), $mName);
+        else return is_dir($mName) || self::setError(ERROR_DIRECTORYNOTFOUND, $mName);
     }
 
-    function require_file($mName) {
-        if(is_array($mName)) return array_all('require_file', $mName);
-        else return is_file($mName) || require_error(REQERROR_FILENOTFOUND, $mName);
+    /**
+     * Check if the file exists in the data-directory exists.
+     *
+     * @param string|string[] $mName
+     * @return bool
+     */
+    public static function dataFileExists($mName) {
+        if(is_array($mName)) return array_all(array(self, 'dataFileExists'), $mName);
+        else return is_file(PATH_DATA . '/' . $mName) || self::setError(ERROR_DATAFILENOTFOUND, $mName);
     }
 
-    function require_directory($mName) {
-        if(is_array($mName)) return array_all('require_directory', $mName);
-        else return is_dir($mName) || require_error(REQERROR_DIRECTORYNOTFOUND, $mName);
+    /**
+     * Check if the directory exists in the data-directory exists.
+     *
+     * @param string|string[] $mName
+     * @return bool
+     */
+    public static function dataDirectoryExists($mName) {
+        if(is_array($mName)) return array_all(array(self, 'dataDirectoryExists'), $mName);
+        else return is_dir(PATH_DATA . '/' . $mName) || self::setError(ERROR_DATADIRECTORYNOTFOUND, $mName);
     }
 
-    function require_constant($mName) {
-        if(is_array($mName)) return array_all('require_define', $mName);
-        else return defined($mName) || require_error(REQERROR_CONSTANTUNDEFINED);
+    /**
+     * Check if the constant is defined.
+     *
+     * @param string|string[] $mName
+     * @return bool
+     */
+    public static function constantDefined($mName) {
+        if(is_array($mName)) return array_all(array(self, constantDefined), $mName);
+        else return defined($mName) || self::setError(ERROR_CONSTANTUNDEFINED, $mName);
     }
-
-    function require_library($mName) {
-        if(is_array($mName)) return array_all('require_library', $mName);
-        else return file_exists(PATH_LIBS . '/' . $mName) || require_error(REQERROR_LIBRARYNOTFOUND, $mName);
-    }
-
-    function require_datafile($mName) {
-        if(is_array($mName)) return array_all('require_data', $mName);
-        else return is_file(PATH_DATA . '/' . $mName) || require_error(REQERROR_DATAFILENOTFOUND, $mName);
-    }
-
-    function require_datadirectory($mName) {
-        if(is_array($mName)) return array_all('require_data', $mName);
-        else return is_dir(PATH_DATA . '/' . $mName) || require_error(REQERROR_DATADIRECTORYNOTFOUND, $mName);
-    }
-
-    function require_model($mName) {
-        if(is_array($mName)) return array_all('require_model', $mName);
-        else {
-            if($sPath = watena()->getContext()->getLibraryFilePath('models', 'model.'.Encoding::toLower($mName).'.php')) {
-                include_once $sPath;
-                return class_exists($mName) || require_error(REQERROR_MODELUNLOADABLE, $mName);
-            }
-            else return require_error(REQERROR_MODELNOTFOUND, $mName);
-        }
-    }
-
-    function require_view($mName) {
-        if(is_array($mName)) return array_all('require_view', $mName);
-        else {
-            if($sPath = watena()->getContext()->getLibraryFilePath('views', 'view.'.Encoding::toLower($mName).'.php')) {
-                @include_once $sPath;
-                return class_exists($mName) || require_error(REQERROR_VIEWUNLOADABLE, $mName);
-            }
-            else return require_error(REQERROR_VIEWNOTFOUND, $mName);
-        }
-    }
-
-    function require_controller($mName) {
-        if(is_array($mName)) return array_all('require_controller', $mName);
-        else {
-            if($sPath = watena()->getContext()->getLibraryFilePath('controllers', 'controller.'.Encoding::toLower($mName).'.php')) {
-                @include_once $sPath;
-                return class_exists($mName) || require_error(REQERROR_CONTROLLERUNLOADABLE, $mName);
-            }
-            else return require_error(REQERROR_CONTROLLERNOTFOUND, $mName);
-        }
-    }
-
 }

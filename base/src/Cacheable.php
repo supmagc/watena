@@ -31,7 +31,9 @@ abstract class Cacheable extends Object {
 	public function validate() {return true;}
 	
 	/**
-	 * This method is called when initting the object and should leave the object in a cacheable/serializeable state.
+	 * This method is called when initializing the object and should leave the object in a cacheable/serializeable state.
+	 *
+	 * @param mixed[] $aMembers
 	 */
 	public function make(array $aMembers) {}
 	

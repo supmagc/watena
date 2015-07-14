@@ -1,9 +1,10 @@
-<?php
-require_plugin('jquery');
+<?php namespace Watena\Libs\Portfolio;
+
+use Watena\Core\Requirements;
+
+Requirements::pluginLoaded('\Watena\Libs\Base\JQuery');
 
 define('PATH_PORTFOLIO', realpath(dirname(__FILE__) . '/../system/'));
-
-require_includeonce(PATH_PORTFOLIO . '/class.portfolioitem.php');
 
 class Portfolio extends Plugin {
 	
