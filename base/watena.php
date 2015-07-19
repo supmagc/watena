@@ -33,6 +33,7 @@ class WatenaLoader {
 		require_once PATH_BASE . '/requirements.php';
 		require_once PATH_BASE . '/classloader.php';
 		new ClassLoader('Watena\Core', PATH_BASE . '\\src');
+		new SourceIndex('Watena\Core', PATH_BASE . '\\src');
 
 		/*
 		require_once PATH_BASE . '/global/global.common.php';

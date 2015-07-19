@@ -37,9 +37,6 @@ class ClassLoader {
      * @param string $sClassName
      */
     public function loadClass($sClassName) {
-
-        echo "$sClassName $this->m_sPrefix<br />";
-
         if(strncmp($this->m_sPrefix, $sClassName, $this->m_nPrefixLength) !== 0)
             return;
 

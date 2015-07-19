@@ -4,7 +4,7 @@ class DataFile extends Object {
 
 	private $m_sPath;
 	private $m_sFullPath;
-	private $m_oZipfile;
+	private $m_oZipFile;
 	
 	public function __construct($sPath) {
 		parent::__construct();
@@ -28,10 +28,10 @@ class DataFile extends Object {
 		return $this->m_sPath;
 	}
 	
-	public function getZipfile() {
-		if(!$this->m_oZipfile)
-			$this->m_oZipfile = new ZipFile($this->m_sFullPath);
-		return $this->m_oZipfile;
+	public function getZipFile() {
+		if(!$this->m_oZipFile)
+			$this->m_oZipFile = new ZipFile($this->m_sFullPath);
+		return $this->m_oZipFile;
 	}
 	
 	public function getTimestamp() {
